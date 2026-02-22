@@ -1,0 +1,165 @@
+@font-face {
+    font-family: "Saans";
+    src: url("/fonts/Saans-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Saans";
+    src: url("/fonts/Saans-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Saans";
+    src: url("/fonts/Saans-SemiBold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+
+:root {
+    --background: #F5F5F5;
+    --foreground: #131417;
+    --card: #FFFFFF;
+    --card-foreground: #131417;
+    --popover: #FFFFFF;
+    --popover-foreground: #131417;
+    --primary: #131417;
+    --primary-foreground: #FFFFFF;
+    --secondary: #F9F3EE;
+    --secondary-foreground: #131417;
+    --muted: #F9F3EE;
+    --muted-foreground: #4D4E50;
+    --accent: #C0E3D1;
+    --accent-foreground: #142218;
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --border: #E5E5E5;
+    --input: #E5E5E5;
+    --ring: #93887C;
+    --radius: 1rem;
+    --text-secondary: #4D4E50;
+    --text-tertiary: #949494;
+    --pixel-color: #B19EEF;
+    --footer-bg: #131417;
+    --footer-foreground: #FFFFFF;
+}
+
+@theme inline {
+    --font-sans: "Saans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans";
+    --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New";
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    html,
+    body {
+        font-family: var(--font-sans);
+        font-weight: 400;
+    }
+}
+
+
+.scroll-to-explore {
+    font-weight: 500;
+    color: #333;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.icon-scroll,
+.icon-scroll::before {
+    display: flex;
+}
+
+.icon-scroll {
+    width: 15px;
+    height: 25px;
+    box-shadow: inset 0 0 0 1.5px #4b5563; /* text-gray-600 */
+    border-radius: 25px;
+    margin-left: 8px;
+}
+
+.icon-scroll::before {
+    content: "";
+    width: 3px;
+    height: 3px;
+    background: #4b5563; /* text-gray-600 */
+    margin-left: 6px;
+    border-radius: 4px;
+    animation: scroll 1.5s infinite;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateY(4px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(14px);
+        opacity: 0;
+    }
+}
+
+
+/* Hide native cursor on desktop so the custom cursor is the only cursor */
+@media (hover: hover) and (pointer: fine) {
+    html,
+    body,
+    a,
+    button,
+    [role="button"],
+    input,
+    textarea,
+    select {
+        cursor: none !important;
+    }
+}

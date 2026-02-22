@@ -1,0 +1,67 @@
+import { ProjectCard } from "./project-card"
+
+export const projects = [
+    {
+        slug: "liveops-alerting",
+        title: "Designing a LiveOps alerting system to reduce production incidents",
+        image: "/images/project-liveops.png",
+        tags: ["2025", "Tactile Games"],
+        featured: true,
+        aspect: "aspect-[3/2]",
+        isPasswordProtected: true,
+    },
+    {
+        slug: "game-setup-automation",
+        title: "Automating game setup for scalable releases",
+        image: "/images/project-game-setup.png",
+        tags: ["2025", "Tactile Games"],
+        featured: false,
+        aspect: "aspect-[3/2]",
+    },
+    {
+        slug: "travel-planning",
+        title: "Reimagining travel planning on Google Search",
+        image: "/images/project-travel.png",
+        tags: ["2024", "Google"],
+        featured: false,
+        aspect: "aspect-[3/2]",
+    },
+    {
+        slug: "game-setup-v2",
+        title: "Building a design system to eliminate design debt",
+        image: "/images/project-famly.png",
+        tags: ["2024", "Famly"],
+        featured: false,
+        aspect: "aspect-[3/2]",
+    },
+] as const
+
+export function Projects() {
+    return (
+        <section
+            id="work"
+            className="
+        relative z-20
+        pb-16 md:pb-24
+      "
+        >
+            {/* 16px margin like your grid */}
+            <div className="mx-auto w-full px-6">
+                {/* 2×2 grid on md+, 1 col on mobile */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                    {projects.slice(0, 4).map((project) => (
+                        <ProjectCard
+                            key={project.slug}
+                            title={project.title}
+                            image={project.image}
+                            tags={project.tags}
+                            href={`/work/${project.slug}`}
+                            featured={false}
+                            aspectClass={project.aspect}
+                        />
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
