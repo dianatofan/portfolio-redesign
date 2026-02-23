@@ -38,17 +38,9 @@ export const projects = [
 
 export function Projects() {
     return (
-        <section
-            id="work"
-            className="
-        relative z-20
-        pb-16 md:pb-24
-      "
-        >
-            {/* 16px margin like your grid */}
-            <div className="mx-auto w-full px-6">
-                {/* 2×2 grid on md+, 1 col on mobile */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+        <section id="work" className="relative z-20 pb-16 md:pb-24">
+            <div className="mx-auto w-full max-w-[1800px] px-6">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
                     {projects.slice(0, 4).map((project) => (
                         <ProjectCard
                             key={project.slug}
