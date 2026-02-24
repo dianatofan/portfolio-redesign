@@ -28,7 +28,7 @@ export function Footer() {
                                 </svg>
                             </Link>
 
-                            <h2 className="mt-8 text-3xl md:text-[32px] font-bold leading-tight text-[var(--footer-foreground)]">
+                            <h2 className="mt-8 text-3xl md:text-[32px] font-[550] leading-tight text-[var(--footer-foreground)]">
                                 {"Let's get in touch"}
                             </h2>
                         </div>
@@ -42,10 +42,12 @@ export function Footer() {
                                     rel="noopener noreferrer"
                                     className="group flex items-center justify-between px-6 py-6 border-b border-white/15 hover:bg-white/5 transition-colors"
                                 >
-                                    <span className="tracking-wide uppercase text-sm">LinkedIn</span>
+                                    <span className="tracking-wide uppercase text-sm">
+                                        LinkedIn
+                                    </span>
                                     <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                    ↗
-                  </span>
+                                        ↗
+                                    </span>
                                 </a>
 
                                 <a
@@ -54,8 +56,8 @@ export function Footer() {
                                 >
                                     <span className="tracking-wide uppercase text-sm">Email</span>
                                     <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                    ↗
-                  </span>
+                                        ↗
+                                    </span>
                                 </a>
 
                                 <a
@@ -66,8 +68,8 @@ export function Footer() {
                                 >
                                     <span className="tracking-wide uppercase text-sm">GitHub</span>
                                     <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                    ↗
-                  </span>
+                                        ↗
+                                    </span>
                                 </a>
                             </div>
                         </div>
@@ -82,10 +84,12 @@ export function Footer() {
                                     download
                                     className="group flex items-center justify-between px-6 py-6 border-b border-white/15 hover:bg-white/5 transition-colors"
                                 >
-                                    <span className="tracking-wide uppercase text-sm">View Resume</span>
+                                    <span className="tracking-wide uppercase text-sm">
+                                        View Resume
+                                    </span>
                                     <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                    ↗
-                  </span>
+                                        ↗
+                                    </span>
                                 </Link>
 
                                 <button
@@ -98,10 +102,12 @@ export function Footer() {
                                     }
                                     className="group flex items-center justify-between px-6 py-6 hover:bg-white/5 transition-colors text-left"
                                 >
-                                    <span className="tracking-wide uppercase text-sm">Back to top</span>
+                                    <span className="tracking-wide uppercase text-sm">
+                                        Back to top
+                                    </span>
                                     <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                    ↑
-                  </span>
+                                        ↑
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -114,14 +120,12 @@ export function Footer() {
                 {/* BOTTOM: padded, bottom-left */}
                 <div className="px-6">
                     <div className="mt-6 flex flex-col gap-1 items-start text-left">
-                        <p className="text-sm text-[var(--text-tertiary)]">
-                            {"©2026 Diana Tofan"}
-                        </p>
+                        <p className="text-sm text-[var(--text-tertiary)]">{"©2026 Diana Tofan"}</p>
                         <p className="text-sm text-[var(--text-tertiary)]">
                             {"Designed and built with "}
                             <Link
                                 href="https://nextjs.org"
-                                className="underline hover:text-[var(--footer-foreground)] transition-colors duration-200"
+                                className="hover:text-[var(--footer-foreground)] transition-colors duration-200"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -130,7 +134,7 @@ export function Footer() {
                             {" and "}
                             <Link
                                 href="https://tailwindcss.com"
-                                className="underline hover:text-[var(--footer-foreground)] transition-colors duration-200"
+                                className="hover:text-[var(--footer-foreground)] transition-colors duration-200"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
