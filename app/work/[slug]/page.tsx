@@ -39,7 +39,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
+            className="flex items-center gap-2 text-sm font-[550] text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
           >
             <svg
               width="16"
@@ -108,7 +108,7 @@ export default async function ProjectPage({ params }: PageProps) {
             <div className="col-span-4 md:col-span-6 md:col-start-4">
               <div className="flex flex-col gap-8">
                 <div>
-                  <h2 className="text-sm font-medium text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
+                  <h2 className="text-sm font-[550] text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
                     Overview
                   </h2>
                   <p className="text-lg leading-relaxed text-[var(--text-secondary)]">
@@ -117,7 +117,7 @@ export default async function ProjectPage({ params }: PageProps) {
                   </p>
                 </div>
                 <div>
-                  <h2 className="text-sm font-medium text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
+                  <h2 className="text-sm font-[550] text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
                     Role
                   </h2>
                   <p className="text-lg leading-relaxed text-[var(--text-secondary)]">

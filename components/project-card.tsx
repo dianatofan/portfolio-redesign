@@ -16,14 +16,14 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({
-                                title,
-                                image,
-                                tags = [],
-                                href = "#",
-                                featured = false,
-                                aspectClass,
-                                isPasswordProtected = false,
-                            }: ProjectCardProps) {
+    title,
+    image,
+    tags = [],
+    href = "#",
+    featured = false,
+    aspectClass,
+    isPasswordProtected = false,
+}: ProjectCardProps) {
     const { setVariant } = useContext(CursorContext)
     const aspect = aspectClass ?? (featured ? "aspect-[16/9]" : "aspect-[4/3]")
 
@@ -39,10 +39,9 @@ export function ProjectCard({
             <article>
                 {/* Image tile */}
                 <div
-                    className={[
-                        "relative w-full overflow-hidden bg-card rounded-lg",
-                        aspect,
-                    ].join(" ")}
+                    className={["relative w-full overflow-hidden bg-card rounded-lg", aspect].join(
+                        " "
+                    )}
                 >
                     <Image
                         src={image}
@@ -74,25 +73,23 @@ export function ProjectCard({
                                 <span
                                     key={tag}
                                     className="
-                    inline-flex items-center
-                    rounded-full
-                    px-3 py-1
-                    text-xs font-sans tracking-wide
-                    bg-white/10 backdrop-blur-xl
-                    border border-white/20
-                    shadow-[0_10px_24px_rgba(0,0,0,0.18)]
-                    text-white
-                    transform-gpu
-                    transition-all duration-500 ease-[cubic-bezier(.2,.8,.2,1)]
-                    opacity-0 -translate-y-2
-                    group-hover:opacity-100 group-hover:translate-y-0
-                  "
-                                    style={{
-                                        transitionDelay: `${80 + idx * 60}ms`,
-                                    }}
+    relative inline-flex items-center
+    rounded-full px-3 py-1
+    text-sm font-sans tracking-wide text-white
+    bg-black/35 border border-white/15
+    shadow-[0_10px_24px_rgba(0,0,0,0.35)]
+    overflow-hidden
+
+    transform-gpu will-change-[transform,opacity]
+    transition-all duration-500 ease-[cubic-bezier(.2,.8,.2,1)]
+    opacity-0 -translate-y-2
+    group-hover:opacity-100 group-hover:translate-y-0
+  "
+                                    style={{ transitionDelay: `${80 + idx * 60}ms` }}
                                 >
-                  {tag}
-                </span>
+                                    <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 to-transparent" />
+                                    <span className="relative">{tag}</span>
+                                </span>
                             ))}
                         </div>
                     )}
@@ -100,7 +97,7 @@ export function ProjectCard({
 
                 {/* Caption row under image */}
                 <div className="mt-3 flex items-baseline justify-between gap-6">
-                    <h3 className="font-medium text-foreground leading-snug max-w-[60ch]">
+                    <h3 className="font-[550] text-foreground leading-snug max-w-[60ch]">
                         {title}
                     </h3>
 
@@ -115,7 +112,7 @@ export function ProjectCard({
                             {isPasswordProtected && (
                                 <span
                                     className="
-                    inline-flex items-center gap-1
+                      inline-flex items-center gap-1
                     rounded-full
                     px-2.5 py-1
                     text-xs md:text-sm
@@ -127,14 +124,14 @@ export function ProjectCard({
                                     aria-label="Password protected"
                                     title="Password protected"
                                 >
-                  <span
-                      className="material-symbols-outlined text-[16px] leading-none"
-                      aria-hidden="true"
-                  >
-                    lock
-                  </span>
-                  <span className="sr-only">Password protected</span>
-                </span>
+                                    <span
+                                        className="material-symbols-outlined text-[16px] leading-none"
+                                        aria-hidden="true"
+                                    >
+                                        lock
+                                    </span>
+                                    <span className="sr-only">Password protected</span>
+                                </span>
                             )}
                         </div>
                     )}
