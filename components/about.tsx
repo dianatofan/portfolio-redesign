@@ -13,35 +13,35 @@ import {
 const workHistory = [
     {
         id: "tactile-games",
-        role: "Senior Product Designer",
+        role: "Product Designer",
         company: "Tactile Games",
         period: "2024 — Present",
         description:
-            "Designing internal tools and platform workflows for game development teams. Focused on reducing friction in the LiveOps pipeline.",
+            "This role strengthened my ability to design systems, not just features. I learned how internal tools clarity directly impacts team velocity, and how to align stakeholders around complex workflows without overcomplicating solutions.",
     },
     {
         id: "google",
-        role: "Product Designer",
+        role: "UX Engineer",
         company: "Google",
         period: "2024",
         description:
-            "Worked on search experiences and travel planning features across mobile and desktop surfaces.",
+            "Working at Google expanded my sense of what’s possible. I used code to translate ambitious ideas into high-fidelity prototypes that made abstract concepts tangible and informed product direction before significant engineering investment.",
     },
     {
         id: "famly",
-        role: "Product Designer",
+        role: "UX/UI Designer",
         company: "Famly",
         period: "2022 — 2024",
         description:
-            "Built design systems and improved workflows for a childcare management platform used by thousands of nurseries.",
+            "Rebuilding the design foundation of a mature product taught me that systems only work if they’re adopted. Eliminating design debt required clear standards, alignment, and consistent reinforcement across teams.",
     },
     {
         id: "maersk",
-        role: "UX Designer",
+        role: "Frontend Engineer",
         company: "Maersk",
         period: "2020 — 2022",
         description:
-            "Designed logistics and supply chain management tools for one of the world's largest shipping companies.",
+            "This role strengthened my technical foundation. Working on a global cargo booking platform taught me to design for scale, reliability, and real operational constraints. Those principles still guide how I work today.",
     },
 ]
 
@@ -51,8 +51,10 @@ export function About() {
     const [currentRole, setCurrentRole] = useState(0)
     const [displayText, setDisplayText] = useState("")
 
-    const bioText1 = "I started in frontend engineering, where I learned how products are actually built and what it takes to deliver quality at scale. Wanting to get closer to product thinking while staying technical, I moved into UX engineering, creating high-fidelity, production-like prototypes in the pre-AI era with complex animations and live data so teams could experience ideas before committing engineering resources. That drive for greater ownership led me into product design, where I stepped into product direction, business strategy, and stakeholder alignment to shape not just how things work, but why we're building them."
-    const bioText2 = "I've worked across gaming, big tech, SaaS, and logistics, which taught me how to adapt quickly and navigate very different problem spaces. I still code in side projects and prototypes to keep my skills sharp and move from concept to validation quickly. I think in a structured, technical way, but approach problems creatively, which helps me handle complexity without losing clarity."
+    const bioText1 =
+        "I started in frontend engineering, where I learned how products are actually built and what it takes to deliver quality at scale. Wanting to get closer to product thinking while staying technical, I moved into UX engineering, creating high-fidelity, production-like prototypes in the pre-AI era with complex animations and live data so teams could experience ideas before committing engineering resources. That drive for greater ownership led me into product design, where I stepped into product direction, business strategy, and stakeholder alignment to shape not just how things work, but why we're building them."
+    const bioText2 =
+        "I've worked across gaming, big tech, SaaS, and logistics, which taught me how to adapt quickly and navigate very different problem spaces. I still code in side projects and prototypes to keep my skills sharp and move from concept to validation quickly. I think in a structured, technical way, but approach problems creatively, which helps me handle complexity without losing clarity."
 
     const roles = ["frontend engineer", "UX engineer", "product designer"]
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
@@ -174,10 +176,8 @@ export function About() {
 
             <section id="about" className="relative z-20 pb-16 md:pb-24">
                 <div className="w-full mx-auto px-6">
-
                     {/* Meta + Headline row — same grid as homepage hero */}
                     <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 gap-y-8 mb-16 md:mb-24">
-
                         {/* Left: meta block (time / location) */}
                         <div className="col-span-4 md:col-span-3 flex flex-col justify-end pb-8 md:pb-0">
                             <span
@@ -207,9 +207,7 @@ export function About() {
                             <h1 className="text-4xl md:text-[36px] lg:text-[48px] font-medium leading-[1.08] text-foreground text-balance tracking-tight mb-8 max-w-[840px]">
                                 Hi, I'm Diana, a{" "}
                                 <span className="role-text-container">
-                                    <span className="role-text">
-                                        {displayText || roles[0]}
-                                    </span>
+                                    <span className="role-text">{displayText || roles[0]}</span>
                                 </span>
                                 .
                             </h1>
@@ -226,22 +224,17 @@ export function About() {
 
                     {/* "Where I've worked" section */}
                     <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 border-t border-[#F0F0F0] pt-12 md:pt-16">
-
                         {/* Left: section label */}
                         <div className="col-span-4 md:col-span-3 mb-8 md:mb-0">
                             <p className="text-base font-medium text-foreground">
-                                {"Experience"}
+                                {"What each role taught me"}
                             </p>
                         </div>
 
                         {/* Right: accordion - aligned with intro text */}
                         <div className="col-span-4 md:col-span-7 md:col-start-6">
                             <div className="max-w-[680px]">
-                                <Accordion
-                                    type="single"
-                                    collapsible
-                                    defaultValue="tactile-games"
-                                >
+                                <Accordion type="single" collapsible defaultValue="tactile-games">
                                     {workHistory.map((item) => (
                                         <AccordionItem
                                             key={item.id}
@@ -272,7 +265,6 @@ export function About() {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
         </>
