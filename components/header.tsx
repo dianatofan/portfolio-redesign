@@ -31,13 +31,13 @@ export function Header() {
                 {/* Navigation (right side, 4 columns aligned right) */}
                 <nav className="col-span-4 col-start-9 flex flex-col items-end gap-1">
                     <Link
-                        href="#work"
+                        href="/#work"
                         className="text-base font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
                     >
                         work
                     </Link>
                     <Link
-                        href="#about"
+                        href="/about"
                         className="text-base font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
                     >
                         about
