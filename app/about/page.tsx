@@ -11,7 +11,7 @@ export const metadata = {
 export default function AboutPage() {
     return (
         <main>
-            <Header />
+            <Header showBackButton />
             <About />
             <Footer />
         </main>

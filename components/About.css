@@ -24,3 +24,15 @@
     contain: layout style paint;
 }
 
+/* Role text transition animation - decrypt style */
+.role-text-container {
+    display: inline-block;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.role-text {
+    display: inline-block;
+    font-feature-settings: "tnum";
+    letter-spacing: -0.01em;
+}

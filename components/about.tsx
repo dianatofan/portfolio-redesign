@@ -48,6 +48,59 @@ const workHistory = [
 export function About() {
     const [time, setTime] = useState("")
     const [isNight, setIsNight] = useState(false)
+    const [currentRole, setCurrentRole] = useState(0)
+    const [displayText, setDisplayText] = useState("")
+
+    const bioText1 = "I started in frontend engineering, where I learned how products are actually built and what it takes to deliver quality at scale. Wanting to get closer to product thinking while staying technical, I moved into UX engineering, creating high-fidelity, production-like prototypes in the pre-AI era with complex animations and live data so teams could experience ideas before committing engineering resources. That drive for greater ownership led me into product design, where I stepped into product direction, business strategy, and stakeholder alignment to shape not just how things work, but why we're building them."
+    const bioText2 = "I've worked across gaming, big tech, SaaS, and logistics, which taught me how to adapt quickly and navigate very different problem spaces. I still code in side projects and prototypes to keep my skills sharp and move from concept to validation quickly. I think in a structured, technical way, but approach problems creatively, which helps me handle complexity without losing clarity."
+
+    const roles = ["frontend engineer", "UX engineer", "product designer"]
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
+
+    // Decrypt effect
+    useEffect(() => {
+        const targetText = roles[currentRole]
+        let iteration = 0
+        const interval = setInterval(() => {
+            setDisplayText(
+                targetText
+                    .split("")
+                    .map((char, index) => {
+                        if (char === " ") return " "
+                        if (index < iteration) {
+                            return targetText[index]
+                        }
+                        return chars[Math.floor(Math.random() * chars.length)]
+                    })
+                    .join("")
+            )
+
+            if (iteration >= targetText.length) {
+                clearInterval(interval)
+            }
+
+            iteration += 1 / 2 // Faster iteration
+        }, 20) // Faster interval
+
+        return () => clearInterval(interval)
+    }, [currentRole])
+
+    // Rotate through roles once, then stop at "product designer"
+    useEffect(() => {
+        const roleInterval = setInterval(() => {
+            setCurrentRole((prev) => {
+                const next = prev + 1
+                // Stop at the last role (product designer)
+                if (next >= roles.length) {
+                    clearInterval(roleInterval)
+                    return roles.length - 1
+                }
+                return next
+            })
+        }, 2000) // Change every 2 seconds
+
+        return () => clearInterval(roleInterval)
+    }, [])
 
     useEffect(() => {
         let interval: number | undefined
@@ -111,7 +164,7 @@ export function About() {
                 <BounceCards
                     className="about-bounce-cards"
                     images={images as any}
-                    containerHeight={500}
+                    containerHeight={600}
                     animationStagger={0.08}
                     easeType="elastic.out(1, 0.5)"
                     transformStyles={transformStyles as any}
@@ -151,57 +204,72 @@ export function About() {
 
                         {/* Right: headline + bio */}
                         <div className="col-span-4 md:col-span-7 md:col-start-6 flex flex-col justify-center">
-                            <h1 className="text-4xl md:text-[56px] lg:text-[67px] font-medium leading-[1.08] text-foreground text-balance tracking-tight mb-8">
-                                {"I'm Diana, a product designer based in Copenhagen"}
+                            <h1 className="text-4xl md:text-[36px] lg:text-[48px] font-medium leading-[1.08] text-foreground text-balance tracking-tight mb-8 max-w-[840px]">
+                                Hi, I'm Diana, a{" "}
+                                <span className="role-text-container">
+                                    <span className="role-text">
+                                        {displayText || roles[0]}
+                                    </span>
+                                </span>
+                                .
                             </h1>
-                            <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-                                {
-                                    "Currently designing SaaS tools at Tactile Games, helping game developers ship faster and more reliably. Previously, I worked on search experiences at Google and built design systems at Famly and Maersk."
-                                }
-                            </p>
+                            <div>
+                                <p className="text-base leading-relaxed max-w-[680px]">
+                                    {bioText1}
+                                </p>
+                                <p className="text-base mt-4 leading-relaxed max-w-[680px]">
+                                    {bioText2}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
                     {/* "Where I've worked" section */}
-                    <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 border-t border-border pt-12 md:pt-16">
+                    <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 border-t border-[#F0F0F0] pt-12 md:pt-16">
 
                         {/* Left: section label */}
                         <div className="col-span-4 md:col-span-3 mb-8 md:mb-0">
-                            <p className="text-sm font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
-                                {"Where I've worked"}
+                            <p className="text-base font-medium text-foreground">
+                                {"Experience"}
                             </p>
                         </div>
 
-                        {/* Right: accordion */}
-                        <div className="col-span-4 md:col-span-8 md:col-start-5">
-                            <Accordion
-                                type="single"
-                                collapsible
-                                defaultValue="tactile-games"
-                            >
-                                {workHistory.map((item) => (
-                                    <AccordionItem key={item.id} value={item.id}>
-                                        <AccordionTrigger className="text-base font-medium text-foreground hover:no-underline py-5">
-                                            <span>
-                                                {item.role}
-                                                <span className="text-[var(--text-tertiary)] font-normal ml-2">
-                                                    {item.company}
+                        {/* Right: accordion - aligned with intro text */}
+                        <div className="col-span-4 md:col-span-7 md:col-start-6">
+                            <div className="max-w-[680px]">
+                                <Accordion
+                                    type="single"
+                                    collapsible
+                                    defaultValue="tactile-games"
+                                >
+                                    {workHistory.map((item) => (
+                                        <AccordionItem
+                                            key={item.id}
+                                            value={item.id}
+                                            className="border-[#F0F0F0]"
+                                        >
+                                            <AccordionTrigger className="text-base font-medium text-foreground hover:no-underline py-5">
+                                                <span>
+                                                    {item.role}
+                                                    <span className="text-[var(--text-tertiary)] font-normal ml-2">
+                                                        {item.company}
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        </AccordionTrigger>
-                                        <AccordionContent>
-                                            <div className="flex flex-col gap-2 pb-2 text-base">
-                                                <span className="text-sm text-[var(--text-tertiary)]">
-                                                    {item.period}
-                                                </span>
-                                                <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-                                                    {item.description}
-                                                </p>
-                                            </div>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                ))}
-                            </Accordion>
+                                            </AccordionTrigger>
+                                            <AccordionContent>
+                                                <div className="flex flex-col gap-2 pb-2 text-base">
+                                                    <span className="text-sm text-[var(--text-tertiary)]">
+                                                        {item.period}
+                                                    </span>
+                                                    <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+                                                        {item.description}
+                                                    </p>
+                                                </div>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    ))}
+                                </Accordion>
+                            </div>
                         </div>
                     </div>
 
