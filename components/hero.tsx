@@ -98,7 +98,7 @@ export function Hero() {
                 <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
                     <div className="col-span-4 md:col-span-3 flex flex-col justify-end pb-8 md:pb-0 z-10">
                         <span
-                            className="material-symbols-outlined text-foreground leading-none mb-1 font-[550]"
+                            className="material-symbols-outlined text-foreground leading-none mb-1 font-medium"
                             aria-hidden="true"
                             style={{
                                 fontSize: 18,
@@ -109,23 +109,23 @@ export function Hero() {
                         </span>
 
                         <span
-                            className="text-base font-[550] text-foreground font-sans"
+                            className="text-base font-medium text-foreground font-sans"
                             aria-label="Current time in Copenhagen"
                         >
                             {time || "..."}
                         </span>
 
-                        <p className="text-base font-[550] text-[var(--text-tertiary)]">
+                        <p className="text-base font-medium text-[var(--text-tertiary)]">
                             Copenhagen, Denmark
                         </p>
                     </div>
 
                     <div className="col-span-4 md:col-span-7 md:col-start-6 flex flex-col justify-center z-10">
-                        <h1 className="text-4xl md:text-[56px] lg:text-[67px] font-[550] leading-[1.08] text-foreground text-balance">
+                        <h1 className="text-4xl md:text-[56px] lg:text-[67px] font-medium leading-[1.08] text-foreground text-balance tracking-tight">
                             {"I'm Diana, a product designer untangling complex systems"}
                         </h1>
 
-                        {/*<p className="mt-4 text-base font-[550] text-[var(--text-tertiary)]">*/}
+                        {/*<p className="mt-4 text-base font-medium text-[var(--text-tertiary)]">*/}
                         {/*    Currently building SaaS tools @Tactile, previously @Google, @Maersk                      </p>*/}
                     </div>
                 </div>

@@ -97,7 +97,7 @@ export function ProjectCard({
 
                 {/* Caption row under image */}
                 <div className="mt-3 flex items-baseline justify-between gap-6">
-                    <h3 className="font-[550] text-foreground leading-snug max-w-[60ch]">
+                    <h3 className="font-medium text-foreground leading-snug max-w-[60ch]">
                         {title}
                     </h3>
 
