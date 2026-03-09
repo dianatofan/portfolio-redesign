@@ -49,7 +49,7 @@ export function Projects() {
                             key={project.slug}
                             title={project.title}
                             image={project.image}
-                            tags={project.tags}
+                            tags={[...project.tags]}
                             href={`/work/${project.slug}`}
                             featured={false}
                             aspectClass={project.aspect}

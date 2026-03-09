@@ -162,7 +162,7 @@ export function About() {
     return (
         <>
             {/* Full-width BounceCards collage */}
-            <div className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] pt-24 mb-16 md:mb-24">
+            <div id="bounce-cards" className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] pt-24 mb-16 md:mb-24">
                 <BounceCards
                     className="about-bounce-cards"
                     images={images as any}
@@ -211,11 +211,11 @@ export function About() {
                                 </span>
                                 .
                             </h1>
-                            <div>
-                                <p className="text-base leading-relaxed max-w-[680px]">
+                            <div id="bio" className="relative z-20">
+                                <p id="bio-paragraph-1" className="text-base leading-relaxed max-w-[680px]">
                                     {bioText1}
                                 </p>
-                                <p className="text-base mt-4 leading-relaxed max-w-[680px]">
+                                <p id="bio-paragraph-2" className="text-base mt-4 leading-relaxed max-w-[680px]">
                                     {bioText2}
                                 </p>
                             </div>
