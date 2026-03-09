@@ -17,6 +17,7 @@ export const projects = [
         tags: ["2025", "Tactile Games"],
         featured: false,
         aspect: "aspect-[3/2]",
+        isPasswordProtected: false,
     },
     {
         slug: "travel-planning",
@@ -25,6 +26,7 @@ export const projects = [
         tags: ["2024", "Google"],
         featured: false,
         aspect: "aspect-[3/2]",
+        isPasswordProtected: false,
     },
     {
         slug: "game-setup-v2",
@@ -33,6 +35,7 @@ export const projects = [
         tags: ["2024", "Famly"],
         featured: false,
         aspect: "aspect-[3/2]",
+        isPasswordProtected: false,
     },
 ] as const
 

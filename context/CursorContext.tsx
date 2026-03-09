@@ -1,6 +1,7 @@
 "use client"
 
 import React, { createContext, useEffect, useMemo, useState } from "react"
+import { usePathname } from "next/navigation"
 
 type CursorVariant = "default" | "open"
 
@@ -21,12 +22,18 @@ export const CursorContext = createContext<CursorContextValue>({
 export function CursorProvider({ children }: { children: React.ReactNode }) {
     const [variant, setVariant] = useState<CursorVariant>("default")
     const [pos, setPos] = useState({ x: 0, y: 0 })
+    const pathname = usePathname()
 
     useEffect(() => {
         const onMove = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY })
         window.addEventListener("mousemove", onMove, { passive: true })
         return () => window.removeEventListener("mousemove", onMove)
     }, [])
+
+    // Reset cursor to default on route change
+    useEffect(() => {
+        setVariant("default")
+    }, [pathname])
 
     const value = useMemo(
         () => ({ variant, setVariant, x: pos.x, y: pos.y }),

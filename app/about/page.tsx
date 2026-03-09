@@ -1,4 +1,4 @@
-import { Header } from "@/components/header"
+import Link from "next/link"
 import { About } from "@/components/about"
 import { Footer } from "@/components/footer"
 
@@ -11,7 +11,30 @@ export const metadata = {
 export default function AboutPage() {
     return (
         <main>
-            <Header showBackButton />
+            {/* Custom Back Button Header */}
+            <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-background/80 backdrop-blur-sm">
+                <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+                    <Link
+                        href="/"
+                        className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
+                    >
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        Back
+                    </Link>
+                </div>
+            </header>
             <About />
             <Footer />
         </main>

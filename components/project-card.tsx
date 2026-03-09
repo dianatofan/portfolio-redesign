@@ -35,6 +35,7 @@ export function ProjectCard({
             onMouseLeave={() => setVariant("default")}
             onFocus={() => setVariant("open")}
             onBlur={() => setVariant("default")}
+            onClick={() => setVariant("default")}
         >
             <article>
                 {/* Image tile */}

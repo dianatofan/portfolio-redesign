@@ -162,7 +162,7 @@ export function About() {
     return (
         <>
             {/* Full-width BounceCards collage */}
-            <div className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] mb-16 md:mb-24">
+            <div className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] pt-24 mb-16 md:mb-24">
                 <BounceCards
                     className="about-bounce-cards"
                     images={images as any}

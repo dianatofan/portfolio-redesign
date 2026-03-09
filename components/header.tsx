@@ -51,7 +51,7 @@ export function Header({ showBackButton = false }: { showBackButton?: boolean })
                 <nav className="col-span-4 col-start-9 flex flex-col items-end gap-1">
                     <Link
                         href="/#work"
-                        className="text-base font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
+                        classNam font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
                     >
                         work
                     </Link>
