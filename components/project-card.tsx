@@ -13,6 +13,7 @@ interface ProjectCardProps {
     featured?: boolean
     aspectClass?: string
     isPasswordProtected?: boolean
+    showCaptionTags?: boolean
 }
 
 export function ProjectCard({
@@ -23,6 +24,7 @@ export function ProjectCard({
     featured = false,
     aspectClass,
     isPasswordProtected = false,
+    showCaptionTags = true,
 }: ProjectCardProps) {
     const { setVariant } = useContext(CursorContext)
     const aspect = aspectClass ?? (featured ? "aspect-[16/9]" : "aspect-[4/3]")
@@ -102,9 +104,9 @@ export function ProjectCard({
                         {title}
                     </h3>
 
-                    {(tags.length > 0 || isPasswordProtected) && (
+                    {((showCaptionTags && tags.length > 0) || isPasswordProtected) && (
                         <div className="shrink-0 flex items-center gap-2">
-                            {tags.length > 0 && (
+                            {showCaptionTags && tags.length > 0 && (
                                 <div className="text-xs md:text-sm text-[var(--text-tertiary)] tracking-wide uppercase">
                                     {tags.join(" \u00A0\u2022\u00A0 ")}
                                 </div>

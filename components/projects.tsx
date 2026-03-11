@@ -53,6 +53,7 @@ export function Projects() {
                             href={`/work/${project.slug}`}
                             featured={false}
                             aspectClass={project.aspect}
+                            showCaptionTags={false}
                         />
                     ))}
                 </div>
