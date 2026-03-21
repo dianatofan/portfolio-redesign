@@ -1,6 +1,24 @@
 import { ProjectCard } from "./project-card"
 
-export const projects = [
+type WorkProject = {
+    slug: string
+    title: string
+    image: string
+    tags: string[]
+    featured: boolean
+    aspect: string
+    isPasswordProtected: boolean
+}
+
+type FunAppProject = {
+    title: string
+    image: string
+    tags: string[]
+    href: string
+    aspect: string
+}
+
+export const workProjects: readonly WorkProject[] = [
     {
         slug: "liveops-alerting",
         title: "Designing a LiveOps alerting system to reduce production incidents",
@@ -39,23 +57,78 @@ export const projects = [
     },
 ] as const
 
-export function Projects() {
+export const projects = workProjects
+
+export const funAppProjects: readonly FunAppProject[] = []
+
+function ProjectSection({
+    title,
+    projects,
+    emptyTitle,
+    emptyDescription,
+}: {
+    title: string
+    projects: readonly FunAppProject[]
+    emptyTitle: string
+    emptyDescription: string
+}) {
     return (
-        <section id="work" className="relative z-20 pb-16 md:pb-24">
-            <div className="mx-auto w-full max-w-[1800px] px-6">
+        <section className="space-y-6 md:space-y-8">
+            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+                {title}
+            </h2>
+
+            {projects.length > 0 ? (
                 <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                    {projects.slice(0, 4).map((project) => (
+                    {projects.map((project) => (
                         <ProjectCard
-                            key={project.slug}
+                            key={project.title}
                             title={project.title}
                             image={project.image}
-                            tags={[...project.tags]}
-                            href={`/work/${project.slug}`}
+                            tags={project.tags}
+                            href={project.href}
                             featured={false}
                             aspectClass={project.aspect}
                             showCaptionTags={false}
                         />
                     ))}
+                </div>
+            ) : (
+                <div className="rounded-2xl border border-border bg-card/40 px-6 py-10 md:px-8 md:py-12">
+                    <p className="text-lg font-medium text-foreground">{emptyTitle}</p>
+                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--text-secondary)] md:text-base">
+                        {emptyDescription}
+                    </p>
+                </div>
+            )}
+        </section>
+    )
+}
+
+export function Projects() {
+    return (
+        <section id="work" className="relative z-20 pb-16 md:pb-24">
+            <div className="mx-auto w-full max-w-[1800px] px-6">
+                <div className="space-y-16 md:space-y-20">
+                    <ProjectSection
+                        title="Work"
+                        projects={workProjects.slice(0, 4).map((project) => ({
+                            title: project.title,
+                            image: project.image,
+                            tags: [...project.tags],
+                            href: `/work/${project.slug}`,
+                            aspect: project.aspect,
+                        }))}
+                        emptyTitle="No work projects yet"
+                        emptyDescription="Your case studies will show up here."
+                    />
+
+                    <ProjectSection
+                        title="Fun"
+                        projects={funAppProjects}
+                        emptyTitle="Fun apps coming soon"
+                        emptyDescription="This section is ready for your playful experiments, prototypes, and vibecoded side projects."
+                    />
                 </div>
             </div>
         </section>
