@@ -14,7 +14,7 @@ type FunAppProject = {
     title: string
     image: string
     tags: string[]
-    href: string
+    href?: string
     aspect: string
 }
 
@@ -59,21 +59,31 @@ export const workProjects: readonly WorkProject[] = [
 
 export const projects = workProjects
 
-export const funAppProjects: readonly FunAppProject[] = []
+export const funAppProjects: readonly FunAppProject[] = [
+    {
+        title: "Human Redundancy Terminal",
+        image: "/images/fun-human-redundancy.png",
+        tags: ["Data Analytics", "Kaggle", "AI"],
+        href: "/fun/human-redundancy-terminal",
+        aspect: "aspect-[16/10]",
+    },
+] as const
 
 function ProjectSection({
+    id,
     title,
     projects,
     emptyTitle,
     emptyDescription,
 }: {
+    id?: string
     title: string
     projects: readonly FunAppProject[]
     emptyTitle: string
     emptyDescription: string
 }) {
     return (
-        <section className="space-y-6 md:space-y-8">
+        <section id={id} className="space-y-6 md:space-y-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
                 {title}
             </h2>
@@ -124,6 +134,7 @@ export function Projects() {
                     />
 
                     <ProjectSection
+                        id="fun"
                         title="Fun"
                         projects={funAppProjects}
                         emptyTitle="Fun apps coming soon"
