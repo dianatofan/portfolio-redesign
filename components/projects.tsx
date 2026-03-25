@@ -15,6 +15,7 @@ type FunAppProject = {
     image: string
     tags: string[]
     href?: string
+    liveUrl?: string
     aspect: string
 }
 
@@ -65,6 +66,7 @@ export const funAppProjects: readonly FunAppProject[] = [
         image: "/images/fun-human-redundancy.png",
         tags: ["Data Analytics", "Kaggle", "AI"],
         href: "/fun/human-redundancy-terminal",
+        liveUrl: "https://dianatofan.github.io/risk-assessment-terminal/",
         aspect: "aspect-[16/10]",
     },
 ] as const
@@ -97,6 +99,7 @@ function ProjectSection({
                             image={project.image}
                             tags={project.tags}
                             href={project.href}
+                            liveUrl={project.liveUrl}
                             featured={false}
                             aspectClass={project.aspect}
                             showCaptionTags={false}

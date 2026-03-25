@@ -10,6 +10,7 @@ interface ProjectCardProps {
     image: string
     tags?: string[]
     href?: string
+    liveUrl?: string
     featured?: boolean
     aspectClass?: string
     isPasswordProtected?: boolean
@@ -21,6 +22,7 @@ export function ProjectCard({
     image,
     tags = [],
     href = "#",
+    liveUrl,
     featured = false,
     aspectClass,
     isPasswordProtected = false,
@@ -99,45 +101,77 @@ export function ProjectCard({
                 </div>
 
                 {/* Caption row under image */}
-                <div className="mt-3 flex items-baseline justify-between gap-6">
+                <div className="mt-3 flex items-start justify-between gap-6">
                     <h3 className="font-medium text-foreground leading-snug max-w-[60ch]">
                         {title}
                     </h3>
 
-                    {((showCaptionTags && tags.length > 0) || isPasswordProtected) && (
-                        <div className="shrink-0 flex items-center gap-2">
-                            {showCaptionTags && tags.length > 0 && (
-                                <div className="text-xs md:text-sm text-[var(--text-tertiary)] tracking-wide uppercase">
-                                    {tags.join(" \u00A0\u2022\u00A0 ")}
-                                </div>
-                            )}
-
-                            {isPasswordProtected && (
+                    <div className="shrink-0 flex flex-col items-end gap-2">
+                        {liveUrl && (
+                            <a
+                                href={liveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="
+                                    inline-flex items-center gap-1.5
+                                    rounded-full
+                                    px-3 py-1
+                                    text-xs md:text-sm
+                                    tracking-wide uppercase
+                                    text-foreground
+                                    border border-foreground/20
+                                    hover:border-foreground/60
+                                    transition-colors duration-200
+                                "
+                                aria-label={`View ${title} live`}
+                            >
                                 <span
-                                    className="
-                      inline-flex items-center gap-1
-                    rounded-full
-                    px-2.5 py-1
-                    text-xs md:text-sm
-                    tracking-wide uppercase
-                    text-[var(--text-tertiary)]
-                    border border-[color:rgba(0,0,0,0.12)]
-                    dark:border-white/15
-                  "
-                                    aria-label="Password protected"
-                                    title="Password protected"
+                                    className="relative flex h-2 w-2 shrink-0"
+                                    aria-hidden="true"
                                 >
-                                    <span
-                                        className="material-symbols-outlined text-[16px] leading-none"
-                                        aria-hidden="true"
-                                    >
-                                        lock
-                                    </span>
-                                    <span className="sr-only">Password protected</span>
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
                                 </span>
-                            )}
-                        </div>
-                    )}
+                                Live preview
+                            </a>
+                        )}
+
+                        {((showCaptionTags && tags.length > 0) || isPasswordProtected) && (
+                            <div className="flex items-center gap-2">
+                                {showCaptionTags && tags.length > 0 && (
+                                    <div className="text-xs md:text-sm text-[var(--text-tertiary)] tracking-wide uppercase">
+                                        {tags.join(" \u00A0\u2022\u00A0 ")}
+                                    </div>
+                                )}
+
+                                {isPasswordProtected && (
+                                    <span
+                                        className="
+                              inline-flex items-center gap-1
+                            rounded-full
+                            px-2.5 py-1
+                            text-xs md:text-sm
+                            tracking-wide uppercase
+                            text-[var(--text-tertiary)]
+                            border border-[color:rgba(0,0,0,0.12)]
+                            dark:border-white/15
+                          "
+                                        aria-label="Password protected"
+                                        title="Password protected"
+                                    >
+                                        <span
+                                            className="material-symbols-outlined text-[16px] leading-none"
+                                            aria-hidden="true"
+                                        >
+                                            lock
+                                        </span>
+                                        <span className="sr-only">Password protected</span>
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </article>
         </Link>

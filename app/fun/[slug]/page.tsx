@@ -10,6 +10,7 @@ type FunPost = {
   coverImage: string
   published: string
   readTime: string
+  liveUrl?: string
   content: {
     intro: string
     sections: Array<{
@@ -28,6 +29,7 @@ const funPosts: readonly FunPost[] = [
     coverImage: "/images/fun-human-redundancy.png",
     published: "March 2026",
     readTime: "4 min read",
+    liveUrl: "https://dianatofan.github.io/risk-assessment-terminal/",
     content: {
       intro:
         "I built Human Redundancy Terminal as a dramatic, darkly funny interface that lets people confront a scary question: will AI replace my role?",
@@ -120,6 +122,24 @@ export default async function FunProjectPage({ params }: PageProps) {
               Back to Fun
             </Link>
           </div>
+
+          {post.liveUrl && (
+            <div className="hidden md:flex col-span-3 col-start-10 justify-end">
+              <a
+                href={post.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
+                aria-label={`View ${post.title} live`}
+              >
+                <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                </span>
+                View live
+              </a>
+            </div>
+          )}
         </div>
       </header>
 
@@ -143,6 +163,23 @@ export default async function FunProjectPage({ params }: PageProps) {
             <h1 className="mt-3 text-3xl md:text-5xl font-medium tracking-tight text-foreground">
               {post.title}
             </h1>
+
+            {post.liveUrl && (
+              <a
+                href={post.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground border border-foreground/20 hover:border-foreground/60 rounded-full px-4 py-2 transition-colors duration-200"
+                aria-label={`View ${post.title} live`}
+              >
+                <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                </span>
+                View live
+              </a>
+            )}
+
             <p className="mt-5 text-lg leading-relaxed text-[var(--text-secondary)]">
               {post.content.intro}
             </p>
