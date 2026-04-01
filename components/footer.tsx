@@ -9,7 +9,7 @@ export function Footer() {
     return (
         <footer className="bg-[var(--footer-bg)] text-[var(--footer-foreground)] pt-0 pb-16 md:pb-24">
             <div className="mx-auto">
-                {/* TOP: padded content */}
+                {/* TOP: padded content  */}
                 <div className="pl-6">
                     <div className="grid grid-cols-12 gap-0 items-stretch">
                         {/* Column 1 (widest): logo + headline */}
