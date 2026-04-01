@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { isProjectUnlocked, persistProjectUnlock } from "@/lib/project-auth"
 
 interface InlinePasswordGateProps {
     projectSlug: string
@@ -32,19 +33,14 @@ export function InlinePasswordGate({
             setIsUnlocked(true)
             return
         }
-        const stored = localStorage.getItem(`project-auth-${projectSlug}`)
-        if (stored === correctPassword) {
-            setIsUnlocked(true)
-        }
+
+        setIsUnlocked(isProjectUnlocked(projectSlug, correctPassword))
     }, [projectSlug, correctPassword, enabled])
 
     const handleUnlock = (e: React.FormEvent) => {
         e.preventDefault()
         if (password === correctPassword) {
-            localStorage.setItem(`project-auth-${projectSlug}`, password)
-            window.dispatchEvent(
-                new CustomEvent("project-unlocked", { detail: { projectSlug } })
-            )
+            persistProjectUnlock(projectSlug, password)
             setIsUnlocked(true)
             setError("")
             return

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { isProjectUnlocked, persistProjectUnlock } from "@/lib/project-auth"
 
 interface PasswordProtectProps {
     children: React.ReactNode
@@ -23,10 +24,7 @@ export function PasswordProtect({
 
     // Check localStorage on mount
     useEffect(() => {
-        const stored = localStorage.getItem(`project-auth-${projectSlug}`)
-        if (stored === correctPassword) {
-            setIsAuthenticated(true)
-        }
+        setIsAuthenticated(isProjectUnlocked(projectSlug, correctPassword))
         setIsLoading(false)
     }, [projectSlug, correctPassword])
 
@@ -35,7 +33,7 @@ export function PasswordProtect({
         setError("")
 
         if (password === correctPassword) {
-            localStorage.setItem(`project-auth-${projectSlug}`, password)
+            persistProjectUnlock(projectSlug, password)
             setIsAuthenticated(true)
         } else {
             setError("Incorrect password. Please try again.")
@@ -110,4 +108,3 @@ export function PasswordProtect({
 
     return <>{children}</>
 }
-

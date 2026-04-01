@@ -14,10 +14,10 @@ export type WorkProjectMetaItem = {
 }
 
 export type WorkProjectPage = {
-  displayTitle?: string
+  displayTitle?: ReactNode
   subtitle?: string
   heroImage?: string
-  description: string
+  description?: string
   meta: WorkProjectMetaItem[]
   sections: WorkProjectSection[]
   renderBeforeGate: () => ReactNode

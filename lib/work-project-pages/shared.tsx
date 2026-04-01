@@ -1,5 +1,6 @@
 import Image from "next/image"
 import type { LucideIcon } from "lucide-react"
+import { ReactCompareSlider, ReactCompareSliderImage } from "react-compare-slider"
 
 export function InsightCards({
   items,
@@ -68,6 +69,59 @@ export function OutcomeCards({
         <div key={item.title} className="bg-accent/20 p-6 rounded-lg">
           <p className="text-sm font-medium text-[var(--text-tertiary)] mb-2">{item.title}</p>
           <p className="text-base text-foreground">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export function CaseStudyImageGrid({
+  images,
+  columns = 2,
+}: {
+  images: Array<{ src: string; alt: string }>
+  columns?: 2 | 3
+}) {
+  return (
+    <div className={`mt-8 grid gap-4 ${columns === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1 md:grid-cols-2"}`}>
+      {images.map((img) => (
+        <div key={img.src} className="relative aspect-video overflow-hidden rounded-lg bg-card">
+          <Image
+            src={img.src}
+            alt={img.alt}
+            fill
+            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 40vw"
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export function BeforeAfterCompare({
+  pairs,
+}: {
+  pairs: Array<{ before: string; after: string; alt?: string; caption?: string }>
+}) {
+  return (
+    <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-8 place-items-center">
+      {pairs.map((pair, i) => (
+        <div key={i} className="flex flex-col items-center gap-3">
+          <div className="rounded-lg overflow-hidden" style={{ width: "380px", aspectRatio: "24 / 49" }}>
+            <ReactCompareSlider
+              itemOne={
+                <ReactCompareSliderImage src={pair.before} alt={`Before ${pair.alt ?? i + 1}`} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+              }
+              itemTwo={
+                <ReactCompareSliderImage src={pair.after} alt={`After ${pair.alt ?? i + 1}`} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+              }
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+          {pair.caption && (
+            <p className="text-sm text-[var(--text-tertiary)] text-center">{pair.caption}</p>
+          )}
         </div>
       ))}
     </div>

@@ -116,7 +116,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="max-w-[1800px] mx-auto px-6">
           <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
             <div className="col-span-4 md:col-span-8 md:col-start-3">
-              <h1 className="text-3xl md:text-[48px] lg:text-[56px] font-medium leading-[1.08] tracking-tight text-foreground text-balance mb-12">
+              <h1 className="text-3xl md:text-[48px] lg:text-[56px] font-medium leading-[1.08] tracking-tight text-foreground mb-12">
                 {projectPage.displayTitle ?? project.title}
               </h1>
 
