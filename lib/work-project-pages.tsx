@@ -832,10 +832,10 @@ const gameSetupAutomationPage: WorkProjectPage = {
               <Image
                 src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609945/module-statuses.png"
                 alt="Module status states showing readiness and required action"
-                width={1920}
-                height={1080}
-                className="w-full h-auto object-contain"
-                sizes="(max-width: 768px) 100vw, 60vw"
+                width={600}
+                height={360}
+                className="mx-auto w-[600px] h-[360px] object-contain"
+                sizes="600px"
               />
             </div>
           </div>

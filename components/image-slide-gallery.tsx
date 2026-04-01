@@ -45,8 +45,14 @@ function GalleryModal({
 }) {
     const { active, index } = modal
     const modalContainer = useRef<HTMLDivElement>(null)
+    const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    useEffect(() => {
+        if (!mounted) return
         const xMove = gsap.quickTo(modalContainer.current, "left", { duration: 0.8, ease: "power3" })
         const yMove = gsap.quickTo(modalContainer.current, "top", { duration: 0.8, ease: "power3" })
 
@@ -57,7 +63,9 @@ function GalleryModal({
 
         window.addEventListener("mousemove", onMouseMove)
         return () => window.removeEventListener("mousemove", onMouseMove)
-    }, [])
+    }, [mounted])
+
+    if (!mounted) return null
 
     return createPortal(
         <motion.div
