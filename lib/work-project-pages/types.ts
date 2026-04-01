@@ -16,6 +16,7 @@ export type WorkProjectMetaItem = {
 export type WorkProjectPage = {
   displayTitle?: string
   subtitle?: string
+  heroImage?: string
   description: string
   meta: WorkProjectMetaItem[]
   sections: WorkProjectSection[]

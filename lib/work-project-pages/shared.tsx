@@ -5,6 +5,7 @@ export function InsightCards({
   items,
 }: {
   items: Array<{
+    id?: string
     title: string
     description: string
   }>
@@ -12,7 +13,7 @@ export function InsightCards({
   return (
     <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
       {items.map((item) => (
-        <div key={item.title} className="rounded-lg border border-border bg-card p-5">
+        <div id={item.id} key={item.id ?? item.title} className="rounded-lg border border-border bg-card p-5">
           <p className="text-sm font-medium text-foreground">{item.title}</p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">
             {item.description}
@@ -78,25 +79,30 @@ export function CaseStudyImage({
   alt,
   priority = false,
   background = true,
+  topMargin = true,
+  ratioClass = "aspect-video",
+  fit = "contain",
 }: {
   src: string
   alt: string
   priority?: boolean
   background?: boolean
+  topMargin?: boolean
+  ratioClass?: string
+  fit?: "contain" | "cover"
 }) {
   return (
     <div
-      className={`mt-8 relative aspect-video overflow-hidden ${background ? "rounded-lg bg-card" : ""}`}
+      className={`${topMargin ? "mt-8" : ""} relative ${ratioClass} overflow-hidden ${background ? "rounded-lg bg-card" : ""}`}
     >
       <Image
         src={src}
         alt={alt}
         fill
         priority={priority}
-        className="object-contain"
+        className={fit === "cover" ? "object-cover" : "object-contain"}
         sizes="(max-width: 768px) 100vw, 60vw"
       />
     </div>
   )
 }
-

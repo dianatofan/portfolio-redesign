@@ -101,7 +101,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="max-w-[1800px] mx-auto px-6">
           <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-card">
             <Image
-              src={project.image}
+              src={projectPage.heroImage ?? project.image}
               alt={`${project.title} cover`}
               fill
               className="object-cover"
@@ -117,8 +117,14 @@ export default async function ProjectPage({ params }: PageProps) {
           <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
             <div className="col-span-4 md:col-span-8 md:col-start-3">
               <h1 className="text-3xl md:text-[48px] lg:text-[56px] font-medium leading-[1.08] tracking-tight text-foreground text-balance mb-12">
-                {project.title}
+                {projectPage.displayTitle ?? project.title}
               </h1>
+
+              {projectPage.subtitle ? (
+                <p className="-mt-6 mb-12 max-w-3xl text-lg leading-relaxed text-[var(--text-secondary)]">
+                  {projectPage.subtitle}
+                </p>
+              ) : null}
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-border">
                 {projectPage.meta.map((item) => (
