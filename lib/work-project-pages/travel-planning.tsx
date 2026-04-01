@@ -15,7 +15,7 @@ export const travelPlanningPage: WorkProjectPage = {
     { id: "overview", title: "Overview" },
     { id: "problem", title: "Problem" },
     { id: "goal", title: "Goal" },
-    { id: "research", title: "Research" },
+    { id: "research", title: "Research", isGateStart: true },
     { id: "framework", title: "Framework" },
     { id: "framework-get-inspired", title: "I. Get inspired", parent: "framework" },
     { id: "framework-look-into-alternatives", title: "II. Look into alternatives", parent: "framework" },
@@ -78,6 +78,10 @@ export const travelPlanningPage: WorkProjectPage = {
                     way.                </p>
             </div>
         </section>
+    </>
+  ),
+  renderAfterGate: () => (
+    <>
 
       <section id="research">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Research</h2>
