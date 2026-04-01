@@ -36,7 +36,13 @@ function SegmentedToggle({
   )
 }
 
-export function BeforeAfterVideoCard() {
+export function BeforeAfterVideoCard({
+  beforeSrc = "https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610236/read-and-unread.mp4",
+  afterSrc = "https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610321/only-unread.mp4",
+}: {
+  beforeSrc?: string
+  afterSrc?: string
+} = {}) {
   const [mode, setMode] = useState<Mode>("before")
 
   const beforeRef = useRef<HTMLVideoElement | null>(null)
@@ -69,7 +75,7 @@ export function BeforeAfterVideoCard() {
         <div className="relative w-full aspect-video overflow-hidden">
           <video
             ref={beforeRef}
-            src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610236/read-and-unread.mp4"
+            src={beforeSrc}
             muted
             loop
             playsInline
@@ -81,7 +87,7 @@ export function BeforeAfterVideoCard() {
 
           <video
             ref={afterRef}
-            src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610321/only-unread.mp4"
+            src={afterSrc}
             muted
             loop
             playsInline

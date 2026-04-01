@@ -5,9 +5,14 @@ import { GlassCursor } from "@/components/GlassCursor"
 import "./globals.css"
 
 export const metadata: Metadata = {
-    title: "Diana Tofan - Product Designer",
+    title: "Diana Tofan",
     description:
         "Senior product designer untangling complex systems. Infrastructure, internal tools, observability systems, and platform workflows.",
+    icons: {
+        icon: "/favicon-logo.svg",
+        shortcut: "/favicon-logo.svg",
+        apple: "/apple-icon.png",
+    },
 }
 
 export const viewport: Viewport = {

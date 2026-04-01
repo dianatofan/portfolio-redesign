@@ -44,13 +44,14 @@ export default async function ProjectPage({ params }: PageProps) {
 
   const currentIndex = workProjects.findIndex((item) => item.slug === slug)
   const nextProject = workProjects[(currentIndex + 1) % workProjects.length]
+  const nextProjectLabel = nextProject.navigationTitle ?? nextProject.title
   const postGateContent = projectPage.renderAfterGate?.()
 
   return (
     <main className="min-h-screen bg-white">
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-white/80 backdrop-blur-sm">
         <div className="mx-auto grid grid-cols-12 gap-x-6 items-center">
-          <div className="col-span-6 md:col-span-2">
+          <div className="col-span-6 md:col-sppman-2">
             <Link
               href="/"
               className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
@@ -77,7 +78,7 @@ export default async function ProjectPage({ params }: PageProps) {
               href={`/work/${nextProject.slug}`}
               className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
             >
-              Next: Game Setup Automation
+              {`Next: ${nextProjectLabel}`}
               <svg
                 width="16"
                 height="16"

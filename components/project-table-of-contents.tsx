@@ -9,6 +9,7 @@ interface TableOfContentsProps {
         title: string
         isParent?: boolean
         parent?: string
+        isGateStart?: boolean
     }>
     projectSlug?: string
     isPasswordProtected?: boolean
@@ -95,14 +96,14 @@ export function ProjectTableOfContents({
     return (
         <nav className="sticky top-32 space-y-0.5">
             {(() => {
-                const solutionIndex = sections.findIndex((section) => section.id === "solution")
+                        const gateIndex = sections.findIndex((s) => s.isGateStart)
 
                 return sections.map(({ id, title, parent }, index) => {
                     const isLockedAfterSolution =
                         isPasswordProtected &&
                         !isUnlocked &&
-                        solutionIndex !== -1 &&
-                        index > solutionIndex
+                        gateIndex !== -1 &&
+                        index >= gateIndex
 
                     return (
                 <Link

@@ -1,8 +1,10 @@
 import { ProjectCard } from "./project-card"
+import { ImageSlideGallery } from "./image-slide-gallery"
 
 type WorkProject = {
     slug: string
     title: string
+    navigationTitle?: string
     image: string
     homepageImage?: string
     tags: string[]
@@ -11,18 +13,11 @@ type WorkProject = {
     isPasswordProtected: boolean
 }
 
-type FunAppProject = {
-    title: string
-    image: string
-    tags: string[]
-    href?: string
-    aspect: string
-}
-
 export const workProjects: readonly WorkProject[] = [
     {
         slug: "liveops-alerting",
         title: "Designing a LiveOps alerting system to reduce production incidents",
+        navigationTitle: "LiveOps Alerting",
         image: "/images/project-liveops.png",
         homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_100/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
@@ -33,15 +28,18 @@ export const workProjects: readonly WorkProject[] = [
     {
         slug: "game-setup-automation",
         title: "Automating game setup for scalable releases",
-        image: "/images/project-game-setup.png",
+        navigationTitle: "Game Setup Automation",
+        image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610293/game-canvas-cover.png",
+        homepageImage: "/images/project-game-setup.png",
         tags: ["2025", "Tactile Games"],
         featured: false,
         aspect: "aspect-[3/2]",
-        isPasswordProtected: false,
+        isPasswordProtected: true,
     },
     {
         slug: "travel-planning",
         title: "Reimagining travel planning on Google Search",
+        navigationTitle: "Google Travel",
         image: "/images/project-travel.png",
         tags: ["2024", "Google"],
         featured: false,
@@ -51,6 +49,7 @@ export const workProjects: readonly WorkProject[] = [
     {
         slug: "game-setup-v2",
         title: "Building a design system to eliminate design debt",
+        navigationTitle: "Design System",
         image: "/images/project-famly.png",
         tags: ["2024", "Famly"],
         featured: false,
@@ -61,58 +60,37 @@ export const workProjects: readonly WorkProject[] = [
 
 export const projects = workProjects
 
-export const funAppProjects: readonly FunAppProject[] = [
+const funGalleryProjects = [
     {
         title: "Human Redundancy Terminal",
-        image: "/images/fun-human-redundancy.png",
-        tags: ["Data Analytics", "Kaggle", "AI"],
-        href: "/fun/human-redundancy-terminal",
-        aspect: "aspect-[16/10]",
+        src: "/images/fun-human-redundancy.png",
+        href: "https://dianatofan.github.io/risk-assessment-terminal",
+        year: "2026",
+        subtitle: "Will AI take my job? An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
     },
 ] as const
 
-function ProjectSection({
-    id,
-    title,
-    projects,
-    emptyTitle,
-    emptyDescription,
-}: {
-    id?: string
-    title: string
-    projects: readonly FunAppProject[]
-    emptyTitle: string
-    emptyDescription: string
-}) {
+function WorkSection() {
     return (
-        <section id={id} className="space-y-6 md:space-y-8">
+        <section className="space-y-6 md:space-y-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                {title}
+                Work
             </h2>
-
-            {projects.length > 0 ? (
-                <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                    {projects.map((project) => (
-                        <ProjectCard
-                            key={project.title}
-                            title={project.title}
-                            image={project.image}
-                            tags={project.tags}
-                            href={project.href}
-                            featured={false}
-                            aspectClass={project.aspect}
-                            showCaptionTags={false}
-                        />
-                    ))}
-                </div>
-            ) : (
-                <div className="rounded-2xl border border-border bg-card/40 px-6 py-10 md:px-8 md:py-12">
-                    <p className="text-lg font-medium text-foreground">{emptyTitle}</p>
-                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--text-secondary)] md:text-base">
-                        {emptyDescription}
-                    </p>
-                </div>
-            )}
+            <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
+                {workProjects.slice(0, 4).map((project) => (
+                    <ProjectCard
+                        key={project.slug}
+                        title={project.title}
+                        image={project.homepageImage ?? project.image}
+                        tags={[...project.tags]}
+                        href={`/work/${project.slug}`}
+                        featured={false}
+                        aspectClass={project.aspect}
+                        isPasswordProtected={false}
+                        showCaptionTags={false}
+                    />
+                ))}
+            </div>
         </section>
     )
 }
@@ -122,26 +100,14 @@ export function Projects() {
         <section id="work" className="relative z-20 pb-16 md:pb-24">
             <div className="mx-auto w-full max-w-[1800px] px-6">
                 <div className="space-y-16 md:space-y-20">
-                    <ProjectSection
-                        title="Work"
-                        projects={workProjects.slice(0, 4).map((project) => ({
-                            title: project.title,
-                            image: project.homepageImage ?? project.image,
-                            tags: [...project.tags],
-                            href: `/work/${project.slug}`,
-                            aspect: project.aspect,
-                        }))}
-                        emptyTitle="No work projects yet"
-                        emptyDescription="Your case studies will show up here."
-                    />
+                    <WorkSection />
 
-                    <ProjectSection
-                        id="fun"
-                        title="Fun"
-                        projects={funAppProjects}
-                        emptyTitle="Fun apps coming soon"
-                        emptyDescription="This section is ready for your playful experiments, prototypes, and vibecoded side projects."
-                    />
+                    <section id="fun" className="space-y-6 md:space-y-8">
+                        <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+                            Fun
+                        </h2>
+                        <ImageSlideGallery projects={[...funGalleryProjects]} />
+                    </section>
                 </div>
             </div>
         </section>
