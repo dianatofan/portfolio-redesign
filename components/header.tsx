@@ -53,13 +53,13 @@ export function Header({ showBackButton = false }: { showBackButton?: boolean })
                         href="/#work"
                         className="font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
                     >
-                        Work
+                        work
                     </Link>
                     <Link
-                        href="/#fun"
+                        href="/about"
                         className="text-base font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
                     >
-                        Fun
+                        about
                     </Link>
                 </nav>
             </div>

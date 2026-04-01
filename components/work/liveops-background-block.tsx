@@ -50,32 +50,32 @@ export function LiveopsBackgroundBlock() {
                     </p>
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div className="rounded-lg border border-border bg-card p-4">
-                        <p className="text-xs uppercase tracking-wide text-[var(--text-tertiary)]">
-                            Creator action
-                        </p>
-                        <p className="mt-2 text-sm text-[var(--text-secondary)]">
-                            Configure events, rollouts, and targeting directly in the Dashboard.
-                        </p>
-                    </div>
-                    <div className="rounded-lg border border-border bg-card p-4">
-                        <p className="text-xs uppercase tracking-wide text-[var(--text-tertiary)]">
-                            System dependency
-                        </p>
-                        <p className="mt-2 text-sm text-[var(--text-secondary)]">
-                            Multiple backend services must process and deliver changes correctly.
-                        </p>
-                    </div>
-                    <div className="rounded-lg border border-border bg-card p-4">
-                        <p className="text-xs uppercase tracking-wide text-[var(--text-tertiary)]">
-                            Risk surface
-                        </p>
-                        <p className="mt-2 text-sm text-[var(--text-secondary)]">
-                            Breakage appears first in production, where players feel impact.
-                        </p>
-                    </div>
-                </div>
+                {/*<div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3">*/}
+                {/*    <div className="rounded-lg border border-border bg-card p-4">*/}
+                {/*        <p className="text-xs uppercase tracking-wide text-[var(--text-tertiary)]">*/}
+                {/*            Creator action*/}
+                {/*        </p>*/}
+                {/*        <p className="mt-2 text-sm text-[var(--text-secondary)]">*/}
+                {/*            Configure events, rollouts, and targeting directly in the Dashboard.*/}
+                {/*        </p>*/}
+                {/*    </div>*/}
+                {/*    <div className="rounded-lg border border-border bg-card p-4">*/}
+                {/*        <p className="text-xs uppercase tracking-wide text-[var(--text-tertiary)]">*/}
+                {/*            System dependency*/}
+                {/*        </p>*/}
+                {/*        <p className="mt-2 text-sm text-[var(--text-secondary)]">*/}
+                {/*            Multiple backend services must process and deliver changes correctly.*/}
+                {/*        </p>*/}
+                {/*    </div>*/}
+                {/*    <div className="rounded-lg border border-border bg-card p-4">*/}
+                {/*        <p className="text-xs uppercase tracking-wide text-[var(--text-tertiary)]">*/}
+                {/*            Risk surface*/}
+                {/*        </p>*/}
+                {/*        <p className="mt-2 text-sm text-[var(--text-secondary)]">*/}
+                {/*            Breakage appears first in production, where players feel impact.*/}
+                {/*        </p>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
                 <div className="mt-8 flex items-center gap-2">
                     <button
@@ -103,7 +103,7 @@ export function LiveopsBackgroundBlock() {
                 </div>
 
                 <figure className="mt-4">
-                    <div className="rounded-lg overflow-hidden bg-card border border-border p-8">
+                    <div className="rounded-lg overflow-hidden bg-card border border-border p-8 bg-gray-50">
                         <div className="grid">
                             {(["ideal", "error"] as const).map((key) => {
                                 const item = images[key]

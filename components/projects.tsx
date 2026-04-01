@@ -4,6 +4,7 @@ type WorkProject = {
     slug: string
     title: string
     image: string
+    homepageImage?: string
     tags: string[]
     featured: boolean
     aspect: string
@@ -23,6 +24,7 @@ export const workProjects: readonly WorkProject[] = [
         slug: "liveops-alerting",
         title: "Designing a LiveOps alerting system to reduce production incidents",
         image: "/images/project-liveops.png",
+        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_100/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
@@ -124,7 +126,7 @@ export function Projects() {
                         title="Work"
                         projects={workProjects.slice(0, 4).map((project) => ({
                             title: project.title,
-                            image: project.image,
+                            image: project.homepageImage ?? project.image,
                             tags: [...project.tags],
                             href: `/work/${project.slug}`,
                             aspect: project.aspect,

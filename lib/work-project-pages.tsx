@@ -1,6 +1,7 @@
 import Image from "next/image"
 import type { ReactNode } from "react"
 import { LiveopsBackgroundBlock } from "@/components/work/liveops-background-block"
+import { BeforeAfterVideoCard } from "@/components/work/before-after-video-card"
 
 export type WorkProjectSection = {
   id: string
@@ -100,8 +101,8 @@ const liveopsAlertingPage: WorkProjectPage = {
     "Surfacing critical production failures in real time to reduce incidents and player impact.",
   meta: [
     { label: "Role", values: ["Product Designer"] },
-    { label: "Timeline", values: ["August - September 2025"] },
-    { label: "Team", values: ["3 Designers"] },
+    { label: "Duration", values: ["3 months"] },
+    { label: "Team", values: ["Product Manager, CTO, 2 BE Engineers, 1 FE Engineer"] },
     { label: "Skills", values: ["Product Design", "Product Strategy", "Prototyping"] },
   ],
   sections: [
@@ -131,7 +132,10 @@ const liveopsAlertingPage: WorkProjectPage = {
           </p>
         </div>
       </section>
-
+    </>
+  ),
+  renderAfterGate: () => (
+    <>
       <section id="discovery">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Discovery</h2>
         <h3 className="text-xl font-medium text-foreground mb-3">
@@ -156,12 +160,13 @@ const liveopsAlertingPage: WorkProjectPage = {
             className="w-full h-auto object-contain"
             sizes="(max-width: 768px) 100vw, 60vw"
           />
+          <p className="mt-3 text-sm text-[var(--text-tertiary)]">
+            Failures were detectable in engineering tools, but creators worked in the Dashboard,
+            creating an observability gap
+          </p>
         </div>
       </section>
-    </>
-  ),
-  renderAfterGate: () => (
-    <>
+
       <section id="solution">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Solution</h2>
         <p className="text-base leading-relaxed text-[var(--text-secondary)]">
@@ -249,7 +254,7 @@ const liveopsAlertingPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-secondary)]">
+            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
               Avatar-level signal
             </figcaption>
           </figure>
@@ -269,7 +274,7 @@ const liveopsAlertingPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-secondary)]">
+            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
               Game-level signals
             </figcaption>
           </figure>
@@ -321,7 +326,7 @@ const liveopsAlertingPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-secondary)]">
+            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
               Transfering ownership of a resource
             </figcaption>
           </figure>
@@ -330,12 +335,12 @@ const liveopsAlertingPage: WorkProjectPage = {
             <div className="relative aspect-video overflow-hidden rounded-lg">
               <video autoPlay loop muted playsInline className="h-full w-full object-cover">
                 <source
-                  src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610331/adding-watcher.mp4"
+                  src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1775044437/adding-watcher.mp4"
                   type="video/mp4"
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-secondary)]">
+            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
               Adding watcher to a resource
             </figcaption>
           </figure>
@@ -351,7 +356,14 @@ const liveopsAlertingPage: WorkProjectPage = {
           manage which games and resource types they follow, and whether they receive critical
           issues, updates, or both.
         </p>
-        <CaseStudyImage src="/placeholder.jpg" alt="Notification settings" />
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+          <video autoPlay loop muted playsInline className="h-full w-full object-cover">
+            <source
+              src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610452/notifications-settings.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
       </section>
 
       <section id="tradeoffs">
@@ -364,6 +376,7 @@ const liveopsAlertingPage: WorkProjectPage = {
               read. I changed this to show all updates from the last 10 days, treating the homepage
               as a preview while the full Updates view remains the source of truth.
             </p>
+            <BeforeAfterVideoCard />
           </div>
           <div>
             <h3 className="text-lg font-medium text-foreground mb-3">One badge per game</h3>
@@ -372,6 +385,16 @@ const liveopsAlertingPage: WorkProjectPage = {
               scale. I consolidated to a single, severity-based badge per game: red for critical
               issues, blue for updates only.
             </p>
+            <div className="w-full mt-8 bg-[#E3E8F1] p-8 rounded-2xl justify-center flex">
+              <Image
+                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610097/one-badge.png"
+                alt="Sidebar with a single severity-based badge per game"
+                width={160}
+                height={330}
+                className="w-[160px] h-[330px] object-contain"
+                sizes="160px"
+              />
+            </div>
           </div>
           <div>
             <h3 className="text-lg font-medium text-foreground mb-3">No email notifications</h3>
@@ -380,6 +403,16 @@ const liveopsAlertingPage: WorkProjectPage = {
               alert fatigue. The system focuses on in-dashboard alerts as the source of truth, with
               Slack used only for time-sensitive awareness.
             </p>
+            <div className="mt-8 w-full bg-[#E3E8F1] p-8 rounded-2xl">
+              <Image
+                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610116/email-notifications-removed.png"
+                alt="Notification settings with email notifications removed"
+                width={1920}
+                height={1080}
+                className="w-full h-auto object-contain"
+                sizes="(max-width: 768px) 100vw, 60vw"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -802,4 +835,3 @@ const workProjectPages: Record<WorkProjectSlug, WorkProjectPage> = {
 export function getWorkProjectPage(slug: string) {
   return workProjectPages[slug as WorkProjectSlug]
 }
-

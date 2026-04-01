@@ -20,6 +20,12 @@ export function InlinePasswordGate({
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
     const [isUnlocked, setIsUnlocked] = useState(false)
+    const [isVisible, setIsVisible] = useState(false)
+
+    useEffect(() => {
+        const frame = requestAnimationFrame(() => setIsVisible(true))
+        return () => cancelAnimationFrame(frame)
+    }, [])
 
     useEffect(() => {
         if (!enabled) {
@@ -36,6 +42,9 @@ export function InlinePasswordGate({
         e.preventDefault()
         if (password === correctPassword) {
             localStorage.setItem(`project-auth-${projectSlug}`, password)
+            window.dispatchEvent(
+                new CustomEvent("project-unlocked", { detail: { projectSlug } })
+            )
             setIsUnlocked(true)
             setError("")
             return
@@ -45,11 +54,24 @@ export function InlinePasswordGate({
     }
 
     if (isUnlocked || !enabled) {
-        return <>{children}</>
+        return (
+            <div
+                className={`transition-all duration-300 ease-out [&>section+section]:mt-16 ${
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+                }`}
+            >
+                {children}
+            </div>
+        )
     }
 
     return (
-        <section id="solution" className="space-y-6">
+        <section
+            id="solution"
+            className={`space-y-6 transition-all duration-300 ease-out ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+            }`}
+        >
             <h2 className="text-2xl md:text-3xl font-medium text-foreground">Solution</h2>
             <div className="rounded-lg border border-border bg-card p-6">
                 <p className="text-base text-[var(--text-secondary)]">Add password to keep reading.</p>
