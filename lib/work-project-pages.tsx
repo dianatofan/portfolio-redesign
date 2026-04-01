@@ -15,7 +15,7 @@ const workProjectPages = {
   "liveops-alerting": liveopsAlertingPage,
   "game-setup-automation": gameSetupAutomationPage,
   "travel-planning": travelPlanningPage,
-  "game-setup-v2": designSystemPage,
+  "design-system": designSystemPage,
 } satisfies Record<WorkProjectSlug, typeof liveopsAlertingPage>
 
 export function getWorkProjectPage(slug: string) {

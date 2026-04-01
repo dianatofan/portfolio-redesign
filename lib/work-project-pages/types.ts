@@ -28,5 +28,4 @@ export type WorkProjectSlug =
   | "liveops-alerting"
   | "game-setup-automation"
   | "travel-planning"
-  | "game-setup-v2"
-
+  | "design-system"

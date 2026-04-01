@@ -47,7 +47,7 @@ export const workProjects: readonly WorkProject[] = [
         isPasswordProtected: false,
     },
     {
-        slug: "game-setup-v2",
+        slug: "design-system",
         title: "Building a design system to eliminate design debt",
         navigationTitle: "Design System",
         image: "/images/project-famly.png",
