@@ -8,23 +8,17 @@ export function HeroImage({ src, alt }: { src: string; alt: string }) {
 
   return (
     <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-card">
-      {/* Shimmer skeleton shown until image is ready */}
+      {/* Keep placeholder lightweight so image paints as fast as possible. */}
       <div
-        className={`absolute inset-0 transition-opacity duration-500 ${
+        className={`absolute inset-0 bg-[#f4f4f5] transition-opacity duration-150 ${
           loaded ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
-        style={{
-          background:
-            "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
-          backgroundSize: "200% 100%",
-          animation: loaded ? "none" : "shimmer 1.4s infinite linear",
-        }}
       />
       <Image
         src={src}
         alt={alt}
         fill
-        className={`object-cover transition-opacity duration-500 ease-out ${
+        className={`object-cover transition-opacity duration-150 ease-out ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
         sizes="100vw"
@@ -32,12 +26,6 @@ export function HeroImage({ src, alt }: { src: string; alt: string }) {
         fetchPriority="high"
         onLoad={() => setLoaded(true)}
       />
-      <style>{`
-        @keyframes shimmer {
-          0%   { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-      `}</style>
     </div>
   )
 }
