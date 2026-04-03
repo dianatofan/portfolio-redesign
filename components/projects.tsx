@@ -88,6 +88,7 @@ function WorkSection() {
                         aspectClass={project.aspect}
                         isPasswordProtected={false}
                         showCaptionTags={false}
+                        eager
                     />
                 ))}
             </div>

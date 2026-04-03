@@ -4,7 +4,7 @@ import { CaseStudyImage, InsightCards, OutcomeCards } from "./shared"
 export const travelPlanningPage: WorkProjectPage = {
   description:
     "Rethinking travel planning in Google Search as a continuous journey, not a series of isolated queries.",
-  heroImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610470/cover.png",
+  heroImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto:best,w_1920/v1769610470/cover.png",
   meta: [
     { label: "Role", values: ["UX Engineer"] },
     { label: "Duration", values: ["Summer 2024"] },

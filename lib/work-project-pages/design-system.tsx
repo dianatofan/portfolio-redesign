@@ -2,8 +2,8 @@ import type { WorkProjectPage } from "./types"
 import { BeforeAfterCompare, CaseStudyImage, CaseStudyImageGrid, InsightCards, OutcomeCards } from "./shared"
 
 export const designSystemPage: WorkProjectPage = {
-  displayTitle: <>Building a design system to eliminate<br />design debt</>,
-  heroImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1775069463/cover_1.png",
+  displayTitle: "Building a design system to eliminate design debt",
+  heroImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto:best,w_1920/v1775069463/cover_1.png",
   meta: [
     { label: "Role", values: ["UX/UI Designer"] },
     { label: "Duration", values: ["3 months"] },
