@@ -66,7 +66,7 @@ const funGalleryProjects = [
         src: "/images/fun-human-redundancy.png",
         href: "https://dianatofan.github.io/risk-assessment-terminal",
         year: "2026",
-        subtitle: "Will AI take my job? An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
+        subtitle: "I built this to answer a scary question: will AI take my job? A glitchy CRT terminal with an apocalyptic tone and dark humor.",
     },
 ] as const
 
@@ -88,6 +88,7 @@ function WorkSection() {
                         aspectClass={project.aspect}
                         isPasswordProtected={false}
                         showCaptionTags={false}
+                        eager
                     />
                 ))}
             </div>

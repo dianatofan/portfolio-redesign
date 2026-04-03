@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Footer } from "@/components/footer"
@@ -7,6 +6,7 @@ import { InlinePasswordGate } from "@/components/inline-password-gate"
 import { workProjects } from "@/components/projects"
 import { ProjectTableOfContents } from "@/components/project-table-of-contents"
 import { getWorkProjectPage } from "@/lib/work-project-pages"
+import { HeroImage } from "@/components/hero-image"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -99,16 +99,10 @@ export default async function ProjectPage({ params }: PageProps) {
 
       <section className="pt-28">
         <div className="max-w-[1800px] mx-auto px-6">
-          <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-card">
-            <Image
-              src={projectPage.heroImage ?? project.image}
-              alt={`${project.title} cover`}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
-          </div>
+          <HeroImage
+            src={projectPage.heroImage ?? project.image}
+            alt={`${project.title} cover`}
+          />
         </div>
       </section>
 

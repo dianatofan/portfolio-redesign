@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { CursorContext } from "@/context/CursorContext"
@@ -14,6 +14,7 @@ interface ProjectCardProps {
     aspectClass?: string
     isPasswordProtected?: boolean
     showCaptionTags?: boolean
+    eager?: boolean
 }
 
 export function ProjectCard({
@@ -25,8 +26,10 @@ export function ProjectCard({
     aspectClass,
     isPasswordProtected = false,
     showCaptionTags = true,
+    eager = false,
 }: ProjectCardProps) {
     const { setVariant } = useContext(CursorContext)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
     const aspect = aspectClass ?? (featured ? "aspect-[16/9]" : "aspect-[4/3]")
 
     return (
@@ -42,21 +45,27 @@ export function ProjectCard({
             <article>
                 {/* Image tile */}
                 <div
-                    className={["relative w-full overflow-hidden bg-card rounded-lg", aspect].join(
-                        " "
-                    )}
+                    className={[
+                        "relative w-full overflow-hidden bg-card rounded-lg",
+                        isImageLoaded ? "" : "animate-pulse",
+                        aspect,
+                    ].join(" ")}
                 >
                     <Image
                         src={image}
                         alt={`${title} project preview`}
                         fill
-                        className="
-              object-cover transform-gpu transition-transform
+                        className={`
+              object-cover transform-gpu transition-all
               duration-700 ease-[cubic-bezier(.2,.8,.2,1)]
               group-hover:scale-[1.08]
-            "
+              ${isImageLoaded ? "opacity-100" : "opacity-0"}
+            `}
                         sizes={featured ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
-                        priority={featured}
+                        priority={featured || eager}
+                        placeholder="blur"
+                        blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNicgaGVpZ2h0PScxMic+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsbD0nI2Y0ZjRmNScvPjwvc3ZnPg=="
+                        onLoad={() => setIsImageLoaded(true)}
                     />
 
                     {/* Glass chips (appear on hover, animate top->down) */}

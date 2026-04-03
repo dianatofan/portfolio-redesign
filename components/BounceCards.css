@@ -49,6 +49,7 @@
   user-select: none;
   touch-action: none;
   z-index: 1;
+  will-change: transform;
 }
 
 .card.hovered {
@@ -63,6 +64,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 320ms ease-out;
+}
+
+.card .image.loaded {
+  opacity: 1;
 }
 
 /* Responsive styles */
@@ -125,4 +132,3 @@
     border-width: 1.5px;
   }
 }
-
