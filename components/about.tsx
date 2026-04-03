@@ -52,9 +52,11 @@ export function About() {
     const [displayText, setDisplayText] = useState("")
 
     const bioText1 =
-        "I started in frontend engineering, where I learned how products are actually built and what it takes to deliver quality at scale. Wanting to get closer to product thinking while staying technical, I moved into UX engineering, creating high-fidelity, production-like prototypes in the pre-AI era with complex animations and live data so teams could experience ideas before committing engineering resources. That drive for greater ownership led me into product design, where I stepped into product direction, business strategy, and stakeholder alignment to shape not just how things work, but why we're building them."
+        "I work across design and engineering, with a background in frontend, UX engineering, and product design. I build and ship product experiences, using code to explore ideas, test decisions early, and make things tangible."
     const bioText2 =
-        "I've worked across gaming, big tech, SaaS, and logistics, which taught me how to adapt quickly and navigate very different problem spaces. I still code in side projects and prototypes to keep my skills sharp and move from concept to validation quickly. I think in a structured, technical way, but approach problems creatively, which helps me handle complexity without losing clarity."
+        "I enjoy shaping decisions and bringing people onto the same page, especially in complex problem spaces where things are still undefined. At the same time, I stay close to the work. I prototype, build, and ship, because that's how I think best and move things forward."
+    const bioText3 =
+        "I've worked across gaming, big tech, SaaS, and logistics, and I'm comfortable navigating different domains, constraints, and levels of ambiguity."
 
     const roles = ["frontend engineer", "UX engineer", "product designer"]
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
@@ -218,6 +220,9 @@ export function About() {
                                 <p id="bio-paragraph-2" className="text-base mt-4 leading-relaxed max-w-[680px]">
                                     {bioText2}
                                 </p>
+                                <p id="bio-paragraph-3" className="text-base mt-4 leading-relaxed max-w-[680px]">
+                                    {bioText3}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -234,7 +239,7 @@ export function About() {
                         {/* Right: accordion - aligned with intro text */}
                         <div className="col-span-4 md:col-span-7 md:col-start-6">
                             <div className="max-w-[680px]">
-                                <Accordion type="single" collapsible defaultValue="tactile-games">
+                                <Accordion type="single" collapsible>
                                     {workHistory.map((item) => (
                                         <AccordionItem
                                             key={item.id}
