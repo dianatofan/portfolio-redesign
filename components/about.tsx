@@ -177,7 +177,7 @@ export function About() {
             </div>
 
             <section id="about" className="relative z-20 pb-16 md:pb-24">
-                <div className="w-full mx-auto px-6">
+                <div className="max-w-[1800px] mx-auto px-6">
                     {/* Meta + Headline row — same grid as homepage hero */}
                     <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 gap-y-8 mb-16 md:mb-24">
                         {/* Left: meta block (time / location) */}

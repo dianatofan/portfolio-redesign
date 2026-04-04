@@ -28,7 +28,7 @@ export function Footer() {
                                 </svg>
                             </Link>
 
-                            <h2 className="mt-8 text-3xl md:text-[32px] font-medium leading-tight text-[var(--footer-foreground)]">
+                            <h2 className="mt-8 mb-8 md:mb-0 text-3xl md:text-[32px] font-medium leading-tight text-[var(--footer-foreground)]">
                                 {"Let's get in touch"}
                             </h2>
                         </div>
