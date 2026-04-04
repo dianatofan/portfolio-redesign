@@ -1,9 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { isProjectUnlocked, persistProjectUnlock } from "@/lib/project-auth"
+import { getClientAnalyticsContext } from "@/lib/analytics"
+import { hasGlobalProjectUnlock, isProjectUnlocked, persistProjectUnlock } from "@/lib/project-auth"
+import { trackEvent } from "@/lib/track-event"
 
 interface InlinePasswordGateProps {
     projectSlug: string
@@ -22,6 +24,7 @@ export function InlinePasswordGate({
     const [error, setError] = useState("")
     const [isUnlocked, setIsUnlocked] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
+    const hasTrackedGateViewRef = useRef(false)
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => setIsVisible(true))
@@ -37,14 +40,44 @@ export function InlinePasswordGate({
         setIsUnlocked(isProjectUnlocked(projectSlug, correctPassword))
     }, [projectSlug, correctPassword, enabled])
 
+    useEffect(() => {
+        if (!enabled || isUnlocked || hasTrackedGateViewRef.current) return
+
+        hasTrackedGateViewRef.current = true
+        trackEvent("password_gate_viewed", {
+            projectSlug,
+            gateType: "inline",
+            ...getClientAnalyticsContext(),
+        })
+    }, [enabled, isUnlocked, projectSlug])
+
     const handleUnlock = (e: React.FormEvent) => {
         e.preventDefault()
+        trackEvent("password_unlock_attempt", {
+            projectSlug,
+            gateType: "inline",
+            ...getClientAnalyticsContext(),
+        })
+
         if (password === correctPassword) {
+            const hadGlobalUnlock = hasGlobalProjectUnlock()
             persistProjectUnlock(projectSlug, password)
             setIsUnlocked(true)
             setError("")
+            trackEvent("password_unlock_success", {
+                projectSlug,
+                gateType: "inline",
+                unlockScope: hadGlobalUnlock ? "already-global" : "new-global",
+                ...getClientAnalyticsContext(),
+            })
             return
         }
+
+        trackEvent("password_unlock_failed", {
+            projectSlug,
+            gateType: "inline",
+            ...getClientAnalyticsContext(),
+        })
         setError("Incorrect password. Please try again.")
         setPassword("")
     }

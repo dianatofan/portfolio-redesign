@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { isProjectUnlocked, persistProjectUnlock } from "@/lib/project-auth"
+import { getClientAnalyticsContext } from "@/lib/analytics"
+import { hasGlobalProjectUnlock, isProjectUnlocked, persistProjectUnlock } from "@/lib/project-auth"
+import { trackEvent } from "@/lib/track-event"
 
 interface PasswordProtectProps {
     children: React.ReactNode
@@ -21,6 +23,7 @@ export function PasswordProtect({
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(true)
+    const hasTrackedGateViewRef = useRef(false)
 
     // Check localStorage on mount
     useEffect(() => {
@@ -28,14 +31,42 @@ export function PasswordProtect({
         setIsLoading(false)
     }, [projectSlug, correctPassword])
 
+    useEffect(() => {
+        if (isLoading || isAuthenticated || hasTrackedGateViewRef.current) return
+
+        hasTrackedGateViewRef.current = true
+        trackEvent("password_gate_viewed", {
+            projectSlug,
+            gateType: "full-page",
+            ...getClientAnalyticsContext(),
+        })
+    }, [isLoading, isAuthenticated, projectSlug])
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         setError("")
+        trackEvent("password_unlock_attempt", {
+            projectSlug,
+            gateType: "full-page",
+            ...getClientAnalyticsContext(),
+        })
 
         if (password === correctPassword) {
+            const hadGlobalUnlock = hasGlobalProjectUnlock()
             persistProjectUnlock(projectSlug, password)
             setIsAuthenticated(true)
+            trackEvent("password_unlock_success", {
+                projectSlug,
+                gateType: "full-page",
+                unlockScope: hadGlobalUnlock ? "already-global" : "new-global",
+                ...getClientAnalyticsContext(),
+            })
         } else {
+            trackEvent("password_unlock_failed", {
+                projectSlug,
+                gateType: "full-page",
+                ...getClientAnalyticsContext(),
+            })
             setError("Incorrect password. Please try again.")
             setPassword("")
         }
