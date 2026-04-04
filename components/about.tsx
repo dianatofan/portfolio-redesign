@@ -23,7 +23,7 @@ const workHistory = [
         id: "google",
         role: "UX Engineer",
         company: "Google",
-        period: "2024",
+        period: "2022 — 2024",
         description:
             "Working at Google expanded my sense of what’s possible. I used code to translate ambitious ideas into high-fidelity prototypes that made abstract concepts tangible and informed product direction before significant engineering investment.",
     },
@@ -31,7 +31,7 @@ const workHistory = [
         id: "famly",
         role: "UX/UI Designer",
         company: "Famly",
-        period: "2022 — 2024",
+        period: "2022",
         description:
             "Rebuilding the design foundation of a mature product taught me that systems only work if they’re adopted. Eliminating design debt required clear standards, alignment, and consistent reinforcement across teams.",
     },
@@ -39,7 +39,7 @@ const workHistory = [
         id: "maersk",
         role: "Frontend Engineer",
         company: "Maersk",
-        period: "2020 — 2022",
+        period: "2019 — 2021",
         description:
             "This role strengthened my technical foundation. Working on a global cargo booking platform taught me to design for scale, reliability, and real operational constraints. Those principles still guide how I work today.",
     },

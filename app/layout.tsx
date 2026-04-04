@@ -8,10 +8,35 @@ export const metadata: Metadata = {
     title: "Diana Tofan",
     description:
         "Senior product designer untangling complex systems. Infrastructure, internal tools, observability systems, and platform workflows.",
+    metadataBase: new URL("https://dianatofan.net"),
     icons: {
         icon: "/favicon-logo.svg",
         shortcut: "/favicon-logo.svg",
         apple: "/apple-icon.png",
+    },
+    openGraph: {
+        title: "Diana Tofan",
+        description:
+            "Senior product designer untangling complex systems. Infrastructure, internal tools, observability systems, and platform workflows.",
+        url: "https://dianatofan.net",
+        siteName: "Diana Tofan",
+        images: [
+            {
+                url: "/images/preview-image.png",
+                width: 1200,
+                height: 630,
+                alt: "Diana Tofan portfolio preview",
+            },
+        ],
+        locale: "en_US",
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Diana Tofan",
+        description:
+            "Senior product designer untangling complex systems. Infrastructure, internal tools, observability systems, and platform workflows.",
+        images: ["/images/preview-image.png"],
     },
 }
 
