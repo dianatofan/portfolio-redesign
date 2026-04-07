@@ -46,7 +46,7 @@ export const workProjects: readonly WorkProject[] = [
         tags: ["2024", "Google"],
         featured: false,
         aspect: "aspect-[3/2]",
-        isPasswordProtected: false,
+        isPasswordProtected: true,
     },
     {
         slug: "design-system",
