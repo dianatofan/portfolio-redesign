@@ -30,7 +30,8 @@ export const workProjects: readonly WorkProject[] = [
         title: "Automating game setup for scalable releases",
         navigationTitle: "Game Setup Automation",
         image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610293/game-canvas-cover.png",
-        homepageImage: "/images/project-game-setup.png",
+        homepageImage:
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610278/thumbnail9.png",
         tags: ["2025", "Tactile Games"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -40,7 +41,8 @@ export const workProjects: readonly WorkProject[] = [
         slug: "travel-planning",
         title: "Reimagining travel planning on Google Search",
         navigationTitle: "Google Travel",
-        image: "/images/project-travel.png",
+        image:
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610291/thumbnail5.png",
         tags: ["2024", "Google"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -50,7 +52,8 @@ export const workProjects: readonly WorkProject[] = [
         slug: "design-system",
         title: "Building a design system to eliminate design debt",
         navigationTitle: "Design System",
-        image: "/images/project-famly.png",
+        image:
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610306/famlyThumbnail.png",
         tags: ["2024", "Famly"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -66,7 +69,7 @@ const funGalleryProjects = [
         src: "/images/fun-human-redundancy.png",
         href: "https://dianatofan.github.io/risk-assessment-terminal",
         year: "2026",
-        subtitle: "I built this to answer a scary question: will AI take my job? A glitchy CRT terminal with an apocalyptic tone and dark humor.",
+        subtitle: "Will AI take my job? An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
     },
 ] as const
 
@@ -77,7 +80,7 @@ function WorkSection() {
                 Work
             </h2>
             <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                {workProjects.slice(0, 4).map((project) => (
+                {workProjects.slice(0, 4).map((project, index) => (
                     <ProjectCard
                         key={project.slug}
                         title={project.title}
@@ -88,7 +91,7 @@ function WorkSection() {
                         aspectClass={project.aspect}
                         isPasswordProtected={false}
                         showCaptionTags={false}
-                        eager
+                        imagePriority={index < 2}
                     />
                 ))}
             </div>

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { gsap } from 'gsap';
 import './BounceCards.css';
 
@@ -33,7 +32,6 @@ export default function BounceCards({
   const dragOffsetsRef = useRef(new Map());
   const hoveredIndexRef = useRef(null);
   const [cardDimensions, setCardDimensions] = useState({ width: 200, height: 260 });
-  const [loadedMap, setLoadedMap] = useState({});
 
   // Update card dimensions based on screen size
   useEffect(() => {
@@ -262,13 +260,6 @@ export default function BounceCards({
     };
   };
 
-  const markImageLoaded = index => {
-    setLoadedMap(prev => {
-      if (prev[index]) return prev;
-      return { ...prev, [index]: true };
-    });
-  };
-
   return (
     <div
       className={`bounceCardsContainer ${className}`}
@@ -292,16 +283,15 @@ export default function BounceCards({
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
-          <Image
-            className={`image ${loadedMap[idx] ? 'loaded' : ''}`}
+          <img
+            className="image"
             src={src}
             alt={`card-${idx}`}
-            fill
-            sizes="(max-width: 480px) 100px, (max-width: 640px) 120px, (max-width: 768px) 140px, (max-width: 1024px) 160px, 200px"
-            priority={idx < 2}
             loading={idx < 2 ? 'eager' : 'lazy'}
-            draggable={false}
-            onLoad={() => markImageLoaded(idx)}
+            fetchPriority={idx < 2 ? 'high' : 'auto'}
+            decoding="async"
+            width="900"
+            height="1170"
           />
         </div>
       ))}

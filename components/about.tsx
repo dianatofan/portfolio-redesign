@@ -146,11 +146,11 @@ export function About() {
     }, [])
 
     const images = [
-        "/images/about/mountain.png",
-        "/images/about/ride.jpg",
-        "/images/about/run.jpg",
-        "/images/about/minime.png",
-        "/images/about/me.jpg",
+        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610255/mountain.png",
+        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610309/run.jpg",
+        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610275/minime.jpg",
+        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610442/museum.png",
+        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610318/img.webp",
     ] as const
 
     const transformStyles = [
@@ -177,7 +177,7 @@ export function About() {
             </div>
 
             <section id="about" className="relative z-20 pb-16 md:pb-24">
-                <div className="max-w-[1800px] mx-auto px-6">
+                <div className="w-full mx-auto px-6">
                     {/* Meta + Headline row — same grid as homepage hero */}
                     <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 gap-y-8 mb-16 md:mb-24">
                         {/* Left: meta block (time / location) */}
