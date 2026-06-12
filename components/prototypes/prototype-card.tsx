@@ -53,7 +53,7 @@ export function PrototypeCard({
         </Chip>
       </div>
 
-      <div className="my-4 h-px bg-border" />
+      <div className="my-4 h-px shrink-0 bg-border" />
 
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
@@ -67,32 +67,59 @@ export function PrototypeCard({
         </Chip>
       </div>
 
-      <div className="my-4 h-px bg-border" />
-
       {revealed ? (
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0 flex-1">
-            <SectionLabel>Outcome</SectionLabel>
-            <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="text-[15px] leading-relaxed text-foreground"
-            >
-              {prototype.outcome}
-            </motion.p>
-          </div>
-          <Chip>
-            <Trophy size={18} aria-hidden />
-          </Chip>
-        </div>
+        <>
+          <motion.div
+            className="my-4 h-px shrink-0 origin-left bg-border"
+            style={{ transformOrigin: "left" }}
+            initial={reduceMotion ? false : { scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.45, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="flex items-start justify-between gap-4"
+            initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.28, ease: "easeOut" }}
+          >
+            <div className="min-w-0 flex-1">
+              <div className="mb-1.5 flex items-center gap-1.5">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--text-tertiary)]">
+                  Outcome
+                </span>
+                {prototype.details && (
+                  <span className="group/info relative inline-flex">
+                    <span
+                      role="button"
+                      tabIndex={isActive ? 0 : -1}
+                      aria-label="More about this outcome"
+                      className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-border text-[var(--text-tertiary)] transition-colors hover:border-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
+                    >
+                      <HelpCircle size={11} aria-hidden />
+                    </span>
+                    <span
+                      role="tooltip"
+                      className="pointer-events-none absolute bottom-full left-0 z-50 mb-2 w-56 rounded-lg border border-border bg-card p-3 text-xs font-normal normal-case leading-relaxed tracking-normal text-[var(--text-secondary)] opacity-0 shadow-lg transition-opacity duration-200 group-hover/info:opacity-100 group-focus-within/info:opacity-100"
+                    >
+                      {prototype.details}
+                    </span>
+                  </span>
+                )}
+              </div>
+              <p className="text-[15px] leading-relaxed text-foreground">{prototype.outcome}</p>
+            </div>
+            <Chip>
+              <Trophy size={18} aria-hidden />
+            </Chip>
+          </motion.div>
+        </>
       ) : (
         <button
           type="button"
           onClick={onReveal}
           tabIndex={isActive ? 0 : -1}
           aria-label={`See outcome for ${prototype.title}`}
-          className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-2"
+          className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-2"
         >
           See Outcome
           <ArrowRight

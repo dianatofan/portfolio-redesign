@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 const meta = [
   { label: "Role", values: ["UX Engineer"] },
   { label: "Company", values: ["Google"] },
-  { label: "Team", values: ["Designers", "PMs", "Engineers"] },
+  { label: "Team", values: ["UX Leads", "Researchers", "Product Managers"] },
   { label: "Skills", values: ["Prototyping", "Interaction Design"] },
+  { label: "Tools", values: ["React", "Google Maps API"] },
 ]
 
 export default function GoogleMapsPrototypesPage() {
@@ -50,7 +51,7 @@ export default function GoogleMapsPrototypesPage() {
             Exploring Product Directions at Google
           </h1>
 
-          <div className="grid grid-cols-2 gap-8 border-b border-border pb-12 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-8 border-b border-border pb-12 md:grid-cols-5">
             {meta.map((item) => (
               <div key={item.label}>
                 <p className="mb-2 text-sm font-medium text-[var(--text-tertiary)]">{item.label}</p>
@@ -68,15 +69,11 @@ export default function GoogleMapsPrototypesPage() {
 
           <div className="mt-12 max-w-3xl space-y-4 text-base leading-relaxed text-[var(--text-secondary)]">
             <p>
-              As a UX Engineer on Google Travel, I built dozens of rapid prototypes to help teams
+              As a UX Engineer on Google Travel, I built dozens of React prototypes to help teams
               explore new product directions, validate assumptions, and make decisions faster.
             </p>
-            <p>
-              Many of these explorations went through multiple rounds of iteration before reaching a
-              final concept. Some influenced production experiences, while others helped teams
-              evaluate tradeoffs and decide what not to build.
-            </p>
-            <p>The examples below are a small selection of the work and show some final concepts.</p>
+            <p>Not every prototype shipped, but every prototype answered a question.</p>
+            <p>Here are a few examples.</p>
           </div>
         </section>
       </div>

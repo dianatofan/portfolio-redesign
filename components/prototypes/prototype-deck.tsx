@@ -95,7 +95,7 @@ export function PrototypeDeck() {
         aria-label="Google prototype explorations"
         tabIndex={0}
         onKeyDown={onKeyDown}
-        className="relative mx-auto w-full max-w-[480px] rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-4"
+        className="relative mx-auto w-full max-w-[480px] rounded-3xl outline-none focus:outline-none focus-visible:outline-none"
       >
         {/* Fixed device — stays put behind the cards; only the media swaps */}
         <div

@@ -11,6 +11,8 @@ export type Prototype = {
   device: PrototypeDevice
   /** Placeholder media filename for now; swap for a real GIF/video later. */
   media: string
+  /** Extra context shown on hover of the info icon after the outcome. */
+  details?: string
 }
 
 /**
@@ -29,6 +31,8 @@ export const googleMapsPrototypes: readonly Prototype[] = [
     status: "APPROVED",
     device: "desktop",
     media: "travel-discovery.gif",
+    details:
+      "Built as a React prototype against live Search components so PMs and designers could click through real queries before any backend work.",
   },
   {
     id: "pin-clustering",
@@ -40,6 +44,8 @@ export const googleMapsPrototypes: readonly Prototype[] = [
     status: "APPROVED",
     device: "mobile",
     media: "pin-clustering.gif",
+    details:
+      "Tested several clustering thresholds with real map data to find the point where density stopped helping and started hurting scanability.",
   },
   {
     id: "geopolitical-bottom-sheet",
@@ -52,6 +58,8 @@ export const googleMapsPrototypes: readonly Prototype[] = [
     status: "APPROVED",
     device: "mobile",
     media: "geopolitical-bottom-sheet.gif",
+    details:
+      "The multi-page sheet pattern shipped and became a reusable way to layer dense context without covering the map.",
   },
   {
     id: "progressive-disclosure",
@@ -64,5 +72,7 @@ export const googleMapsPrototypes: readonly Prototype[] = [
     status: "REJECTED",
     device: "mobile",
     media: "progressive-disclosure.gif",
+    details:
+      "Not shipped — the zoom-driven density felt unpredictable in testing, but the exploration shaped how the team reasoned about map detail later.",
   },
 ]

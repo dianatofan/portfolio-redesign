@@ -13,17 +13,15 @@ export function PrototypeMedia({ media }: { media: string; label?: string }) {
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-[#f4f4f5]">
-      {/* Ambient looping shimmer to suggest live, autoplaying media. */}
+      {/* Ambient looping shimmer (composited transform, no per-frame paint). */}
       {!reduceMotion && (
         <motion.div
           aria-hidden
-          className="absolute inset-0"
+          className="absolute inset-y-0 left-0 w-1/2 will-change-transform"
           style={{
-            background:
-              "linear-gradient(115deg, transparent 35%, rgba(0,0,0,0.05) 50%, transparent 65%)",
-            backgroundSize: "220% 220%",
+            background: "linear-gradient(115deg, transparent, rgba(0,0,0,0.05), transparent)",
           }}
-          animate={{ backgroundPosition: ["0% 0%", "100% 100%"] }}
+          animate={{ x: ["-100%", "200%"] }}
           transition={{ duration: 3.2, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
         />
       )}
