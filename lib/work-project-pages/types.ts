@@ -29,3 +29,4 @@ export type WorkProjectSlug =
   | "game-setup-automation"
   | "travel-planning"
   | "design-system"
+  | "release-timeline"

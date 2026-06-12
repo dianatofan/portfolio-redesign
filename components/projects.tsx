@@ -11,6 +11,7 @@ type WorkProject = {
     featured: boolean
     aspect: string
     isPasswordProtected: boolean
+    category?: "work" | "experiment"
 }
 
 export const workProjects: readonly WorkProject[] = [
@@ -59,11 +60,36 @@ export const workProjects: readonly WorkProject[] = [
         aspect: "aspect-[3/2]",
         isPasswordProtected: false,
     },
+    {
+        slug: "release-timeline",
+        title: "Visualizing release impact across live games",
+        navigationTitle: "Release Timeline",
+        image: "/images/placeholder.svg",
+        tags: ["2026", "Tactile Games"],
+        featured: false,
+        aspect: "aspect-[3/2]",
+        isPasswordProtected: false,
+        category: "experiment",
+    },
 ] as const
 
 export const projects = workProjects
 
 const funGalleryProjects = [
+    {
+        title: "Exploring Product Directions at Google Maps",
+        src: "/images/placeholder.svg",
+        href: "/prototypes/google-maps",
+        year: "2024",
+        subtitle: "A swipeable deck of Google Maps and Search prototypes, each with the question behind it and what happened after review.",
+    },
+    {
+        title: "Visualizing release impact across live games",
+        src: "/images/placeholder.svg",
+        href: "/work/release-timeline",
+        year: "2026",
+        subtitle: "A release timeline inside the LiveOps Dashboard, prototyped in code, to cut debugging time.",
+    },
     {
         title: "Human Redundancy Terminal",
         src: "/images/fun-human-redundancy.png",
@@ -77,24 +103,38 @@ function WorkSection() {
     return (
         <section className="space-y-6 md:space-y-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                Work
+                Case Studies
             </h2>
             <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                {workProjects.slice(0, 4).map((project, index) => (
-                    <ProjectCard
-                        key={project.slug}
-                        title={project.title}
-                        image={project.homepageImage ?? project.image}
-                        tags={[...project.tags]}
-                        href={`/work/${project.slug}`}
-                        featured={false}
-                        aspectClass={project.aspect}
-                        isPasswordProtected={false}
-                        showCaptionTags={false}
-                        imagePriority={index < 2}
-                    />
-                ))}
+                {workProjects
+                    .filter((project) => project.category !== "experiment")
+                    .slice(0, 4)
+                    .map((project, index) => (
+                        <ProjectCard
+                            key={project.slug}
+                            title={project.title}
+                            image={project.homepageImage ?? project.image}
+                            tags={[...project.tags]}
+                            href={`/work/${project.slug}`}
+                            featured={false}
+                            aspectClass={project.aspect}
+                            isPasswordProtected={false}
+                            showCaptionTags={false}
+                            imagePriority={index < 2}
+                        />
+                    ))}
             </div>
+        </section>
+    )
+}
+
+function ExperimentsSection() {
+    return (
+        <section id="fun" className="space-y-6 md:space-y-8">
+            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+                Prototypes
+            </h2>
+            <ImageSlideGallery projects={[...funGalleryProjects]} />
         </section>
     )
 }
@@ -106,12 +146,7 @@ export function Projects() {
                 <div className="space-y-16 md:space-y-20">
                     <WorkSection />
 
-                    <section id="fun" className="space-y-6 md:space-y-8">
-                        <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                            Fun
-                        </h2>
-                        <ImageSlideGallery projects={[...funGalleryProjects]} />
-                    </section>
+                    <ExperimentsSection />
                 </div>
             </div>
         </section>
