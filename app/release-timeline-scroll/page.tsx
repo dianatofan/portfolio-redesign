@@ -45,8 +45,8 @@ export default function ReleaseTimelineScrollPage() {
       </header>
 
       {/* Hero image — a cropped screenshot, inset with margins on the gray surface */}
-      <section className="bg-[#f4f4f5] pt-28 pb-16 md:pb-20">
-        <div className="mx-auto max-w-[1400px] px-6">
+      <section className="bg-[#f4f4f5] pt-28 pb-0">
+        <div className="mx-auto max-w-[2000px] px-6">
           <div className="w-full overflow-hidden rounded-t-xl border border-b-0 border-border bg-card shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)]">
             <div className="flex items-center gap-1.5 border-b border-border bg-[#f3f3f4] px-4 py-3">
               <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
@@ -63,7 +63,7 @@ export default function ReleaseTimelineScrollPage() {
                 fill
                 priority
                 className="object-cover object-top"
-                sizes="(max-width: 768px) 100vw, 1400px"
+                sizes="(max-width: 768px) 100vw, 2000px"
               />
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function ReleaseTimelineScrollPage() {
       {/* Scroll story over a soft moving purple gradient */}
       <section className="relative mt-16 py-20 md:mt-24 md:py-28">
         <MovingGradient />
-        <div className="relative mx-auto max-w-[1320px] px-6">
+        <div className="relative mx-auto w-full max-w-[2000px] px-6">
           <ReleaseTimelineScroll />
         </div>
       </section>

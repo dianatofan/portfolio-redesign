@@ -132,7 +132,7 @@ function ExperimentsSection() {
     return (
         <section id="fun" className="space-y-6 md:space-y-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                Prototypes
+                AI Experiments
             </h2>
             <ImageSlideGallery projects={[...funGalleryProjects]} />
         </section>

@@ -135,7 +135,7 @@ function NarrativeStep({
     >
       <motion.div
         style={reduceMotion ? undefined : { opacity, y }}
-        className="w-full max-w-[280px] lg:sticky lg:top-24"
+        className="w-full max-w-[280px] lg:sticky lg:top-24 lg:pl-6"
       >
         <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">
           {step.num}
