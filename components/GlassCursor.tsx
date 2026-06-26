@@ -4,12 +4,14 @@ import React, { useContext } from "react"
 import { CursorContext } from "@/context/CursorContext"
 
 export function GlassCursor() {
-    const { variant, x, y } = useContext(CursorContext)
+    const { variant, x, y, hidden } = useContext(CursorContext)
     const isOpen = variant === "open"
 
     return (
         <div
-            className="pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block"
+            className={`pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block ${
+                hidden ? "opacity-0" : ""
+            }`}
             style={{ transform: `translate3d(${x}px, ${y}px, 0)` }}
             aria-hidden="true"
         >

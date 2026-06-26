@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 const meta = [
   { label: "Role", values: ["Product Designer"] },
   { label: "Team", values: ["CTO", "Product Manager", "Engineers"] },
+  { label: "Tools", values: ["Claude Code", "SVG"] },
 ]
 
 export default function ReleaseTimelineScrollPage() {
@@ -44,28 +45,18 @@ export default function ReleaseTimelineScrollPage() {
         </div>
       </header>
 
-      {/* Hero image — a cropped screenshot, inset with margins on the gray surface */}
-      <section className="bg-[#f4f4f5] pt-28 pb-0">
-        <div className="mx-auto max-w-[2000px] px-6">
-          <div className="w-full overflow-hidden rounded-t-xl border border-b-0 border-border bg-card shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)]">
-            <div className="flex items-center gap-1.5 border-b border-border bg-[#f3f3f4] px-4 py-3">
-              <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-              <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
-              <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-              <div className="mx-auto flex h-6 w-1/2 items-center justify-center rounded border border-border bg-white text-[11px] text-[var(--text-tertiary)]">
-                dashboard / releases
-              </div>
-            </div>
-            <div className="relative aspect-[160/63] w-full bg-card">
-              <Image
-                src="/images/release-timeline-hero.png"
-                alt="Release timeline: client releases and events plotted against crash rate and DAU"
-                fill
-                priority
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 100vw, 2000px"
-              />
-            </div>
+      {/* Hero image — matches the LiveOps Alerting page hero dimensions */}
+      <section className="pt-28">
+        <div className="mx-auto max-w-[1800px] px-6">
+          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl bg-card">
+            <Image
+              src="/images/release-timeline-hero.png"
+              alt="Release timeline: client releases and events plotted against crash rate and DAU"
+              fill
+              priority
+              className="object-cover object-top"
+              sizes="100vw"
+            />
           </div>
         </div>
       </section>
@@ -95,18 +86,20 @@ export default function ReleaseTimelineScrollPage() {
           ))}
         </div>
 
-        <div className="mt-10 max-w-2xl space-y-4 text-base leading-relaxed text-[var(--text-secondary)]">
-          <p>
-            Working on live games taught me that when something breaks, the first question is rarely
-            why.
-          </p>
-          <p>
-            It&apos;s usually: <span className="font-medium text-foreground">What changed?</span>
-          </p>
-          <p>
-            A release, configuration update, experiment rollout, or backend change could all impact
-            player experience, but the information lived across multiple tools.
-          </p>
+        <div className="mt-10 max-w-2xl">
+          <h2 className="text-xl font-medium tracking-tight text-foreground md:text-2xl">
+            Why a timeline?
+          </h2>
+          <div className="mt-5 space-y-4 text-base leading-relaxed text-[var(--text-secondary)]">
+            <p>
+              On live games, when something breaks the first question is rarely{" "}
+              <span className="font-medium text-foreground">why did it happen?</span> It&apos;s{" "}
+              <span className="font-medium text-foreground">what changed?</span> A release, experiment,
+              configuration update, or backend change could all affect the player experience. That
+              information already existed, but it was buried in tables and spread across tools, and
+              visual patterns are far easier to spot in a chart.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -118,6 +111,21 @@ export default function ReleaseTimelineScrollPage() {
         </div>
       </section>
 
+      {/* What I learned */}
+      <section className="mx-auto max-w-[1100px] px-6 pt-20 md:pt-28">
+        <div className="max-w-2xl">
+          <h2 className="text-xl font-medium tracking-tight text-foreground md:text-2xl">
+            What I learned
+          </h2>
+          <div className="mt-5 space-y-4 text-base leading-relaxed text-[var(--text-secondary)]">
+            <p>
+              The hardest part wasn&apos;t designing the chart. It was deciding where it belonged.
+            </p>
+            <p>Good tools fit into existing workflows instead of creating new ones.</p>
+          </div>
+        </div>
+      </section>
+
       {/* Outcome */}
       <section className="mx-auto max-w-[1100px] px-6 py-24 md:py-32">
         <div className="mx-auto max-w-2xl text-center">
@@ -125,8 +133,7 @@ export default function ReleaseTimelineScrollPage() {
             Outcome
           </p>
           <p className="text-2xl font-medium leading-snug tracking-tight text-foreground md:text-3xl">
-            The final design brought releases, configuration changes, and operational metrics into a
-            single workflow, helping teams answer one question faster:{" "}
+            A single place to answer one question:{" "}
             <span className="text-[var(--text-secondary)]">What changed?</span>
           </p>
         </div>

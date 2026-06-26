@@ -13,9 +13,12 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return workProjects.map((project) => ({
-    slug: project.slug,
-  }))
+  return workProjects
+    // /work/release-timeline is served by its own static route (the scroll page).
+    .filter((project) => project.slug !== "release-timeline")
+    .map((project) => ({
+      slug: project.slug,
+    }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

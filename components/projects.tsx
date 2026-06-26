@@ -64,7 +64,7 @@ export const workProjects: readonly WorkProject[] = [
         slug: "release-timeline",
         title: "Visualizing release impact across live games",
         navigationTitle: "Release Timeline",
-        image: "/images/placeholder.svg",
+        image: "/images/release-timeline-thumb.png",
         tags: ["2026", "Tactile Games"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -85,7 +85,7 @@ const funGalleryProjects = [
     },
     {
         title: "Visualizing release impact across live games",
-        src: "/images/placeholder.svg",
+        src: "/images/release-timeline-thumb.png",
         href: "/work/release-timeline",
         year: "2026",
         subtitle: "A release timeline inside the LiveOps Dashboard, prototyped in code, to cut debugging time.",
@@ -99,30 +99,72 @@ const funGalleryProjects = [
     },
 ] as const
 
+// Cards for the Experiments section (previously in AI Experiments).
+const experimentCards = [
+    {
+        title: "Visualizing release impact across live games",
+        image: "/images/release-timeline-thumb.png",
+        tags: ["2026", "Tactile Games"],
+        href: "/work/release-timeline",
+        isPasswordProtected: false,
+    },
+    {
+        title: "Human Redundancy Terminal",
+        image: "/images/fun-human-redundancy.png",
+        tags: ["2026", "Side project"],
+        href: "https://dianatofan.github.io/risk-assessment-terminal",
+        isPasswordProtected: false,
+    },
+] as const
+
 function WorkSection() {
+    const caseStudies = workProjects.filter((project) => project.category !== "experiment").slice(0, 6)
+
     return (
         <section className="space-y-6 md:space-y-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
                 Case Studies
             </h2>
             <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                {workProjects
-                    .filter((project) => project.category !== "experiment")
-                    .slice(0, 4)
-                    .map((project, index) => (
-                        <ProjectCard
-                            key={project.slug}
-                            title={project.title}
-                            image={project.homepageImage ?? project.image}
-                            tags={[...project.tags]}
-                            href={`/work/${project.slug}`}
-                            featured={false}
-                            aspectClass={project.aspect}
-                            isPasswordProtected={false}
-                            showCaptionTags={false}
-                            imagePriority={index < 2}
-                        />
-                    ))}
+                {caseStudies.map((project, index) => (
+                    <ProjectCard
+                        key={project.slug}
+                        title={project.title}
+                        image={project.homepageImage ?? project.image}
+                        tags={[...project.tags]}
+                        href={`/work/${project.slug}`}
+                        featured={false}
+                        aspectClass={project.aspect}
+                        isPasswordProtected={false}
+                        showCaptionTags={false}
+                        eager={index < 2}
+                    />
+                ))}
+            </div>
+        </section>
+    )
+}
+
+function ExperimentCardsSection() {
+    return (
+        <section className="space-y-6 md:space-y-8">
+            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+                AI Experiments
+            </h2>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
+                {experimentCards.map((card) => (
+                    <ProjectCard
+                        key={card.href}
+                        title={card.title}
+                        image={card.image}
+                        tags={[...card.tags]}
+                        href={card.href}
+                        featured={false}
+                        aspectClass="aspect-[3/2]"
+                        isPasswordProtected={card.isPasswordProtected}
+                        showCaptionTags={false}
+                    />
+                ))}
             </div>
         </section>
     )
@@ -146,7 +188,10 @@ export function Projects() {
                 <div className="space-y-16 md:space-y-20">
                     <WorkSection />
 
-                    <ExperimentsSection />
+                    <ExperimentCardsSection />
+
+                    {/* Hidden for now — to be re-addressed later. */}
+                    {/* <ExperimentsSection /> */}
                 </div>
             </div>
         </section>

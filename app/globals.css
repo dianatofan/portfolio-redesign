@@ -165,4 +165,10 @@
     select {
         cursor: none !important;
     }
+
+    /* …unless an embed is being interacted with — then restore the OS cursor */
+    body.allow-native-cursor,
+    body.allow-native-cursor * {
+        cursor: auto !important;
+    }
 }

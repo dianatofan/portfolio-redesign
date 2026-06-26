@@ -2,7 +2,7 @@ import Image from "next/image"
 import type { WorkProjectPage } from "./types"
 import { BeforeAfterVideoCard } from "@/components/work/before-after-video-card"
 import ForceGraph from "@/components/work/force-graph"
-import { Bot, Clock3, ShieldCheck, Wrench } from "lucide-react"
+import { Clock3, Layers, ShieldCheck, Wrench } from "lucide-react"
 import { ConstraintCards, OutcomeCards } from "./shared"
 
 export const gameSetupAutomationPage: WorkProjectPage = {
@@ -14,10 +14,10 @@ export const gameSetupAutomationPage: WorkProjectPage = {
     { label: "Skills", values: ["Product Design", "Product Strategy", "Prototyping"] },
   ],
   sections: [
-    { id: "context", title: "Context" },
+    { id: "context", title: "Why this project existed" },
     { id: "goal", title: "Goal" },
-    { id: "discovery", title: "Discovery", isGateStart: true },
-    { id: "constraints", title: "Constraints" },
+    { id: "discovery", title: "Shifting gears", isGateStart: true },
+    { id: "constraints", title: "Principles that shaped the solution" },
     { id: "solution", title: "Solution", isParent: true },
     { id: "step-1", title: "Step 1: Define the essentials", parent: "solution" },
     { id: "step-2", title: "Step 2: Configure services", parent: "solution" },
@@ -31,20 +31,18 @@ export const gameSetupAutomationPage: WorkProjectPage = {
   renderBeforeGate: () => (
     <>
       <section id="context">
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
-          At Tactile, game teams ship and operate multiple live games in parallel.
-        </p>
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
-          To ship more games per quarter and quickly learn what players love, teams needed a faster
-          path from concept to live release.
+          Why this project existed
         </h2>
         <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
-          Before launch, each game had to be registered across LiveOps, analytics, build pipelines,
-          permissions, and infrastructure, creating a Core Team–dependent bottleneck.
+          Every new game at Tactile had to be registered across LiveOps, analytics, build pipelines,
+          permissions, and infrastructure before it could launch.
+        </p>
+        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+          Most of that work depended on a small Core Team.
         </p>
         <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-8">
-          The Game Canvas Setup Tool enables teams to set up new games independently while
-          preserving infrastructure guarantees and operational safety.
+          As more teams started shipping games in parallel, setup became a bottleneck.
         </p>
         <div className="mt-8 rounded-2xl border border-gray-200 bg-white overflow-hidden">
           <div className="bg-white">
@@ -137,14 +135,13 @@ export const gameSetupAutomationPage: WorkProjectPage = {
   renderAfterGate: () => (
     <>
       <section id="discovery">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Discovery</h2>
+        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Shifting gears</h2>
         <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
-          I ran a cross-functional workshop with Product, Core Team, and platform engineers to map the
-          current setup process, surface hidden dependencies, and align on constraints.
+          The original request was simple: automate game setup.
         </p>
         <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-8">
-          The goal was to clarify when a game is first provisioned across core systems and define a
-          single, safe automation path.
+          After running a workshop with stakeholders, it became clear that some steps could be
+          automated, while others still required team input and decisions.
         </p>
         <div className="max-w-5xl rounded-2xl border border-gray-200 bg-white overflow-hidden">
           <div className="relative w-full">
@@ -166,30 +163,32 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="constraints">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Constraints</h2>
+        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+          Principles that shaped the solution
+        </h2>
         <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
-          These constraints were defined and agreed on during the workshop:
+          A few principles emerged from the workshop:
         </p>
         <ConstraintCards
           items={[
             {
               title: "Safe by default",
-              description: "Prevent mistakes and ensure games are set up correctly from the start.",
+              description: "Reduce setup mistakes before they happen.",
               icon: ShieldCheck,
             },
             {
-              title: "Guided setup",
-              description: "Automate what we can, and clearly guide teams when input is needed.",
-              icon: Bot,
+              title: "Progressive disclosure",
+              description: "Start with the essentials and reveal complexity when needed.",
+              icon: Layers,
             },
             {
-              title: "Flexible process",
-              description: "Allow setup to happen step by step, without blocking progress.",
+              title: "Flexible setup",
+              description: "Allow teams to continue even when some systems are still provisioning.",
               icon: Clock3,
             },
             {
-              title: "Works with existing tools",
-              description: "Build on current systems instead of replacing them.",
+              title: "Build on existing infrastructure",
+              description: "Integrate with existing systems instead of replacing them.",
               icon: Wrench,
             },
           ]}
