@@ -25,7 +25,6 @@ export const liveopsAlertingPage: WorkProjectPage = {
     { id: "ownership", title: "Ownership and Watchers", parent: "solution" },
     { id: "notifications", title: "Notification Settings", parent: "solution" },
     { id: "tradeoffs", title: "Key tradeoffs" },
-    { id: "prototyping", title: "Prototyping & Collaboration" },
     { id: "impact", title: "Impact" },
   ],
   renderBeforeGate: () => (
@@ -315,22 +314,6 @@ export const liveopsAlertingPage: WorkProjectPage = {
         </div>
       </section>
 
-      <section id="prototyping">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
-          Prototyping & Collaboration
-        </h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
-          I used Figma Make to prototype the setup flow using components from our design system,
-          making it easier to validate workflows and discuss edge cases with engineers before
-          implementation.
-        </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
-          I worked closely with the Tech Lead and platform engineers throughout the project to
-          ensure the experience aligned with existing systems while remaining scalable as new
-          services were introduced.
-        </p>
-      </section>
-
       <section id="impact">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Impact</h2>
         <div className="mb-6">
@@ -355,11 +338,6 @@ export const liveopsAlertingPage: WorkProjectPage = {
             ]}
           />
         </div>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
-          By embedding backend observability into the LiveOps Dashboard, teams shifted from
-          reactive firefighting to proactive production awareness, reducing player impact while
-          scaling safely across games and teams.
-        </p>
       </section>
     </>
   ),

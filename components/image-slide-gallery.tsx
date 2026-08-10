@@ -13,7 +13,8 @@ type GalleryProject = {
     src: string
     href?: string
     year?: string
-    tags?: string[]
+    /** Read-only: callers pass `as const` tuples and nothing here mutates them. */
+    tags?: readonly string[]
     subtitle?: string
 }
 
@@ -121,11 +122,15 @@ function ProjectRow({
         setVariant("default")
     }
 
+    const isExternal = project.href?.startsWith("http")
+
     const inner = (
         <div
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
-            className="group flex cursor-none items-center justify-between border-t border-border py-6 last:border-b"
+            // Lighter than --border (#E5E5E5): 1px is already the thinnest a
+            // border renders, so a paler tone is what reads as finer here.
+            className="group flex cursor-none items-center justify-between border-t border-[#F0F0F0] py-6 last:border-b"
         >
             <div>
                 <h3 className="text-xl font-medium text-foreground transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:-translate-x-2 md:text-2xl">
@@ -134,14 +139,22 @@ function ProjectRow({
                 <p className="mt-1 text-sm text-[var(--text-secondary)]">{project.subtitle ?? "Design & Development"}</p>
             </div>
             {(project.year || (project.tags && project.tags.length > 0)) && (
-                <span className="shrink-0 text-xs uppercase tracking-widest text-[var(--text-tertiary)]">
+                <span className="flex shrink-0 items-center gap-1.5 text-xs uppercase tracking-widest text-[var(--text-tertiary)]">
                     {project.year ?? project.tags?.join(" · ")}
+                    {isExternal && (
+                        <>
+                            {/* Signals the row leaves the site; the link itself
+                                carries the spoken "opens in a new tab" notice. */}
+                            <span aria-hidden className="text-sm leading-none">
+                                ↗
+                            </span>
+                            <span className="sr-only">(opens in a new tab)</span>
+                        </>
+                    )}
                 </span>
             )}
         </div>
     )
-
-    const isExternal = project.href?.startsWith("http")
 
     return project.href ? (
         <Link

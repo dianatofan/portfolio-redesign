@@ -78,7 +78,7 @@ export function Footer() {
                         <div className="col-span-12 md:col-span-3 border-t md:border-t-0 md:border-l border-white/15">
                             <div className="grid h-full grid-rows-2">
                                 <Link
-                                    href="/Diana-Tofan-Resume.pdf"
+                                    href="/Diana-Tofan-CV-Design-Engineer.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     download

@@ -153,6 +153,28 @@
 }
 
 
+/*
+ * Multicolour Figma mark in the about-page stack list. Resting state matches the
+ * single-path brand icons (currentColor); each shape reveals its own --c when the
+ * surrounding chip is hovered.
+ */
+.figma-mark path {
+    fill: currentColor;
+    transition: fill 200ms ease;
+}
+
+.group:hover .figma-mark path,
+.group:focus-visible .figma-mark path {
+    fill: var(--c);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .figma-mark path {
+        transition: none;
+    }
+}
+
+
 /* Hide native cursor on desktop so the custom cursor is the only cursor */
 @media (hover: hover) and (pointer: fine) {
     html,

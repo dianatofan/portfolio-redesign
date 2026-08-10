@@ -13,6 +13,25 @@ import {
 
 type FrameVisual = "separate" | "integrated" | "lollipop-cluttered"
 
+/**
+ * An annotation note. `line` pins its bracket to a vertical span (percent), and
+ * an array of `text` renders each entry on its own row. `whenExpanded` holds the
+ * note back until the prototype's chart card is actually open.
+ */
+type Note = {
+  text: string | string[]
+  line?: { top: number; bottom: number }
+  whenExpanded?: boolean
+}
+
+const asNote = (note: string | Note): Note =>
+  typeof note === "string" ? { text: note } : note
+
+const noteLines = (note: Note): string[] =>
+  Array.isArray(note.text) ? note.text : [note.text]
+
+const noteKey = (note: Note): string => noteLines(note).join(" ")
+
 type Step = {
   num: string
   title: string
@@ -22,8 +41,14 @@ type Step = {
   visualLabel?: string
   /** A static screenshot that becomes a live, interactive iframe on click. */
   embed?: { src: string; facade: string; designWidth: number }
-  /** "What changed" notes, shown beside the frame. */
-  notes?: string[]
+  /**
+   * "What changed" notes, shown beside the frame. A plain string gets its line
+   * auto-distributed down the frame; pass `{ text, line }` to pin a note to the
+   * region it actually describes.
+   */
+  notes?: (string | Note)[]
+  /** Label shown in the browser frame's URL bar (defaults to "timeline"). */
+  url?: string
   /** For a single-note step: vertical span (percent) the annotation line covers. */
   noteLine?: { top: number; bottom: number }
 }
@@ -31,60 +56,86 @@ type Step = {
 const steps: Step[] = [
   {
     num: "01",
-    title: "Where should it live?",
+    title: "Early exploration",
     text: [
-      "My first instinct was a dedicated Release Timeline page, with its own space to explore release history, operational events, and performance metrics side by side.",
-      "It's also where I started experimenting with how to plot it all.",
+      "The initial concept: a dedicated page where teams could explore releases, events, and performance metrics together.",
+      "It gave me room to experiment with visualizing change over time.",
     ],
     visual: "separate",
     notes: ["Dedicated timeline page"],
   },
   {
     num: "02",
-    title: "Bringing the timeline into Releases",
+    title: "Visualizing change",
     text: [
-      "The idea made sense, but the workflow didn't. Investigations already started from the released versions tab.",
-      "So I embedded the timeline right into the Releases page, in the flow teams already used.",
+      "My first prototype plotted releases and events directly on the chart as lollipop markers.",
+      "With a handful of events, correlating releases with crash rate and DAU was easy.",
     ],
-    visual: "integrated",
-    notes: ["Embedded into Releases"],
-    noteLine: { top: 16, bottom: 43 },
-  },
-  {
-    num: "03",
-    title: "How should it work?",
-    text: ["My first visualization plotted releases and events directly on the graph using lollipop-inspired markers."],
     embed: {
       src: "/release-timeline-embed.html",
       facade: "/images/release-timeline-embed-facade.png",
       designWidth: 1440,
     },
-    notes: ["Plotted events on the graph", "Lollipop markers"],
+    notes: [
+      // Pinned: the first bracket sits beside the KPI row, the second spans the
+      // chart and the events list it feeds.
+      { text: "Key metrics", line: { top: 15, bottom: 27 } },
+      {
+        text: ["Left: lollipop markers", "Right: recent events list"],
+        line: { top: 29, bottom: 100 },
+      },
+    ],
   },
   {
-    num: "04",
-    title: "Why it didn't scale",
+    num: "03",
+    title: "Reality check",
     text: [
-      "It worked well when there were only a few events.",
-      "Then I looked at the data. Some games had multiple releases, experiments, and configuration changes every day. The chart quickly became cluttered and difficult to scan.",
+      "Production-like data exposed two problems: some games generated far more events than expected, cluttering the chart.",
+      "And investigations almost always started from the Releases page, not a separate timeline.",
+      "Both pushed the design in a different direction.",
     ],
     visual: "lollipop-cluttered",
     notes: ["Cluttered when too many events"],
     noteLine: { top: 44, bottom: 66 },
   },
   {
+    num: "04",
+    title: "Moving into Releases",
+    text: [
+      "Instead of a separate destination, the timeline moved into the Releases page — as a card on top of the release list, in the Released tab.",
+      "That placed it exactly where investigations already started.",
+    ],
+    visual: "integrated",
+    notes: ["Card on top of the Releases page"],
+    // Matches the grey timeline-card block: starts below the Released/Unreleased
+    // tabs and ends where the release table's search row begins.
+    noteLine: { top: 16, bottom: 49 },
+    url: "releases",
+  },
+  {
     num: "05",
     title: "Final solution",
     text: [
-      "The timeline found its home in the Released tab, as an expandable, collapsible card.",
-      "Events sit in their own lane below the graph, so the link between changes and player impact stays visible while the graph stays readable. It tucks away when you don't need it.",
+      "The card is expandable, tucking away when it's not needed.",
+      "Events moved into their own lane below the chart — keeping it readable, with extra context available without leaving the existing workflow.",
     ],
     embed: {
       src: "/release-timeline-final.html",
       facade: "/images/release-timeline-final-facade.png",
       designWidth: 1440,
     },
-    notes: ["Expandable card in the Released tab", "Events in their own lane", "Graph stayed readable"],
+    notes: [
+      // Spans measured off screenshots of the prototype, as a percentage of the
+      // whole frame (browser chrome included). Collapsed, the "Crash rate & DAU"
+      // card sits at 18–42%; expanded, its event lanes sit at 51–62%.
+      { text: "Expandable card in the Released tab", line: { top: 18, bottom: 42 } },
+      {
+        text: "Events in their own lane",
+        line: { top: 51, bottom: 62 },
+        whenExpanded: true,
+      },
+    ],
+    url: "releases",
   },
 ]
 
@@ -104,7 +155,7 @@ const VISUAL_IMG: Record<FrameVisual, { src: string; alt: string }> = {
 }
 
 /** Landscape desktop/browser frame for the release-timeline prototype. */
-function BrowserVisual({ children }: { children?: React.ReactNode }) {
+function BrowserVisual({ url = "timeline", children }: { url?: string; children?: React.ReactNode }) {
   return (
     <div className="w-full overflow-hidden rounded-xl border border-border bg-card shadow-[0_30px_60px_-30px_rgba(0,0,0,0.3)]">
       <div className="flex items-center gap-1.5 border-b border-border bg-[#f3f3f4] px-4 py-2.5">
@@ -112,7 +163,7 @@ function BrowserVisual({ children }: { children?: React.ReactNode }) {
         <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         <div className="mx-auto flex h-5 w-1/2 items-center justify-center rounded border border-border bg-white text-[10px] text-[var(--text-tertiary)]">
-          timeline
+          {url}
         </div>
       </div>
       <div className="relative aspect-[16/10] overflow-hidden bg-[#f7f7f8]">{children}</div>
@@ -124,11 +175,26 @@ function BrowserVisual({ children }: { children?: React.ReactNode }) {
  * Facade pattern: shows a static screenshot until clicked, then swaps in the
  * live (scaled-to-fit) iframe — so the heavy prototype only loads on demand.
  */
-function EmbedFrame({ embed }: { embed: NonNullable<Step["embed"]> }) {
+function EmbedFrame({
+  embed,
+  onExpandedChange,
+}: {
+  embed: NonNullable<Step["embed"]>
+  /** Reports whether the prototype's chart card is currently expanded. */
+  onExpandedChange?: (expanded: boolean) => void
+}) {
   const wrapRef = useRef<HTMLDivElement>(null)
+  const frameRef = useRef<HTMLIFrameElement>(null)
   const { setHidden } = useContext(CursorContext)
   const [active, setActive] = useState(false)
   const [scale, setScale] = useState(0.5)
+
+  // Held in a ref so the observer below isn't torn down and rebuilt whenever the
+  // parent re-renders with a fresh inline callback.
+  const reportRef = useRef(onExpandedChange)
+  useEffect(() => {
+    reportRef.current = onExpandedChange
+  }, [onExpandedChange])
 
   useEffect(() => {
     const el = wrapRef.current
@@ -142,6 +208,61 @@ function EmbedFrame({ embed }: { embed: NonNullable<Step["embed"]> }) {
 
   // Restore the cursor if the frame unmounts while still interactive (scroll away).
   useEffect(() => () => setHidden(false), [setHidden])
+
+  /*
+   * Mirror the prototype's expand/collapse state out to the annotation gutter.
+   * The embed is same-origin, so we can watch its DOM: the chart card's toggle is
+   * `button.card-toggle` and carries aria-expanded. Watching that attribute (rather
+   * than a minified class) is the most stable hook the prototype offers — the
+   * sibling `.filter-trigger` dropdowns also use aria-expanded, hence the
+   * class-scoped query. If the markup ever changes, this degrades to "never
+   * expanded" rather than breaking the page.
+   */
+  useEffect(() => {
+    if (!active) {
+      reportRef.current?.(false)
+      return
+    }
+    const iframe = frameRef.current
+    if (!iframe) return
+
+    let observer: MutationObserver | undefined
+
+    const read = (doc: Document) => {
+      const open = Array.from(doc.querySelectorAll(".card-toggle")).some(
+        (el) => el.getAttribute("aria-expanded") === "true"
+      )
+      reportRef.current?.(open)
+    }
+
+    const attach = () => {
+      let doc: Document | null = null
+      try {
+        doc = iframe.contentDocument
+      } catch {
+        return // cross-origin: leave the note hidden
+      }
+      if (!doc) return
+      read(doc)
+      observer?.disconnect()
+      observer = new MutationObserver(() => read(doc!))
+      observer.observe(doc.documentElement, {
+        attributes: true,
+        attributeFilter: ["aria-expanded"],
+        subtree: true,
+        // The prototype mounts its card after load, so watch for it arriving too.
+        childList: true,
+      })
+    }
+
+    iframe.addEventListener("load", attach)
+    if (iframe.contentDocument?.readyState === "complete") attach()
+
+    return () => {
+      iframe.removeEventListener("load", attach)
+      observer?.disconnect()
+    }
+  }, [active])
 
   const start = () => {
     setActive(true)
@@ -161,6 +282,7 @@ function EmbedFrame({ embed }: { embed: NonNullable<Step["embed"]> }) {
       {active ? (
         <>
           <iframe
+            ref={frameRef}
             src={embed.src}
             title="Interactive release-timeline prototype"
             loading="lazy"
@@ -200,8 +322,14 @@ function EmbedFrame({ embed }: { embed: NonNullable<Step["embed"]> }) {
   )
 }
 
-function FrameContent({ step }: { step: Step }) {
-  if (step.embed) return <EmbedFrame embed={step.embed} />
+function FrameContent({
+  step,
+  onExpandedChange,
+}: {
+  step: Step
+  onExpandedChange?: (expanded: boolean) => void
+}) {
+  if (step.embed) return <EmbedFrame embed={step.embed} onExpandedChange={onExpandedChange} />
   if (step.visual) {
     const img = VISUAL_IMG[step.visual]
     return (
@@ -233,17 +361,21 @@ function AnnotationMarkers({
   notes,
   reduceMotion,
   lineSpan,
+  expanded = false,
 }: {
-  notes: string[]
+  notes: (string | Note)[]
   reduceMotion: boolean
   /** For a single note: the vertical span (percent) the line should cover. */
   lineSpan?: { top: number; bottom: number }
+  /** Whether the embedded prototype's chart card is currently expanded. */
+  expanded?: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
   // Only start drawing once the frame is actually scrolled into view.
   const inView = useInView(ref, { amount: 0.4 })
   const show = reduceMotion || inView
-  const n = notes.length
+  const items = notes.map(asNote).filter((note) => !note.whenExpanded || expanded)
+  const n = items.length
   const LINE_X = "0%"
   // Vertical span of the gray content rectangle inside the frame (below the
   // browser chrome + Releases header/tabs).
@@ -252,16 +384,24 @@ function AnnotationMarkers({
 
   return (
     <div ref={ref} className="pointer-events-none absolute inset-0">
-      {notes.map((note, i) => {
-        // A single note marks its gray rectangle; multiple notes get
+      {items.map((note, i) => {
+        // A note with an explicit span brackets exactly that region. Otherwise a
+        // single note marks the whole gray rectangle, and multiple notes get
         // shorter lines distributed down it.
         const single = n <= 1
-        const topPct = single ? GRAY_TOP : GRAY_TOP + ((GRAY_BOTTOM - GRAY_TOP - 14) * i) / Math.max(1, n - 1)
-        const heightPct = single ? GRAY_BOTTOM - GRAY_TOP : 14
+        const autoTop = single
+          ? GRAY_TOP
+          : GRAY_TOP + ((GRAY_BOTTOM - GRAY_TOP - 14) * i) / Math.max(1, n - 1)
+        const topPct = note.line?.top ?? autoTop
+        const heightPct = note.line
+          ? note.line.bottom - note.line.top
+          : single
+            ? GRAY_BOTTOM - GRAY_TOP
+            : 14
         const centerPct = topPct + heightPct / 2
         const delay = 0.15 + i * 0.25
         return (
-          <div key={note}>
+          <div key={noteKey(note)}>
             <motion.span
               className="absolute block w-[1.5px] bg-foreground"
               style={{ left: LINE_X, top: `${topPct}%`, height: `${heightPct}%`, transformOrigin: "top" }}
@@ -279,7 +419,11 @@ function AnnotationMarkers({
                 animate={show ? { opacity: 1, x: 0 } : { opacity: 0, x: 4 }}
                 transition={{ duration: 0.3, delay: delay + 0.35 }}
               >
-                {note}
+                {noteLines(note).map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
               </motion.span>
             </div>
           </div>
@@ -341,15 +485,24 @@ function NarrativeStep({
 
       {/* Inline visual + notes — mobile only */}
       <div className="mt-8 w-full lg:hidden">
-        <BrowserVisual>
+        <BrowserVisual url={step.url}>
           <FrameContent step={step} />
         </BrowserVisual>
         {step.notes && (
           <ul className="mt-5 space-y-2">
-            {step.notes.map((note) => (
-              <li key={note} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+            {step.notes.map(asNote).map((note) => (
+              <li
+                key={noteKey(note)}
+                className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
+              >
                 <span aria-hidden className="mt-[1px] text-[var(--text-tertiary)]">↳</span>
-                {note}
+                <span>
+                  {noteLines(note).map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </span>
               </li>
             ))}
           </ul>
@@ -361,6 +514,9 @@ function NarrativeStep({
 
 export function ReleaseTimelineScroll() {
   const [active, setActive] = useState(0)
+  // Keyed by step index: each embed reports its own expand state, so scrolling
+  // between steps doesn't leak one prototype's state onto another's annotations.
+  const [expandedSteps, setExpandedSteps] = useState<Record<number, boolean>>({})
   const stepRefs = useRef<Array<HTMLElement | null>>([])
   const reduceMotion = useReducedMotion()
 
@@ -409,7 +565,7 @@ export function ReleaseTimelineScroll() {
                   screen stays mounted and only its opacity animates — so the
                   active one crossfades in without the image re-decoding (which
                   caused the flicker). */}
-              <BrowserVisual>
+              <BrowserVisual url={activeStep.url}>
                 {steps.map((step, i) => {
                   const on = i === active
                   return (
@@ -427,7 +583,14 @@ export function ReleaseTimelineScroll() {
                         ease: [0.4, 0, 0.2, 1],
                       }}
                     >
-                      <FrameContent step={step} />
+                      <FrameContent
+                        step={step}
+                        onExpandedChange={(open) =>
+                          setExpandedSteps((prev) =>
+                            prev[i] === open ? prev : { ...prev, [i]: open }
+                          )
+                        }
+                      />
                     </motion.div>
                   )
                 })}
@@ -440,6 +603,7 @@ export function ReleaseTimelineScroll() {
                 notes={activeStep.notes ?? []}
                 lineSpan={activeStep.noteLine}
                 reduceMotion={!!reduceMotion}
+                expanded={!!expandedSteps[active]}
               />
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import BounceCards from "./BounceCards"
+import { BRAND_COLORS, BrandIcon, type BrandName } from "./brand-icons"
 import "./About.css"
 import {
     Accordion,
@@ -45,6 +46,127 @@ const workHistory = [
     },
 ]
 
+// Grouped so the list reads as a design engineer rather than a pile of logos.
+// Everything here is backed by work shown elsewhere on the site.
+// `icon` is omitted for the entries that are practices rather than products —
+// there is no brand mark for "design systems", and inventing one would be worse
+// than the small inconsistency of a text-only pill.
+// `href` is omitted for the same entries that have no icon: they're practices,
+// not products, so there's nothing to link to. Those chips stay non-interactive.
+type StackItem = { label: string; icon?: BrandName; href?: string }
+type StackGroup = { id: string; label: string; items: StackItem[] }
+
+const stack: StackGroup[] = [
+    {
+        id: "design",
+        label: "Design",
+        items: [
+            { label: "Figma", icon: "Figma", href: "https://www.figma.com" },
+            { label: "Design systems" },
+            { label: "Prototyping in code" },
+        ],
+    },
+    {
+        id: "code",
+        label: "Code",
+        items: [
+            {
+                label: "TypeScript",
+                icon: "TypeScript",
+                href: "https://www.typescriptlang.org",
+            },
+            {
+                label: "CSS",
+                icon: "Css",
+                href: "https://developer.mozilla.org/en-US/docs/Web/CSS",
+            },
+            {
+                label: "SVG",
+                icon: "Svg",
+                href: "https://developer.mozilla.org/en-US/docs/Web/SVG",
+            },
+            { label: "React", icon: "React", href: "https://react.dev" },
+            { label: "Next.js", icon: "NextDotJs", href: "https://nextjs.org" },
+            { label: "Tailwind", icon: "Tailwind", href: "https://tailwindcss.com" },
+            { label: "framer-motion", icon: "Framer", href: "https://motion.dev" },
+            { label: "three.js", icon: "ThreeDotJs", href: "https://threejs.org" },
+            { label: "d3", icon: "D3", href: "https://d3js.org" },
+            { label: "Git", icon: "Git", href: "https://git-scm.com" },
+            { label: "Storybook", icon: "Storybook", href: "https://storybook.js.org" },
+            { label: "Vercel", icon: "Vercel", href: "https://vercel.com" },
+        ],
+    },
+    {
+        id: "ai",
+        label: "AI",
+        items: [
+            {
+                label: "Claude Code",
+                icon: "Claude",
+                href: "https://claude.com/claude-code",
+            },
+            {
+                label: "GitHub Copilot",
+                icon: "GitHubCopilot",
+                href: "https://github.com/features/copilot",
+            },
+            // No Simple Icons mark exists for AI Studio itself; Gemini is the
+            // model and brand behind it, so its mark is the honest stand-in.
+            {
+                label: "Google AI Studio",
+                icon: "GoogleGemini",
+                href: "https://aistudio.google.com",
+            },
+        ],
+    },
+]
+
+/**
+ * A single stack chip. Renders as a link when the entry has a home page, and as
+ * plain text otherwise — practices like "design systems" have nowhere to point.
+ *
+ * `--brand` carries the brand colour so the icon can stay a currentColor glyph
+ * and only take on that colour on hover or keyboard focus.
+ */
+function StackChip({ item }: { item: StackItem }) {
+    const chipClass =
+        "inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm text-[var(--text-secondary)]"
+
+    const brandStyle = item.icon
+        ? ({ "--brand": BRAND_COLORS[item.icon] } as React.CSSProperties)
+        : undefined
+
+    const icon = item.icon ? (
+        <BrandIcon
+            name={item.icon}
+            className="h-3.5 w-3.5 shrink-0 opacity-60 transition-[color,opacity] duration-200 group-hover:text-[var(--brand)] group-hover:opacity-100 group-focus-visible:text-[var(--brand)] group-focus-visible:opacity-100"
+        />
+    ) : null
+
+    if (!item.href) {
+        return (
+            <span className={chipClass} style={brandStyle}>
+                {icon}
+                {item.label}
+            </span>
+        )
+    }
+
+    return (
+        <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={brandStyle}
+            className={`group ${chipClass} transition-colors duration-200 hover:border-[var(--brand)] focus-visible:border-[var(--brand)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]`}
+        >
+            {icon}
+            {item.label}
+            <span className="sr-only">(opens in a new tab)</span>
+        </a>
+    )
+}
+
 export function About() {
     const [time, setTime] = useState("")
     const [isNight, setIsNight] = useState(false)
@@ -58,7 +180,7 @@ export function About() {
     const bioText3 =
         "I've worked across gaming, big tech, SaaS, and logistics, and I'm comfortable navigating different domains, constraints, and levels of ambiguity."
 
-    const roles = ["frontend engineer", "UX engineer", "product designer"]
+    const roles = ["frontend developer", "product designer", "design engineer"]
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
 
     // Decrypt effect
@@ -89,12 +211,12 @@ export function About() {
         return () => clearInterval(interval)
     }, [currentRole])
 
-    // Rotate through roles once, then stop at "product designer"
+    // Rotate through the career arc once, then stop at "design engineer"
     useEffect(() => {
         const roleInterval = setInterval(() => {
             setCurrentRole((prev) => {
                 const next = prev + 1
-                // Stop at the last role (product designer)
+                // Stop at the last role (design engineer)
                 if (next >= roles.length) {
                     clearInterval(roleInterval)
                     return roles.length - 1
@@ -224,6 +346,38 @@ export function About() {
                                     {bioText3}
                                 </p>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Stack section */}
+                    <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 border-t border-[#F0F0F0] pt-12 md:pt-16 mb-12 md:mb-16">
+                        {/* Left: section label */}
+                        <div className="col-span-4 md:col-span-3 mb-8 md:mb-0">
+                            <p className="text-base font-medium text-foreground">
+                                {"What I work with"}
+                            </p>
+                        </div>
+
+                        {/* Right: grouped stack — aligned with intro text */}
+                        <div className="col-span-4 md:col-span-7 md:col-start-6">
+                            <dl className="max-w-[680px] flex flex-col gap-6">
+                                {stack.map((group) => (
+                                    <div key={group.id}>
+                                        <dt className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)] mb-3">
+                                            {group.label}
+                                        </dt>
+                                        <dd>
+                                            <ul className="flex flex-wrap gap-x-2 gap-y-2">
+                                                {group.items.map((item) => (
+                                                    <li key={item.label}>
+                                                        <StackChip item={item} />
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </dd>
+                                    </div>
+                                ))}
+                            </dl>
                         </div>
                     </div>
 

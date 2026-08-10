@@ -75,45 +75,26 @@ export const workProjects: readonly WorkProject[] = [
 
 export const projects = workProjects
 
-const funGalleryProjects = [
-    {
-        title: "Exploring Product Directions at Google Maps",
-        src: "/images/placeholder.svg",
-        href: "/prototypes/google-maps",
-        year: "2024",
-        subtitle: "A swipeable deck of Google Maps and Search prototypes, each with the question behind it and what happened after review.",
-    },
+// Rows for the "Built in Code" gallery. `src` is the image that follows the
+// cursor on hover, so every entry needs a real screenshot — a placeholder would
+// show up as the dashed "missing image" box mid-hover.
+const builtInCodeProjects = [
+    // `tags` rather than `year`: the gallery's right-hand column joins tags when
+    // no year is set, which is how each row states its context — client work vs
+    // a personal side project.
     {
         title: "Visualizing release impact across live games",
         src: "/images/release-timeline-thumb.png",
         href: "/work/release-timeline",
-        year: "2026",
+        tags: ["2026", "Tactile Games"],
         subtitle: "A release timeline inside the LiveOps Dashboard, prototyped in code, to cut debugging time.",
     },
     {
         title: "Human Redundancy Terminal",
         src: "/images/fun-human-redundancy.png",
         href: "https://dianatofan.github.io/risk-assessment-terminal",
-        year: "2026",
-        subtitle: "Will AI take my job? An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
-    },
-] as const
-
-// Cards for the Experiments section (previously in AI Experiments).
-const experimentCards = [
-    {
-        title: "Visualizing release impact across live games",
-        image: "/images/release-timeline-thumb.png",
-        tags: ["2026", "Tactile Games"],
-        href: "/work/release-timeline",
-        isPasswordProtected: false,
-    },
-    {
-        title: "Human Redundancy Terminal",
-        image: "/images/fun-human-redundancy.png",
         tags: ["2026", "Side project"],
-        href: "https://dianatofan.github.io/risk-assessment-terminal",
-        isPasswordProtected: false,
+        subtitle: "An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
     },
 ] as const
 
@@ -145,38 +126,14 @@ function WorkSection() {
     )
 }
 
-function ExperimentCardsSection() {
+function BuiltInCodeSection() {
     return (
-        <section className="space-y-6 md:space-y-8">
+        // id kept in sync with the "Back" links on /prototypes/* and /fun/*.
+        <section id="built-in-code" className="space-y-6 md:space-y-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                AI Experiments
+                Built in Code
             </h2>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                {experimentCards.map((card) => (
-                    <ProjectCard
-                        key={card.href}
-                        title={card.title}
-                        image={card.image}
-                        tags={[...card.tags]}
-                        href={card.href}
-                        featured={false}
-                        aspectClass="aspect-[3/2]"
-                        isPasswordProtected={card.isPasswordProtected}
-                        showCaptionTags={false}
-                    />
-                ))}
-            </div>
-        </section>
-    )
-}
-
-function ExperimentsSection() {
-    return (
-        <section id="fun" className="space-y-6 md:space-y-8">
-            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                AI Experiments
-            </h2>
-            <ImageSlideGallery projects={[...funGalleryProjects]} />
+            <ImageSlideGallery projects={[...builtInCodeProjects]} />
         </section>
     )
 }
@@ -188,10 +145,7 @@ export function Projects() {
                 <div className="space-y-16 md:space-y-20">
                     <WorkSection />
 
-                    <ExperimentCardsSection />
-
-                    {/* Hidden for now — to be re-addressed later. */}
-                    {/* <ExperimentsSection /> */}
+                    <BuiltInCodeSection />
                 </div>
             </div>
         </section>

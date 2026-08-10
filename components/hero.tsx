@@ -122,11 +122,9 @@ export function Hero() {
 
                     <div className="col-span-4 md:col-span-7 md:col-start-6 flex flex-col justify-center z-10">
                         <h1 className="text-4xl md:text-[56px] lg:text-[67px] font-medium leading-[1.08] text-foreground text-balance tracking-tight">
-                            {"I'm Diana, a product designer untangling complex systems"}
+                            {"I'm Diana, a design engineer untangling complex systems."}
                         </h1>
 
-                        {/*<p className="mt-4 text-base font-medium text-[var(--text-tertiary)]">*/}
-                        {/*    Currently building SaaS tools @Tactile, previously @Google, @Maersk                      </p>*/}
                     </div>
                 </div>
             </div>

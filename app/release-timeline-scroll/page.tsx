@@ -96,8 +96,8 @@ export default function ReleaseTimelineScrollPage() {
               <span className="font-medium text-foreground">why did it happen?</span> It&apos;s{" "}
               <span className="font-medium text-foreground">what changed?</span> A release, experiment,
               configuration update, or backend change could all affect the player experience. That
-              information already existed, but it was buried in tables and spread across tools, and
-              visual patterns are far easier to spot in a chart.
+              information already existed, but it was buried in tables and spread across tools.
+              Visual patterns are far easier to spot in a chart.
             </p>
           </div>
         </div>
