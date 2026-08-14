@@ -1,5 +1,6 @@
 import { ProjectCard } from "./project-card"
 import { ImageSlideGallery } from "./image-slide-gallery"
+import { Microcomponents } from "./microcomponents"
 
 type WorkProject = {
     slug: string
@@ -146,6 +147,8 @@ export function Projects() {
                     <WorkSection />
 
                     <BuiltInCodeSection />
+
+                    <Microcomponents />
                 </div>
             </div>
         </section>

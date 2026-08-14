@@ -1,0 +1,457 @@
+/*
+ * AI suggestion composer — the "drafting" cycle from the Tactile support
+ * messenger: a glowing frame around a reply box that shimmers while a draft is
+ * generated, then fades the finished text in.
+ *
+ * Ported from MUI `sx` + @emotion keyframes. Two substitutions, both deliberate:
+ *
+ *   - The original's glow is a WebGL mesh gradient (@paper-design/shaders-react).
+ *     Here it's animated CSS radial gradients — no new dependency, no shader
+ *     compile, and at this size the difference is a blur radius.
+ *   - The open/collapse uses the original's grid-template-rows 0fr → 1fr trick,
+ *     which animates to any content height without measuring. Worth keeping.
+ */
+
+.aic {
+    --aic-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --aic-purple: 124, 90, 248;
+    /* A step lighter than the original neutral[100], so the panel lifts off the
+       stage behind it. Also drives the toolbar icon hover. */
+    --aic-grey-100: #f7f8fa;
+    --aic-grey-200: #e5e7eb;
+    --aic-grey-300: #d1d5db;
+    --aic-grey-500: #6b7280;
+    --aic-grey-700: #374151;
+    --aic-grey-800: #1f2937;
+    --aic-skeleton-a: #dadbe2;
+    --aic-skeleton-b: #ecedf1;
+
+    position: relative;
+    isolation: isolate;
+    border-radius: 16px;
+    /* Clip the glow so colour never spills outside the frame. */
+    overflow: hidden;
+    padding-bottom: 5px;
+    background: var(--aic-grey-100);
+    transition: background 260ms ease;
+}
+
+/* Open or loading: hold the grey across the header, then fade to white. */
+.aic[data-open="true"] {
+    background: linear-gradient(
+        180deg,
+        var(--aic-grey-100) 0%,
+        var(--aic-grey-100) 46%,
+        #ffffff 100%
+    );
+}
+
+/* Collapsed: a soft "spotlight through fog" behind the empty header. */
+.aic-glow-top {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 170px;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(26px);
+    background: radial-gradient(46% 90% at 32% 74%, rgba(var(--aic-purple), 0.46), transparent 72%);
+    /* Slower and shallower than the open state — this is the resting breath the
+       closed door on the homepage shows. */
+    animation: aic-breathe-soft 6.5s ease-in-out infinite;
+}
+
+@keyframes aic-breathe-soft {
+    0%,
+    100% {
+        opacity: 0.72;
+        transform: scale(0.97);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.04);
+    }
+}
+
+/*
+ * Open: a pool of light in the band around the input. Masked so it fades to
+ * transparent before every edge — no rectangle, no visible seam. The drift is
+ * what replaces the shader's motion.
+ */
+.aic-glow-band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 260px;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 0 0 16px 16px;
+    filter: blur(44px);
+    /*
+     * The breath: the whole pool swells and settles on a slow cycle, deliberately
+     * out of step with the drift below it and the sparkle's pulse. Three periods
+     * that never line up read as something alive rather than a loop.
+     */
+    animation: aic-breathe 5.5s ease-in-out infinite;
+    -webkit-mask-image: radial-gradient(78% 84% at 48% 58%, #000 0%, #000 14%, transparent 70%);
+    mask-image: radial-gradient(78% 84% at 48% 58%, #000 0%, #000 14%, transparent 70%);
+}
+
+@keyframes aic-breathe {
+    0%,
+    100% {
+        opacity: 0.42;
+        transform: scale(0.98);
+    }
+    50% {
+        opacity: 0.68;
+        transform: scale(1.03);
+    }
+}
+
+.aic-glow-band::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(30% 40% at 24% 40%, rgba(var(--aic-purple), 0.95), transparent 70%),
+        radial-gradient(28% 38% at 70% 60%, rgba(177, 158, 239, 0.95), transparent 70%),
+        radial-gradient(24% 34% at 48% 30%, rgba(252, 211, 77, 0.55), transparent 70%);
+    animation: aic-drift 14s ease-in-out infinite alternate;
+}
+
+@keyframes aic-drift {
+    from {
+        transform: translate3d(-4%, -2%, 0) scale(1);
+    }
+    to {
+        transform: translate3d(5%, 3%, 0) scale(1.12);
+    }
+}
+
+/* A single pool of light directly beneath the input card. */
+.aic-glow-input {
+    position: absolute;
+    inset: -16px;
+    border-radius: 28px;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(22px);
+    background: radial-gradient(
+        56% 120% at 48% 116%,
+        rgba(var(--aic-purple), 0.6),
+        transparent 68%
+    );
+}
+
+.aic-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 6px;
+    padding: 14px 11px 12px 15px;
+    width: calc(100% - 12px);
+    background: none;
+    border: 0;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.aic-header[disabled] {
+    cursor: default;
+}
+
+.aic-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--aic-grey-800);
+    white-space: nowrap;
+}
+
+.aic-chevron {
+    margin-left: auto;
+    color: var(--aic-grey-500);
+    transition: transform 120ms ease;
+}
+
+.aic[data-expanded="true"] .aic-chevron {
+    transform: rotate(180deg);
+}
+
+/* The sparkle pulses only while a draft is being generated. */
+.aic-sparkle {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: rgb(var(--aic-purple));
+}
+
+.aic[data-loading="true"] .aic-sparkle {
+    animation: aic-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes aic-pulse {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: scale(0.92);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+}
+
+/*
+ * Body region. 0fr → 1fr animates the reveal at any content height, so the
+ * skeleton and the finished draft can differ in height without measuring.
+ */
+.aic-body {
+    position: relative;
+    z-index: 1;
+    margin: 0 6px;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s var(--aic-ease);
+}
+
+.aic[data-open="true"] .aic-body {
+    grid-template-rows: 1fr;
+}
+
+.aic-body-inner {
+    overflow: hidden;
+    min-height: 0;
+}
+
+.aic-pad {
+    padding: 2px 11px 22px 15px;
+}
+
+.aic-skeleton {
+    height: 9px;
+    border-radius: 5px;
+    background: linear-gradient(
+        90deg,
+        var(--aic-skeleton-a) 25%,
+        var(--aic-skeleton-b) 50%,
+        var(--aic-skeleton-a) 75%
+    );
+    background-size: 200% 100%;
+    animation: aic-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes aic-shimmer {
+    from {
+        background-position: 200% 0;
+    }
+    to {
+        background-position: -200% 0;
+    }
+}
+
+.aic-draft {
+    animation: aic-text-fade 460ms ease both;
+}
+
+@keyframes aic-text-fade {
+    from {
+        opacity: 0;
+        transform: translateY(3px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aic-draft-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--aic-grey-800);
+    white-space: pre-wrap;
+}
+
+/* The white reply card. */
+.aic-card-wrap {
+    position: relative;
+    z-index: 1;
+    margin: 4px 6px 0;
+}
+
+.aic-card {
+    position: relative;
+    z-index: 1;
+    border: 1px solid var(--aic-grey-200);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px -12px rgba(80, 32, 144, 0.24);
+}
+
+.aic-card:focus-within {
+    border-color: rgb(var(--aic-purple));
+}
+
+.aic-textarea {
+    width: 100%;
+    min-height: 64px;
+    max-height: 160px;
+    overflow-y: auto;
+    resize: none;
+    border: 0;
+    padding: 12px 14px 0;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--aic-grey-800);
+    outline: none;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+.aic-textarea::placeholder {
+    color: var(--aic-grey-500);
+}
+
+.aic-inserted {
+    animation: aic-text-fade 420ms ease;
+}
+
+.aic-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+}
+
+.aic-icon-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--aic-grey-500);
+}
+
+.aic-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--aic-grey-500);
+    cursor: pointer;
+    transition: background-color 200ms ease;
+}
+
+.aic-icon-btn:hover {
+    background-color: var(--aic-grey-100);
+}
+
+.aic-send {
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 8px;
+    background: rgb(var(--aic-purple));
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: opacity 200ms ease;
+}
+
+.aic-send:hover {
+    opacity: 0.88;
+}
+
+.aic-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.aic-regen {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: auto;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: #6d5ba8;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 200ms ease;
+}
+
+.aic-regen:hover {
+    background-color: rgba(109, 91, 168, 0.08);
+}
+
+.aic-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--aic-grey-700);
+    cursor: pointer;
+    transition: background-color 200ms ease;
+}
+
+.aic-action:hover {
+    background-color: var(--aic-grey-200);
+}
+
+.aic-use {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    margin-left: 4px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 8px;
+    background: rgb(var(--aic-purple));
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    /* Matches SEND in the toolbar below. */
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: opacity 200ms ease;
+}
+
+.aic-use:hover {
+    opacity: 0.88;
+}
+
+.aic-focus:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aic,
+    .aic * {
+        animation: none !important;
+        transition: none !important;
+    }
+}

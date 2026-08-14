@@ -1,0 +1,295 @@
+/*
+ * Holdout concept diagram — the phase-driven "break the stick" explainer.
+ *
+ * State lives in one `data-phase` attribute on the root and every transition is
+ * declarative CSS keyed off it, so the whole animation is four rules deep rather
+ * than a timeline in JavaScript. The component only advances a number.
+ *
+ * Ported from the Tactile A/B-test dialog, where this was MUI `sx`. Kept as a
+ * stylesheet (like About.css / PixelBlast.css) because phase selectors such as
+ * `[data-phase="3"] .hd-seg-fill` are unreadable as Tailwind arbitrary variants.
+ */
+
+.hd {
+    --hd-ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+    --hd-grey-100: #efefef;
+    --hd-grey-200: #e0e0e0;
+    --hd-grey-500: #949494;
+    --hd-grey-600: #767676;
+    --hd-grey-700: #4d4e50;
+    --hd-purple-100: #eeeafb;
+    --hd-purple-400: #b19eef;
+    --hd-purple-800: #4c3a9e;
+    --hd-blue-600: #2f80d8;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #f4f4f5;
+}
+
+.hd-bar {
+    position: relative;
+    display: flex;
+    height: 30px;
+    gap: 0;
+    transition: gap 0.4s var(--hd-ease);
+}
+
+/* The carved-out group: never treated, same players every test. */
+.hd-holdout {
+    position: relative;
+    background: var(--hd-grey-200);
+    border-radius: 5px 0 0 5px;
+    overflow: hidden;
+    transform: translateX(0);
+    transition:
+        border-radius 0.32s var(--hd-ease),
+        transform 0.4s var(--hd-ease);
+}
+
+.hd-hatch {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: repeating-linear-gradient(
+        135deg,
+        var(--hd-grey-100),
+        var(--hd-grey-100) 5px,
+        var(--hd-grey-200) 5px,
+        var(--hd-grey-200) 10px
+    );
+    transition: opacity 0.3s ease;
+}
+
+/* The remaining population, which reshuffles into control/treatment. */
+.hd-pool {
+    position: relative;
+    background: var(--hd-grey-200);
+    border: 1px dashed transparent;
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    gap: 0;
+    overflow: visible;
+    transform: translateX(0);
+    transition:
+        background 0.35s ease,
+        border-color 0.35s ease,
+        border-radius 0.32s var(--hd-ease),
+        transform 0.4s var(--hd-ease),
+        gap 0.4s var(--hd-ease);
+}
+
+.hd-seg {
+    position: relative;
+    border-radius: 0;
+    overflow: hidden;
+    transform: translateX(0);
+    transition:
+        transform 0.4s var(--hd-ease),
+        border-radius 0.3s ease;
+}
+
+.hd-seg-fill {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.hd-seg-control .hd-seg-fill {
+    background: var(--hd-grey-500);
+}
+
+.hd-seg-treatment .hd-seg-fill {
+    background: var(--hd-blue-600);
+}
+
+.hd-lbl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 600;
+    transition: opacity 0.16s ease-out;
+}
+
+.hd-lbl-abs {
+    position: absolute;
+    inset: 0;
+}
+
+.hd-lbl-holdout {
+    color: var(--foreground);
+    opacity: 0;
+}
+
+.hd-lbl-seg {
+    color: #ffffff;
+    opacity: 0;
+}
+
+.hd-lbl-pool {
+    color: var(--hd-grey-700);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hd-lbl-all {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    pointer-events: none;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--hd-grey-700);
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity 0.2s ease,
+        transform 0.28s var(--hd-ease);
+}
+
+.hd-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Seed captions sit under the bar and land last, via their own delay. */
+.hd-seeds {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.55s;
+}
+
+.hd-seed-cell {
+    text-align: center;
+    padding-top: 8px;
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: nowrap;
+    color: var(--hd-grey-500);
+}
+
+.hd-seed-groups {
+    border-top: 1px solid var(--hd-grey-200);
+}
+
+/* ── Phases 1-4: the holdout has separated from the test groups ───────────── */
+
+.hd[data-phase="1"] .hd-bar,
+.hd[data-phase="2"] .hd-bar,
+.hd[data-phase="3"] .hd-bar,
+.hd[data-phase="4"] .hd-bar {
+    gap: 12px;
+}
+
+.hd[data-phase="1"] .hd-hatch,
+.hd[data-phase="2"] .hd-hatch,
+.hd[data-phase="3"] .hd-hatch,
+.hd[data-phase="4"] .hd-hatch {
+    opacity: 1;
+}
+
+.hd[data-phase="1"] .hd-lbl-all,
+.hd[data-phase="2"] .hd-lbl-all,
+.hd[data-phase="3"] .hd-lbl-all,
+.hd[data-phase="4"] .hd-lbl-all {
+    opacity: 0;
+    transform: translateY(-4px);
+}
+
+.hd[data-phase="1"] .hd-holdout,
+.hd[data-phase="2"] .hd-holdout,
+.hd[data-phase="3"] .hd-holdout,
+.hd[data-phase="4"] .hd-holdout {
+    border-radius: 5px;
+    transform: translateX(-2px);
+}
+
+.hd[data-phase="1"] .hd-pool,
+.hd[data-phase="2"] .hd-pool,
+.hd[data-phase="3"] .hd-pool,
+.hd[data-phase="4"] .hd-pool {
+    border-radius: 5px;
+    transform: translateX(2px);
+}
+
+/* ── Phases 1-2: the test groups still read as one reserved block ─────────── */
+
+.hd[data-phase="1"] .hd-pool,
+.hd[data-phase="2"] .hd-pool {
+    background: var(--hd-purple-100);
+    border-color: var(--hd-purple-400);
+}
+
+/* ── Phase 2: labels land on holdout + test groups ────────────────────────── */
+
+.hd[data-phase="2"] .hd-lbl-holdout,
+.hd[data-phase="3"] .hd-lbl-holdout,
+.hd[data-phase="4"] .hd-lbl-holdout {
+    opacity: 1;
+}
+
+.hd[data-phase="2"] .hd-lbl-pool {
+    opacity: 1;
+    color: var(--hd-purple-800);
+}
+
+/* ── Phases 3-4: the test groups split into control | treatment ───────────── */
+
+.hd[data-phase="3"] .hd-pool,
+.hd[data-phase="4"] .hd-pool {
+    background: transparent;
+    border-color: transparent;
+    gap: 10px;
+}
+
+.hd[data-phase="3"] .hd-seg-fill,
+.hd[data-phase="4"] .hd-seg-fill {
+    opacity: 1;
+}
+
+.hd[data-phase="3"] .hd-seg,
+.hd[data-phase="4"] .hd-seg {
+    border-radius: 5px;
+}
+
+.hd[data-phase="3"] .hd-seg-control,
+.hd[data-phase="4"] .hd-seg-control {
+    transform: translateX(-3px);
+}
+
+.hd[data-phase="3"] .hd-seg-treatment,
+.hd[data-phase="4"] .hd-seg-treatment {
+    transform: translateX(3px);
+}
+
+/* ── Phase 4: segment labels land, then the seed captions ─────────────────── */
+
+.hd[data-phase="4"] .hd-lbl-seg {
+    opacity: 1;
+}
+
+.hd[data-phase="4"] .hd-seeds {
+    opacity: 1;
+}
+
+/*
+ * Reduced motion: the component already starts at the final phase, so there is
+ * nothing to animate — but kill the transitions too, in case a phase is ever set
+ * programmatically (the replay control is hidden in this mode).
+ */
+@media (prefers-reduced-motion: reduce) {
+    .hd *,
+    .hd {
+        transition: none !important;
+    }
+}
