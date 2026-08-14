@@ -41,6 +41,57 @@
     font-display: swap;
 }
 
+/*
+ * Material Symbols, self-hosted.
+ *
+ * This used to be a <link> to fonts.googleapis.com in app/layout.tsx. Measured on
+ * the live site, that stylesheet was the last render-blocking request on the
+ * critical path — it finished at 561ms and first paint happened at 584ms, so it
+ * was gating first paint, and on a cold connection it also cost DNS + TLS to two
+ * Google origins. The file is 11 KB; serving it ourselves takes it off the
+ * critical path entirely and removes a third-party dependency for it.
+ *
+ * The rules below are Google's own output for the subset, verbatim, with the src
+ * pointed at /public/fonts. `font-weight: 400 500` is a variable range, not a
+ * typo, and `font-display: block` is deliberate: a swapped icon font briefly
+ * paints the ligature text, so you would see the word "ads_click" before the glyph.
+ *
+ * IMPORTANT: the woff2 contains ONLY these twenty icons —
+ *   ads_click, arrow_back, attach_file, auto_awesome, autorenew, bedtime, check,
+ *   close, cloud_sync, edit, expand_more, lock, menu, pause, play_arrow,
+ *   quickreply, replay, stop, subdirectory_arrow_right, sunny
+ * Any icon not on that list renders as its own name in plain text. To add one,
+ * re-fetch the subset (names must stay alphabetical) and replace the file:
+ *
+ *   curl -s "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..500,0..1,0&icon_names=<comma,separated,names>&display=block"
+ *   # then download the woff2 URL it returns to public/fonts/material-symbols-subset.woff2
+ *
+ * The full font, which is what an unsubsetted request serves, is 3,874 KB.
+ */
+@font-face {
+    font-family: "Material Symbols Outlined";
+    font-style: normal;
+    font-weight: 400 500;
+    font-display: block;
+    src: url("/fonts/material-symbols-subset.woff2") format("woff2");
+}
+
+.material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 

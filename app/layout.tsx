@@ -53,29 +53,41 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 {/*
-                 * Material Symbols, subset to the icons this site actually draws.
+                 * Material Symbols is self-hosted from /public/fonts and declared in
+                 * globals.css — see the note there before adding an icon, since the
+                 * file is subset to twenty specific names. It used to be a
+                 * render-blocking <link> to fonts.googleapis.com, which measured as
+                 * the last thing gating first paint on the live site.
                  *
-                 * Without `icon_names` Google serves the whole variable font — all
-                 * 3,000+ glyphs across every axis range — which is 3,874 KB, more
-                 * than every image on the homepage combined. The same request
-                 * subset to these twenty icons is 11 KB.
-                 *
-                 * IMPORTANT: adding an icon anywhere in the codebase means adding
-                 * its name here, alphabetically, or it renders as its own name in
-                 * plain text. The axis ranges are likewise narrowed to what the
-                 * components ask for (opsz 20-24, wght 500, FILL 0 and 1, GRAD 0);
-                 * widen them here if a component starts asking for more.
-                 *
-                 * `display=block` rather than swap: a swapped icon font briefly
-                 * paints the ligature text, so you'd see the word "ads_click"
-                 * before the glyph arrives.
+                 * Preloaded because it is declared in a stylesheet the browser has
+                 * to fetch and parse first; without this the font request only
+                 * starts after that round trip.
                  */}
                 <link
-                    rel="stylesheet"
-                    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..500,0..1,0&icon_names=ads_click,arrow_back,attach_file,auto_awesome,autorenew,bedtime,check,close,cloud_sync,edit,expand_more,lock,menu,pause,play_arrow,quickreply,replay,stop,subdirectory_arrow_right,sunny&display=block"
+                    rel="preload"
+                    href="/fonts/material-symbols-subset.woff2"
+                    as="font"
+                    type="font/woff2"
+                    crossOrigin="anonymous"
+                />
+                {/* The two weights above the fold: 400 for body copy, 500 for the
+                    h1 and the nav. SemiBold is left out on purpose — it is only
+                    used inside the deferred sections, so preloading it would
+                    compete with the hero for bandwidth. */}
+                <link
+                    rel="preload"
+                    href="/fonts/Saans-Regular.woff2"
+                    as="font"
+                    type="font/woff2"
+                    crossOrigin="anonymous"
+                />
+                <link
+                    rel="preload"
+                    href="/fonts/Saans-Medium.woff2"
+                    as="font"
+                    type="font/woff2"
+                    crossOrigin="anonymous"
                 />
             </head>
             <body className="font-sans antialiased">
