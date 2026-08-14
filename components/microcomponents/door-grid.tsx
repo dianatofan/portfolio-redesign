@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext, useEffect, useRef, useState } from "react"
+import { memo, useCallback, useContext, useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { CursorContext } from "@/context/CursorContext"
 import { appleEase, STAGE_BG, type Microcomponent } from "./types"
@@ -27,6 +27,214 @@ const innerBorders = (rowEnd: number, colEnd: number) =>
         .filter(Boolean)
         .join(" ")
 
+type DoorProps = {
+    item: Microcomponent
+    isOpen: boolean
+    isGroupActive: boolean
+    /** Only ever true for the open door — see the note at the call site. */
+    hintUsed: boolean
+    reduceMotion: boolean
+    onOpen: (id: string) => void
+    onClose: () => void
+    onEnter: (id: string) => void
+    onHover: (id: string | null) => void
+    onHintUsed: () => void
+    registerTrigger: (id: string, el: HTMLButtonElement | null) => void
+}
+
+/*
+ * Memoised per cell, which matters more than it looks: every door is a
+ * framer-motion `layout` node, and a layout node re-measures itself whenever it
+ * re-renders. Without this, moving the pointer across the grid re-measured all
+ * three doors and all three satellites — a forced reflow of the whole document,
+ * repeatedly, while the visitor was mid-scroll. Now a hover re-renders only the
+ * cell being entered and the one being left.
+ */
+const Door = memo(function Door({
+    item,
+    isOpen,
+    isGroupActive,
+    hintUsed,
+    reduceMotion,
+    onOpen,
+    onClose,
+    onEnter,
+    onHover,
+    onHintUsed,
+    registerTrigger,
+}: DoorProps) {
+    return (
+        <motion.div
+            layout={!reduceMotion}
+            transition={{ duration: 0.5, ease: appleEase }}
+            style={{
+                gridArea: isOpen ? OPEN_AREA : toGridArea(item.area),
+                zIndex: isOpen ? 20 : isGroupActive ? 10 : 1,
+            }}
+            className={`relative overflow-hidden border-border transition-colors duration-200 ${
+                // Opened, the cell spans the whole grid, so it has no
+                // internal edges left to draw.
+                isOpen ? "" : innerBorders(item.area.row[1], item.area.col[1])
+            } ${isGroupActive ? "bg-[#f4f4f5]" : "bg-card"}`}
+        >
+            {/* The cover stays mounted and fades out, so the crossfade
+                has something to cross from and the focus target survives. */}
+            <button
+                ref={(el) => {
+                    registerTrigger(item.id, el)
+                }}
+                type="button"
+                onClick={() => onOpen(item.id)}
+                onMouseEnter={() => onEnter(item.id)}
+                onFocus={() => onHover(item.id)}
+                onBlur={() => onHover(null)}
+                aria-expanded={isOpen}
+                aria-controls={`${item.id}-panel`}
+                tabIndex={isOpen ? -1 : 0}
+                style={{
+                    opacity: isOpen ? 0 : 1,
+                    pointerEvents: isOpen ? "none" : "auto",
+                }}
+                className="absolute inset-0 z-[1] flex flex-col justify-between p-5 text-left transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-foreground/40 motion-reduce:transition-none"
+            >
+                <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">
+                    {item.num}
+                </span>
+
+                {/* A finished component shows itself here rather than
+                    hiding behind the door. Inert by necessity — see the
+                    note in switchboard-filter.tsx. */}
+                {item.preview && (
+                    <span
+                        aria-hidden
+                        className="pointer-events-none flex flex-1 items-center justify-center pb-6 pt-4"
+                    >
+                        {item.preview()}
+                    </span>
+                )}
+
+                <span>
+                    <span className="block font-medium text-foreground">{item.name}</span>
+                    {item.blurb && (
+                        <span className="mt-1 block max-w-[52ch] text-sm text-[var(--text-secondary)]">
+                            {item.blurb}
+                        </span>
+                    )}
+                </span>
+            </button>
+
+            {isOpen && (
+                <div
+                    id={`${item.id}-panel`}
+                    role="group"
+                    aria-label={item.name}
+                    className="absolute inset-0 flex flex-col"
+                >
+                    <div className="flex shrink-0 items-center justify-between gap-4 border-b border-border px-5 py-3.5">
+                        <span className="flex items-baseline gap-3">
+                            <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">
+                                {item.num}
+                            </span>
+                            <span className="font-medium text-foreground">{item.name}</span>
+                        </span>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="rounded-full border border-border px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)] transition-colors duration-200 hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:ring-offset-2"
+                        >
+                            Close
+                        </button>
+                    </div>
+                    {/* A text rail beside the component, using the width
+                        the opened panel suddenly has. Skipped entirely
+                        when there's no note, so nothing empty appears. */}
+                    <div className="flex min-h-0 flex-1">
+                        {item.note && (
+                            <div className="w-[300px] shrink-0 overflow-y-auto border-r border-border px-5 py-5">
+                                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                                    {item.note}
+                                </p>
+                            </div>
+                        )}
+                        {/* Interaction listeners sit on this column
+                            only, so using the header's Close button
+                            doesn't count as "they figured it out". */}
+                        <div
+                            className={`relative min-h-0 min-w-0 flex-1 ${STAGE_BG}`}
+                            onPointerDown={onHintUsed}
+                            onKeyDown={onHintUsed}
+                        >
+                            {item.render()}
+
+                            {/* Click affordance, tucked bottom-right so it
+                                never sits in the component's way, and
+                                gone the moment the visitor interacts. */}
+                            <span
+                                className="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full border border-border bg-card/85 px-2.5 py-1 text-[11px] text-[var(--text-tertiary)] backdrop-blur-sm transition-opacity duration-500 motion-reduce:transition-none"
+                                style={{ opacity: hintUsed ? 0 : 1 }}
+                            >
+                                <span
+                                    aria-hidden
+                                    className="material-symbols-outlined leading-none"
+                                    style={{
+                                        fontSize: 14,
+                                        fontVariationSettings:
+                                            '"FILL" 0, "wght" 500, "GRAD" 0, "opsz" 20',
+                                    }}
+                                >
+                                    ads_click
+                                </span>
+                                Interactive
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </motion.div>
+    )
+})
+
+/*
+ * Satellites: a second way into the same component, and the filler that makes
+ * the composition feel deliberate rather than padded. They're aria-hidden and
+ * not focusable on purpose — the main door is the keyboard-reachable control, so
+ * these would only add duplicate tab stops and repeated announcements.
+ */
+const Satellite = memo(function Satellite({
+    item,
+    row,
+    isGroupActive,
+    onOpen,
+    onEnter,
+}: {
+    item: Microcomponent
+    row: number
+    isGroupActive: boolean
+    onOpen: (id: string) => void
+    onEnter: (id: string) => void
+}) {
+    return (
+        <div
+            aria-hidden
+            onClick={() => onOpen(item.id)}
+            onMouseEnter={() => onEnter(item.id)}
+            style={{ gridArea: `${row} / ${COLS} / ${row + 1} / ${OUTER_COL}` }}
+            className={`flex items-center justify-center border-border transition-colors duration-200 ${innerBorders(
+                row + 1,
+                OUTER_COL
+            )} ${isGroupActive ? "bg-[#f4f4f5]" : "bg-card"}`}
+        >
+            <span
+                className={`font-mono text-2xl tabular-nums transition-colors duration-200 ${
+                    isGroupActive ? "text-foreground" : "text-[var(--text-tertiary)]"
+                }`}
+            >
+                {item.num}
+            </span>
+        </div>
+    )
+})
+
 /**
  * A modular grid of numbered compartments. Clicking one expands it in place to
  * fill the grid and reveals the component inside.
@@ -49,25 +257,38 @@ export function DoorGrid({ items }: { items: Microcomponent[] }) {
     // Whether the visitor has touched the opened component yet. Reset on every
     // open, so the hint greets each door but never nags after you've acted.
     const [hintUsed, setHintUsed] = useState(false)
-    const reduceMotion = useReducedMotion()
+    const reduceMotion = useReducedMotion() ?? false
     const { setVariant } = useContext(CursorContext)
     const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+    // Read by the stable `close` callback below, so closing doesn't have to
+    // depend on openId — a changing callback identity would defeat the memo on
+    // every cell.
+    const openIdRef = useRef<string | null>(null)
+    openIdRef.current = openId
 
-    const open = (id: string) => {
-        setOpenId(id)
-        setHintUsed(false)
-        // Drop the big "Open" disc — it shouldn't linger over an opened panel.
-        setVariant("default")
-    }
+    const registerTrigger = useCallback((id: string, el: HTMLButtonElement | null) => {
+        triggerRefs.current[id] = el
+    }, [])
 
-    const close = () => {
-        const trigger = openId ? triggerRefs.current[openId] : null
+    const open = useCallback(
+        (id: string) => {
+            setOpenId(id)
+            setHintUsed(false)
+            // Drop the big "Open" disc — it shouldn't linger over an opened panel.
+            setVariant("default")
+        },
+        [setVariant]
+    )
+
+    const close = useCallback(() => {
+        const id = openIdRef.current
+        const trigger = id ? triggerRefs.current[id] : null
         setOpenId(null)
         setVariant("default")
         // Hand focus back to the door that was opened, so keyboard users aren't
         // dumped at the top of the document. Wait a frame for it to be tabbable.
         requestAnimationFrame(() => trigger?.focus())
-    }
+    }, [setVariant])
 
     useEffect(() => {
         if (!openId) return
@@ -76,19 +297,22 @@ export function DoorGrid({ items }: { items: Microcomponent[] }) {
         }
         window.addEventListener("keydown", onKey)
         return () => window.removeEventListener("keydown", onKey)
-        // `close` reads openId from this render, and the effect re-runs whenever
-        // openId changes, so the closure is never stale.
-    }, [openId])
+    }, [openId, close])
 
-    const enter = (id: string) => {
-        setHoveredId(id)
-        if (!openId) setVariant("open")
-    }
+    const enter = useCallback(
+        (id: string) => {
+            setHoveredId(id)
+            if (!openIdRef.current) setVariant("open")
+        },
+        [setVariant]
+    )
 
-    const leave = () => {
+    const leave = useCallback(() => {
         setHoveredId(null)
         setVariant("default")
-    }
+    }, [setVariant])
+
+    const markHintUsed = useCallback(() => setHintUsed(true), [])
 
     return (
         <div
@@ -99,178 +323,35 @@ export function DoorGrid({ items }: { items: Microcomponent[] }) {
             className="relative grid h-[640px] w-full grid-cols-5 overflow-hidden rounded-lg border border-border [grid-template-rows:repeat(3,minmax(0,1fr))]"
             onMouseLeave={leave}
         >
-            {items.map((item) => {
-                const isOpen = openId === item.id
-                const isGroupActive = hoveredId === item.id && !openId
+            {items.map((item) => (
+                <Door
+                    key={item.id}
+                    item={item}
+                    isOpen={openId === item.id}
+                    isGroupActive={hoveredId === item.id && !openId}
+                    // Passed as false for closed doors: only the open one renders
+                    // the hint, so the others stay out of this state's re-renders.
+                    hintUsed={openId === item.id ? hintUsed : false}
+                    reduceMotion={reduceMotion}
+                    onOpen={open}
+                    onClose={close}
+                    onEnter={enter}
+                    onHover={setHoveredId}
+                    onHintUsed={markHintUsed}
+                    registerTrigger={registerTrigger}
+                />
+            ))}
 
-                return (
-                    <motion.div
-                        key={item.id}
-                        layout={!reduceMotion}
-                        transition={{ duration: 0.5, ease: appleEase }}
-                        style={{
-                            gridArea: isOpen ? OPEN_AREA : toGridArea(item.area),
-                            zIndex: isOpen ? 20 : isGroupActive ? 10 : 1,
-                        }}
-                        className={`relative overflow-hidden border-border transition-colors duration-200 ${
-                            // Opened, the cell spans the whole grid, so it has no
-                            // internal edges left to draw.
-                            isOpen ? "" : innerBorders(item.area.row[1], item.area.col[1])
-                        } ${isGroupActive ? "bg-[#f4f4f5]" : "bg-card"}`}
-                    >
-                        {/* The cover stays mounted and fades out, so the crossfade
-                            has something to cross from and the focus target survives. */}
-                        <button
-                            ref={(el) => {
-                                triggerRefs.current[item.id] = el
-                            }}
-                            type="button"
-                            onClick={() => open(item.id)}
-                            onMouseEnter={() => enter(item.id)}
-                            onFocus={() => setHoveredId(item.id)}
-                            onBlur={() => setHoveredId(null)}
-                            aria-expanded={isOpen}
-                            aria-controls={`${item.id}-panel`}
-                            tabIndex={isOpen ? -1 : 0}
-                            style={{
-                                opacity: isOpen ? 0 : 1,
-                                pointerEvents: isOpen ? "none" : "auto",
-                            }}
-                            className="absolute inset-0 z-[1] flex flex-col justify-between p-5 text-left transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-foreground/40 motion-reduce:transition-none"
-                        >
-                            <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">
-                                {item.num}
-                            </span>
-
-                            {/* A finished component shows itself here rather than
-                                hiding behind the door. Inert by necessity — see the
-                                note in switchboard-filter.tsx. */}
-                            {item.preview && (
-                                <span
-                                    aria-hidden
-                                    className="pointer-events-none flex flex-1 items-center justify-center pb-6 pt-4"
-                                >
-                                    {item.preview()}
-                                </span>
-                            )}
-
-                            <span>
-                                <span className="block font-medium text-foreground">
-                                    {item.name}
-                                </span>
-                                {item.blurb && (
-                                    <span className="mt-1 block max-w-[52ch] text-sm text-[var(--text-secondary)]">
-                                        {item.blurb}
-                                    </span>
-                                )}
-                            </span>
-                        </button>
-
-                        {isOpen && (
-                            <div
-                                id={`${item.id}-panel`}
-                                role="group"
-                                aria-label={item.name}
-                                className="absolute inset-0 flex flex-col"
-                            >
-                                <div className="flex shrink-0 items-center justify-between gap-4 border-b border-border px-5 py-3.5">
-                                    <span className="flex items-baseline gap-3">
-                                        <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">
-                                            {item.num}
-                                        </span>
-                                        <span className="font-medium text-foreground">
-                                            {item.name}
-                                        </span>
-                                    </span>
-                                    <button
-                                        type="button"
-                                        onClick={close}
-                                        className="rounded-full border border-border px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)] transition-colors duration-200 hover:bg-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:ring-offset-2"
-                                    >
-                                        Close
-                                    </button>
-                                </div>
-                                {/* A text rail beside the component, using the width
-                                    the opened panel suddenly has. Skipped entirely
-                                    when there's no note, so nothing empty appears. */}
-                                <div className="flex min-h-0 flex-1">
-                                    {item.note && (
-                                        <div className="w-[300px] shrink-0 overflow-y-auto border-r border-border px-5 py-5">
-                                            <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
-                                                {item.note}
-                                            </p>
-                                        </div>
-                                    )}
-                                    {/* Interaction listeners sit on this column
-                                        only, so using the header's Close button
-                                        doesn't count as "they figured it out". */}
-                                    <div
-                                        className={`relative min-h-0 min-w-0 flex-1 ${STAGE_BG}`}
-                                        onPointerDown={() => setHintUsed(true)}
-                                        onKeyDown={() => setHintUsed(true)}
-                                    >
-                                        {item.render()}
-
-                                        {/* Click affordance, tucked bottom-right so it
-                                            never sits in the component's way, and
-                                            gone the moment the visitor interacts. */}
-                                        <span
-                                            className="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full border border-border bg-card/85 px-2.5 py-1 text-[11px] text-[var(--text-tertiary)] backdrop-blur-sm transition-opacity duration-500 motion-reduce:transition-none"
-                                            style={{ opacity: hintUsed ? 0 : 1 }}
-                                        >
-                                            <span
-                                                aria-hidden
-                                                className="material-symbols-outlined leading-none"
-                                                style={{
-                                                    fontSize: 14,
-                                                    fontVariationSettings:
-                                                        '"FILL" 0, "wght" 500, "GRAD" 0, "opsz" 20',
-                                                }}
-                                            >
-                                                ads_click
-                                            </span>
-                                            Interactive
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </motion.div>
-                )
-            })}
-
-            {/*
-              Satellites: a second way into the same component, and the filler that
-              makes the composition feel deliberate rather than padded. They're
-              aria-hidden and not focusable on purpose — the main door is the
-              keyboard-reachable control, so these would only add duplicate tab
-              stops and repeated announcements.
-            */}
-            {items.map((item, i) => {
-                const isGroupActive = hoveredId === item.id && !openId
-
-                return (
-                    <div
-                        key={`satellite-${item.id}`}
-                        aria-hidden
-                        onClick={() => open(item.id)}
-                        onMouseEnter={() => enter(item.id)}
-                        style={{ gridArea: `${i + 1} / ${COLS} / ${i + 2} / ${OUTER_COL}` }}
-                        className={`flex items-center justify-center border-border transition-colors duration-200 ${innerBorders(
-                            i + 2,
-                            OUTER_COL
-                        )} ${isGroupActive ? "bg-[#f4f4f5]" : "bg-card"}`}
-                    >
-                        <span
-                            className={`font-mono text-2xl tabular-nums transition-colors duration-200 ${
-                                isGroupActive ? "text-foreground" : "text-[var(--text-tertiary)]"
-                            }`}
-                        >
-                            {item.num}
-                        </span>
-                    </div>
-                )
-            })}
+            {items.map((item, i) => (
+                <Satellite
+                    key={`satellite-${item.id}`}
+                    item={item}
+                    row={i + 1}
+                    isGroupActive={hoveredId === item.id && !openId}
+                    onOpen={open}
+                    onEnter={enter}
+                />
+            ))}
         </div>
     )
 }

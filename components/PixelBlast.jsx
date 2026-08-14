@@ -352,6 +352,7 @@ const PixelBlast = ({
       if (threeRef.current) {
         const t = threeRef.current;
         t.resizeObserver?.disconnect();
+      t.intersectionObserver?.disconnect();
         cancelAnimationFrame(t.raf);
         t.quad?.geometry.dispose();
         t.material.dispose();
@@ -419,6 +420,24 @@ const PixelBlast = ({
       setSize();
       const ro = new ResizeObserver(setSize);
       ro.observe(container);
+      /*
+       * The other half of `autoPauseOffscreen`. The animate loop below has always
+       * checked visibilityRef before rendering, but nothing ever set it — so a
+       * full-screen fragment shader kept drawing at devicePixelRatio (2880x1440
+       * here) sixty-plus times a second while scrolled a page and a half out of
+       * view, competing with every scroll on the site for GPU.
+       *
+       * rootMargin keeps it awake slightly before it scrolls back in, so nobody
+       * sees a resume.
+       */
+      const io = new IntersectionObserver(
+        entries => {
+          const entry = entries[entries.length - 1];
+          if (entry) visibilityRef.current.visible = entry.isIntersecting;
+        },
+        { rootMargin: '128px' }
+      );
+      io.observe(container);
       const randomFloat = () => {
         if (typeof window !== 'undefined' && window.crypto?.getRandomValues) {
           const u32 = new Uint32Array(1);
@@ -529,6 +548,7 @@ const PixelBlast = ({
         clickIx: 0,
         uniforms,
         resizeObserver: ro,
+        intersectionObserver: io,
         raf,
         quad,
         timeOffset,
@@ -565,6 +585,7 @@ const PixelBlast = ({
       if (!threeRef.current) return;
       const t = threeRef.current;
       t.resizeObserver?.disconnect();
+      t.intersectionObserver?.disconnect();
       cancelAnimationFrame(t.raf);
       t.quad?.geometry.dispose();
       t.material.dispose();

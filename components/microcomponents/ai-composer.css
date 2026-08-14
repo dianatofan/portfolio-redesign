@@ -58,19 +58,24 @@
     filter: blur(26px);
     background: radial-gradient(46% 90% at 32% 74%, rgba(var(--aic-purple), 0.46), transparent 72%);
     /* Slower and shallower than the open state — this is the resting breath the
-       closed door on the homepage shows. */
+       closed door on the homepage shows.
+
+       Opacity only, on purpose: this element is always mounted (the closed door
+       on the homepage renders it), so the animation never stops. Scaling a
+       blurred layer forces the 26px blur to be re-rasterised every frame for as
+       long as the page is open; fading it composites once and costs nothing.
+       Under this much blur the swell was barely legible anyway. */
     animation: aic-breathe-soft 6.5s ease-in-out infinite;
+    will-change: opacity;
 }
 
 @keyframes aic-breathe-soft {
     0%,
     100% {
         opacity: 0.72;
-        transform: scale(0.97);
     }
     50% {
         opacity: 1;
-        transform: scale(1.04);
     }
 }
 
@@ -96,19 +101,21 @@
      * that never line up read as something alive rather than a loop.
      */
     animation: aic-breathe 5.5s ease-in-out infinite;
+    will-change: opacity;
     -webkit-mask-image: radial-gradient(78% 84% at 48% 58%, #000 0%, #000 14%, transparent 70%);
     mask-image: radial-gradient(78% 84% at 48% 58%, #000 0%, #000 14%, transparent 70%);
 }
 
+/* Opacity only, for the reason given on aic-breathe-soft — and more so here,
+   where the blur radius is 44px. The drift on ::before still moves, so the pool
+   reads as alive; that one transform is the only thing re-blurring per frame. */
 @keyframes aic-breathe {
     0%,
     100% {
         opacity: 0.42;
-        transform: scale(0.98);
     }
     50% {
         opacity: 0.68;
-        transform: scale(1.03);
     }
 }
 
@@ -121,14 +128,24 @@
         radial-gradient(28% 38% at 70% 60%, rgba(177, 158, 239, 0.95), transparent 70%),
         radial-gradient(24% 34% at 48% 30%, rgba(252, 211, 77, 0.55), transparent 70%);
     animation: aic-drift 14s ease-in-out infinite alternate;
+    will-change: transform;
 }
 
+/*
+ * Translate only — the `scale(1.12)` this used to carry was the single most
+ * expensive thing on the page while a door was open. A scaling layer inside a
+ * `blur(44px)` parent can't be cached: the compositor has to re-rasterise the
+ * whole 260px band, blur included, on every frame, which is what made scrolling
+ * with a component open crawl. A pure translate is handed to the compositor and
+ * costs nothing per frame. Travel widened slightly to keep the same sense of
+ * movement now that the swell is gone.
+ */
 @keyframes aic-drift {
     from {
-        transform: translate3d(-4%, -2%, 0) scale(1);
+        transform: translate3d(-6%, -3%, 0);
     }
     to {
-        transform: translate3d(5%, 3%, 0) scale(1.12);
+        transform: translate3d(7%, 4%, 0);
     }
 }
 
@@ -234,24 +251,40 @@
 }
 
 .aic-skeleton {
+    position: relative;
+    overflow: hidden;
     height: 9px;
     border-radius: 5px;
+    background: var(--aic-skeleton-a);
+}
+
+/*
+ * The sweep is a translating overlay, not an animated `background-position`.
+ * Same look; background-position repaints every bar on the main thread each
+ * frame, a transform is handed to the compositor. `animation-delay: inherit`
+ * picks up the per-line stagger that Skeleton sets inline on the bar itself.
+ */
+.aic-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
     background: linear-gradient(
         90deg,
-        var(--aic-skeleton-a) 25%,
+        transparent 0%,
         var(--aic-skeleton-b) 50%,
-        var(--aic-skeleton-a) 75%
+        transparent 100%
     );
-    background-size: 200% 100%;
     animation: aic-shimmer 1.5s ease-in-out infinite;
+    animation-delay: inherit;
+    will-change: transform;
 }
 
 @keyframes aic-shimmer {
     from {
-        background-position: 200% 0;
+        transform: translateX(-100%);
     }
     to {
-        background-position: -200% 0;
+        transform: translateX(100%);
     }
 }
 
@@ -450,7 +483,13 @@
 
 @media (prefers-reduced-motion: reduce) {
     .aic,
-    .aic * {
+    .aic *,
+    /* The pseudo-elements carry animations too — the glow drift and the skeleton
+       sweep both live on one — and `.aic *` doesn't match them. */
+    .aic::before,
+    .aic::after,
+    .aic *::before,
+    .aic *::after {
         animation: none !important;
         transition: none !important;
     }

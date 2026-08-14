@@ -62,7 +62,22 @@ export function BeforeAfterVideoCard({
     inactive.currentTime = 0
 
     active.currentTime = 0
-    void active.play()
+    /*
+     * play() returns a promise that rejects with AbortError whenever playback is
+     * cut short before it begins — toggling the segmented control quickly, or
+     * this card unmounting mid-request. Discarding it with `void` left an
+     * unhandled rejection, which is the "The play() request was interrupted
+     * because the media was removed from the document" console error. There is
+     * nothing to recover from, so swallow exactly that case.
+     */
+    active.play().catch((error: unknown) => {
+      // AbortError: playback was cut short. NotAllowedError: the browser refused
+      // autoplay (low-power mode, for one) — the videos are muted, so this is
+      // rare, but it's the visitor's setting either way. Neither is actionable.
+      const name = error instanceof DOMException ? error.name : ""
+      if (name === "AbortError" || name === "NotAllowedError") return
+      console.error("before/after video failed to play", error)
+    })
   }, [mode])
 
   return (

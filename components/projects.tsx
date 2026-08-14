@@ -1,5 +1,5 @@
 import { ProjectCard } from "./project-card"
-import { ImageSlideGallery } from "./image-slide-gallery"
+import { BuiltInCodeGallery } from "./built-in-code-gallery"
 import { Microcomponents } from "./microcomponents"
 
 type WorkProject = {
@@ -21,7 +21,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Designing a LiveOps alerting system to reduce production incidents",
         navigationTitle: "LiveOps Alerting",
         image: "/images/project-liveops.png",
-        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_100/v1775046661/project-liveops.png",
+        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
@@ -65,7 +65,7 @@ export const workProjects: readonly WorkProject[] = [
         slug: "release-timeline",
         title: "Visualizing release impact across live games",
         navigationTitle: "Release Timeline",
-        image: "/images/release-timeline-thumb.png",
+        image: "/images/release-timeline-thumb.webp",
         tags: ["2026", "Tactile Games"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -85,14 +85,14 @@ const builtInCodeProjects = [
     // a personal side project.
     {
         title: "Visualizing release impact across live games",
-        src: "/images/release-timeline-thumb.png",
+        src: "/images/release-timeline-thumb.webp",
         href: "/work/release-timeline",
         tags: ["2026", "Tactile Games"],
         subtitle: "A release timeline inside the LiveOps Dashboard, prototyped in code, to cut debugging time.",
     },
     {
         title: "Human Redundancy Terminal",
-        src: "/images/fun-human-redundancy.png",
+        src: "/images/fun-human-redundancy.webp",
         href: "https://dianatofan.github.io/risk-assessment-terminal",
         tags: ["2026", "Side project"],
         subtitle: "An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
@@ -134,7 +134,7 @@ function BuiltInCodeSection() {
             <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
                 Built in Code
             </h2>
-            <ImageSlideGallery projects={[...builtInCodeProjects]} />
+            <BuiltInCodeGallery projects={[...builtInCodeProjects]} />
         </section>
     )
 }

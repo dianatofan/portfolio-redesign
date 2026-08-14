@@ -25,7 +25,7 @@ const funPosts: readonly FunPost[] = [
     title: "Human Redundancy Terminal",
     excerpt:
       "An apocalyptic, tragic-comical terminal experiment asking if AI is coming for your job.",
-    coverImage: "/images/fun-human-redundancy.png",
+    coverImage: "/images/fun-human-redundancy.webp",
     published: "March 2026",
     readTime: "4 min read",
     content: {

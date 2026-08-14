@@ -1,6 +1,21 @@
+/*
+ * Same Saans faces as always — WOFF2 is a lossless container around the exact
+ * same outlines, so nothing about the type changes; it is ~60 KB per face
+ * instead of ~168 KB. The OTF stays as a fallback source, and the browser only
+ * downloads the first source it understands, so it costs nothing.
+ *
+ * The 600 face used to point at /fonts/Saans-Semibold.otf, which has never
+ * existed in this repo. A failed @font-face doesn't fall back to another weight
+ * of the same family — it sends the browser to the next family in the stack — so
+ * every font-semibold element was quietly rendering in SF Pro while 404'ing a
+ * font request on each page load. It now points at the file that is actually
+ * here, so 600 renders as the Saans SemiBold it always meant to.
+ */
 @font-face {
     font-family: "Saans";
-    src: url("/fonts/Saans-Regular.otf") format("opentype");
+    src:
+        url("/fonts/Saans-Regular.woff2") format("woff2"),
+        url("/fonts/Saans-Regular.otf") format("opentype");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -8,7 +23,9 @@
 
 @font-face {
     font-family: "Saans";
-    src: url("/fonts/Saans-Medium.otf") format("opentype");
+    src:
+        url("/fonts/Saans-Medium.woff2") format("woff2"),
+        url("/fonts/Saans-Medium.otf") format("opentype");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -16,13 +33,13 @@
 
 @font-face {
     font-family: "Saans";
-    src: url("/fonts/Saans-Semibold.otf") format("opentype");
+    src:
+        url("/fonts/Saans-TRIAL-SemiBold.woff2") format("woff2"),
+        url("/fonts/Saans-TRIAL-SemiBold.otf") format("opentype");
     font-weight: 600;
     font-style: normal;
     font-display: swap;
 }
-
-
 
 @import "tailwindcss";
 @import "tw-animate-css";
