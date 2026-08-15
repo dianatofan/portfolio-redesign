@@ -119,7 +119,15 @@ function WorkSection() {
                         aspectClass={project.aspect}
                         isPasswordProtected={false}
                         showCaptionTags={false}
-                        eager={index < 2}
+                        /*
+                         * All four, not the first two. These are the page's
+                         * primary content and together they are only ~221 KB;
+                         * holding two back meant they could not start until React
+                         * had hydrated, and they then queued behind it — measured
+                         * at ~1.4-1.8s to appear versus ~140ms of actual transfer
+                         * for the preloaded ones.
+                         */
+                        eager
                     />
                 ))}
             </div>
