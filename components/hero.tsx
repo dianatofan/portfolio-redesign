@@ -2,10 +2,21 @@
 
 import { useEffect, useState } from "react"
 import PixelBlast from "./PixelBlast"
+import { formatCopenhagenTime, isCopenhagenNight } from "@/lib/copenhagen-time"
 
 export function Hero() {
-    const [time, setTime] = useState("")
-    const [isNight, setIsNight] = useState(false)
+    /*
+     * Seeded lazily on the client so the value React hydrates with matches what
+     * the inline script in app/layout.tsx already painted during HTML parse.
+     * On the server this is "" — the page is statically prerendered, so build
+     * time is not a useful "now" — hence suppressHydrationWarning below.
+     */
+    const [time, setTime] = useState(() =>
+        typeof window === "undefined" ? "" : formatCopenhagenTime()
+    )
+    const [isNight, setIsNight] = useState(() =>
+        typeof window === "undefined" ? false : isCopenhagenNight()
+    )
 
     // NEW: controls scroll indicator visibility
     const [showScrollIndicator, setShowScrollIndicator] = useState(true)
@@ -16,26 +27,8 @@ export function Hero() {
 
         const updateTime = () => {
             const now = new Date()
-
-            const copenhagenTime = now
-                .toLocaleTimeString("en-US", {
-                    timeZone: "Europe/Copenhagen",
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                })
-                .replace(/\s?(AM|PM)$/, "$1") // no space before AM/PM
-
-            setTime(copenhagenTime)
-
-            const hour = Number(
-                new Intl.DateTimeFormat("en-US", {
-                    timeZone: "Europe/Copenhagen",
-                    hour: "numeric",
-                    hour12: false,
-                }).format(now)
-            )
-            setIsNight(hour >= 20 || hour < 6)
+            setTime(formatCopenhagenTime(now))
+            setIsNight(isCopenhagenNight(now))
         }
 
         updateTime()
@@ -109,8 +102,10 @@ export function Hero() {
                         </span>
 
                         <span
+                            id="copenhagen-clock"
                             className="text-base font-medium text-foreground font-sans"
                             aria-label="Current time in Copenhagen"
+                            suppressHydrationWarning
                         >
                             {time || "..."}
                         </span>

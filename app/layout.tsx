@@ -53,6 +53,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
+                {/* The case-study images come from Cloudinary. Without this the
+                    browser cannot start one until it has done DNS + TLS to a new
+                    origin, which happens after the HTML is already on screen. */}
+                <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
                 {/*
                  * Material Symbols is self-hosted from /public/fonts and declared in
                  * globals.css — see the note there before adding an icon, since the
@@ -91,11 +95,27 @@ export default function RootLayout({
                 />
             </head>
             <body className="font-sans antialiased">
+                {/*
+                 * Paints the Copenhagen clock during HTML parse, roughly when the
+                 * hero text appears, instead of leaving "..." on screen until
+                 * React has downloaded and hydrated — most of a second later on a
+                 * real connection. Hero seeds its state with the same formatter,
+                 * so React hydrating changes nothing on screen.
+                 *
+                 * Kept in sync with lib/copenhagen-time.ts by hand: this runs
+                 * before any module has loaded, so it cannot import it.
+                 */}
                 <PostHogInit />
                 <CursorProvider>
                     <GlassCursor />
                     {children}
                 </CursorProvider>
+                {/* After {children}, so the element it fills has been parsed. */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `(function(){try{var el=document.getElementById('copenhagen-clock');if(!el)return;var t=new Date().toLocaleTimeString('en-US',{timeZone:'Europe/Copenhagen',hour:'numeric',minute:'2-digit',hour12:true}).replace(/\\s?(AM|PM)$/,'$1');el.textContent=t;}catch(e){}})();`,
+                    }}
+                />
                 <Analytics />
             </body>
         </html>
