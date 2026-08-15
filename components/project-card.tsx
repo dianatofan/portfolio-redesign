@@ -32,6 +32,19 @@ export function ProjectCard({
     const [isImageLoaded, setIsImageLoaded] = useState(false)
     const aspect = aspectClass ?? (featured ? "aspect-[16/9]" : "aspect-[4/3]")
 
+    /*
+     * `onLoad` never fires for an image the browser already had — a cached one, or
+     * one the preload scanner finished before React hydrated. Measured on the live
+     * site, the card images were fully downloaded by 900ms but stayed at opacity 0
+     * until 1300-2000ms, because the reveal waited on a React event that had
+     * already happened and then ran a 700ms fade on top. Reading `complete` off
+     * the element as soon as it is attached closes that gap: an image that is
+     * already there is shown immediately, and only a genuinely slow one fades in.
+     */
+    const revealIfReady = (img: HTMLImageElement | null) => {
+        if (img?.complete && img.naturalWidth > 0) setIsImageLoaded(true)
+    }
+
     return (
         <Link
             href={href}
@@ -52,15 +65,27 @@ export function ProjectCard({
                     ].join(" ")}
                 >
                     <Image
+                        ref={revealIfReady}
                         src={image}
                         alt={`${title} project preview`}
                         fill
-                        className={`
-              object-cover transform-gpu transition-all
-              duration-700 ease-[cubic-bezier(.2,.8,.2,1)]
-              group-hover:scale-[1.08]
-              ${isImageLoaded ? "opacity-100" : "opacity-0"}
-            `}
+                        className="object-cover transform-gpu group-hover:scale-[1.08]"
+                        /*
+                         * Inline rather than Tailwind utilities because the two
+                         * transitions need different durations, and conflicting
+                         * `duration-*` classes resolve by stylesheet order, not by
+                         * the order they appear in the class list.
+                         *
+                         * The hover scale keeps its long, soft 700ms curve. The
+                         * reveal is 200ms: a card that has finished downloading
+                         * should look present, not spend another two thirds of a
+                         * second arriving.
+                         */
+                        style={{
+                            opacity: isImageLoaded ? 1 : 0,
+                            transition:
+                                "opacity 200ms ease-out, transform 700ms cubic-bezier(.2,.8,.2,1)",
+                        }}
                         sizes={featured ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
                         priority={featured || eager}
                         placeholder="blur"
