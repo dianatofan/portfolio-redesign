@@ -21,7 +21,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Designing a LiveOps alerting system to reduce production incidents",
         navigationTitle: "LiveOps Alerting",
         image: "/images/project-liveops.webp",
-        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775046661/project-liveops.png",
+        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
@@ -33,7 +33,7 @@ export const workProjects: readonly WorkProject[] = [
         navigationTitle: "Game Setup Automation",
         image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610293/game-canvas-cover.png",
         homepageImage:
-            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610278/thumbnail9.png",
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1769610278/thumbnail9.png",
         tags: ["2025", "Tactile Games"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -44,7 +44,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Reimagining travel planning on Google Search",
         navigationTitle: "Google Travel",
         image:
-            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610291/thumbnail5.png",
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1769610291/thumbnail5.png",
         tags: ["2024", "Google"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -55,7 +55,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Building a design system to eliminate design debt",
         navigationTitle: "Design System",
         image:
-            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610306/famlyThumbnail.png",
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1769610306/famlyThumbnail.png",
         tags: ["2024", "Famly"],
         featured: false,
         aspect: "aspect-[3/2]",
