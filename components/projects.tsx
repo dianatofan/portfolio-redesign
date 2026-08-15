@@ -21,7 +21,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Designing a LiveOps alerting system to reduce production incidents",
         navigationTitle: "LiveOps Alerting",
         image: "/images/project-liveops.webp",
-        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1775046661/project-liveops.png",
+        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
@@ -33,7 +33,7 @@ export const workProjects: readonly WorkProject[] = [
         navigationTitle: "Game Setup Automation",
         image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610293/game-canvas-cover.png",
         homepageImage:
-            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1769610278/thumbnail9.png",
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610278/thumbnail9.png",
         tags: ["2025", "Tactile Games"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -44,7 +44,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Reimagining travel planning on Google Search",
         navigationTitle: "Google Travel",
         image:
-            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1769610291/thumbnail5.png",
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610291/thumbnail5.png",
         tags: ["2024", "Google"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -55,7 +55,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Building a design system to eliminate design debt",
         navigationTitle: "Design System",
         image:
-            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_800,h_533/v1769610306/famlyThumbnail.png",
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610306/famlyThumbnail.png",
         tags: ["2024", "Famly"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -121,11 +121,12 @@ function WorkSection() {
                         showCaptionTags={false}
                         /*
                          * All four, not the first two. These are the page's
-                         * primary content and together they are only ~221 KB;
-                         * holding two back meant they could not start until React
-                         * had hydrated, and they then queued behind it — measured
-                         * at ~1.4-1.8s to appear versus ~140ms of actual transfer
-                         * for the preloaded ones.
+                         * primary content, and holding two of them back meant they
+                         * could not begin downloading until React had hydrated and
+                         * then queued behind it — measured on the live site at
+                         * ~1.4-1.8s to appear, against ~140ms of actual transfer
+                         * for the two that were preloaded. Preloading them all
+                         * starts every card at around 420ms instead.
                          */
                         eager
                     />
