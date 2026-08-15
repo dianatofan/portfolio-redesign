@@ -73,7 +73,7 @@ const steps: Step[] = [
     ],
     embed: {
       src: "/release-timeline-embed.html",
-      facade: "/images/release-timeline-embed-facade.png",
+      facade: "/images/release-timeline-embed-facade.webp",
       designWidth: 1440,
     },
     notes: [
@@ -121,7 +121,7 @@ const steps: Step[] = [
     ],
     embed: {
       src: "/release-timeline-final.html",
-      facade: "/images/release-timeline-final-facade.png",
+      facade: "/images/release-timeline-final-facade.webp",
       designWidth: 1440,
     },
     notes: [
@@ -149,7 +149,7 @@ const VISUAL_IMG: Record<FrameVisual, { src: string; alt: string }> = {
     alt: "Timeline integrated above the Releases data grid",
   },
   "lollipop-cluttered": {
-    src: "/images/release-timeline-lollipop-dense.png",
+    src: "/images/release-timeline-lollipop-dense.webp",
     alt: "Crash rate chart cluttered with dozens of overlapping lollipop event markers",
   },
 }

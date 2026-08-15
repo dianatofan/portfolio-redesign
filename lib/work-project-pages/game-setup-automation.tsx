@@ -146,7 +146,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
         <div className="max-w-5xl rounded-2xl border border-gray-200 bg-white overflow-hidden">
           <div className="relative w-full">
             <Image
-              src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610260/workshop-compressed.png"
+              src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610260/workshop-compressed.png"
               alt="Workshop outputs mapping setup steps, constraints, and system dependencies."
               width={1920}
               height={1080}
@@ -291,7 +291,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
         <div className="w-full bg-gray-50 rounded-lg px-6 md:px-8 py-20 flex justify-center mt-8">
           <div className="w-full max-w-5xl">
             <Image
-              src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610092/provisioning.png"
+              src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610092/provisioning.png"
               alt="How provisioning works across systems"
               width={1920}
               height={1080}
@@ -348,7 +348,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
             </p>
             <div className="mt-8 w-full bg-[#E3E8F1] p-8 rounded-2xl">
               <Image
-                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609945/module-statuses.png"
+                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609945/module-statuses.png"
                 alt="Module status states showing readiness and required action"
                 width={600}
                 height={360}
@@ -364,7 +364,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
             </p>
             <div className="mt-8 w-full bg-[#E3E8F1] p-8 rounded-2xl">
               <Image
-                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610209/inherited-access.png"
+                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610209/inherited-access.png"
                 alt="Inherited access model for game permissions"
                 width={1920}
                 height={1080}

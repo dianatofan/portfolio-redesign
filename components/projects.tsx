@@ -20,7 +20,7 @@ export const workProjects: readonly WorkProject[] = [
         slug: "liveops-alerting",
         title: "Designing a LiveOps alerting system to reduce production incidents",
         navigationTitle: "LiveOps Alerting",
-        image: "/images/project-liveops.png",
+        image: "/images/project-liveops.webp",
         homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
         featured: true,
@@ -31,7 +31,7 @@ export const workProjects: readonly WorkProject[] = [
         slug: "game-setup-automation",
         title: "Automating game setup for scalable releases",
         navigationTitle: "Game Setup Automation",
-        image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610293/game-canvas-cover.png",
+        image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610293/game-canvas-cover.png",
         homepageImage:
             "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610278/thumbnail9.png",
         tags: ["2025", "Tactile Games"],

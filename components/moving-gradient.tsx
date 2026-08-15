@@ -2,23 +2,31 @@
 
 import { motion, useReducedMotion } from "framer-motion"
 
+/*
+ * Translate only, no scale. Each blob is a 55vh circle behind `blur(80px)`, and a
+ * scaling layer inside a blur can't reuse its rasterised texture — the compositor
+ * has to redraw the blur every frame, for all three, for as long as the page is
+ * open. Translation is handed to the compositor and costs nothing per frame.
+ * Travel is widened a little to keep the same sense of drift without the swell;
+ * under 80px of blur the size change was barely legible anyway.
+ */
 const blobs = [
   {
     className: "left-[4%] top-[4%]",
     color: "rgba(177,158,239,0.45)",
-    anim: { x: [0, 60, 0], y: [0, 40, 0], scale: [1, 1.12, 1] },
+    anim: { x: [0, 72, 0], y: [0, 52, 0] },
     duration: 20,
   },
   {
     className: "right-[2%] top-[38%]",
     color: "rgba(129,140,248,0.38)",
-    anim: { x: [0, -55, 0], y: [0, 50, 0], scale: [1, 1.08, 1] },
+    anim: { x: [0, -66, 0], y: [0, 60, 0] },
     duration: 24,
   },
   {
     className: "left-[18%] bottom-[4%]",
     color: "rgba(177,158,239,0.35)",
-    anim: { x: [0, 45, 0], y: [0, -45, 0], scale: [1, 1.1, 1] },
+    anim: { x: [0, 56, 0], y: [0, -55, 0] },
     duration: 26,
   },
 ]

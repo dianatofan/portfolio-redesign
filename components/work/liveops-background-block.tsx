@@ -11,14 +11,14 @@ export function LiveopsBackgroundBlock() {
     const images = useMemo(
         () => ({
             ideal: {
-                src: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610157/LiveOps-ideal.png",
+                src: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610157/LiveOps-ideal.png",
                 alt: "Ideal LiveOps flow: Dashboard configuration processed by backend systems and delivered to players.",
                 captionTitle: "Ideal flow",
                 captionBody:
                     "A creator configures a feature in the Dashboard, backend systems process it, and the result reaches players as expected.",
             },
             error: {
-                src: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610181/LiveOps-error.png",
+                src: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610181/LiveOps-error.png",
                 alt: "Error LiveOps flow: backend failure impacts players without Dashboard visibility.",
                 captionTitle: "Error flow",
                 captionBody:

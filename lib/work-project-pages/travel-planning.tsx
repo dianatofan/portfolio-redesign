@@ -107,7 +107,7 @@ export const travelPlanningPage: WorkProjectPage = {
           they had been designed independently and looked very different from each other.
         </p>
         <CaseStudyImage
-          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609957/tripExploration.png"
+          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609957/tripExploration.png"
           alt="Trip exploration framework detail"
           topMargin={false}
           background={false}
@@ -123,7 +123,7 @@ export const travelPlanningPage: WorkProjectPage = {
             <div className="space-y-4">
               <div className="mt-14 md:mt-16">
                 <CaseStudyImage
-                  src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769619951/getInspired.png"
+                  src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769619951/getInspired.png"
                   alt="Get inspired low-fidelity concept"
                   topMargin={false}
                   ratioClass="aspect-[6/5]"
@@ -136,7 +136,7 @@ export const travelPlanningPage: WorkProjectPage = {
                       <div className="overflow-hidden rounded-[30px] bg-black">
                         <div className="aspect-[9/19]">
                           <img
-                            src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610475/firstscreen-grindelwald.gif"
+                            src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_webp,fl_awebp,q_auto/v1769610475/firstscreen-grindelwald.gif"
                             alt="Get inspired high-fidelity prototype - Grindelwald"
                             className="h-full w-full object-cover"
                             loading="lazy"
@@ -153,7 +153,7 @@ export const travelPlanningPage: WorkProjectPage = {
                       <div className="overflow-hidden rounded-[30px] bg-black">
                         <div className="aspect-[9/19]">
                           <img
-                            src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610472/firstscreen-selected.gif"
+                            src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_webp,fl_awebp,q_auto/v1769610472/firstscreen-selected.gif"
                             alt="Get inspired high-fidelity prototype - selected state"
                             className="h-full w-full object-cover"
                             loading="lazy"
@@ -179,7 +179,7 @@ export const travelPlanningPage: WorkProjectPage = {
             <div className="space-y-4">
               <div className="mt-14 md:mt-16">
                 <CaseStudyImage
-                  src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609948/flights.png"
+                  src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609948/flights.png"
                   alt="Look into alternatives low-fidelity concept"
                   topMargin={false}
                   ratioClass="aspect-[4/3]"
@@ -191,7 +191,7 @@ export const travelPlanningPage: WorkProjectPage = {
                     <div className="overflow-hidden rounded-[30px] bg-black">
                       <div className="aspect-[9/19]">
                         <img
-                          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610303/secondscreen-flights.gif"
+                          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_webp,fl_awebp,q_auto/v1769610303/secondscreen-flights.gif"
                           alt="Look into alternatives high-fidelity prototype"
                           className="h-full w-full object-cover"
                           loading="lazy"
@@ -214,7 +214,7 @@ export const travelPlanningPage: WorkProjectPage = {
             <div className="space-y-4">
               <div className="mt-14 md:mt-16">
                 <CaseStudyImage
-                  src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609954/rediscover.png"
+                  src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609954/rediscover.png"
                   alt="Rediscover the journey low-fidelity concept"
                   topMargin={false}
                   ratioClass="aspect-[4/3]"
@@ -226,7 +226,7 @@ export const travelPlanningPage: WorkProjectPage = {
                     <div className="overflow-hidden rounded-[30px] bg-black">
                       <div className="aspect-[9/19]">
                         <img
-                          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610281/lastscreen.gif"
+                          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_webp,fl_awebp,q_auto/v1769610281/lastscreen.gif"
                           alt="Rediscover the journey high-fidelity prototype"
                           className="h-full w-full object-cover"
                           loading="lazy"
@@ -248,7 +248,7 @@ export const travelPlanningPage: WorkProjectPage = {
           pressure-test the idea before investing in high fidelity.
         </p>
         <CaseStudyImage
-          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1775065425/8435D46E-367D-447E-85FD-C171E26B6458.jpg"
+          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775065425/8435D46E-367D-447E-85FD-C171E26B6458.jpg"
           alt="Sketching and aligning with the team before prototyping"
           topMargin={false}
         />

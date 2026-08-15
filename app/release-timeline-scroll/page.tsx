@@ -50,7 +50,7 @@ export default function ReleaseTimelineScrollPage() {
         <div className="mx-auto max-w-[1800px] px-6">
           <div className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl bg-card">
             <Image
-              src="/images/release-timeline-hero.png"
+              src="/images/release-timeline-hero.webp"
               alt="Release timeline: client releases and events plotted against crash rate and DAU"
               fill
               priority

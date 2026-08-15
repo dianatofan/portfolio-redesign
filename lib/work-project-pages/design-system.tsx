@@ -88,7 +88,7 @@ export const designSystemPage: WorkProjectPage = {
           user experience.
         </p>
         <CaseStudyImage
-          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610230/phase1.png"
+          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610230/phase1.png"
           alt="Design system phased rollout plan"
         />
       </section>
@@ -103,11 +103,11 @@ export const designSystemPage: WorkProjectPage = {
           newsletters so teams stayed in the loop as the system grew.
         </p>
         <div className="mt-8 rounded-lg overflow-hidden bg-card">
-          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609987/styleguide1.png" alt="Style guide — typography and colour" topMargin={false} background={false} />
-          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609978/styleguide2.png" alt="Style guide — spacing and layout" topMargin={false} background={false} />
-          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609981/styleguide3.png" alt="Style guide — iconography" topMargin={false} background={false} />
-          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610074/components1.png" alt="Component library — form elements" topMargin={false} background={false} />
-          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609990/components2.png" alt="Component library — navigation and feedback" topMargin={false} background={false} />
+          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609987/styleguide1.png" alt="Style guide — typography and colour" topMargin={false} background={false} />
+          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609978/styleguide2.png" alt="Style guide — spacing and layout" topMargin={false} background={false} />
+          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609981/styleguide3.png" alt="Style guide — iconography" topMargin={false} background={false} />
+          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610074/components1.png" alt="Component library — form elements" topMargin={false} background={false} />
+          <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609990/components2.png" alt="Component library — navigation and feedback" topMargin={false} background={false} />
         </div>
       </section>
 
@@ -116,13 +116,13 @@ export const designSystemPage: WorkProjectPage = {
         <BeforeAfterCompare
           pairs={[
             {
-              before: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610159/before1.png",
-              after: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769609975/after1.png",
+              before: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610159/before1.png",
+              after: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609975/after1.png",
               caption: "Profile page",
             },
             {
-              before: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610224/before2.png",
-              after: "https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610221/after2.png",
+              before: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610224/before2.png",
+              after: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610221/after2.png",
               caption: "Newsfeed",
             },
           ]}
@@ -132,7 +132,7 @@ export const designSystemPage: WorkProjectPage = {
       <section id="ui-in-practice">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">UI in Practice</h2>
         <CaseStudyImage
-          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610265/ui.png"
+          src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610265/ui.png"
           alt="Design system applied in the product UI"
           fit="cover"
         />

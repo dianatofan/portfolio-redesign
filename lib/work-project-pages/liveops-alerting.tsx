@@ -61,7 +61,7 @@ export const liveopsAlertingPage: WorkProjectPage = {
         </p>
         <div className="mt-8 overflow-hidden">
           <Image
-            src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610137/observability-gap.png"
+            src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610137/observability-gap.png"
             alt="Observability gap: alerts appear in engineering tools while the LiveOps Dashboard shows no alerts"
             width={1920}
             height={1080}
@@ -137,7 +137,7 @@ export const liveopsAlertingPage: WorkProjectPage = {
           </div>
           <div className="w-full max-w-[320px] md:justify-self-end">
             <Image
-              src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610095/sidebar-badges.png"
+              src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610095/sidebar-badges.png"
               alt="Sidebar with persistent attention badges for issues and updates"
               width={1920}
               height={1080}
@@ -284,7 +284,7 @@ export const liveopsAlertingPage: WorkProjectPage = {
             </p>
             <div className="w-full mt-8 bg-[#E3E8F1] p-8 rounded-2xl justify-center flex">
               <Image
-                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610097/one-badge.png"
+                src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610097/one-badge.png"
                 alt="Sidebar with a single severity-based badge per game"
                 width={160}
                 height={330}

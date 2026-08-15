@@ -1,4 +1,14 @@
 /*
+ * Tailwind first: @import must precede every style rule in a stylesheet.
+ * These used to sit below the @font-face blocks, which the production build
+ * tolerated (it inlines imports at build time) but the dev pipeline did not —
+ * it silently dropped the Material Symbols rules that followed, so icons
+ * rendered as their own names in dev while looking correct in production.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
  * Same Saans faces as always — WOFF2 is a lossless container around the exact
  * same outlines, so nothing about the type changes; it is ~60 KB per face
  * instead of ~168 KB. The OTF stays as a fallback source, and the browser only
@@ -91,9 +101,6 @@
     -webkit-font-feature-settings: "liga";
     -webkit-font-smoothing: antialiased;
 }
-
-@import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
