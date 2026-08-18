@@ -1,5 +1,4 @@
 import { ProjectCard } from "./project-card"
-import { isProjectGated } from "@/lib/project-auth"
 import { BuiltInCodeGallery } from "./built-in-code-gallery"
 import { Microcomponents } from "./microcomponents"
 
@@ -22,8 +21,7 @@ export const workProjects: readonly WorkProject[] = [
         title: "Designing a LiveOps alerting system to reduce production incidents",
         navigationTitle: "LiveOps Alerting",
         image: "/images/project-liveops.webp",
-        homepageImage:
-            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775046661/project-liveops.png",
+        homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
@@ -45,7 +43,8 @@ export const workProjects: readonly WorkProject[] = [
         slug: "travel-planning",
         title: "Reimagining travel planning on Google Search",
         navigationTitle: "Google Travel",
-        image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610291/thumbnail5.png",
+        image:
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610291/thumbnail5.png",
         tags: ["2024", "Google"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -55,7 +54,8 @@ export const workProjects: readonly WorkProject[] = [
         slug: "design-system",
         title: "Building a design system to eliminate design debt",
         navigationTitle: "Design System",
-        image: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610306/famlyThumbnail.png",
+        image:
+            "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_1400,h_933/v1769610306/famlyThumbnail.png",
         tags: ["2024", "Famly"],
         featured: false,
         aspect: "aspect-[3/2]",
@@ -88,23 +88,19 @@ const builtInCodeProjects = [
         src: "/images/release-timeline-thumb.webp",
         href: "/work/release-timeline",
         tags: ["2026", "Tactile Games"],
-        subtitle:
-            "A release timeline inside the LiveOps Dashboard, prototyped in code, to cut debugging time.",
+        subtitle: "A release timeline inside the LiveOps Dashboard, prototyped in code, to cut debugging time.",
     },
     {
         title: "Human Redundancy Terminal",
         src: "/images/fun-human-redundancy.webp",
         href: "https://dianatofan.github.io/risk-assessment-terminal",
         tags: ["2026", "Side project"],
-        subtitle:
-            "An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
+        subtitle: "An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
     },
 ] as const
 
 function WorkSection() {
-    const caseStudies = workProjects
-        .filter((project) => project.category !== "experiment")
-        .slice(0, 6)
+    const caseStudies = workProjects.filter((project) => project.category !== "experiment").slice(0, 6)
 
     return (
         <section className="space-y-6 md:space-y-8">
@@ -121,7 +117,7 @@ function WorkSection() {
                         href={`/work/${project.slug}`}
                         featured={false}
                         aspectClass={project.aspect}
-                        isPasswordProtected={isProjectGated(project.isPasswordProtected)}
+                        isPasswordProtected={false}
                         showCaptionTags={false}
                         /*
                          * All four, not the first two. These are the page's
