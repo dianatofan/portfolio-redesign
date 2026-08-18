@@ -83,8 +83,15 @@ export function ProjectCard({
                          */
                         style={{
                             opacity: isImageLoaded ? 1 : 0,
+                            /*
+                             * `scale`, not `transform`: Tailwind v4 compiles
+                             * `scale-[1.08]` to the standalone `scale` property
+                             * (`scale:1.08`), and `transform-gpu` only ever holds a
+                             * constant `translateZ(0)`. Transitioning `transform`
+                             * therefore animated nothing and the hover snapped.
+                             */
                             transition:
-                                "opacity 200ms ease-out, transform 700ms cubic-bezier(.2,.8,.2,1)",
+                                "opacity 200ms ease-out, scale 700ms cubic-bezier(.2,.8,.2,1)",
                         }}
                         sizes={featured ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
                         priority={featured || eager}
