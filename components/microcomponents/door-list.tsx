@@ -59,7 +59,7 @@ export function DoorList({ items }: { items: Microcomponent[] }) {
                                     className="overflow-hidden"
                                 >
                                     <div
-                                        className={`h-[260px] overflow-hidden rounded-lg border border-border ${STAGE_BG}`}
+                                        className={`${item.mobileStageClass ?? "h-[260px]"} overflow-hidden rounded-lg border border-border ${STAGE_BG}`}
                                     >
                                         {item.render()}
                                     </div>

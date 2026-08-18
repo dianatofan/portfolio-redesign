@@ -40,6 +40,12 @@ export const microcomponents: Microcomponent[] = [
         blurb: "A drafted reply that breathes while it thinks.",
         note: "An AI suggested response above an agent's reply box. I wanted a moving, breathing gradient underneath it to draw attention without competing for it.",
         area: { row: [1, 3], col: [1, 4] },
+        // The draft text wraps to seven lines on a narrow phone, and the panel
+        // grows again when the body expands, so 260px clipped both the header and
+        // the reply box. Measured peak including the stage's own padding: 533px at
+        // 320px, 491px at 390px, 470px at 430px, 408px from 608px up (where the
+        // panel stops widening).
+        mobileStageClass: "h-[540px] min-[430px]:h-[480px] sm:h-[420px]",
         render: () => <AiComposer />,
         preview: () => <AiComposerPreview />,
     },

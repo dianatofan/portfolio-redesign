@@ -18,6 +18,14 @@ export type Microcomponent = {
     /** The live, interactive component, rendered inside the opened door. */
     render: () => React.ReactNode
     /**
+     * Height classes for this component's stage in the mobile drawer, when the
+     * shared default is too short. The drawer stage is fixed-height on purpose —
+     * these components animate through phases of different natural heights, and
+     * a content-sized box would jump mid-animation — so anything taller than the
+     * default has to say so here.
+     */
+    mobileStageClass?: string
+    /**
      * Optional inert rendering shown on the *closed* door, so a finished
      * component is visible on the homepage without opening anything. Must not
      * contain interactive elements: the cover it sits inside is itself a button.
