@@ -25,6 +25,7 @@ export type WorkProjectPage = {
 }
 
 export type WorkProjectSlug =
+  | "dianas-diamonds"
   | "liveops-alerting"
   | "game-setup-automation"
   | "travel-planning"
