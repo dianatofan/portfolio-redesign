@@ -171,14 +171,14 @@ export const dianasDiamondsPage: WorkProjectPage = {
               playsInline
               preload="metadata"
               poster="/images/dianas-diamonds/field-drop-poster.jpg"
-              aria-label="120 diamonds fall from the sky and settle into a pile in the field view"
+              aria-label="240 diamonds fall from the sky and settle into a pile in the field view"
               className="h-full w-full object-cover"
             >
               <source src="/images/dianas-diamonds/field-drop.mp4" type="video/mp4" />
             </video>
           </div>
           <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
-            A stress test with 120 diamonds, the scale the field was built for.
+            A stress test with 240 diamonds, the scale the field was built for.
           </figcaption>
         </figure>
       </section>
