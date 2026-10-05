@@ -1,5 +1,6 @@
 import type { WorkProjectPage } from "./types"
-import { CaseStudyImage, CaseStudyImageGrid, InsightCards, OutcomeCards } from "./shared"
+import { InsightCards, OutcomeCards } from "./shared"
+import { ShowcaseClip, StatBand } from "@/components/work/showcase-clip"
 
 const paragraph = "text-base leading-relaxed text-[var(--text-secondary)]"
 const heading = "text-2xl md:text-3xl font-medium text-foreground mb-4"
@@ -24,11 +25,12 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "overview", title: "Overview" },
     { id: "problem", title: "Problem" },
     { id: "goal", title: "Goal" },
-    { id: "findable", title: "Nothing gets lost", isGateStart: true },
-    { id: "whats-new", title: "Showing what changed" },
-    { id: "handoff", title: "Handoff as a patch" },
-    { id: "diamonds", title: "Diamonds, literally" },
-    { id: "agents", title: "Designed for agents" },
+    { id: "diamonds", title: "Diamonds", isGateStart: true },
+    { id: "preview", title: "Preview" },
+    { id: "grid", title: "Grid" },
+    { id: "whats-new", title: "What's new" },
+    { id: "handoff", title: "Handoff" },
+    { id: "agents", title: "Built for agents" },
     { id: "impact", title: "Impact" },
   ],
   renderBeforeGate: () => (
@@ -90,132 +92,102 @@ export const dianasDiamondsPage: WorkProjectPage = {
   ),
   renderAfterGate: () => (
     <>
-      <section id="findable">
-        <h2 className={heading}>Nothing gets lost</h2>
-        <p className={`${paragraph} mb-4`}>
-          Alvaro Hernandez, an engineer, helped me set up the foundation: one repository and one
-          address for every prototype. A new prototype costs nothing to keep, so nothing has to be
-          deleted any more.
-        </p>
-        <p className={paragraph}>
-          The grid view is for finding things. Each card has a thumbnail, a one-line description
-          and the ticket's status. The status comes straight from our PM tool, so the hub can't go
-          out of date. When a prototype deploys, its link is posted on the ticket, so the work and
-          the prototype point to each other.
-        </p>
-        <CaseStudyImageGrid
-          images={[
-            { src: "/images/dianas-diamonds/proto-child-ab-tests.png", alt: "Config holdout groups prototype" },
-            { src: "/images/dianas-diamonds/proto-user-support.png", alt: "User support prototype" },
-            { src: "/images/dianas-diamonds/proto-sdk-size.png", alt: "SDK size prototype" },
-            { src: "/images/dianas-diamonds/proto-config-changelog.png", alt: "Config changelog prototype" },
-          ]}
+      <section id="diamonds">
+        <ShowcaseClip
+          eyebrow="Diamonds"
+          title="Diana's diamonds. Literally."
+          caption="The name started as a joke, so I took it literally. The hub opens on a field where every prototype falls in as a 3D diamond and piles up under real gravity. I modelled the diamond with Tactile's game artists, and the field stays smooth with 240 of them."
+          src="/images/dianas-diamonds/field-drop.mp4"
+          poster="/images/dianas-diamonds/field-drop-poster.jpg"
+          label="240 diamonds fall and settle into a pile in the field view"
+        />
+      </section>
+
+      <section id="preview">
+        <ShowcaseClip
+          eyebrow="Preview"
+          title="Open one. Then the next."
+          caption="Hover a diamond to see its name, click it, and it opens as a preview. Next goes through the prototypes like a gallery, so a PM can catch up on a month of design work in a minute."
+          src="/images/dianas-diamonds/field-open.mp4"
+          poster="/images/dianas-diamonds/field-open-poster.jpg"
+          label="Hovering a diamond, opening its preview, then stepping to the next prototypes"
+        />
+      </section>
+
+      <section id="grid">
+        <ShowcaseClip
+          eyebrow="Grid"
+          title="Every prototype. One place."
+          caption="The field is for delight, the grid is for finding. One switch turns the diamonds into cards with search, filters and each ticket's live status from our PM tool. Alvaro Hernandez, an engineer, helped me put them all in one repository and one address."
+          src="/images/dianas-diamonds/grid-find.mp4"
+          poster="/images/dianas-diamonds/grid-find-poster.jpg"
+          label="The grid view: hovering over prototype cards, then searching for schedules"
         />
       </section>
 
       <section id="whats-new">
-        <h2 className={heading}>Showing what changed</h2>
-        <p className={`${paragraph} mb-4`}>
-          A prototype looks like the real app, so a reviewer opening one cold can't tell what's
-          new. They click around the parts that already exist and miss the design.
-        </p>
-        <p className={paragraph}>
-          So every prototype's details page shows the live prototype next to "What's new", an
-          interactive walkthrough of the design. Clicking a step takes you to that screen and
-          highlights the part that changed. A PM can review a prototype on their own, without me there to walk them
-          through it.
-        </p>
-        <CaseStudyImage
-          src="/images/dianas-diamonds/details.png"
-          alt="A prototype's details page: the live prototype on the left, a numbered What's new list on the right"
-          ratioClass="aspect-[8/5]"
+        <ShowcaseClip
+          eyebrow="What's new"
+          title="The design explains itself."
+          caption="Each prototype has a details page with the live prototype beside its notes. What's new is an interactive walkthrough: click a step, and the prototype jumps to that screen and highlights what changed."
+          src="/images/dianas-diamonds/walkthrough.mp4"
+          poster="/images/dianas-diamonds/walkthrough-poster.jpg"
+          label="Clicking What's new steps on the In-game inbox, each one highlighting part of the live prototype"
         />
       </section>
 
       <section id="handoff">
-        <h2 className={heading}>Handoff as a patch</h2>
-        <p className={`${paragraph} mb-4`}>
-          Every prototype records which parts of the real app it copied, and at which commit. That
-          means the design can be separated from everything else.
+        <p className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+          Handoff
         </p>
-        <p className={paragraph}>
-          One command compares a prototype with the real app and produces the design change as a
-          patch, plus a list of the API endpoints the prototype assumes but that don't exist yet. A
-          frontender starts from exactly what changed instead of reverse-engineering it from a
-          separate repository.
+        <h2 className={heading}>From prototype to production in one command.</h2>
+        <p className={`${paragraph} max-w-xl`}>
+          Every prototype records what it copied from the real app, and at which commit. So one
+          command gives a frontender the design change as a patch, plus the API endpoints it
+          assumes that don't exist yet. No more reverse-engineering.
         </p>
-      </section>
-
-      <section id="diamonds">
-        <h2 className={heading}>Diamonds, literally</h2>
-        <p className={`${paragraph} mb-4`}>
-          The name started as a joke: my prototypes were "Diana's diamonds". I took it literally.
-          The hub opens on a 3D field where diamonds fall from the sky and pile up under real
-          gravity, one per prototype, tinted by the product it belongs to. I worked with game
-          artists at Tactile on a diamond model that catches the light and still runs smoothly
-          with 100+ on screen.
-        </p>
-        <p className={`${paragraph} mb-4`}>
-          The field and the grid do different jobs. The field makes an internal tool feel like a
-          collection worth adding to. The grid is for finding things. I kept both, one switch
-          apart, so the delight never gets in the way of finding a prototype. The physics only
-          runs while the diamonds fall, and visitors who prefer reduced motion get the settled
-          pile straight away.
-        </p>
-        <figure className="mt-8">
-          <div className="relative aspect-[8/5] overflow-hidden rounded-lg bg-card">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              poster="/images/dianas-diamonds/field-drop-poster.jpg"
-              aria-label="240 diamonds fall from the sky and settle into a pile in the field view"
-              className="h-full w-full object-cover"
-            >
-              <source src="/images/dianas-diamonds/field-drop.mp4" type="video/mp4" />
-            </video>
-          </div>
-          <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
-            A stress test with 240 diamonds, the scale the field was built for.
-          </figcaption>
-        </figure>
       </section>
 
       <section id="agents">
-        <h2 className={heading}>Designed for agents</h2>
-        <p className={`${paragraph} mb-4`}>
-          Designers don't write prototypes by hand. They direct an AI agent, so the agent is a
-          user of the library too. I wrote the repository's rules for it: short and checkable,
-          like "copy the real app's code, don't rewrite it". A single check enforces them before
-          anything deploys, so a prototype stays honest about what is design and what is copied.
+        <p className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+          Built for agents
         </p>
-        <p className={paragraph}>
-          The same idea made the library work without me. A new designer pastes one message into
-          Claude Code and it sets up their machine. Anyone, even without a setup, can ask for a
-          new prototype or a change from a form in the hub. An agent builds it and opens a pull
-          request.
+        <h2 className={heading}>The designer directs. The agent builds.</h2>
+        <p className={`${paragraph} max-w-xl`}>
+          Designers here don't write prototypes by hand, so I designed the library for the AI
+          agent too. Its rules are short and checkable, and one check enforces them before
+          anything deploys. A new designer pastes one message into Claude Code, and it sets up
+          their machine.
         </p>
       </section>
 
       <section id="impact">
         <h2 className={heading}>Impact</h2>
-        {/* TODO: add real numbers: how many designers add prototypes, how many came from the
-            request form, and how long the shipped handoff took compared with before. */}
+        <StatBand
+          items={[
+            { value: "13", label: "prototypes, all in one home" },
+            { value: "3 weeks", label: "from the first commit to the hub" },
+            { value: "9 of 13", label: "are Done in the PM tool" },
+          ]}
+        />
+        <p className={`${paragraph} mt-12 mb-6`}>With Claude, one designer did the work of a team.</p>
         <OutcomeCards
           items={[
             {
-              title: "13 prototypes, one home",
-              description: "Nothing gets deleted any more, and past work stays findable.",
+              title: "Design to deploy",
+              description: "I designed the prototypes, built the hub and set up the deploys.",
             },
             {
-              title: "Shipped to production",
-              description: "A frontender built a prototype in the real dashboard from its patch.",
+              title: "Real software in reviews",
+              description: "The team clicks through working prototypes, not mockups.",
             },
             {
-              title: "Used beyond me",
-              description: "Other designers add prototypes, and stakeholders review in the hub.",
+              title: "A patch, not a picture",
+              description: "Engineers start from the exact design change in code.",
+            },
+            {
+              title: "Built to outlive me",
+              description: "A new designer sets up their machine with one message to Claude.",
             },
           ]}
         />
