@@ -43,9 +43,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
           legacy for the designer who comes after me.
         </p>
         <p className={paragraph}>
-          That makes prototypes cheap, so there are a lot of them. Every company working this way
-          now faces the same questions: where do they live, and how do you get value from one
-          after the meeting it was made for?
+          Working this way, I built a lot of prototypes, and they ended up scattered across
+          separate repositories and links that were hard to find. So the legacy had a clear
+          job: collect every prototype in one place, where anyone can find it and keep using it.
         </p>
       </section>
 
