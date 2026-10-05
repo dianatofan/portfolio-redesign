@@ -37,9 +37,10 @@ export const dianasDiamondsPage: WorkProjectPage = {
       <section id="overview">
         <h2 className={heading}>Overview</h2>
         <p className={`${paragraph} mb-4`}>
-          Tactile is far ahead in AI development. I design by building prototypes with Claude
-          directly on top of our real source code. The prototype is the source of truth, and
-          Figma comes second.
+          At Tactile we use AI heavily. I design by building prototypes with Claude directly on
+          top of our real source code, so the prototype is the source of truth and Figma comes
+          second. In my final month at the company, I took on one last initiative: leaving a
+          legacy for the designer who comes after me.
         </p>
         <p className={paragraph}>
           That makes prototypes cheap, so there are a lot of them. Every company working this way
@@ -175,8 +176,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
       <section id="legacy">
         <h2 className={heading}>Built to outlive me</h2>
         <p className={paragraph}>
-          I built the library knowing I was leaving Tactile, as a legacy for the next designer.
-          A new designer pastes one message into Claude Code and it sets up their machine. Clear
+          Because this was my legacy, it had to work without me. A new designer pastes one message into Claude Code and it sets up their machine. Clear
           guides then cover how to add or edit a prototype.
         </p>
       </section>
