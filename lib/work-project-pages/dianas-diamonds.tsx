@@ -10,7 +10,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
   displayTitle: "Building a prototype library to scale AI-driven design",
   subtitle:
     "Vibe-coded prototypes end up scattered and hard to find, a problem every designer working with AI runs into. This is how I solved it at Tactile.",
-  heroImage: "/images/dianas-diamonds/field-13.png",
+  heroImage: "/images/dianas-diamonds/field-13-3x2.png",
   description:
     "A scalable catalogue for AI-built prototypes at Tactile: one place to find them, see what changed, and ship them to production.",
   meta: [
