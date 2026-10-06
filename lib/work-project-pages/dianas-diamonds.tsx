@@ -32,8 +32,8 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "grid", title: "Grid", parent: "hub" },
     { id: "whats-new", title: "What's new", parent: "hub" },
     { id: "workflow", title: "Workflow", isParent: true },
-    { id: "pm", title: "PM integration", parent: "workflow" },
-    { id: "agents", title: "Built for agents", parent: "workflow" },
+    { id: "pm", title: "Project management", parent: "workflow" },
+    { id: "agents", title: "Built for AI", parent: "workflow" },
     { id: "impact", title: "Impact" },
     { id: "next", title: "What's next" },
   ],
@@ -160,48 +160,31 @@ export const dianasDiamondsPage: WorkProjectPage = {
 
       <div id="workflow" aria-hidden="true" />
       <section id="pm">
-        <p className={eyebrow}>PM integration</p>
-        <h2 className={heading}>The library keeps itself up to date.</h2>
+        <p className={eyebrow}>Project management</p>
+        <h2 className={heading}>It keeps itself up to date.</h2>
         <p className={`${paragraph} max-w-xl`}>
-          Every prototype is linked to its ticket in our PM tool (project management, our Jira
-          replacement) and to its Figma file, so design, code and decisions stay connected.
-          Even the diamonds read the ticket: To Do is frosted, In Progress is clear, In Review
-          sparkles the most and Cancelled goes dull, so you can read the whole pile at a glance.
+          Each prototype is connected to its task in our project management tool (our Jira
+          replacement) and to its Figma file. When a prototype goes live, its link is added to
+          the task automatically. The diamonds even show each task's progress: frosted means not
+          started, clear means in progress, and sparkling means ready for review.
         </p>
-        <InsightCards
-          items={[
-            {
-              title: "The link posts itself",
-              description: "Each prototype's link lands on its PM ticket as a comment.",
-            },
-            {
-              title: "The ticket moves itself",
-              description: "Shipping a prototype moves its ticket from To Do to In Progress.",
-            },
-            {
-              title: "New work comes first",
-              description: "The hub sorts by the latest status change in PM.",
-            },
-          ]}
-        />
       </section>
 
       <section id="agents">
-        <p className={eyebrow}>Built for agents</p>
-        <h2 className={heading}>The designer directs. The agent builds.</h2>
+        <p className={eyebrow}>Built for AI</p>
+        <h2 className={heading}>Just ask.</h2>
         <p className={`${paragraph} max-w-xl`}>
-          Nobody here writes prototypes by hand, so the library is written for the AI agent too.
-          Its rules are checked automatically before anything ships, and a new designer sets up
-          their machine by pasting one message. From then on, everyone works in plain English.
+          Nobody writes prototypes by hand. Designers and developers simply tell Claude what they
+          want, in plain English.
         </p>
         <TerminalSnippet
           title="Claude Code"
           lines={[
             { kind: "comment", text: "Designer" },
             { kind: "prompt", text: "Start a prototype from the A/B tests page." },
-            { kind: "prompt", text: "Ship holdout-groups." },
+            { kind: "prompt", text: "Publish holdout-groups." },
             { kind: "out", text: " " },
-            { kind: "comment", text: "Frontender" },
+            { kind: "comment", text: "Developer" },
             { kind: "prompt", text: "Build holdout-groups in the real Dashboard." },
           ]}
         />
@@ -212,20 +195,20 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <OutcomeCards
           items={[
             {
-              title: "Every prototype in one home",
-              description: "All 13 prototypes live in one library, and nothing gets cleaned out any more.",
+              title: "All in one place",
+              description: "Every prototype lives in one library. Nothing gets lost.",
             },
             {
-              title: "Easy to add and edit",
-              description: "A new prototype, or a change to an existing one, is one message to Claude.",
+              title: "Easy to add or change",
+              description: "Anyone can add or edit a prototype by asking Claude.",
             },
             {
-              title: "Faster to production",
-              description: "Frontenders start from the exact design change in code, not from screenshots.",
+              title: "Faster to build for real",
+              description: "Developers start from the actual design, not screenshots.",
             },
             {
-              title: "Smoother stakeholder reviews",
-              description: "PMs and leads click through working prototypes in one place, with live status.",
+              title: "Easier reviews",
+              description: "Managers click through real prototypes, all in one place.",
             },
           ]}
         />
