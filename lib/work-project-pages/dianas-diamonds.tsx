@@ -24,14 +24,16 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "overview", title: "Overview" },
     { id: "problem", title: "Problem" },
     { id: "goal", title: "Goal" },
-    { id: "diamonds", title: "Diamonds", isGateStart: true },
-    { id: "names", title: "Show names" },
-    { id: "stress-test", title: "Stress test" },
-    { id: "preview", title: "Preview" },
-    { id: "grid", title: "Grid" },
-    { id: "pm", title: "PM integration" },
-    { id: "whats-new", title: "What's new" },
-    { id: "agents", title: "Built for agents" },
+    { id: "hub", title: "The hub", isParent: true, isGateStart: true },
+    { id: "diamonds", title: "Diamonds", parent: "hub" },
+    { id: "names", title: "Show names", parent: "hub" },
+    { id: "stress-test", title: "Stress test", parent: "hub" },
+    { id: "preview", title: "Preview", parent: "hub" },
+    { id: "grid", title: "Grid", parent: "hub" },
+    { id: "whats-new", title: "What's new", parent: "hub" },
+    { id: "workflow", title: "Workflow", isParent: true },
+    { id: "pm", title: "PM integration", parent: "workflow" },
+    { id: "agents", title: "Built for agents", parent: "workflow" },
     { id: "impact", title: "Impact" },
     { id: "next", title: "What's next" },
   ],
@@ -89,6 +91,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
   ),
   renderAfterGate: () => (
     <>
+      <div id="hub" aria-hidden="true" />
       <section id="diamonds">
         <ShowcaseClip
           eyebrow="Diamonds"
@@ -144,6 +147,18 @@ export const dianasDiamondsPage: WorkProjectPage = {
         />
       </section>
 
+      <section id="whats-new">
+        <ShowcaseClip
+          eyebrow="What's new"
+          title="The design explains itself."
+          caption="A prototype copies the real app, so the hardest question in a review is what's new. Each prototype answers it with a walkthrough: click a step, and the live prototype jumps to that screen and highlights what changed."
+          src="/images/dianas-diamonds/walkthrough.mp4"
+          poster="/images/dianas-diamonds/walkthrough-poster.jpg"
+          label="Clicking What's new steps on the In-game inbox, each one highlighting part of the live prototype"
+        />
+      </section>
+
+      <div id="workflow" aria-hidden="true" />
       <section id="pm">
         <p className={eyebrow}>PM integration</p>
         <h2 className={heading}>The library keeps itself up to date.</h2>
@@ -168,17 +183,6 @@ export const dianasDiamondsPage: WorkProjectPage = {
               description: "The hub sorts by the latest status change in PM.",
             },
           ]}
-        />
-      </section>
-
-      <section id="whats-new">
-        <ShowcaseClip
-          eyebrow="What's new"
-          title="The design explains itself."
-          caption="A prototype copies the real app, so the hardest question in a review is what's new. Each prototype answers it with a walkthrough: click a step, and the live prototype jumps to that screen and highlights what changed."
-          src="/images/dianas-diamonds/walkthrough.mp4"
-          poster="/images/dianas-diamonds/walkthrough-poster.jpg"
-          label="Clicking What's new steps on the In-game inbox, each one highlighting part of the live prototype"
         />
       </section>
 
