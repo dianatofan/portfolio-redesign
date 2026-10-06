@@ -22,6 +22,9 @@ export function HeroImage({ src, alt }: { src: string; alt: string }) {
           loaded ? "opacity-100" : "opacity-0"
         }`}
         sizes="100vw"
+        // Local heroes are screenshots with small text, so they get the higher
+        // quality step; Cloudinary heroes keep its own auto:best.
+        quality={src.startsWith("/") ? 90 : undefined}
         priority
         fetchPriority="high"
         onLoad={() => setLoaded(true)}
