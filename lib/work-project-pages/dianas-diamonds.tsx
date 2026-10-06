@@ -1,6 +1,6 @@
 import type { WorkProjectPage } from "./types"
-import { InsightCards, TerminalSnippet } from "./shared"
-import { ShowcaseClip, StatBand } from "@/components/work/showcase-clip"
+import { InsightCards, OutcomeCards, TerminalSnippet } from "./shared"
+import { ShowcaseClip } from "@/components/work/showcase-clip"
 
 const paragraph = "text-base leading-relaxed text-[var(--text-secondary)]"
 const heading = "text-2xl md:text-3xl font-medium text-foreground mb-4"
@@ -35,6 +35,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "whats-new", title: "What's new" },
     { id: "agents", title: "Built for agents" },
     { id: "impact", title: "Impact" },
+    { id: "next", title: "What's next" },
   ],
   renderBeforeGate: () => (
     <>
@@ -206,16 +207,35 @@ export const dianasDiamondsPage: WorkProjectPage = {
 
       <section id="impact">
         <h2 className={heading}>Impact</h2>
-        <StatBand
+        <OutcomeCards
           items={[
-            { value: "13", label: "prototypes, all in one home" },
-            { value: "3 weeks", label: "from the first commit to the hub" },
-            { value: "9 of 13", label: "are Done in PM" },
+            {
+              title: "Every prototype in one home",
+              description: "All 13 prototypes live in one library, and nothing gets cleaned out any more.",
+            },
+            {
+              title: "Easy to add and edit",
+              description: "A new prototype, or a change to an existing one, is one message to Claude.",
+            },
+            {
+              title: "Faster to production",
+              description: "Frontenders start from the exact design change in code, not from screenshots.",
+            },
+            {
+              title: "Smoother stakeholder reviews",
+              description: "PMs and leads click through working prototypes in one place, with live status.",
+            },
           ]}
         />
-        <p className={`${paragraph} mt-8 max-w-xl`}>
-          With Claude, one designer did the work of a team, and the next designer inherits a
-          working system instead of a pile of repositories.
+      </section>
+
+      <section id="next">
+        <h2 className={heading}>What's next</h2>
+        <p className={`${paragraph} max-w-xl`}>
+          I'd love for people to add or edit prototypes right in the hub. I built a first version,
+          with "New prototype" and "Request a change" forms that started Claude in the cloud, but
+          the infrastructure engineer and I agreed to switch it off: it cost too many credits,
+          and everyone at Tactile already knows how to use Claude in the terminal.
         </p>
       </section>
     </>
