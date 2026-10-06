@@ -206,7 +206,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
             },
             {
               title: "Faster to build for real",
-              description: "Developers start from the design in code, not from Figma files.",
+              description: "Prototypes use the real codebase and design system, so developers have little left to change.",
             },
             {
               title: "Easier reviews",
