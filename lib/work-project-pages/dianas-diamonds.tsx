@@ -137,8 +137,8 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <p className={eyebrow}>PM integration</p>
         <h2 className={heading}>The library keeps itself up to date.</h2>
         <p className={`${paragraph} max-w-xl`}>
-          Tactile replaced Jira with PM, a project tool built in-house. Every prototype is linked
-          to its PM ticket and its Figma file, so design, code and decisions stay connected.
+          Every prototype is linked to its ticket in our PM tool (project management, our Jira
+          replacement) and to its Figma file, so design, code and decisions stay connected.
           Even the diamonds read the ticket: To Do is frosted, In Progress is clear, In Review
           sparkles the most and Cancelled goes dull, so you can read the whole pile at a glance.
         </p>
