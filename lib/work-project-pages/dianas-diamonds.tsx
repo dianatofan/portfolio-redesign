@@ -27,6 +27,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "problem", title: "Problem" },
     { id: "goal", title: "Goal" },
     { id: "diamonds", title: "Diamonds", isGateStart: true },
+    { id: "names", title: "Show names" },
     { id: "stress-test", title: "Stress test" },
     { id: "preview", title: "Preview" },
     { id: "grid", title: "Grid" },
@@ -100,10 +101,21 @@ export const dianasDiamondsPage: WorkProjectPage = {
         />
       </section>
 
+      <section id="names">
+        <ShowcaseClip
+          eyebrow="Show names"
+          title="Light that leads to a name."
+          caption="Flip Show names, and a beam of light leaves each diamond and runs up to its name. Hover a name and its beam lights up while the rest dim, so you can find a prototype without opening one."
+          src="/images/dianas-diamonds/field-names.mp4"
+          poster="/images/dianas-diamonds/field-names-poster.jpg"
+          label="Turning on Show names: light beams rise from each diamond to its name, and hovering a name highlights its beam"
+        />
+      </section>
+
       <section id="stress-test">
         <ShowcaseClip
           eyebrow="Stress test"
-          title="Built for 240. Not just 13."
+          title="Built to scale. Tested with 240."
           caption="A library only grows, so the field had to stay fast long after day one. Here it drops 240 diamonds, copies of the real 13, and stays smooth. The physics only runs while they fall."
           src="/images/dianas-diamonds/field-drop.mp4"
           poster="/images/dianas-diamonds/field-drop-poster.jpg"
