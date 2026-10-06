@@ -1,5 +1,5 @@
 import type { WorkProjectPage } from "./types"
-import { InsightCards, OutcomeCards } from "./shared"
+import { InsightCards, OutcomeCards, TerminalSnippet } from "./shared"
 import { ShowcaseClip, StatBand } from "@/components/work/showcase-clip"
 
 const paragraph = "text-base leading-relaxed text-[var(--text-secondary)]"
@@ -26,8 +26,10 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "problem", title: "Problem" },
     { id: "goal", title: "Goal" },
     { id: "diamonds", title: "Diamonds", isGateStart: true },
+    { id: "stress-test", title: "Stress test" },
     { id: "preview", title: "Preview" },
     { id: "grid", title: "Grid" },
+    { id: "pm", title: "PM integration" },
     { id: "whats-new", title: "What's new" },
     { id: "handoff", title: "Handoff" },
     { id: "agents", title: "Built for agents" },
@@ -96,10 +98,21 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Diamonds"
           title="Diana's diamonds. Literally."
-          caption="The name started as a joke, so I took it literally. The hub opens on a field where every prototype falls in as a 3D diamond and piles up under real gravity. I modelled the diamond with Tactile's game artists, and the field stays smooth with 240 of them."
+          caption="The name started as a joke, so I took it literally. The hub opens on a field where each of the 13 prototypes is a 3D diamond, tinted by the product it belongs to, falling into place under real gravity. I modelled the diamond with Tactile's game artists so it catches the light like a real stone."
+          src="/images/dianas-diamonds/field-real.mp4"
+          poster="/images/dianas-diamonds/field-real-poster.jpg"
+          label="The 13 real prototypes fall as diamonds and settle on the floor of the field view"
+        />
+      </section>
+
+      <section id="stress-test">
+        <ShowcaseClip
+          eyebrow="Stress test"
+          title="Built for 240. Not just 13."
+          caption="A library only grows, so the field had to stay fast long after day one. Here it drops 240 diamonds, copies of the real 13, and stays smooth. The physics runs only while they fall, then sleeps, and visitors who prefer reduced motion see the settled pile straight away."
           src="/images/dianas-diamonds/field-drop.mp4"
           poster="/images/dianas-diamonds/field-drop-poster.jpg"
-          label="240 diamonds fall and settle into a pile in the field view"
+          label="A stress test: 240 diamonds fall and settle into a pile in the field view"
         />
       </section>
 
@@ -125,6 +138,38 @@ export const dianasDiamondsPage: WorkProjectPage = {
         />
       </section>
 
+      <section id="pm">
+        <p className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+          PM integration
+        </p>
+        <h2 className={heading}>The library keeps itself up to date.</h2>
+        <p className={`${paragraph} max-w-xl mb-4`}>
+          Every prototype is linked to its ticket in PM, Tactile's in-house project tool, and to
+          its Figma file. A library nobody has to update by hand is one that stays true.
+        </p>
+        <p className={`${paragraph} max-w-xl`}>
+          Even the diamonds read the ticket. A stone's finish shows where its work stands: To Do
+          is frosted, In Progress is clear, In Review sparkles the most, and Cancelled goes dull.
+          You can read the state of the whole pile without opening a single one.
+        </p>
+        <InsightCards
+          items={[
+            {
+              title: "The link posts itself",
+              description: "Opening a prototype's pull request comments its link on the PM ticket.",
+            },
+            {
+              title: "The ticket moves itself",
+              description: "A ticket still in To Do moves to In Progress. Never backwards.",
+            },
+            {
+              title: "What just moved comes first",
+              description: "The hub sorts by the latest status change, so new work is on top.",
+            },
+          ]}
+        />
+      </section>
+
       <section id="whats-new">
         <ShowcaseClip
           eyebrow="What's new"
@@ -146,6 +191,24 @@ export const dianasDiamondsPage: WorkProjectPage = {
           command gives a frontender the design change as a patch, plus the API endpoints it
           assumes that don't exist yet. No more reverse-engineering.
         </p>
+        <TerminalSnippet
+          lines={[
+            { kind: "comment", text: "Click through the prototype locally" },
+            { kind: "cmd", text: "pnpm --filter child-ab-tests dev" },
+            { kind: "comment", text: "The design change, compared with the real app at the recorded commit" },
+            { kind: "cmd", text: "pnpm diff-prototype --app child-ab-tests --out handoff/" },
+            { kind: "out", text: "→ SUMMARY.md, design.patch and the files the design added" },
+          ]}
+        />
+        <TerminalSnippet
+          title="Claude Code"
+          lines={[
+            {
+              kind: "prompt",
+              text: "Implement the holdout-groups prototype in tactile-dashboard. Show me the design diff and the API it assumes first, then write the handover, then port it on a branch in my dashboard clone.",
+            },
+          ]}
+        />
       </section>
 
       <section id="agents">
@@ -159,6 +222,14 @@ export const dianasDiamondsPage: WorkProjectPage = {
           anything deploys. A new designer pastes one message into Claude Code, and it sets up
           their machine.
         </p>
+        <TerminalSnippet
+          lines={[
+            { kind: "comment", text: "Start a prototype from a real page of the Dashboard" },
+            { kind: "cmd", text: "pnpm new-prototype config-holdouts --real-app dashboard" },
+            { kind: "comment", text: "The rules every prototype follows, checked before it deploys" },
+            { kind: "cmd", text: "pnpm check" },
+          ]}
+        />
       </section>
 
       <section id="impact">
