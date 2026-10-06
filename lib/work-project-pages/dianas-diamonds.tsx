@@ -46,8 +46,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
         </p>
         <p className={paragraph}>
           When prototypes are that cheap, there are a lot of them, and mine ended up scattered
-          and hard to find. In my last month at Tactile, I built one home for all of them, made
-          to keep working after I leave.
+          and hard to find. Every team designing with AI now runs into the same question: where
+          do prototypes live once the meeting is over? In my last month at Tactile, I built one
+          home for all of them, made to keep working after I leave.
         </p>
       </section>
 
@@ -103,7 +104,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Stress test"
           title="Built for 240. Not just 13."
-          caption="A library only grows. Here the field drops 240 diamonds, copies of the real 13, and stays smooth."
+          caption="A library only grows, so the field had to stay fast long after day one. Here it drops 240 diamonds, copies of the real 13, and stays smooth. The physics only runs while they fall."
           src="/images/dianas-diamonds/field-drop.mp4"
           poster="/images/dianas-diamonds/field-drop-poster.jpg"
           label="A stress test: 240 diamonds fall and settle into a pile in the field view"
@@ -114,7 +115,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Preview"
           title="Open one. Then the next."
-          caption="Click a diamond and it opens as a preview. Next steps through them like a gallery, so a PM can catch up on a month of design work in a minute."
+          caption="Hover a diamond to see its name, click it, and it opens as a preview. Next steps through them like a gallery, so a PM can catch up on a month of design work in a minute."
           src="/images/dianas-diamonds/field-open.mp4"
           poster="/images/dianas-diamonds/field-open-poster.jpg"
           label="Hovering a diamond, opening its preview, then stepping to the next prototypes"
@@ -125,7 +126,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Grid"
           title="Every prototype. One place."
-          caption="The field is for delight, the grid is for finding: one switch turns the diamonds into cards with search and filters. Alvaro Hernandez, an engineer, helped me set up the infrastructure behind it."
+          caption="The field is for delight, the grid is for finding. One switch turns the diamonds into cards with a thumbnail, a one-line description, search, filters and each ticket's live status. Alvaro Hernandez, an engineer, helped me set up the infrastructure behind it."
           src="/images/dianas-diamonds/grid-find.mp4"
           poster="/images/dianas-diamonds/grid-find-poster.jpg"
           label="The grid view: hovering over prototype cards, then searching for schedules"
@@ -137,8 +138,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <h2 className={heading}>The library keeps itself up to date.</h2>
         <p className={`${paragraph} max-w-xl`}>
           Tactile replaced Jira with PM, a project tool built in-house. Every prototype is linked
-          to its PM ticket and its Figma file. Even the diamonds read the ticket: To Do is
-          frosted, In Progress is clear, and In Review sparkles the most.
+          to its PM ticket and its Figma file, so design, code and decisions stay connected.
+          Even the diamonds read the ticket: To Do is frosted, In Progress is clear, In Review
+          sparkles the most and Cancelled goes dull, so you can read the whole pile at a glance.
         </p>
         <InsightCards
           items={[
@@ -162,7 +164,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="What's new"
           title="The design explains itself."
-          caption="Each prototype has a What's new walkthrough. Click a step, and the live prototype highlights what changed."
+          caption="A prototype copies the real app, so the hardest question in a review is what's new. Each prototype answers it with a walkthrough: click a step, and the live prototype jumps to that screen and highlights what changed."
           src="/images/dianas-diamonds/walkthrough.mp4"
           poster="/images/dianas-diamonds/walkthrough-poster.jpg"
           label="Clicking What's new steps on the In-game inbox, each one highlighting part of the live prototype"
@@ -174,29 +176,18 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <h2 className={heading}>The designer directs. The agent builds.</h2>
         <p className={`${paragraph} max-w-xl`}>
           Nobody here writes prototypes by hand, so the library is written for the AI agent too.
-          Designers and frontenders work in plain English, from the first prototype to the code
-          the frontender ships.
+          Its rules are checked automatically before anything ships, and a new designer sets up
+          their machine by pasting one message. From then on, everyone works in plain English.
         </p>
         <TerminalSnippet
           title="Claude Code"
           lines={[
-            { kind: "comment", text: "A designer starts a prototype" },
-            {
-              kind: "prompt",
-              text: "Start a new prototype called holdout-groups from the A/B tests page of the Dashboard. Copy the real page first, get it running with fake data, then we iterate on the design.",
-            },
+            { kind: "comment", text: "Designer" },
+            { kind: "prompt", text: "Start a prototype from the A/B tests page." },
+            { kind: "prompt", text: "Ship holdout-groups." },
             { kind: "out", text: " " },
-            { kind: "comment", text: "and ships it" },
-            {
-              kind: "prompt",
-              text: "Run the checks, open a pull request for holdout-groups, and tell me the URL it will get after merge.",
-            },
-            { kind: "out", text: " " },
-            { kind: "comment", text: "A frontender builds it in the real app" },
-            {
-              kind: "prompt",
-              text: "Implement the holdout-groups prototype in tactile-dashboard. Show me the design diff and the API it assumes first.",
-            },
+            { kind: "comment", text: "Frontender" },
+            { kind: "prompt", text: "Build holdout-groups in the real Dashboard." },
           ]}
         />
       </section>
