@@ -1,9 +1,10 @@
 import type { WorkProjectPage } from "./types"
-import { InsightCards, OutcomeCards, TerminalSnippet } from "./shared"
+import { InsightCards, TerminalSnippet } from "./shared"
 import { ShowcaseClip, StatBand } from "@/components/work/showcase-clip"
 
 const paragraph = "text-base leading-relaxed text-[var(--text-secondary)]"
 const heading = "text-2xl md:text-3xl font-medium text-foreground mb-4"
+const eyebrow = "mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]"
 
 export const dianasDiamondsPage: WorkProjectPage = {
   displayTitle: "Building a prototype library to scale AI-driven design",
@@ -31,7 +32,6 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "grid", title: "Grid" },
     { id: "pm", title: "PM integration" },
     { id: "whats-new", title: "What's new" },
-    { id: "handoff", title: "Handoff" },
     { id: "agents", title: "Built for agents" },
     { id: "impact", title: "Impact" },
   ],
@@ -44,24 +44,18 @@ export const dianasDiamondsPage: WorkProjectPage = {
           source code, and an hour later anyone can open a working version. The prototype is the
           source of truth, and Figma comes second.
         </p>
-        <p className={`${paragraph} mb-4`}>
-          When prototypes are that cheap, there are a lot of them. Mine ended up scattered across
-          separate repositories and links nobody could find. Every company working this way now
-          faces the same questions: where do prototypes live, which one is current, and how do
-          you get value from one after the meeting it was made for?
-        </p>
         <p className={paragraph}>
-          In my last month at Tactile, I built the answer: one home for every prototype, made to
-          keep working after I leave.
+          When prototypes are that cheap, there are a lot of them, and mine ended up scattered
+          and hard to find. In my last month at Tactile, I built one home for all of them, made
+          to keep working after I leave.
         </p>
       </section>
 
       <section id="problem">
         <h2 className={heading}>Problem</h2>
         <p className={paragraph}>
-          Every prototype was its own repository, with its own deploy, domain and login. Each one
-          cost money and setup time, so I deleted old ones regularly. Then a PM would ask to see a
-          prototype from a few months back, and it was gone.
+          Every prototype was its own repository and deploy, so I deleted old ones regularly. Then
+          a PM would ask for one from a few months back, and it was gone.
         </p>
         <InsightCards
           items={[
@@ -86,7 +80,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <div className="bg-accent/20 border-l-4 border-accent p-6 rounded-r-lg">
           <p className="text-lg font-medium text-foreground">
             One permanent home where anyone can find a prototype, see what it changes, and take it
-            to production. It had to work as well with 100 prototypes as with a dozen.
+            to production, whether there are a dozen or a hundred.
           </p>
         </div>
       </section>
@@ -98,7 +92,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Diamonds"
           title="Diana's diamonds. Literally."
-          caption="The name started as a joke, so I took it literally. The hub opens on a field where each of the 13 prototypes is a 3D diamond, tinted by the product it belongs to, falling into place under real gravity. I modelled the diamond with Tactile's game artists so it catches the light like a real stone."
+          caption="The name started as a joke, so I took it literally: each of the 13 prototypes is a 3D diamond that falls into place under real gravity. I modelled the diamond with Tactile's game artists so it catches the light like a real stone."
           src="/images/dianas-diamonds/field-real.mp4"
           poster="/images/dianas-diamonds/field-real-poster.jpg"
           label="The 13 real prototypes fall as diamonds and settle on the floor of the field view"
@@ -109,7 +103,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Stress test"
           title="Built for 240. Not just 13."
-          caption="A library only grows, so the field had to stay fast long after day one. Here it drops 240 diamonds, copies of the real 13, and stays smooth. The physics runs only while they fall, then sleeps, and visitors who prefer reduced motion see the settled pile straight away."
+          caption="A library only grows. Here the field drops 240 diamonds, copies of the real 13, and stays smooth."
           src="/images/dianas-diamonds/field-drop.mp4"
           poster="/images/dianas-diamonds/field-drop-poster.jpg"
           label="A stress test: 240 diamonds fall and settle into a pile in the field view"
@@ -120,7 +114,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Preview"
           title="Open one. Then the next."
-          caption="Hover a diamond to see its name, click it, and it opens as a preview. Next goes through the prototypes like a gallery, so a PM can catch up on a month of design work in a minute."
+          caption="Click a diamond and it opens as a preview. Next steps through them like a gallery, so a PM can catch up on a month of design work in a minute."
           src="/images/dianas-diamonds/field-open.mp4"
           poster="/images/dianas-diamonds/field-open-poster.jpg"
           label="Hovering a diamond, opening its preview, then stepping to the next prototypes"
@@ -131,7 +125,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Grid"
           title="Every prototype. One place."
-          caption="The field is for delight, the grid is for finding. One switch turns the diamonds into cards with search, filters and each ticket's live status from our PM tool. Alvaro Hernandez, an engineer, helped me put them all in one repository and one address."
+          caption="The field is for delight, the grid is for finding: one switch turns the diamonds into cards with search and filters. Alvaro Hernandez, an engineer, helped me set up the infrastructure behind it."
           src="/images/dianas-diamonds/grid-find.mp4"
           poster="/images/dianas-diamonds/grid-find-poster.jpg"
           label="The grid view: hovering over prototype cards, then searching for schedules"
@@ -139,32 +133,26 @@ export const dianasDiamondsPage: WorkProjectPage = {
       </section>
 
       <section id="pm">
-        <p className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-          PM integration
-        </p>
+        <p className={eyebrow}>PM integration</p>
         <h2 className={heading}>The library keeps itself up to date.</h2>
-        <p className={`${paragraph} max-w-xl mb-4`}>
-          Every prototype is linked to its ticket in PM, Tactile's in-house project tool, and to
-          its Figma file. A library nobody has to update by hand is one that stays true.
-        </p>
         <p className={`${paragraph} max-w-xl`}>
-          Even the diamonds read the ticket. A stone's finish shows where its work stands: To Do
-          is frosted, In Progress is clear, In Review sparkles the most, and Cancelled goes dull.
-          You can read the state of the whole pile without opening a single one.
+          Tactile replaced Jira with PM, a project tool built in-house. Every prototype is linked
+          to its PM ticket and its Figma file. Even the diamonds read the ticket: To Do is
+          frosted, In Progress is clear, and In Review sparkles the most.
         </p>
         <InsightCards
           items={[
             {
               title: "The link posts itself",
-              description: "Opening a prototype's pull request comments its link on the PM ticket.",
+              description: "Each prototype's link lands on its PM ticket as a comment.",
             },
             {
               title: "The ticket moves itself",
-              description: "A ticket still in To Do moves to In Progress. Never backwards.",
+              description: "Shipping a prototype moves its ticket from To Do to In Progress.",
             },
             {
-              title: "What just moved comes first",
-              description: "The hub sorts by the latest status change, so new work is on top.",
+              title: "New work comes first",
+              description: "The hub sorts by the latest status change in PM.",
             },
           ]}
         />
@@ -174,60 +162,41 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="What's new"
           title="The design explains itself."
-          caption="Each prototype has a details page with the live prototype beside its notes. What's new is an interactive walkthrough: click a step, and the prototype jumps to that screen and highlights what changed."
+          caption="Each prototype has a What's new walkthrough. Click a step, and the live prototype highlights what changed."
           src="/images/dianas-diamonds/walkthrough.mp4"
           poster="/images/dianas-diamonds/walkthrough-poster.jpg"
           label="Clicking What's new steps on the In-game inbox, each one highlighting part of the live prototype"
         />
       </section>
 
-      <section id="handoff">
-        <p className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-          Handoff
-        </p>
-        <h2 className={heading}>From prototype to production in one command.</h2>
+      <section id="agents">
+        <p className={eyebrow}>Built for agents</p>
+        <h2 className={heading}>The designer directs. The agent builds.</h2>
         <p className={`${paragraph} max-w-xl`}>
-          Every prototype records what it copied from the real app, and at which commit. So one
-          command gives a frontender the design change as a patch, plus the API endpoints it
-          assumes that don't exist yet. No more reverse-engineering.
+          Nobody here writes prototypes by hand, so the library is written for the AI agent too.
+          Designers and frontenders work in plain English, from the first prototype to the code
+          the frontender ships.
         </p>
-        <TerminalSnippet
-          lines={[
-            { kind: "comment", text: "Click through the prototype locally" },
-            { kind: "cmd", text: "pnpm --filter child-ab-tests dev" },
-            { kind: "comment", text: "The design change, compared with the real app at the recorded commit" },
-            { kind: "cmd", text: "pnpm diff-prototype --app child-ab-tests --out handoff/" },
-            { kind: "out", text: "→ SUMMARY.md, design.patch and the files the design added" },
-          ]}
-        />
         <TerminalSnippet
           title="Claude Code"
           lines={[
+            { kind: "comment", text: "A designer starts a prototype" },
             {
               kind: "prompt",
-              text: "Implement the holdout-groups prototype in tactile-dashboard. Show me the design diff and the API it assumes first, then write the handover, then port it on a branch in my dashboard clone.",
+              text: "Start a new prototype called holdout-groups from the A/B tests page of the Dashboard. Copy the real page first, get it running with fake data, then we iterate on the design.",
             },
-          ]}
-        />
-      </section>
-
-      <section id="agents">
-        <p className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-          Built for agents
-        </p>
-        <h2 className={heading}>The designer directs. The agent builds.</h2>
-        <p className={`${paragraph} max-w-xl`}>
-          Designers here don't write prototypes by hand, so I designed the library for the AI
-          agent too. Its rules are short and checkable, and one check enforces them before
-          anything deploys. A new designer pastes one message into Claude Code, and it sets up
-          their machine.
-        </p>
-        <TerminalSnippet
-          lines={[
-            { kind: "comment", text: "Start a prototype from a real page of the Dashboard" },
-            { kind: "cmd", text: "pnpm new-prototype config-holdouts --real-app dashboard" },
-            { kind: "comment", text: "The rules every prototype follows, checked before it deploys" },
-            { kind: "cmd", text: "pnpm check" },
+            { kind: "out", text: " " },
+            { kind: "comment", text: "and ships it" },
+            {
+              kind: "prompt",
+              text: "Run the checks, open a pull request for holdout-groups, and tell me the URL it will get after merge.",
+            },
+            { kind: "out", text: " " },
+            { kind: "comment", text: "A frontender builds it in the real app" },
+            {
+              kind: "prompt",
+              text: "Implement the holdout-groups prototype in tactile-dashboard. Show me the design diff and the API it assumes first.",
+            },
           ]}
         />
       </section>
@@ -238,30 +207,13 @@ export const dianasDiamondsPage: WorkProjectPage = {
           items={[
             { value: "13", label: "prototypes, all in one home" },
             { value: "3 weeks", label: "from the first commit to the hub" },
-            { value: "9 of 13", label: "are Done in the PM tool" },
+            { value: "9 of 13", label: "are Done in PM" },
           ]}
         />
-        <p className={`${paragraph} mt-12 mb-6`}>With Claude, one designer did the work of a team.</p>
-        <OutcomeCards
-          items={[
-            {
-              title: "Design to deploy",
-              description: "I designed the prototypes, built the hub and set up the deploys.",
-            },
-            {
-              title: "Real software in reviews",
-              description: "The team clicks through working prototypes, not mockups.",
-            },
-            {
-              title: "A patch, not a picture",
-              description: "Engineers start from the exact design change in code.",
-            },
-            {
-              title: "Built to outlive me",
-              description: "A new designer sets up their machine with one message to Claude.",
-            },
-          ]}
-        />
+        <p className={`${paragraph} mt-8 max-w-xl`}>
+          With Claude, one designer did the work of a team, and the next designer inherits a
+          working system instead of a pile of repositories.
+        </p>
       </section>
     </>
   ),
