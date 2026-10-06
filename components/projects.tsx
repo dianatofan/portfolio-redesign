@@ -20,7 +20,7 @@ export const workProjects: readonly WorkProject[] = [
         slug: "dianas-diamonds",
         title: "Building a prototype library to scale AI-driven design",
         navigationTitle: "Diana's Diamonds",
-        image: "/images/dianas-diamonds/field-13-3x2.png",
+        image: "/images/dianas-diamonds/field-13-card.png",
         tags: ["2026", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
