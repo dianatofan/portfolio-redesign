@@ -91,8 +91,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
   ),
   renderAfterGate: () => (
     <>
-      <div id="hub" aria-hidden="true" />
       <section id="diamonds">
+        {/* The TOC parent "hub" scrolls here: an anchor inside, so no element sits between sections. */}
+        <div id="hub" aria-hidden="true" />
         <ShowcaseClip
           eyebrow="Diamonds"
           title="Diana's diamonds. Literally."
@@ -158,8 +159,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
         />
       </section>
 
-      <div id="workflow" aria-hidden="true" />
       <section id="pm">
+        {/* The TOC parent "workflow" scrolls here: an anchor inside, so no element sits between sections. */}
+        <div id="workflow" aria-hidden="true" />
         <p className={eyebrow}>Project management</p>
         <h2 className={heading}>It keeps itself up to date.</h2>
         <p className={`${paragraph} max-w-xl`}>
@@ -204,7 +206,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
             },
             {
               title: "Faster to build for real",
-              description: "Developers start from the actual design, not screenshots.",
+              description: "Developers start from the design in code, not from Figma files.",
             },
             {
               title: "Easier reviews",
