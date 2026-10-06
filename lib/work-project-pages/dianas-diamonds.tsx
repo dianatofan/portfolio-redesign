@@ -1,10 +1,71 @@
+import Image from "next/image"
 import type { WorkProjectPage } from "./types"
-import { InsightCards, OutcomeCards, TerminalSnippet } from "./shared"
+import { InsightCards, OutcomeCards } from "./shared"
 import { ShowcaseClip } from "@/components/work/showcase-clip"
+import { ArrowRight, GitPullRequest, Link2 } from "lucide-react"
 
 const paragraph = "text-base leading-relaxed text-[var(--text-secondary)]"
 const heading = "text-2xl md:text-3xl font-medium text-foreground mb-4"
 const eyebrow = "mb-3 text-sm font-medium uppercase tracking-wider text-[var(--text-tertiary)]"
+
+/** A cut gem outline; the three finishes stand for a task's status, as the hub's diamonds do. */
+function Gem({ finish }: { finish: "frosted" | "clear" | "sparkling" }) {
+  // Rendered by the hub itself: the same stone in the To Do, In Progress and In Review finishes.
+  const file = finish === "frosted" ? "frosted" : finish === "clear" ? "clear" : "brilliant"
+  return (
+    <div className="relative aspect-[68/50] w-full overflow-hidden rounded-md">
+      <Image
+        src={`/images/dianas-diamonds/finish-${file}.webp`}
+        alt=""
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 30vw, 200px"
+      />
+    </div>
+  )
+}
+
+/** The project management loop at a glance: what happens when a pull request opens, and what the diamond says. */
+function PmGraphic() {
+  const steps = [
+    { icon: GitPullRequest, label: "Pull request opens" },
+    { icon: Link2, label: "Link added to the task" },
+  ]
+  return (
+    <div className="mt-8 rounded-xl bg-background p-6 md:p-8">
+      <div className="flex flex-col items-stretch gap-3 md:flex-row md:items-center">
+        {steps.map(({ icon: Icon, label }) => (
+          <div key={label} className="flex items-center gap-3 md:contents">
+            <div className="flex flex-1 items-center gap-3 rounded-lg bg-card p-4 ring-1 ring-black/5">
+              <Icon size={18} className="shrink-0 text-foreground" aria-hidden="true" />
+              <span className="text-sm font-medium text-foreground">{label}</span>
+            </div>
+            <ArrowRight size={18} className="hidden shrink-0 text-[var(--text-tertiary)] md:block" aria-hidden="true" />
+          </div>
+        ))}
+        <div className="flex flex-1 items-center gap-2 rounded-lg bg-card p-4 ring-1 ring-black/5">
+          <span className="rounded-full bg-background px-2.5 py-0.5 text-xs font-medium text-[var(--text-secondary)]">To Do</span>
+          <ArrowRight size={14} className="text-[var(--text-tertiary)]" aria-hidden="true" />
+          <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-foreground">In Progress</span>
+        </div>
+      </div>
+      <div className="mt-8 grid grid-cols-3 gap-4">
+        {(
+          [
+            ["frosted", "Not started"],
+            ["clear", "In progress"],
+            ["sparkling", "Ready for review"],
+          ] as const
+        ).map(([finish, label]) => (
+          <div key={finish} className="flex flex-col items-center gap-3 rounded-lg bg-card p-5 ring-1 ring-black/5">
+            <Gem finish={finish} />
+            <span className="text-center text-sm text-[var(--text-secondary)]">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export const dianasDiamondsPage: WorkProjectPage = {
   displayTitle: "Building a prototype library to scale AI-driven design",
@@ -28,13 +89,13 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "diamonds", title: "Diamonds", parent: "hub" },
     { id: "names", title: "Show names", parent: "hub" },
     { id: "stress-test", title: "Stress test", parent: "hub" },
+    { id: "tradeoffs", title: "Trade-offs", parent: "hub" },
     { id: "preview", title: "Preview", parent: "hub" },
     { id: "grid", title: "Grid", parent: "hub" },
     { id: "whats-new", title: "What's new", parent: "hub" },
     { id: "workflow", title: "Workflow", isParent: true },
     { id: "pm", title: "Project management", parent: "workflow" },
-    { id: "agents", title: "Built for AI", parent: "workflow" },
-    { id: "handoff", title: "Handoff", parent: "workflow" },
+    { id: "how", title: "How prototypes get here", parent: "workflow" },
     { id: "impact", title: "Impact" },
     { id: "next", title: "What's next" },
   ],
@@ -125,24 +186,46 @@ export const dianasDiamondsPage: WorkProjectPage = {
           poster="/images/dianas-diamonds/field-drop-poster.jpg"
           label="A stress test: 240 diamonds fall and settle into a pile in the field view"
         />
-        <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div>
-            <h3 className="text-lg font-medium text-foreground mb-2">One pile beat tidy shelves</h3>
-            <p className={paragraph}>
-              Past a hundred diamonds, my first idea was a shelf: each product area got its own
-              stretch of floor, and the view scrolled along it. It was tidier, and it lost the
-              point. The field is a pile you take in at a glance, so I went back to one pile and
-              left sorting to the grid.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-medium text-foreground mb-2">Every name, at any size</h3>
-            <p className={paragraph}>
-              The shimmering beams can draw 16 at a time. Rather than hide names past that, the
-              first 16 shimmer and the rest get a simpler beam, so every diamond keeps a line to
-              its name, whether there are 13 or 200.
-            </p>
-          </div>
+      </section>
+
+      <section id="tradeoffs">
+        <p className={eyebrow}>Trade-offs</p>
+        <h2 className={heading}>Two ways to hold 240 diamonds.</h2>
+        <div className="mt-8 grid grid-cols-1 gap-8 rounded-xl bg-background p-6 md:grid-cols-2 md:p-8">
+          <figure>
+            <div className="relative aspect-[3200/1626] overflow-hidden rounded-lg border border-border bg-card">
+              <Image
+                src="/images/dianas-diamonds/tradeoff-shelf.jpg"
+                alt="The field with 240 diamonds on shelves: one pile per product area, side by side"
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
+            </div>
+            <figcaption className="mt-4">
+              <h3 className="text-lg font-medium text-foreground mb-2">Tried: a shelf per product area</h3>
+              <p className={paragraph}>
+                A pile per product area. Tidier, but you lose the one-glance view.
+              </p>
+            </figcaption>
+          </figure>
+          <figure>
+            <div className="relative aspect-[3200/1626] overflow-hidden rounded-lg border border-border bg-card">
+              <Image
+                src="/images/dianas-diamonds/tradeoff-pile-names.jpg"
+                alt="The field with 240 diamonds in one pile and Show names on: a beam from every diamond to its name"
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
+            </div>
+            <figcaption className="mt-4">
+              <h3 className="text-lg font-medium text-foreground mb-2">Kept: one pile, a beam for every name</h3>
+              <p className={paragraph}>
+                Every name stays reachable. When it gets crowded, the grid takes over.
+              </p>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -150,7 +233,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Preview"
           title="Open one. Then the next."
-          caption="Hover a diamond to see its name, click it, and it opens as a preview. Next steps through them like a gallery, so a PM can catch up on a month of design work in a minute."
+          caption="Hover a diamond to see its name, click it, and it opens as a preview. Next and Previous step through them like a gallery, so a PM can catch up on a month of design work in a minute."
           src="/images/dianas-diamonds/field-open.mp4"
           poster="/images/dianas-diamonds/field-open-poster.jpg"
           label="Hovering a diamond, opening its preview, then stepping to the next prototypes"
@@ -185,100 +268,49 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <p className={eyebrow}>Project management</p>
         <h2 className={heading}>It keeps itself up to date.</h2>
         <p className={`${paragraph} max-w-xl`}>
-          Each prototype is connected to its task in our project management tool (our Jira
-          replacement) and to its Figma file. When a prototype's pull request opens, its link is
-          added to the task, and a task still in To Do moves to In Progress, so the ticket points
-          at the design before anyone asks. The diamonds even show each task's progress: frosted
-          means not started, clear means in progress, and sparkling means ready for review.
+          Each prototype is linked to its task in our project management tool and its Figma file.
+          The task gets the link on its own, and the diamond shows how far along it is.
         </p>
+        <PmGraphic />
       </section>
 
-      <section id="agents">
+      <section id="how">
         <p className={eyebrow}>Built for AI</p>
-        <h2 className={heading}>Just ask.</h2>
-        <p className={`${paragraph} max-w-xl`}>
-          Nobody writes prototypes by hand. Designers and developers simply tell Claude what they
-          want, in plain English. That only scales if the agent can't quietly get it wrong, so
-          the library is built around rules it can check.
-        </p>
-        <InsightCards
-          items={[
-            {
-              title: "Set up in one message",
-              description:
-                "A designer installs Claude Code and pastes one message. The agent sets up their machine, and no token ever enters the chat.",
-            },
-            {
-              title: "Rules the build enforces",
-              description:
-                "Every prototype passes the same checks before it ships: pinned design system, fake data only, no real network calls.",
-            },
-            {
-              title: "Real code, left untouched",
-              description:
-                "Prototypes copy the real app's code and never edit it, so whatever differs is the design and nothing else.",
-            },
-          ]}
-        />
-        <TerminalSnippet
-          title="Claude Code"
-          lines={[
-            { kind: "comment", text: "Designer" },
-            { kind: "prompt", text: "Start a prototype from the A/B tests page." },
-            { kind: "prompt", text: "Publish holdout-groups." },
-            { kind: "out", text: " " },
-            { kind: "comment", text: "Developer" },
-            { kind: "prompt", text: "Build holdout-groups in the real Dashboard." },
-          ]}
-        />
-      </section>
-
-      <section id="handoff">
-        <p className={eyebrow}>Handoff</p>
-        <h2 className={heading}>The design, as a diff.</h2>
-        <p className={`${paragraph} max-w-xl`}>
-          Because a prototype copies the real app and only the design changes it, the handoff is
-          a diff. One command turns a prototype into a patch against the exact version of the app
-          it was built on. Each prototype's notes also list the data it assumes the backend will
-          provide, so a frontender starts from what changed instead of digging for it.
-        </p>
-        <TerminalSnippet
-          title="Claude Code"
-          lines={[
-            { kind: "comment", text: "Frontender" },
-            { kind: "prompt", text: "Implement the inbox prototype in the Dashboard." },
-            { kind: "out", text: " " },
-            { kind: "comment", text: "What the agent runs first" },
-            { kind: "cmd", text: "pnpm diff-prototype --app inbox --out handoff/" },
-          ]}
-        />
+        <h2 className={heading}>From a real page to a diamond.</h2>
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[1fr_minmax(0,320px)]">
+          <p className={`${paragraph} max-w-md`}>
+            Nobody writes prototypes by hand. The hub explains itself: one click on "How do
+            prototypes get here?" walks anyone from cloning the library to a live diamond, with
+            the exact words to say to Claude. Developers get the design back as a diff.
+          </p>
+          <div>
+            <Image
+              src="/images/dianas-diamonds/how-prototypes-get-here.webp"
+              alt="The hub's How do prototypes get here? popover: five steps, Clone, Slice, Mock, Design and Merge, with the messages to send Claude"
+              width={784}
+              height={1916}
+              className="h-auto w-full"
+              sizes="320px"
+            />
+          </div>
+        </div>
       </section>
 
       <section id="impact">
         <h2 className={heading}>Impact</h2>
         <p className={`${paragraph} mb-6 max-w-xl`}>
-          In its first four weeks, 13 prototypes moved into one library, six of them from their
-          own repositories, through 28 merged pull requests and one deploy pipeline instead of
-          one per prototype.
+          In four weeks: 13 prototypes in one library and one deploy pipeline instead of one per
+          prototype.
         </p>
         <OutcomeCards
           items={[
-            {
-              title: "All in one place",
-              description: "Every prototype lives in one library. Nothing gets deleted to save space.",
-            },
-            {
-              title: "Easy to add or change",
-              description: "Anyone can add or edit a prototype by asking Claude.",
-            },
+            { title: "All in one place", description: "Nothing gets deleted to save space any more." },
+            { title: "Easy to add or change", description: "Anyone can add or edit a prototype by asking Claude." },
             {
               title: "Faster to build for real",
-              description: "Prototypes use the real codebase and design system, and hand over as a diff, so developers start from what changed.",
+              description: "Prototypes use the real codebase and design system, so developers have little left to change.",
             },
-            {
-              title: "Easier reviews",
-              description: "Managers click through real prototypes, all in one place.",
-            },
+            { title: "Easier reviews", description: "Managers click through real prototypes, all in one place." },
           ]}
         />
       </section>
@@ -286,12 +318,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
       <section id="next">
         <h2 className={heading}>What's next</h2>
         <p className={`${paragraph} max-w-xl`}>
-          I'd love for people to add or edit prototypes right in the hub. I built a first version,
-          with "New prototype" and "Request a change" forms that started Claude in the cloud, but
-          the infrastructure engineer and I agreed to switch it off: it cost too many credits,
-          and everyone at Tactile already knows how to use Claude in the terminal. The library is
-          also written to outlast me: a handover guide covers where everything is, who has access,
-          and what is easy to break.
+          Adding and editing prototypes right in the hub. I built it, then switched it off with
+          our infrastructure engineer: it cost too many credits, and everyone already uses Claude
+          in the terminal.
         </p>
       </section>
     </>
