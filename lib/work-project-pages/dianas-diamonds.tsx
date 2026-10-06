@@ -8,14 +8,12 @@ const eyebrow = "mb-3 text-sm font-medium uppercase tracking-wider text-[var(--t
 
 export const dianasDiamondsPage: WorkProjectPage = {
   displayTitle: "Building a prototype library to scale AI-driven design",
-  subtitle:
-    "Vibe-coded prototypes end up scattered and hard to find, a problem every designer working with AI runs into. This is how I solved it at Tactile.",
   heroImage: "/images/dianas-diamonds/hero-13-21x9.png",
   description:
     "A scalable catalogue for AI-built prototypes at Tactile: one place to find them, see what changed, and ship them to production.",
   meta: [
     { label: "Role", values: ["Product Designer", "Design Engineer"] },
-    { label: "Duration", values: ["Sep – Oct 2026"] },
+    { label: "Duration", values: ["October 2026"] },
     { label: "Type", values: ["Work project"] },
     {
       label: "Skills",
