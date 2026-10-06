@@ -1,6 +1,6 @@
 import Image from "next/image"
 import type { WorkProjectPage } from "./types"
-import { InsightCards, OutcomeCards } from "./shared"
+import { InsightCards, OutcomeCards, TerminalSnippet } from "./shared"
 import { ShowcaseClip } from "@/components/work/showcase-clip"
 import { ArrowRight, GitPullRequest, Link2 } from "lucide-react"
 
@@ -95,7 +95,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "whats-new", title: "What's new", parent: "hub" },
     { id: "workflow", title: "Workflow", isParent: true },
     { id: "pm", title: "Project management", parent: "workflow" },
-    { id: "how", title: "How prototypes get here", parent: "workflow" },
+    { id: "how", title: "Built for AI", parent: "workflow" },
     { id: "impact", title: "Impact" },
     { id: "next", title: "What's next" },
   ],
@@ -276,24 +276,22 @@ export const dianasDiamondsPage: WorkProjectPage = {
 
       <section id="how">
         <p className={eyebrow}>Built for AI</p>
-        <h2 className={heading}>From a real page to a diamond.</h2>
-        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[1fr_minmax(0,320px)]">
-          <p className={`${paragraph} max-w-md`}>
-            Nobody writes prototypes by hand. The hub explains itself: one click on "How do
-            prototypes get here?" walks anyone from cloning the library to a live diamond, with
-            the exact words to say to Claude. Developers get the design back as a diff.
-          </p>
-          <div>
-            <Image
-              src="/images/dianas-diamonds/how-prototypes-get-here.webp"
-              alt="The hub's How do prototypes get here? popover: five steps, Clone, Slice, Mock, Design and Merge, with the messages to send Claude"
-              width={784}
-              height={1916}
-              className="h-auto w-full"
-              sizes="320px"
-            />
-          </div>
-        </div>
+        <h2 className={heading}>Just ask.</h2>
+        <p className={`${paragraph} max-w-xl`}>
+          Nobody writes prototypes by hand. Designers and developers tell Claude what they want,
+          in plain English, and developers get the design back as a diff.
+        </p>
+        <TerminalSnippet
+          title="Claude Code"
+          lines={[
+            { kind: "comment", text: "Designer" },
+            { kind: "prompt", text: "Start a prototype from the A/B tests page." },
+            { kind: "prompt", text: "Publish holdout-groups." },
+            { kind: "out", text: " " },
+            { kind: "comment", text: "Developer" },
+            { kind: "prompt", text: "Build holdout-groups in the real Dashboard." },
+          ]}
+        />
       </section>
 
       <section id="impact">
