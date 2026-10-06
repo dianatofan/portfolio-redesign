@@ -6,7 +6,7 @@ const paragraph = "text-base leading-relaxed text-[var(--text-secondary)]"
 const heading = "text-2xl md:text-3xl font-medium text-foreground mb-4"
 
 export const dianasDiamondsPage: WorkProjectPage = {
-  displayTitle: "Building a prototype library to stop AI-built prototypes from getting lost",
+  displayTitle: "Building a prototype library to scale AI-driven design",
   subtitle:
     "Vibe-coded prototypes end up scattered and hard to find, a problem every designer working with AI runs into. This is how I solved it at Tactile.",
   heroImage: "/images/dianas-diamonds/field.png",
