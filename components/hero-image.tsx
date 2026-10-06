@@ -26,6 +26,11 @@ export function HeroImage({ src, alt }: { src: string; alt: string }) {
         fetchPriority="high"
         onLoad={() => setLoaded(true)}
       />
+      {/* Hairline edge, so a light hero doesn't bleed into the white page. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/[0.06]"
+      />
     </div>
   )
 }

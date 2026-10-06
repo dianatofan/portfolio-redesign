@@ -100,6 +100,14 @@ export function ProjectCard({
                         onLoad={() => setIsImageLoaded(true)}
                     />
 
+                    {/* A hairline edge above the image, so a light screenshot doesn't
+                        bleed into the white page. Outside the image, so it doesn't
+                        scale with it on hover. */}
+                    <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-black/[0.06]"
+                    />
+
                     {/* Glass chips (appear on hover, animate top->down) */}
                     {tags.length > 0 && (
                         <div
