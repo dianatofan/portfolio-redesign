@@ -132,7 +132,7 @@ function ProjectRow({
             onMouseLeave={handleLeave}
             // Lighter than --border (#E5E5E5): 1px is already the thinnest a
             // border renders, so a paler tone is what reads as finer here.
-            className="group flex cursor-none items-center justify-between border-t border-[#F0F0F0] py-6 last:border-b"
+            className="group flex cursor-none flex-col items-start gap-3 border-t border-[#F0F0F0] py-6 last:border-b md:flex-row md:items-center md:justify-between md:gap-6"
         >
             <div>
                 <h3 className="text-xl font-medium text-foreground transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:-translate-x-2 md:text-2xl">

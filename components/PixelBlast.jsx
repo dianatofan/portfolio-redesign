@@ -210,13 +210,16 @@ const PixelBlast = ({
   const visibilityRef = useRef({ visible: true });
   const paintedRef = useRef(false);
   const [painted, setPainted] = useState(false);
+  // WebGL can be missing (disabled, blocklisted GPU, some privacy browsers). Without
+  // this the constructor throws and takes the whole page down with it.
+  const [unsupported, setUnsupported] = useState(false);
   const speedRef = useRef(speed);
 
   const threeRef = useRef(null);
   const prevConfigRef = useRef(null);
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || unsupported) return;
     speedRef.current = speed;
     const needsReinitKeys = ['antialias'];
     const cfg = { antialias };
@@ -242,12 +245,18 @@ const PixelBlast = ({
         threeRef.current = null;
       }
       const canvas = document.createElement('canvas');
-      const renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias,
-        alpha: true,
-        powerPreference: 'high-performance'
-      });
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
+      } catch {
+        setUnsupported(true);
+        return;
+      }
       renderer.domElement.style.width = '100%';
       renderer.domElement.style.height = '100%';
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -427,8 +436,27 @@ const PixelBlast = ({
     autoPauseOffscreen,
     variant,
     color,
-    speed
+    speed,
+    unsupported
   ]);
+
+  if (unsupported) {
+    // Static stand-in: the same dot grid, minus the animation and ripples.
+    return (
+      <div
+        className={`pixel-blast-container ${className ?? ''}`}
+        style={{
+          ...style,
+          backgroundImage: `radial-gradient(${color} 1px, transparent 1.5px)`,
+          backgroundSize: `${pixelSize * 2}px ${pixelSize * 2}px`,
+          opacity: 0.35,
+          maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)'
+        }}
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <div

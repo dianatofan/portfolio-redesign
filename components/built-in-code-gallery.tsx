@@ -31,11 +31,14 @@ export function BuiltInCodeGallery({ projects }: { projects: GalleryProject[] })
          * "Back" target for /prototypes/* and /fun/*, so someone returning from
          * those pages must land on the gallery rather than on its reserved space.
          *
-         * Reserve is the measured two-row height (212px from `lg`, 408px below)
-         * scaled to three rows — 318px from `lg` up, 612px below, where
-         * the rows wrap.
+         * Reserve is the measured height of the three rows: 318px from `lg` up,
+         * then taller as titles wrap — 378px at `md`, 430px at `sm`, and ~520px
+         * on phones, where each row's year/tags drop onto their own line.
          */
-        <DeferUntilNear mountOnHash="built-in-code" className="min-h-[612px] lg:min-h-[318px]">
+        <DeferUntilNear
+            mountOnHash="built-in-code"
+            className="min-h-[520px] sm:min-h-[430px] md:min-h-[378px] lg:min-h-[318px]"
+        >
             <ImageSlideGallery projects={projects} />
         </DeferUntilNear>
     )
