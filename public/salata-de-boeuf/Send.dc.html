@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<style>@font-face{font-family:'Overused Grotesk';src:url('Fonts/variable/OverusedGrotesk-VF.woff2') format('woff2');font-weight:300 900}html,body{margin:0;background:#7a1410}*{box-sizing:border-box}a{color:#b81f16}a:hover{color:#7a1410}</style>
+</helmet>
+<div style="min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:28px 20px calc(28px + env(safe-area-inset-bottom));background:radial-gradient(ellipse 80% 60% at 50% 30%,#c0261c,#7a1410);font-family:'Overused Grotesk',sans-serif;color:#2a1a10">
+  <div style="font-family:Lobster,cursive;font-size:30px;line-height:1;color:#fff4dc;text-align:center;text-shadow:0 2px 0 rgba(0,0,0,.25)">{{ title }}</div>
+  <div style="width:100%;max-width:360px;padding:12px;background:#fbf3df;border-radius:6px;box-shadow:inset 0 0 0 2px #c99a2a,0 14px 30px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:12px">
+    <div style="width:100%;aspect-ratio:1;border-radius:3px;overflow:hidden;background:#efe2c0;display:grid;place-items:center;color:#8a6a3a;font-weight:700;font-size:14px">{{ imgEl }}</div>
+    <div style="font-size:14.5px;line-height:1.4;text-align:center;text-wrap:pretty;overflow-wrap:anywhere;color:#3a2412">{{ caption }}</div>
+  </div>
+  <button onClick="{{ send }}" style="width:100%;max-width:360px;height:60px;border:0;border-radius:14px;background:#1f8a4c;color:#fff;font-family:inherit;font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 4px 0 #136034,0 10px 20px rgba(0,0,0,.3)" style-active="transform:translateY(3px);box-shadow:0 1px 0 #136034">{{ sendL }}</button>
+  <div style="display:flex;gap:18px;font-size:14px">
+    <button onClick="{{ copy }}" style="border:0;background:transparent;color:#fff4dc;font-family:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:6px">{{ copyL }}</button>
+    <sc-if value="{{ hasGif }}" hint-placeholder-val="{{ true }}"><a href="{{ gif }}" download="boeuf-salad.gif" style="color:#fff4dc;font-weight:700;padding:6px">{{ saveL }}</a></sc-if>
+  </div>
+  <div style="max-width:320px;font-size:12px;line-height:1.4;color:#f2c8b8;text-align:center">{{ note }}</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { file: null, err: false, copied: false };
+  componentDidMount() {
+    const p = new URLSearchParams(location.hash.slice(1));
+    this.g = p.get('bs_g') || ''; this.t = p.get('bs_t') || ''; this.n = (p.get('bs_n') || '').replace(/\D/g, ''); this.ro = (p.get('bs_l') || 'ro') === 'ro';
+    this.forceUpdate();
+    if (this.g) fetch(this.g).then(r => { if (!r.ok) throw 0; return r.blob(); }).then(b => this.setState({ file: new File([b], 'boeuf-salad.gif', { type: b.type || 'image/gif' }) })).catch(() => this.setState({ err: true }));
+  }
+  waLink(withGif) { const txt = this.t + (withGif && this.g ? '\n' + this.g : ''); return 'whatsapp://send?' + (this.n ? 'phone=' + this.n + '&' : '') + 'text=' + encodeURIComponent(txt); }
+  send = () => {
+    const fl = this.state.file;
+    if (fl && navigator.canShare && navigator.canShare({ files: [fl] })) { navigator.share({ files: [fl], text: this.t }).catch(e => { if (!e || e.name !== 'AbortError') location.href = this.waLink(true); }); return; }
+    location.href = this.waLink(true);
+  };
+  copy = () => { try { navigator.clipboard.writeText(this.t); this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1800); } catch (e) {} };
+  renderVals() {
+    const ro = this.ro !== false, g = this.g || '';
+    return {
+      title: ro ? 'Salata e gata de trimis' : 'Your salad is ready to send',
+      imgEl: g ? React.createElement('img', { src: g, alt: '', style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } }) : (ro ? 'Link expirat' : 'Link expired'),
+      caption: this.t || '',
+      send: this.send, copy: this.copy, gif: g, hasGif: !!g,
+      sendL: ro ? 'Trimite pe WhatsApp' : 'Send on WhatsApp',
+      copyL: this.state.copied ? (ro ? 'Copiat ✓' : 'Copied ✓') : (ro ? 'Copiază textul' : 'Copy text'),
+      saveL: ro ? 'Salvează GIF-ul' : 'Save the GIF',
+      note: ro ? 'Dacă WhatsApp pierde textul, apasă „Copiază textul” și lipește-l. Poza dispare peste o oră.' : 'If WhatsApp drops the text, tap “Copy text” and paste it. The picture expires in an hour.'
+    };
+  }
+}
+</script>
+</body>
+</html>

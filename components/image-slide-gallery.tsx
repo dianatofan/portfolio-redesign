@@ -12,6 +12,8 @@ type GalleryProject = {
     title: string
     src: string
     href?: string
+    /** Open a same-site href in a new tab, e.g. a standalone app under /public. */
+    newTab?: boolean
     year?: string
     /** Read-only: callers pass `as const` tuples and nothing here mutates them. */
     tags?: readonly string[]
@@ -122,7 +124,7 @@ function ProjectRow({
         setVariant("default")
     }
 
-    const isExternal = project.href?.startsWith("http")
+    const isExternal = project.newTab || project.href?.startsWith("http")
 
     const inner = (
         <div

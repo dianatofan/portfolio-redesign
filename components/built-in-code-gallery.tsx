@@ -18,6 +18,7 @@ type GalleryProject = {
     title: string
     src: string
     href?: string
+    newTab?: boolean
     year?: string
     tags?: readonly string[]
     subtitle?: string
@@ -30,10 +31,11 @@ export function BuiltInCodeGallery({ projects }: { projects: GalleryProject[] })
          * "Back" target for /prototypes/* and /fun/*, so someone returning from
          * those pages must land on the gallery rather than on its reserved space.
          *
-         * Reserve is the measured height — 212px from `lg` up, 408px below, where
+         * Reserve is the measured two-row height (212px from `lg`, 408px below)
+         * scaled to three rows — 318px from `lg` up, 612px below, where
          * the rows wrap.
          */
-        <DeferUntilNear mountOnHash="built-in-code" className="min-h-[408px] lg:min-h-[212px]">
+        <DeferUntilNear mountOnHash="built-in-code" className="min-h-[612px] lg:min-h-[318px]">
             <ImageSlideGallery projects={projects} />
         </DeferUntilNear>
     )

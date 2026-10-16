@@ -83,6 +83,18 @@ const builtInCodeProjects = [
     // `tags` rather than `year`: the gallery's right-hand column joins tags when
     // no year is set, which is how each row states its context — client work vs
     // a personal side project.
+    //
+    // Newest first: add new projects at the top.
+    {
+        title: "Beouf Salad Decorator",
+        src: "/images/fun-boeuf-salad-decorator.webp",
+        // Static build lives in public/salata-de-boeuf/. Full file path, because
+        // Next serves public/ files as-is and won't resolve a folder to index.html.
+        href: "/salata-de-boeuf/index.html",
+        newTab: true,
+        tags: ["2026", "Side project"],
+        subtitle: "A playful web app that turns the Romanian tradition of over-decorated Christmas salads into shareable retro holiday cards.",
+    },
     {
         title: "Visualizing release impact across live games",
         src: "/images/release-timeline-thumb.webp",
