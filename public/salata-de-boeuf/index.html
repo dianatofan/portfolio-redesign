@@ -518,7 +518,7 @@
             </div>
             <sc-if value="{{ sMsg }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 12px;border-radius:10px;background:#fff1cf;box-shadow:inset 0 0 0 1.5px #e2b33c;color:#2a1a10;font-size:13px;line-height:1.4;text-wrap:pretty">{{ sMsg }}</div></sc-if>
             <sc-if value="{{ sReady }}" hint-placeholder-val="{{ false }}"><button onClick="{{ shareNow }}" style="height:48px;border:0;border-radius:12px;background:#2a1a10;color:#fff4dc;font-weight:800;font-size:15px;cursor:pointer">{{ shareNowL }}</button></sc-if>
-            <sc-if value="{{ sLink }}" hint-placeholder-val="{{ false }}"><a href="{{ sLink }}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;height:40px;border-radius:10px;background:#2a1a10;color:#fff4dc;font-weight:800;font-size:14px;text-decoration:none">{{ sl.open }} ↗</a></sc-if>
+            <sc-if value="{{ sLink }}" hint-placeholder-val="{{ false }}"><a href="{{ sLink }}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;height:40px;border-radius:10px;background:#2a1a10;color:#fff4dc;font-weight:800;font-size:14px;text-decoration:none">{{ sLinkL }} ↗</a></sc-if>
           </div>
         </div>
       </div>
@@ -1854,7 +1854,7 @@ void main(){
   async makeCsThumbs() { if (this._csBusy) return; this._csBusy = true; const lang = this.state.lang, ids = this.state.look === 'table' ? ['plain', 'scanteia', 'timbru', 'ilustrata'] : ['glitter', 'love', 'morning', 'night'];
     for (const id of ids) { const key = id + '|' + lang; if ((this.state.csTh || {})[key]) continue; try { const c = await this.compose(id); const o = document.createElement('canvas'); o.width = o.height = 120; const x = o.getContext('2d'); x.drawImage(c.bg, 0, 0, 120, 120); if (c.fg) x.drawImage(c.fg, 0, 0, 120, 120); const u = o.toDataURL('image/jpeg', 0.8); this.setState(s => ({ csTh: { ...(s.csTh || {}), [key]: u } })); } catch (e) { console.warn('cs thumb', id, e); } await new Promise(r => setTimeout(r, 30)); }
     this._csBusy = false; }
-  async buildCard(style) { this.card = await this.compose(style); this._gif = null; }
+  async buildCard(style) { this.card = await this.compose(style); this._gif = null; this._gifTok = (this._gifTok || 0) + 1; }
   openInsp = () => { this.openShare(); }; _openInspOld = () => { if (this.state.look !== 'table' || !this.sc || this._inspSeen) { this.openShare(); return; } this._inspSeen = true; const P = this.sc.pieces, ty = new Set(P.map(p => p.t)), ro = this.state.lang === 'ro';
     const veg = [...ty].filter(t => /pea|carrot|pickle|corn|pepper|dill|parsley|chive|tomato/.test(t)).length, ol = P.filter(p => /olive/i.test(p.t)).length, n = P.length;
     const rules = [[ro ? 'Minim 3 legume diferite' : 'At least 3 different vegetables', veg >= 3], [ro ? 'Maxim 10 măsline (lux)' : 'At most 10 olives (luxury)', ol <= 10], [ro ? 'Minim 30 de bucăți (planul)' : 'At least 30 pieces (the plan)', n >= 30], [ro ? 'Fără excese burgheze (max. 400)' : 'No bourgeois excess (max 400)', n <= 400]];
@@ -1864,26 +1864,33 @@ void main(){
   openShare = async () => { if (!this.sc) return; this.shot = this.capture(); const feast = this.state.look === 'table', t0 = (this.state.share && this.state.share.tab) || 'mom', tab = 'mom', prev = this.state.share && this.state.share.card, GA = ['timbru', 'scanteia'], card = feast ? (prev && (GA.includes(prev) || prev === 'plain') ? prev : 'plain') : (prev && !GA.includes(prev) && prev !== 'soviet' && prev !== 'plain' ? prev : 'glitter');
     if (!this.pv) { this.pv = document.createElement('canvas'); this.pv.width = this.pv.height = 720; Object.assign(this.pv.style, { display: 'block', width: '100%', height: '100%' }); }
     await this.buildCard(card);
-    this._gif = null; this.setState({ sMsg: '', sLink: '', sReady: null, share: { tab, card, caption: this.Lx().CAP[tab][0], ci: 0, seed: 1 + (Math.random() * 1e6 | 0), reply: this.Lx().REPLY[(Math.random() * this.Lx().REPLY.length) | 0] }, toast: '' }, () => { this.runPreview(); this.prepShare(); }); };
+    this._gif = null; this._gifTok = (this._gifTok || 0) + 1; this.setState({ sMsg: '', sLink: '', sReady: null, share: { tab, card, caption: this.Lx().CAP[tab][0], ci: 0, seed: 1 + (Math.random() * 1e6 | 0), reply: this.Lx().REPLY[(Math.random() * this.Lx().REPLY.length) | 0] }, toast: '' }, () => { this.runPreview(); this.prepShare(); }); };
   setShare(p) { this.setState(st => ({ share: { ...st.share, ...p }, sReady: null, ...(p.tab ? { sMsg: '', sLink: '' } : {}) })); clearTimeout(this._pfT); this._pfT = setTimeout(() => this.prepShare(), 350); }
-  async setCard(card) { this._gif = null; this._cardBusy = 1; this.setShare({ card, seed: 1 + (Math.random() * 1e6 | 0) }); try { await this.buildCard(card); } finally { this._cardBusy = 0; } this.prepShare(); }
+  async setCard(card) { this._gif = null; this._gifTok = (this._gifTok || 0) + 1; this._cardBusy = 1; this.setShare({ card, seed: 1 + (Math.random() * 1e6 | 0) }); try { await this.buildCard(card); } finally { this._cardBusy = 0; } this.prepShare(); }
   // iOS only opens the share sheet straight from a tap: any await before navigator.share() (drawing the
   // card takes up to ~2.5s) loses that and the call is refused. So the file is built ahead, whenever the
   // tab/card/caption changes, and a tap shares it immediately.
   shareKey() { const sh = this.state.share; return sh ? [sh.tab, sh.card, sh.seed, this.state.lang, sh.tab === 'ig' ? sh.caption : ''].join('|') : ''; }
   async prepShare() { if (!this.state.share || this._cardBusy) return; const key = this.shareKey(); if (this._pf && this._pf.key === key) return this._pf.file; const tok = this._pfTok = (this._pfTok || 0) + 1;
-    let fl = null; try { if (this.state.share.tab === 'ig') { const b = await this.stillPng(true); if (b) fl = new File([b], 'boeuf-story.png', { type: 'image/png' }); } if (!fl) fl = await this.shareFileGet(); } catch (e) { console.warn('prepShare', e); }
+    let fl = null; try { if (this.state.share.tab === 'ig') { const b = await this.stillPng(true); if (b) fl = new File([b], 'boeuf-story.png', { type: 'image/png' }); }
+      else { const g = await this.makeGif(true); if (g && key === this.shareKey()) fl = new File([g], 'boeuf-salad.gif', { type: 'image/gif' }); } } catch (e) { console.warn('prepShare', e); }
+    if (!fl) { try { fl = await this.shareFileGet(); } catch (e) {} }
     if (fl && tok === this._pfTok && key === this.shareKey()) this._pf = { key, file: fl }; return fl; }
-  async makeGif() {
+  async makeGif(quiet) {
     if (this._gif) return this._gif;
-    this.setState({ toast: 'knit' }); await new Promise(r => setTimeout(r, 30));
+    // Tagged with the card it was started for: a card change mid-encode must not hand back the old GIF.
+    if (this._gifP && this._gifPTok === this._gifTok) return this._gifP;
+    const tok = this._gifPTok = this._gifTok; const pr = this._gifP = this._makeGif(quiet, tok).finally(() => { if (this._gifP === pr) this._gifP = null; }); return pr;
+  }
+  async _makeGif(quiet, tok) {
+    if (!quiet) this.setState({ toast: 'knit' }); await new Promise(r => setTimeout(r, 30));
     let m; try { m = await import('https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm'); } catch (e) { m = null; }
     if (!m || !m.GIFEncoder) m = await import('https://unpkg.com/gifenc@1.0.3/dist/gifenc.esm.js');
     const { GIFEncoder, quantize, applyPalette } = m;
     const W = 420, N = 20, c = document.createElement('canvas'); c.width = c.height = W; const ctx = c.getContext('2d', { willReadFrequently: true }), gif = GIFEncoder();
     for (let i = 0; i < N; i++) { this.drawCard(ctx, W, i / N); const d = ctx.getImageData(0, 0, W, W).data, pal = quantize(d, 256), idx = applyPalette(d, pal);
       gif.writeFrame(idx, W, W, { palette: pal, delay: Math.round(this.PERIOD / N) }); await new Promise(r => requestAnimationFrame(() => setTimeout(r, 0))); }
-    gif.finish(); this._gif = new Blob([gif.bytes()], { type: 'image/gif' }); this.setState({ toast: '' }); return this._gif;
+    gif.finish(); const blob = new Blob([gif.bytes()], { type: 'image/gif' }); if (!quiet) this.setState({ toast: '' }); if (tok === this._gifTok) this._gif = blob; return blob;
   }
   async cardFile() { try { return new File([await this.makeGif()], 'boeuf-salad.gif', { type: 'image/gif' }); }
     catch (e) { console.warn(e); this.setState({ toast: '' }); const c = document.createElement('canvas'); c.width = c.height = 1080; this.drawCard(c.getContext('2d'), 1080, 0.25); const b = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.92)); return new File([b], 'boeuf-salad.jpg', { type: 'image/jpeg' }); } }
@@ -1996,9 +2003,12 @@ void main(){
       const pf = this._pf && this._pf.key === this.shareKey() ? this._pf.file : null;
       if (pf && (!navigator.canShare || navigator.canShare({ files: [pf] }))) {
         // No await before this call — it has to run inside the tap.
-        const p = navigator.share({ files: [pf], text }); this.setState({ sReady: null, sLink: '' });
-        try { await p; this.setState({ sMsg: kind === 'wa' ? (ro ? 'Trimisă! Mama a văzut. ✓✓' : 'Sent! Mom has seen it. ✓✓') : (ro ? 'Gata! ✓' : 'Done! ✓') }); }
-        catch (e) { if (e && e.name === 'AbortError') { this.setState({ sMsg: '' }); return; }
+        const p = navigator.share(kind === 'ig' ? { files: [pf] } : { files: [pf], text }); this.setState({ sReady: null, sLink: '' });
+        // Web pages can't open Instagram's story editor with a picture loaded (that needs a native app). Best path:
+        // save the picture from the share sheet, then open the story camera, where it's first in the gallery.
+        const igNext = () => this.setState({ sLink: 'instagram://story-camera', sMsg: ro ? 'Alege „Salvează imaginea”, apoi deschide Instagram Story — poza e prima în galerie. Textul îl copiezi cu „Copiază textul”.' : 'Pick “Save Image”, then open Instagram Story — the picture is first in your gallery. Grab the caption with “Copy text”.' });
+        try { await p; if (kind === 'ig') return igNext(); this.setState({ sMsg: kind === 'wa' ? (ro ? 'Trimisă! Mama a văzut. ✓✓' : 'Sent! Mom has seen it. ✓✓') : (ro ? 'Gata! ✓' : 'Done! ✓') }); }
+        catch (e) { if (kind === 'ig') return igNext(); if (e && e.name === 'AbortError') { this.setState({ sMsg: '' }); return; }
           const url = kind === 'wa' ? 'whatsapp://send?text=' + encodeURIComponent(text) : kind === 'ig' ? 'instagram://story-camera' : 'https://www.facebook.com/';
           this.setState({ sLink: url, sMsg: ro ? 'Telefonul n-a deschis meniul de trimitere. Descarcă GIF-ul de mai jos, apoi deschide aplicația ↓' : 'Your phone didn’t open the share menu. Download the GIF below, then open the app ↓' }); }
         return;
@@ -2327,7 +2337,7 @@ void main(){
     const sh = st.share, segS = (on) => ({ bg: on ? '#2f5a1e' : 'transparent', fg: on ? '#f4eedc' : '#d4c69c' });
     const lbV = this.lbVals(L, st.lang === 'ro');
     const shareVals = sh ? {
-      shareOpen: true, tabMom: sh.tab !== 'fb' && sh.tab !== 'ig', tabChat: sh.tab !== 'fb' && sh.tab !== 'ig', tabFb: sh.tab === 'fb', sendWaOn: sh.tab !== 'fb' && sh.tab !== 'ig', sendFbOn: sh.tab === 'fb', sendIgOn: sh.tab === 'ig', sendIg: () => this.sendTo('ig'), sReady: !!st.sReady, shareNow: () => this.sendTo(st.sReady), shareNowL: st.lang === 'ro' ? 'Felicitarea e gata — trimite acum ↗' : 'Card ready — share now ↗', pvTabs: (st.lang === 'ro' ? [['mom', 'Mamei', 'pe WhatsApp', '#25a35a'], ['fb', 'Lumii', 'pe Facebook', '#1f5fd6'], ['ig', 'Pe story', 'Instagram', 'linear-gradient(135deg,#f9a03a,#e1306c 55%,#8a3ab9)']] : [['mom', 'To Mom', 'on WhatsApp', '#25a35a'], ['fb', 'To everyone', 'on Facebook', '#1f5fd6'], ['ig', 'Story', 'Instagram', 'linear-gradient(135deg,#f9a03a,#e1306c 55%,#8a3ab9)']]).map(([id, label, sub, col]) => { const cur = sh.tab === 'fb' || sh.tab === 'ig' ? sh.tab : 'mom', on = cur === id; return { label, sub, ink: on ? '#b81f16' : '#3a2412', circ: on ? 1 : 0, bg: on ? col : 'transparent', fg: on ? '#ffffff' : '#5a4a30', onClick: () => { const C = this.Lx().CAP, cur = this.state.share, oldT = cur.tab === 'fb' || cur.tab === 'ig' ? cur.tab : 'mom', untouched = !cur.caption || (C[oldT] || []).includes(cur.caption); this.setShare(untouched && C[id] ? { tab: id, caption: C[id][0], ci: 0 } : { tab: id }); } }; }), tabIg: false, tabPost: false, tabTele: false, sMsg: st.sMsg || '', sLink: st.sLink || '', sendWa: () => this.sendTo('wa'), sendFb: () => this.sendTo('fb'), copyText: () => this.copyCap(),
+      shareOpen: true, tabMom: sh.tab !== 'fb' && sh.tab !== 'ig', tabChat: sh.tab !== 'fb' && sh.tab !== 'ig', tabFb: sh.tab === 'fb', sendWaOn: sh.tab !== 'fb' && sh.tab !== 'ig', sendFbOn: sh.tab === 'fb', sendIgOn: sh.tab === 'ig', sendIg: () => this.sendTo('ig'), sLinkL: (st.sLink || '').startsWith('instagram') ? (st.lang === 'ro' ? 'Deschide Instagram Story' : 'Open Instagram Story') : (st.lang === 'ro' ? 'Deschide' : 'Open'), sReady: !!st.sReady, shareNow: () => this.sendTo(st.sReady), shareNowL: st.lang === 'ro' ? 'Felicitarea e gata — trimite acum ↗' : 'Card ready — share now ↗', pvTabs: (st.lang === 'ro' ? [['mom', 'Mamei', 'pe WhatsApp', '#25a35a'], ['fb', 'Lumii', 'pe Facebook', '#1f5fd6'], ['ig', 'Pe story', 'Instagram', 'linear-gradient(135deg,#f9a03a,#e1306c 55%,#8a3ab9)']] : [['mom', 'To Mom', 'on WhatsApp', '#25a35a'], ['fb', 'To everyone', 'on Facebook', '#1f5fd6'], ['ig', 'Story', 'Instagram', 'linear-gradient(135deg,#f9a03a,#e1306c 55%,#8a3ab9)']]).map(([id, label, sub, col]) => { const cur = sh.tab === 'fb' || sh.tab === 'ig' ? sh.tab : 'mom', on = cur === id; return { label, sub, ink: on ? '#b81f16' : '#3a2412', circ: on ? 1 : 0, bg: on ? col : 'transparent', fg: on ? '#ffffff' : '#5a4a30', onClick: () => { const C = this.Lx().CAP, cur = this.state.share, oldT = cur.tab === 'fb' || cur.tab === 'ig' ? cur.tab : 'mom', untouched = !cur.caption || (C[oldT] || []).includes(cur.caption); this.setShare(untouched && C[id] ? { tab: id, caption: C[id][0], ci: 0 } : { tab: id }); } }; }), tabIg: false, tabPost: false, tabTele: false, sMsg: st.sMsg || '', sLink: st.sLink || '', sendWa: () => this.sendTo('wa'), sendFb: () => this.sendTo('fb'), copyText: () => this.copyCap(),
       sl: st.lang === 'ro' ? { title: 'Trimite salata', where: 'Cui o trimiți?', to: 'Către:', look: 'Felicitarea', msg: 'Mesajul', another: 'Altă urare', wa: 'Trimite pe WhatsApp', fb: 'Postează pe Facebook', ig: 'Pune pe Insta story', dl: 'Descarcă GIF', copy: 'Copiază textul', open: 'Deschide' } : { title: 'Send the salad', where: 'Who gets it?', to: 'To:', look: 'Card', msg: 'Message', another: 'Another one', wa: 'Send on WhatsApp', fb: 'Post on Facebook', ig: 'Post to Insta story', dl: 'Download GIF', copy: 'Copy text', open: 'Open' },
       gaLetters: sh.tab === 'post' ? (() => { const A = this.GA_LET[st.lang === 'ro' ? 'ro' : 'en'], n = (sh.ci || 0) + (sh.seed || 0) % 7; return [A[n % A.length], A[(n + 2) % A.length]].map((c, i) => ({ from: c[0], addr: c[1], date: c[2], text: c[3], rot: (i ? 1.4 : -1.2) + 'deg' })); })() : [], ...(() => { const w = (sh.caption || '').replace(/[.!?,;]+/g, ' STOP ').replace(/\s+/g, ' ').trim(); const n = w.split(' ').filter(x => x !== 'STOP').length; return { teleText: w + (w.endsWith('STOP') ? '' : ' STOP'), ...(() => { const full = (w + (w.endsWith('STOP') ? '' : ' STOP')).toUpperCase(), n2 = Math.min(full.length, st.teleN || 0), last = full[n2 - 1] || '', mk = (s2) => [...s2].map(c => { const on = n2 < full.length && c === last; return { c, dy: on ? '3px' : '0px', sh: on ? '0px' : '3px' }; }), sp = n2 < full.length && last === ' ';
         return { teleTyped: full.slice(0, n2), kRow1: mk('QWERTYUIOP'), kRow2: mk('ASDFGHJKL'), kRow3: mk('ZXCVBNM'), spDy: sp ? '3px' : '0px', spSh: sp ? '0px' : '3px' }; })(), teleCount: n + (st.lang === 'ro' ? ' cuvinte · ' + (n * 3) + ' lei' : ' words · ' + (n * 3) + ' lei') }; })(), chatI: sh.tab === 'mom' ? L.momI : '🎄', cardHost: this.cardHost, dlLabel: sh.card === 'plain' && false ? L.dlPng : L.dlGif, caption: (st.lang === 'ro' ? sh.caption : (sh.caption || '').replace(/^„/, '“').replace(/”$/, '”')), reply: sh.reply, chatName: sh.tab === 'mom' ? L.chatName : L.groupName,
