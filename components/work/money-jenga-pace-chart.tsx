@@ -37,10 +37,21 @@ export const CAT_STATES: Array<{ id: CatState; name: string; when: string; color
   { id: "anxious", name: "Anxious", when: "Close to toppling. Backed off to the end of the table.", color: "#c7372f" },
   { id: "box", name: "In the box", when: "The tower fell. Hiding until next month.", color: "#5a3a1a" },
 ]
-// Cut out of the native app, launched in the Simulator at each mood. Each art has
-// its own width, so it's stored as width ÷ height.
-const catImg = (state: CatState) => `/images/money-jenga/cutout-${state}.webp`
-const CAT_ASPECT: Record<CatState, number> = { asleep: 1.44, peek: 1.975, watch: 0.83, anxious: 0.8, box: 1.315 }
+// Cut out of the native app, frame by frame, from Simulator recordings of each
+// mood. All five were cut at one scale, so their pixel sizes keep the cats' real
+// relative size: a curled-up cat is wide and low, a sitting one tall.
+const catImg = (state: CatState) => `/images/money-jenga/cat-${state}.webp`
+const CAT_PX: Record<CatState, [number, number]> = {
+  asleep: [130, 97],
+  peek: [130, 67],
+  watch: [109, 129],
+  anxious: [112, 130],
+  box: [116, 89],
+}
+const catSize = (state: CatState, scale: number) => ({
+  width: Math.round(CAT_PX[state][0] * scale),
+  height: Math.round(CAT_PX[state][1] * scale),
+})
 const colorOf = (state: CatState) => CAT_STATES.find((s) => s.id === state)!.color
 const nameOf = (state: CatState) => CAT_STATES.find((s) => s.id === state)!.name
 
@@ -67,9 +78,10 @@ const catByDay = days.map(catFor)
 // scaling up); the height is fixed.
 const M = { top: 16, right: 84, left: 48 }
 const CHART_BOTTOM = 252
-// Room above the lane for the cats, drawn at this height.
-const CAT = 34
-const LANE_TOP = 304
+// The cats in the lane are drawn at this share of their cut-out size; the lane
+// sits low enough for the tallest (sitting) cat to fit above it.
+const LANE_CAT = 0.34
+const LANE_TOP = 312
 const LANE_H = 18
 const H = LANE_TOP + LANE_H + 26
 const kr = (n: number) => `${n.toLocaleString("en-US").replace(/,/g, ".")} kr`
@@ -142,7 +154,7 @@ export function MoneyJengaPaceChart() {
   return (
     <figure>
       <div className="relative rounded-lg bg-[#faf6ec] p-4 md:p-6">
-        <div ref={boxRef}>
+        <div ref={boxRef} className="relative">
         <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="block h-auto w-full" role="img" aria-labelledby="pace-chart-title">
           <title id="pace-chart-title">
             Example month: money spent against an even daily pace for a 10,000 kr budget, with the cat&apos;s state each
@@ -198,17 +210,8 @@ export function MoneyJengaPaceChart() {
             return (
               <g key={`${r.state}-${r.from}`}>
                 <rect x={x0 + 1} y={LANE_TOP} width={Math.max(0, x1 - x0 - 2)} height={LANE_H} rx={4} fill={colorOf(r.state)} />
-                {x1 - x0 > CAT * CAT_ASPECT[r.state] + 4 && (
-                  <image
-                    href={catImg(r.state)}
-                    x={(x0 + x1) / 2 - (x1 - x0 > 130 ? CAT * CAT_ASPECT[r.state] + 4 : (CAT * CAT_ASPECT[r.state]) / 2)}
-                    y={LANE_TOP - CAT - 4}
-                    width={CAT * CAT_ASPECT[r.state]}
-                    height={CAT}
-                  />
-                )}
                 {x1 - x0 > 130 && (
-                  <text x={(x0 + x1) / 2 + 4} y={LANE_TOP - 4 - CAT / 2} dy="0.32em" fontSize={11} fill="var(--text-secondary)">
+                  <text x={(x0 + x1) / 2 + 6} y={LANE_TOP - 18} dy="0.32em" fontSize={11} fill="var(--text-secondary)">
                     {nameOf(r.state)}
                   </text>
                 )}
@@ -239,6 +242,28 @@ export function MoneyJengaPaceChart() {
             onPointerLeave={() => setHoverDay(null)}
           />
         </svg>
+        {/* The cats sit on top of the lane as plain images, so their animation plays
+            in every browser. The SVG is drawn 1:1 with this box, so its coordinates
+            work as pixel offsets here. */}
+        {catRuns.map((r) => {
+          const x0 = r.from === 1 ? x(1) : x(r.from) - step / 2
+          const x1 = r.to === DAYS ? x(DAYS) : x(r.to) + step / 2
+          const size = catSize(r.state, LANE_CAT)
+          if (x1 - x0 < size.width + 4) return null
+          const left = x1 - x0 > 130 ? (x0 + x1) / 2 - size.width : (x0 + x1) / 2 - size.width / 2
+          return (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={`cat-${r.from}`}
+              src={catImg(r.state)}
+              alt=""
+              width={size.width}
+              height={size.height}
+              className="pointer-events-none absolute"
+              style={{ left, top: LANE_TOP - 4 - size.height }}
+            />
+          )
+        })}
         </div>
 
         {hovered && (
@@ -254,7 +279,7 @@ export function MoneyJengaPaceChart() {
             <p className="text-[var(--text-secondary)]">{`Pace ${kr(hovered.pace)}`}</p>
             <p className="mt-1 flex items-center gap-1.5 font-medium text-foreground">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={catImg(hovered.cat)} alt="" height={22} style={{ width: 22 * CAT_ASPECT[hovered.cat] }} />
+              <img src={catImg(hovered.cat)} alt="" {...catSize(hovered.cat, 0.22)} />
               {`Cat: ${nameOf(hovered.cat)}`}
             </p>
           </div>
@@ -265,9 +290,10 @@ export function MoneyJengaPaceChart() {
       <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {CAT_STATES.map((state) => (
           <li key={state.id} className="flex gap-3 lg:flex-col lg:gap-2">
-            <span className="flex shrink-0 items-center gap-2">
+            {/* A shared baseline (the tallest cat's height), so every label lines up. */}
+            <span className="flex h-[78px] shrink-0 items-end gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={catImg(state.id)} alt="" height={48} style={{ width: 48 * CAT_ASPECT[state.id] }} loading="lazy" />
+              <img src={catImg(state.id)} alt="" {...catSize(state.id, 0.6)} loading="lazy" />
               <span className="h-2.5 w-6 rounded-full ring-1 ring-black/10" style={{ background: state.color }} />
             </span>
             <div>
