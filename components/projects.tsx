@@ -1,5 +1,6 @@
 import { ProjectCard } from "./project-card"
 import { BuiltInCodeGallery } from "./built-in-code-gallery"
+import { EarlierWorkList } from "./earlier-work-list"
 import { Microcomponents } from "./microcomponents"
 
 type WorkProject = {
@@ -13,6 +14,9 @@ type WorkProject = {
     aspect: string
     isPasswordProtected: boolean
     category?: "work" | "experiment"
+    // Older studies drop out of the tile grid into compact hover rows under
+    // "Earlier work", so current work gets the visual weight.
+    earlier?: boolean
     // Headline result shown under the card title. Taken from the case study's own
     // Impact section, so the number on the card always matches the page.
     outcome?: string
@@ -30,10 +34,15 @@ export const workProjects: readonly WorkProject[] = [
         title: "Building a prototype library to scale AI-driven design",
         navigationTitle: "Diana's Diamonds",
         image: "/images/dianas-diamonds/field-13-card@2x.webp",
+        // Full-width card on the homepage, so it uses the 21:9 hub capture.
+        homepageImage: "/images/dianas-diamonds/hero-13-21x9@2x.webp",
         tags: ["2026", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
         isPasswordProtected: true,
+        outcome: "16 AI-built prototypes in one library, with handoff to developers built in",
+        shipped: true,
+        previewVideo: "/images/dianas-diamonds/field-real.mp4",
     },
     {
         slug: "liveops-alerting",
@@ -42,7 +51,7 @@ export const workProjects: readonly WorkProject[] = [
         image: "/images/project-liveops.webp",
         homepageImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1775046661/project-liveops.png",
         tags: ["2025", "Tactile Games"],
-        featured: true,
+        featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: true,
         outcome: "22% fewer production incidents, critical failures caught in minutes",
@@ -74,6 +83,7 @@ export const workProjects: readonly WorkProject[] = [
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: true,
+        earlier: true,
         outcome: "Concepts adopted into the 2024 Google Search roadmap",
     },
     {
@@ -86,6 +96,7 @@ export const workProjects: readonly WorkProject[] = [
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: false,
+        earlier: true,
         outcome: "35% faster UI development and 18% fewer support calls",
         shipped: true,
     },
@@ -95,6 +106,28 @@ export const workProjects: readonly WorkProject[] = [
         navigationTitle: "Release Timeline",
         image: "/images/release-timeline-thumb.webp",
         tags: ["2026", "Tactile Games"],
+        featured: false,
+        aspect: "aspect-[3/2]",
+        isPasswordProtected: false,
+        category: "experiment",
+    },
+    // Side projects use the case-study template but stay out of the Case Studies
+    // grid (category "experiment"); the Built in Code list links to them.
+    {
+        slug: "money-jenga",
+        title: "Money Jenga",
+        image: "/images/money-jenga-screens.webp",
+        tags: ["2026", "Side project"],
+        featured: false,
+        aspect: "aspect-[3/2]",
+        isPasswordProtected: false,
+        category: "experiment",
+    },
+    {
+        slug: "golden-goose-museum",
+        title: "Golden Goose Digital Museum",
+        image: "/images/golden-goose-hero.webp",
+        tags: ["2026", "Side project"],
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: false,
@@ -113,6 +146,20 @@ const builtInCodeProjects = [
     // a personal side project.
     //
     // Newest first: add new projects at the top.
+    {
+        title: "Golden Goose Digital Museum",
+        src: "/images/golden-goose-colourways.webp",
+        href: "/work/golden-goose-museum",
+        tags: ["2026", "Side project"],
+        subtitle: "Seven 3D Superstar sneakers for a digital museum, and the AI-assisted part painter I built to make them.",
+    },
+    {
+        title: "Money Jenga",
+        src: "/images/money-jenga-screens.webp",
+        href: "/work/money-jenga",
+        tags: ["2026", "Side project"],
+        subtitle: "An iPhone budget app where every purchase pulls a block out of a tower of cash. Built in SwiftUI with Claude Code.",
+    },
     {
         title: "Beouf Salad Decorator",
         src: "/images/fun-boeuf-salad-decorator.webp",
@@ -140,7 +187,9 @@ const builtInCodeProjects = [
 ] as const
 
 function WorkSection() {
-    const caseStudies = workProjects.filter((project) => project.category !== "experiment").slice(0, 6)
+    const caseStudies = workProjects.filter((project) => project.category !== "experiment")
+    const currentStudies = caseStudies.filter((project) => !project.earlier)
+    const earlierStudies = caseStudies.filter((project) => project.earlier)
 
     return (
         <section className="space-y-6 md:space-y-8">
@@ -148,33 +197,56 @@ function WorkSection() {
                 Case Studies
             </h2>
             <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                {caseStudies.map((project, index) => (
-                    <ProjectCard
-                        key={project.slug}
-                        title={project.title}
-                        image={project.homepageImage ?? project.image}
-                        tags={[...project.tags]}
-                        href={`/work/${project.slug}`}
-                        featured={false}
-                        aspectClass={project.aspect}
-                        isPasswordProtected={project.isPasswordProtected}
-                        outcome={project.outcome}
-                        shipped={project.shipped}
-                        previewVideo={project.previewVideo}
-                        showCaptionTags={false}
-                        /*
-                         * All four, not the first two. These are the page's
-                         * primary content, and holding two of them back meant they
-                         * could not begin downloading until React had hydrated and
-                         * then queued behind it — measured on the live site at
-                         * ~1.4-1.8s to appear, against ~140ms of actual transfer
-                         * for the two that were preloaded. Preloading them all
-                         * starts every card at around 420ms instead.
-                         */
-                        eager
-                    />
+                {currentStudies.map((project) => (
+                    /*
+                     * The featured study spans both columns, which also keeps an odd
+                     * number of case studies from leaving one card alone on a row.
+                     */
+                    <div key={project.slug} className={project.featured ? "md:col-span-2" : undefined}>
+                        <ProjectCard
+                            title={project.title}
+                            image={project.homepageImage ?? project.image}
+                            tags={[...project.tags]}
+                            href={`/work/${project.slug}`}
+                            featured={project.featured}
+                            aspectClass={project.featured ? "aspect-[3/2] md:aspect-[21/9]" : project.aspect}
+                            isPasswordProtected={project.isPasswordProtected}
+                            outcome={project.outcome}
+                            shipped={project.shipped}
+                            previewVideo={project.previewVideo}
+                            showCaptionTags={false}
+                            /*
+                             * All of them, not the first two. These are the page's
+                             * primary content, and holding two of them back meant they
+                             * could not begin downloading until React had hydrated and
+                             * then queued behind it — measured on the live site at
+                             * ~1.4-1.8s to appear, against ~140ms of actual transfer
+                             * for the two that were preloaded. Preloading them all
+                             * starts every card at around 420ms instead.
+                             */
+                            eager
+                        />
+                    </div>
                 ))}
             </div>
+
+            {earlierStudies.length > 0 ? (
+                <div className="space-y-2 pt-6 md:pt-10">
+                    <h3 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+                        Earlier work
+                    </h3>
+                    <EarlierWorkList
+                        projects={earlierStudies.map((project) => ({
+                            title: project.title,
+                            src: project.image,
+                            href: `/work/${project.slug}`,
+                            // Company first: "Google · 2024" reads as context at a glance.
+                            tags: [...project.tags].reverse(),
+                            subtitle: project.outcome,
+                        }))}
+                    />
+                </div>
+            ) : null}
         </section>
     )
 }

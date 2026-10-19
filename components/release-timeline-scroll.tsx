@@ -18,19 +18,19 @@ type FrameVisual = "separate" | "integrated" | "lollipop-cluttered"
  * an array of `text` renders each entry on its own row. `whenExpanded` holds the
  * note back until the prototype's chart card is actually open.
  */
-type Note = {
+export type Note = {
   text: string | string[]
   line?: { top: number; bottom: number }
   whenExpanded?: boolean
 }
 
-const asNote = (note: string | Note): Note =>
+export const asNote = (note: string | Note): Note =>
   typeof note === "string" ? { text: note } : note
 
-const noteLines = (note: Note): string[] =>
+export const noteLines = (note: Note): string[] =>
   Array.isArray(note.text) ? note.text : [note.text]
 
-const noteKey = (note: Note): string => noteLines(note).join(" ")
+export const noteKey = (note: Note): string => noteLines(note).join(" ")
 
 type Step = {
   num: string
@@ -350,14 +350,14 @@ function FrameContent({
 }
 
 /** Apple-style transition curve — fast start, long soft landing. */
-const appleEase = [0.32, 0.72, 0, 1] as const
+export const appleEase = [0.32, 0.72, 0, 1] as const
 
 /**
  * Annotations shown in the gutter to the right of the screen: a vertical line
  * that "draws" downward when scrolled into view, with the explanation to its
  * right. A single note is centred vertically; multiple notes are distributed.
  */
-function AnnotationMarkers({
+export function AnnotationMarkers({
   notes,
   reduceMotion,
   lineSpan,

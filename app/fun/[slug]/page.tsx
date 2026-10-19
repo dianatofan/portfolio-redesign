@@ -101,7 +101,7 @@ export default async function FunProjectPage({ params }: PageProps) {
         <div className="mx-auto grid grid-cols-4 md:grid-cols-12 gap-x-3 items-center">
           <div className="col-span-4 md:col-span-3 flex items-center">
             <Link
-              href="/#fun"
+              href="/#built-in-code"
               className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
             >
               <svg
@@ -117,7 +117,7 @@ export default async function FunProjectPage({ params }: PageProps) {
               >
                 <path d="m15 18-6-6 6-6" />
               </svg>
-              Back to Fun
+              Back
             </Link>
           </div>
         </div>

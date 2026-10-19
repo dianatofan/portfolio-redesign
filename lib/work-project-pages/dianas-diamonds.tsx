@@ -67,7 +67,29 @@ function PmGraphic() {
   )
 }
 
+// Shared by the public "At a glance" block and the full Impact section, so the
+// headline numbers above the password gate always match the ones below it.
+const impact = [
+  {
+    title: "16 prototypes, one home",
+    description: "Every prototype lives in one library with one deploy, so nothing gets deleted to save space.",
+  },
+  {
+    title: "9 done or merged",
+    description: "Prototypes go from a ticket to a reviewed design that developers can build from.",
+  },
+  {
+    title: "Faster to build for real",
+    description: "Prototypes use the real codebase and design system, so developers get the design as a diff.",
+  },
+  {
+    title: "Runs without me",
+    description: "Ten people have admin access, and a new designer is set up in about twenty minutes.",
+  },
+]
+
 export const dianasDiamondsPage: WorkProjectPage = {
+  highlights: impact,
   displayTitle: "Building a prototype library to scale AI-driven design",
   heroImage: "/images/dianas-diamonds/hero-13-21x9@2x.webp",
   description:
@@ -159,7 +181,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Diamonds"
           title="Diana's diamonds. Literally."
-          caption="The name started as a joke, so I took it literally: each of the 13 prototypes is a 3D diamond that falls into place under real gravity. I modelled the diamond with Tactile's game artists so it catches the light like a real stone."
+          caption="The name started as a joke, so I took it literally: every prototype is a 3D diamond that falls into place under real gravity. I modelled the diamond with Tactile's game artists so it catches the light like a real stone."
           src="/images/dianas-diamonds/field-real.mp4"
           poster="/images/dianas-diamonds/field-real-poster.jpg"
           label="The 13 real prototypes fall as diamonds and settle on the floor of the field view"
@@ -181,7 +203,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <ShowcaseClip
           eyebrow="Stress test"
           title="Built to scale. Tested with 240."
-          caption="A library only grows, so the field had to stay fast long after day one. Here it drops 240 diamonds, copies of the real 13, and stays smooth. The physics only runs while they fall."
+          caption="A library only grows, so the field had to stay fast long after day one. Here it drops 240 diamonds, copies of the first 13, and stays smooth. The physics only runs while they fall."
           src="/images/dianas-diamonds/field-drop.mp4"
           poster="/images/dianas-diamonds/field-drop-poster.jpg"
           label="A stress test: 240 diamonds fall and settle into a pile in the field view"
@@ -281,6 +303,12 @@ export const dianasDiamondsPage: WorkProjectPage = {
           Nobody writes prototypes by hand. Designers and developers tell Claude what they want,
           in plain English, and developers get the design back as a diff.
         </p>
+        <p className={`${paragraph} mt-4 max-w-xl`}>
+          Six Claude Code skills cover the whole loop: setting up a laptop, starting a prototype,
+          copying a real Dashboard view, publishing, and building the design for real. Claude can
+          open a pull request, but it can never merge or push to main. Merging is always a
+          person&apos;s click.
+        </p>
         <TerminalSnippet
           title="Claude Code"
           lines={[
@@ -297,20 +325,10 @@ export const dianasDiamondsPage: WorkProjectPage = {
       <section id="impact">
         <h2 className={heading}>Impact</h2>
         <p className={`${paragraph} mb-6 max-w-xl`}>
-          In four weeks: 13 prototypes in one library and one deploy pipeline instead of one per
-          prototype.
+          In five weeks: 16 prototypes in one library, and one deploy pipeline instead of one per
+          prototype. When I left Tactile, the library kept running without me.
         </p>
-        <OutcomeCards
-          items={[
-            { title: "All in one place", description: "Nothing gets deleted to save space any more." },
-            { title: "Easy to add or change", description: "Anyone can add or edit a prototype by asking Claude." },
-            {
-              title: "Faster to build for real",
-              description: "Prototypes use the real codebase and design system, so developers have little left to change.",
-            },
-            { title: "Easier reviews", description: "Managers click through real prototypes, all in one place." },
-          ]}
-        />
+        <OutcomeCards items={impact} />
       </section>
 
       <section id="next">

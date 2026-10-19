@@ -18,7 +18,19 @@ export type WorkProjectHighlight = {
   description: string
 }
 
+// One beat of a short, blog-style write-up: a numbered title, a few short
+// sentences, and an optional visual beside them.
+export type WorkStoryStep = {
+  title: string
+  text: string[]
+  visual?: ReactNode
+}
+
 export type WorkProjectPage = {
+  // Side projects read as short posts: numbered steps, no table of contents.
+  story?: WorkStoryStep[]
+  published?: string
+  readTime?: string
   displayTitle?: ReactNode
   // Headline results, shown publicly under the meta row. Locked case studies
   // keep their full write-up behind the gate, but the outcome is never hidden.
@@ -34,8 +46,8 @@ export type WorkProjectPage = {
 
 export type WorkProjectSlug =
   | "dianas-diamonds"
-  | "liveops-alerting"
-  | "game-setup-automation"
+  | "golden-goose-museum"
+  | "liveops-tooling"
   | "travel-planning"
   | "design-system"
   | "release-timeline"

@@ -15,7 +15,8 @@ interface PageProps {
 export async function generateStaticParams() {
   return workProjects
     // /work/release-timeline is served by its own static route (the scroll page).
-    .filter((project) => project.slug !== "release-timeline")
+    // Money Jenga is a static route too, for its scroll story.
+    .filter((project) => project.slug !== "release-timeline" && project.slug !== "money-jenga")
     .map((project) => ({
       slug: project.slug,
     }))
@@ -113,6 +114,11 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="max-w-[1800px] mx-auto px-6">
           <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
             <div className="col-span-4 md:col-span-8 md:col-start-3">
+              {projectPage.readTime ? (
+                <p className="mb-4 text-sm text-[var(--text-tertiary)]">
+                  {[projectPage.published, projectPage.readTime].filter(Boolean).join(" · ")}
+                </p>
+              ) : null}
               <h1 className="text-3xl md:text-[48px] lg:text-[56px] font-medium leading-[1.08] tracking-tight text-foreground mb-12">
                 {projectPage.displayTitle ?? project.title}
               </h1>
@@ -141,7 +147,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 ))}
               </div>
 
-              {projectPage.highlights && projectPage.highlights.length > 0 ? (
+              {!projectPage.story && projectPage.highlights && projectPage.highlights.length > 0 ? (
                 <div className="pt-10">
                   <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)] mb-6">
                     At a glance
@@ -165,6 +171,39 @@ export default async function ProjectPage({ params }: PageProps) {
         </div>
       </section>
 
+      {projectPage.story ? (
+        <section className="pb-24 md:pb-32">
+          <div className="max-w-[1800px] mx-auto px-6">
+            <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
+              <ol className="col-span-4 md:col-span-8 md:col-start-3 space-y-16 md:space-y-24">
+                {projectPage.story.map((step, index) => (
+                  <li
+                    key={step.title}
+                    className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-12"
+                  >
+                    <div className={step.visual ? "" : "lg:col-span-2 max-w-2xl"}>
+                      <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h2 className="mt-2 text-2xl font-medium tracking-tight text-foreground md:text-3xl">
+                        {step.title}
+                      </h2>
+                      <div className="mt-4 space-y-3">
+                        {step.text.map((paragraph) => (
+                          <p key={paragraph} className="text-base leading-relaxed text-[var(--text-secondary)]">
+                            {paragraph}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                    {step.visual ? <div className="min-w-0">{step.visual}</div> : null}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+      ) : (
       <section className="pb-24 md:pb-32">
         <div className="max-w-[1800px] mx-auto px-6">
           <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
@@ -191,6 +230,7 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         </div>
       </section>
+      )}
 
       <Footer />
     </main>

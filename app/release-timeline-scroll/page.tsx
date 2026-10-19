@@ -35,17 +35,17 @@ export default function ReleaseTimelineScrollPage() {
 
           <div className="col-span-6 flex justify-end md:col-span-4 md:col-start-9">
             <Link
-              href="/work/liveops-alerting"
+              href="/work/liveops-tooling"
               className="flex items-center gap-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-[var(--text-secondary)]"
             >
-              Next: LiveOps Alerting
+              Next: LiveOps at Tactile
               <ChevronRight size={16} aria-hidden />
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Hero image — matches the LiveOps Alerting page hero dimensions */}
+      {/* Hero image — matches the LiveOps at Tactile page hero dimensions */}
       <section className="pt-28">
         <div className="mx-auto max-w-[1800px] px-6">
           <div className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl bg-card">
