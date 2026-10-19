@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { Luckiest_Guy, Rye } from "next/font/google"
 import { ChevronLeft, ChevronRight, CreditCard, EyeOff, Smartphone, Cloud } from "lucide-react"
@@ -180,19 +181,31 @@ export default function MoneyJengaPage() {
             typing for me, without ever seeing my bank.
           </p>
         </div>
-        <ul className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2">
-          {integrations.map(({ icon: Icon, title, text }) => (
-            <li key={title} className="flex gap-4">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f4ead6] text-[#c8372d]">
-                <Icon size={18} aria-hidden />
-              </span>
-              <div>
-                <p className="text-base font-medium text-foreground">{title}</p>
-                <p className="mt-1 text-sm leading-relaxed text-[var(--text-secondary)]">{text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-10 grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,1fr)_260px] md:gap-16">
+          <ul className="grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 md:grid-cols-1">
+            {integrations.map(({ icon: Icon, title, text }) => (
+              <li key={title} className="flex gap-4">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f4ead6] text-[#c8372d]">
+                  <Icon size={18} aria-hidden />
+                </span>
+                <div>
+                  <p className="text-base font-medium text-foreground">{title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--text-secondary)]">{text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <figure className="mx-auto w-[220px] md:w-[260px]">
+            <Image
+              src="/images/money-jenga/native-autopull.webp"
+              alt="The native app's Auto-Pull sheet: log Apple Pay purchases without typing. Only the amount and shop are shared, never your card or bank. Five steps to set up the Shortcuts automation."
+              width={540}
+              height={1174}
+              className="h-auto w-full drop-shadow-[0_20px_30px_rgba(28,22,17,0.25)]"
+            />
+            <figcaption className="mt-3 text-center text-xs text-[var(--text-tertiary)]">The native app&apos;s setup guide</figcaption>
+          </figure>
+        </div>
       </section>
 
       <section className="mx-auto max-w-[1100px] px-6 pt-20 md:pt-28">
@@ -203,7 +216,7 @@ export default function MoneyJengaPage() {
             under it and the cat under the table keeps sleeping.
           </p>
         </div>
-        <div className="mt-8 max-w-3xl">
+        <div className="mt-8">
           <MoneyJengaPaceChart />
         </div>
       </section>

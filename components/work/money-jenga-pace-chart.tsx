@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 /*
  * An example month, not real spending: 10,000 kr over 31 days, with a splurge on
@@ -37,6 +37,10 @@ export const CAT_STATES: Array<{ id: CatState; name: string; when: string; color
   { id: "anxious", name: "Anxious", when: "Close to toppling. Backed off to the end of the table.", color: "#c7372f" },
   { id: "box", name: "In the box", when: "The tower fell. Hiding until next month.", color: "#5a3a1a" },
 ]
+// Cut out of the native app, launched in the Simulator at each mood. Each art has
+// its own width, so it's stored as width ÷ height.
+const catImg = (state: CatState) => `/images/money-jenga/cutout-${state}.webp`
+const CAT_ASPECT: Record<CatState, number> = { asleep: 1.44, peek: 1.975, watch: 0.83, anxious: 0.8, box: 1.315 }
 const colorOf = (state: CatState) => CAT_STATES.find((s) => s.id === state)!.color
 const nameOf = (state: CatState) => CAT_STATES.find((s) => s.id === state)!.name
 
@@ -58,32 +62,39 @@ const catFor = (day: number): CatState => {
 }
 const catByDay = days.map(catFor)
 
-// Drawing area: the chart, then the cat lane beneath it on the same x scale.
-const W = 640
+// Drawing area: the chart, then the cat lane beneath it on the same x scale. The
+// width follows the container (so the chart can run full width without its text
+// scaling up); the height is fixed.
 const M = { top: 16, right: 84, left: 48 }
 const CHART_BOTTOM = 252
-const LANE_TOP = 286
+// Room above the lane for the cats, drawn at this height.
+const CAT = 34
+const LANE_TOP = 304
 const LANE_H = 18
 const H = LANE_TOP + LANE_H + 26
-const step = (W - M.left - M.right) / (DAYS - 1)
-const x = (day: number) => M.left + (day - 1) * step
-const y = (kr: number) => M.top + (1 - kr / BUDGET) * (CHART_BOTTOM - M.top)
 const kr = (n: number) => `${n.toLocaleString("en-US").replace(/,/g, ".")} kr`
 
-const spentPath = days.map((d, i) => `${i === 0 ? "M" : "L"}${x(d)},${y(spentByDay[i])}`).join(" ")
+function geometry(W: number) {
+  const step = (W - M.left - M.right) / (DAYS - 1)
+  const x = (day: number) => M.left + (day - 1) * step
+  const y = (amount: number) => M.top + (1 - amount / BUDGET) * (CHART_BOTTOM - M.top)
 
-// One band per run of days spent ahead of pace, between the pace line and spending.
-const aheadBands: string[] = []
-let run: number[] = []
-days.forEach((d, i) => {
-  if (spentByDay[i] > paceFor(d)) run.push(d)
-  if ((spentByDay[i] <= paceFor(d) || d === DAYS) && run.length) {
-    const top = run.map((rd) => `${x(rd)},${y(spentByDay[rd - 1])}`)
-    const bottom = [...run].reverse().map((rd) => `${x(rd)},${y(paceFor(rd))}`)
-    aheadBands.push(`M${[...top, ...bottom].join(" L")} Z`)
-    run = []
-  }
-})
+  const spentPath = days.map((d, i) => `${i === 0 ? "M" : "L"}${x(d)},${y(spentByDay[i])}`).join(" ")
+
+  // One band per run of days spent ahead of pace, between the pace line and spending.
+  const aheadBands: string[] = []
+  let run: number[] = []
+  days.forEach((d, i) => {
+    if (spentByDay[i] > paceFor(d)) run.push(d)
+    if ((spentByDay[i] <= paceFor(d) || d === DAYS) && run.length) {
+      const top = run.map((rd) => `${x(rd)},${y(spentByDay[rd - 1])}`)
+      const bottom = [...run].reverse().map((rd) => `${x(rd)},${y(paceFor(rd))}`)
+      aheadBands.push(`M${[...top, ...bottom].join(" L")} Z`)
+      run = []
+    }
+  })
+  return { step, x, y, spentPath, aheadBands }
+}
 
 // Consecutive days in the same cat state, drawn as one lane segment each.
 const catRuns: Array<{ state: CatState; from: number; to: number }> = []
@@ -97,6 +108,19 @@ const yTicks = [0, 2500, 5000, 7500, 10000]
 const xTicks = [1, 10, 20, 31]
 
 export function MoneyJengaPaceChart() {
+  const boxRef = useRef<HTMLDivElement>(null)
+  const [W, setW] = useState(640)
+  useEffect(() => {
+    const el = boxRef.current
+    if (!el) return
+    const update = () => setW(Math.max(360, Math.round(el.clientWidth)))
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  const { step, x, y, spentPath, aheadBands } = geometry(W)
+
   const [hoverDay, setHoverDay] = useState<number | null>(null)
   const hovered =
     hoverDay === null
@@ -118,7 +142,8 @@ export function MoneyJengaPaceChart() {
   return (
     <figure>
       <div className="relative rounded-lg bg-[#faf6ec] p-4 md:p-6">
-        <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-labelledby="pace-chart-title">
+        <div ref={boxRef}>
+        <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="block h-auto w-full" role="img" aria-labelledby="pace-chart-title">
           <title id="pace-chart-title">
             Example month: money spent against an even daily pace for a 10,000 kr budget, with the cat&apos;s state each
             day. A jacket on day 10 and concert tickets on day 11 put spending well ahead of pace, so the cat goes from
@@ -173,8 +198,17 @@ export function MoneyJengaPaceChart() {
             return (
               <g key={`${r.state}-${r.from}`}>
                 <rect x={x0 + 1} y={LANE_TOP} width={Math.max(0, x1 - x0 - 2)} height={LANE_H} rx={4} fill={colorOf(r.state)} />
-                {x1 - x0 > 52 && (
-                  <text x={(x0 + x1) / 2} y={LANE_TOP - 7} textAnchor="middle" fontSize={11} fill="var(--text-secondary)">
+                {x1 - x0 > CAT * CAT_ASPECT[r.state] + 4 && (
+                  <image
+                    href={catImg(r.state)}
+                    x={(x0 + x1) / 2 - (x1 - x0 > 130 ? CAT * CAT_ASPECT[r.state] + 4 : (CAT * CAT_ASPECT[r.state]) / 2)}
+                    y={LANE_TOP - CAT - 4}
+                    width={CAT * CAT_ASPECT[r.state]}
+                    height={CAT}
+                  />
+                )}
+                {x1 - x0 > 130 && (
+                  <text x={(x0 + x1) / 2 + 4} y={LANE_TOP - 4 - CAT / 2} dy="0.32em" fontSize={11} fill="var(--text-secondary)">
                     {nameOf(r.state)}
                   </text>
                 )}
@@ -205,6 +239,7 @@ export function MoneyJengaPaceChart() {
             onPointerLeave={() => setHoverDay(null)}
           />
         </svg>
+        </div>
 
         {hovered && (
           <div
@@ -218,7 +253,8 @@ export function MoneyJengaPaceChart() {
             <p className="text-[var(--text-secondary)]">{`Spent ${kr(hovered.spent)}`}</p>
             <p className="text-[var(--text-secondary)]">{`Pace ${kr(hovered.pace)}`}</p>
             <p className="mt-1 flex items-center gap-1.5 font-medium text-foreground">
-              <span className="inline-block h-2.5 w-2.5 rounded-full ring-1 ring-black/10" style={{ background: colorOf(hovered.cat) }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={catImg(hovered.cat)} alt="" height={22} style={{ width: 22 * CAT_ASPECT[hovered.cat] }} />
               {`Cat: ${nameOf(hovered.cat)}`}
             </p>
           </div>
@@ -229,7 +265,11 @@ export function MoneyJengaPaceChart() {
       <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {CAT_STATES.map((state) => (
           <li key={state.id} className="flex gap-3 lg:flex-col lg:gap-2">
-            <span className="mt-1 h-3 w-8 shrink-0 rounded-full ring-1 ring-black/10" style={{ background: state.color }} />
+            <span className="flex shrink-0 items-center gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={catImg(state.id)} alt="" height={48} style={{ width: 48 * CAT_ASPECT[state.id] }} loading="lazy" />
+              <span className="h-2.5 w-6 rounded-full ring-1 ring-black/10" style={{ background: state.color }} />
+            </span>
             <div>
               <p className="text-sm font-medium text-foreground">{state.name}</p>
               <p className="mt-0.5 text-sm leading-snug text-[var(--text-secondary)]">{state.when}</p>
