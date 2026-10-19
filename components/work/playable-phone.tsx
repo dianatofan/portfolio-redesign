@@ -11,7 +11,10 @@ import { trackEvent } from "@/lib/track-event"
  * it. The iframe renders at the prototype's design size and is scaled to fit.
  */
 
+// The prototype's page size, and where its own phone frame sits on that page.
+// Only the phone is shown, so the page's dark margin never reads as a second frame.
 const DESIGN = { width: 430, height: 900 }
+const PHONE = { x: 10, y: 28, width: 410, height: 864, radius: 56 }
 
 export function PlayablePhone({
   src,
@@ -32,7 +35,7 @@ export function PlayablePhone({
   useEffect(() => {
     const el = wrapRef.current
     if (!el) return
-    const update = () => setScale(el.clientWidth / DESIGN.width)
+    const update = () => setScale(el.clientWidth / PHONE.width)
     update()
     const ro = new ResizeObserver(update)
     ro.observe(el)
@@ -45,11 +48,14 @@ export function PlayablePhone({
   return (
     // No frame of our own: the prototype draws its own phone. The wrapper only
     // clips its square corners to the phone's rounded outline.
-    <div className="drop-shadow-[0_30px_40px_rgba(28,22,17,0.45)]">
+    <div className="drop-shadow-[0_30px_40px_rgba(0,0,0,0.5)]">
       <div
         ref={wrapRef}
-        className="relative w-full overflow-hidden rounded-[13%/6.2%] bg-[#1c1611]"
-        style={{ aspectRatio: `${DESIGN.width} / ${DESIGN.height}` }}
+        className="relative w-full overflow-hidden"
+        style={{
+          aspectRatio: `${PHONE.width} / ${PHONE.height}`,
+          borderRadius: `${(PHONE.radius / PHONE.width) * 100}% / ${(PHONE.radius / PHONE.height) * 100}%`,
+        }}
         onMouseEnter={() => active && setHidden(true)}
         onMouseLeave={() => setHidden(false)}
       >
@@ -58,7 +64,11 @@ export function PlayablePhone({
             src={src}
             title={label}
             className="absolute left-0 top-0 origin-top-left border-0"
-            style={{ width: DESIGN.width, height: DESIGN.height, transform: `scale(${scale})` }}
+            style={{
+              width: DESIGN.width,
+              height: DESIGN.height,
+              transform: `scale(${scale}) translate(${-PHONE.x}px, ${-PHONE.y}px)`,
+            }}
           />
         ) : (
           <button
@@ -71,7 +81,7 @@ export function PlayablePhone({
             className="group absolute inset-0 block cursor-pointer"
             aria-label={`Play: ${label}`}
           >
-            <Image src={facade} alt="" fill className="object-cover object-top" sizes="320px" priority />
+            <Image src={facade} alt="" fill className="object-cover" sizes="320px" priority />
             <span className="absolute inset-0 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/10">
               <span className="flex items-center gap-2 rounded-full bg-[#c8372d] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-transform duration-300 group-hover:scale-105">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>

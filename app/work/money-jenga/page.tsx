@@ -106,22 +106,23 @@ export default function MoneyJengaPage() {
       {/* Hero: the game's own title screen, with the real prototype to play */}
       <section className="pt-24 md:pt-28">
         <div className="mx-auto max-w-[1800px] px-6">
-          <div className="relative overflow-hidden rounded-2xl bg-[#f2e7cf] px-6 py-12 md:px-16 md:py-16">
-            {/* The prototype's sunburst and glow, so the logo sits on its real backdrop. */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -inset-12 blur-[12px]"
-              style={{
-                background:
-                  "repeating-conic-gradient(from 0deg at 35% 55%, #f2e7cf 0deg 7deg, #d1bc93 12deg 20deg, #f2e7cf 25deg 28deg)",
-              }}
-            />
+          <div className="relative overflow-hidden rounded-2xl bg-[#1a1410] px-6 py-12 md:px-16 md:py-16">
+            {/* A warm glow behind the logo, so its ink outline and drop shadow still read on brown. */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(ellipse 45% 55% at 35% 55%, rgba(255,252,242,.92), rgba(245,232,205,.4) 55%, transparent 85%)",
+                  "radial-gradient(ellipse 40% 55% at 33% 50%, rgba(233,185,73,.22), rgba(233,185,73,.06) 55%, transparent 80%)",
+              }}
+            />
+            {/* The prototype's own film grain. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-overlay"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
               }}
             />
             <div className="relative mx-auto grid max-w-[1000px] grid-cols-1 items-center gap-12 md:grid-cols-[minmax(0,1fr)_300px] md:gap-16">
@@ -129,11 +130,11 @@ export default function MoneyJengaPage() {
                 <h1 className="sr-only">Money Jenga</h1>
                 <Logo />
                 <div className="max-w-md text-center">
-                  <p className="text-lg leading-relaxed" style={{ color: INK }}>
+                  <p className="text-lg leading-relaxed text-[#f4ead6]">
                     A budget app where every purchase pulls a block out of a tower of cash. No bank details
                     needed.
                   </p>
-                  <p className="mt-4 text-sm text-[#6b5a41]">October 2026 · 2 min read · SwiftUI, built with Claude Code</p>
+                  <p className="mt-4 text-sm text-[#c9b48a]">October 2026 · 2 min read · SwiftUI, built with Claude Code</p>
                 </div>
               </div>
               <div className="mx-auto w-[260px] md:w-[300px]">
@@ -143,7 +144,7 @@ export default function MoneyJengaPage() {
                   label="Money Jenga prototype"
                   eventName="money_jenga_play"
                 />
-                <p className="mt-4 text-center text-xs text-[#6b5a41]">The HTML prototype I built it from</p>
+                <p className="mt-4 text-center text-xs text-[#a8987a]">The HTML prototype I built it from</p>
               </div>
             </div>
           </div>
