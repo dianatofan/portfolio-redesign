@@ -163,10 +163,7 @@ const builtInCodeProjects = [
     {
         title: "Beouf Salad Decorator",
         src: "/images/fun-boeuf-salad-decorator.webp",
-        // Static build lives in public/salata-de-boeuf/. Full file path, because
-        // Next serves public/ files as-is and won't resolve a folder to index.html.
-        href: "/salata-de-boeuf/index.html",
-        newTab: true,
+        href: "/work/boeuf-salad-decorator",
         tags: ["2026", "Side project"],
         subtitle: "A playful web app that turns the Romanian tradition of over-decorated Christmas salads into shareable retro holiday cards.",
     },

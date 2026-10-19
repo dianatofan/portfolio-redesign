@@ -16,7 +16,7 @@ Some case studies are partly password protected on the site. Each summary below 
 
 - [Money Jenga](https://dianatofan.net/work/money-jenga): an iPhone budget app where every purchase pulls a block out of a tower of cash. SwiftUI, SpriteKit, SwiftData with CloudKit, built with Claude Code.
 - [Golden Goose Digital Museum](https://dianatofan.net/work/golden-goose-museum): seven low-poly 3D Superstar sneakers and a browser-based part painter with an AI magic wand and Apple Pencil support.
-- [Beouf Salad Decorator](https://dianatofan.net/salata-de-boeuf/index.html): a web app that turns the Romanian tradition of over-decorated Christmas salads into shareable retro holiday cards.
+- [Beouf Salad Decorator](https://dianatofan.net/work/boeuf-salad-decorator): a web app that turns the Romanian tradition of over-decorated Christmas salads into shareable retro holiday cards.
 - [Human Redundancy Terminal](https://dianatofan.github.io/risk-assessment-terminal): a glitchy CRT terminal built with Kaggle data and Google AI Studio.
 
 ## More
