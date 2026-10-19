@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Rye&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#241b16}
+a{color:#c7372f}a:hover{color:#1c1611}
+input::placeholder{color:rgba(28,22,17,.4)}
+input:focus{outline:none}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;box-sizing:border-box;background:radial-gradient(ellipse at 50% 40%,#3a2b22,#1a130f 75%)">
+<div style="position:relative;width:390px;height:844px;border:10px solid #0e0b09;border-radius:56px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 2px #3a2e26;flex:none;background:#a89a82">
+
+<div ref="{{ screenRef }}" style="position:absolute;inset:0">
+  <div style="position:absolute;inset:0;background:#cbb68f"></div>
+  <div style="position:absolute;inset:-40px;background:repeating-conic-gradient(from 3deg at 50% 62%,#efe3c8 0deg 9deg,#d3bf98 14deg 22deg,#efe3c8 27deg 30deg);filter:blur(10px)"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 45% at 50% 62%,rgba(255,251,240,.85),rgba(245,232,205,.35) 55%,transparent 80%)"></div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:110px;background:repeating-linear-gradient(90deg,#7a5a3c 0 14px,#70523a 14px 28px);border-top:3px solid #1c1611"></div>
+  <canvas ref="{{ baseRef }}" style="position:absolute;left:0;top:0;width:390px;height:844px"></canvas>
+
+  <div style="position:absolute;top:14px;left:34px;right:30px;display:flex;justify-content:space-between;align-items:center;font:700 15px 'Courier Prime',monospace;color:#1c1611">
+    <span>9:41</span>
+    <div style="display:flex;gap:6px;align-items:center"><div style="width:18px;height:10px;border:2px solid #1c1611;border-radius:3px;padding:1px;box-sizing:border-box"><div style="width:70%;height:100%;background:#1c1611"></div></div></div>
+  </div>
+
+  <div style="position:absolute;top:58px;left:0;right:0;display:flex;justify-content:center">
+    <div style="background:#c7372f;color:#f2e6c9;font:14px 'Rye',serif;letter-spacing:.14em;padding:7px 30px;border:3px solid #1c1611;clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%,6% 50%);box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)">{{ monthName }}</div>
+  </div>
+  <button onClick="{{ openSettings }}" aria-label="Settings" style="position:absolute;top:50px;right:16px;width:44px;height:44px;border-radius:50%;border:2.5px solid #1c1611;background:#f2e6c9;box-shadow:0 3px 0 #1c1611;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;padding:0" style-active="transform:translateY(2px);box-shadow:0 1px 0 #1c1611"><span style="width:5px;height:5px;border-radius:50%;background:#1c1611"></span><span style="width:5px;height:5px;border-radius:50%;background:#1c1611"></span><span style="width:5px;height:5px;border-radius:50%;background:#1c1611"></span></button>
+
+  <div style="position:absolute;top:104px;left:34px;right:34px;transform:rotate(-1.6deg);background:#f2e6c9;border:3px solid #1c1611;border-radius:16px;box-shadow:6px 6px 0 #1c1611;padding:12px 16px 14px;text-align:center">
+    <div style="font:13px 'Rye',serif;letter-spacing:.16em;color:#1c1611">{{ placardLabel }}</div>
+    <div style="display:flex;justify-content:center;align-items:baseline;gap:6px;margin-top:2px">
+      <span style="font:62px/1 'Luckiest Guy',cursive;color:{{ numColor }};-webkit-text-stroke:3px #1c1611;paint-order:stroke fill;text-shadow:-2px 0 0 rgba(230,30,60,.45),2px 0 0 rgba(40,170,230,.35),3px 3px 0 #1c1611;letter-spacing:.01em">{{ bigNum }}</span>
+      <span style="font:26px 'Luckiest Guy',cursive;color:#1c1611">kr</span>
+    </div>
+    <div style="font:700 13px/1.35 'Courier Prime',monospace;color:#1c1611;margin-top:6px">{{ subA }}</div>
+    <div style="font:400 13px/1.35 'Courier Prime',monospace;color:#1c1611">{{ subB }}</div>
+    <div style="margin-top:8px;padding-top:7px;border-top:2px dashed #1c1611;font:13px 'Rye',serif;letter-spacing:.06em;color:#8e2a36">{{ towerMood }}</div>
+  </div>
+
+  <div style="position:absolute;left:22px;right:22px;bottom:40px;display:flex;justify-content:space-between;align-items:center">
+    <button onClick="{{ openLedger }}" style="font:14px 'Rye',serif;letter-spacing:.08em;color:#1c1611;background:#f2e6c9;border:3px solid #1c1611;border-radius:999px;padding:12px 16px;box-shadow:0 4px 0 #1c1611;cursor:pointer;min-height:48px" style-active="transform:translateY(3px);box-shadow:0 1px 0 #1c1611">LEDGER</button>
+    <button onClick="{{ openSpend }}" style="width:108px;height:108px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#e25a47,#c7372f 55%,#a82a24);border:4px solid #1c1611;box-shadow:0 7px 0 #1c1611,inset 0 -6px 0 rgba(0,0,0,.18);cursor:pointer;font:27px/1 'Luckiest Guy',cursive;color:#f2e6c9;-webkit-text-stroke:2px #1c1611;paint-order:stroke fill;padding-top:6px;transform:translateY(-8px)" style-active="transform:translateY(-2px);box-shadow:0 1px 0 #1c1611">PULL!</button>
+    <button onClick="{{ openSetup }}" style="font:14px 'Rye',serif;letter-spacing:.08em;color:#1c1611;background:#f2e6c9;border:3px solid #1c1611;border-radius:999px;padding:12px 16px;box-shadow:0 4px 0 #1c1611;cursor:pointer;min-height:48px" style-active="transform:translateY(3px);box-shadow:0 1px 0 #1c1611">BUDGET</button>
+  </div>
+</div>
+
+<canvas ref="{{ fxRef }}" style="position:absolute;left:0;top:0;width:390px;height:844px;pointer-events:none;z-index:20"></canvas>
+
+<div onClick="{{ closeSheet }}" style="position:absolute;inset:0;z-index:30;background:rgba(28,22,17,.5);opacity:{{ backdropOp }};pointer-events:{{ backdropPE }};transition:opacity .3s"></div>
+
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:31;background:#f2e6c9;border-top:3px solid #1c1611;border-radius:30px 30px 0 0;padding:12px 20px 34px;transform:translateY({{ spendY }});transition:transform .5s cubic-bezier(.2,1.25,.35,1);box-shadow:0 -6px 0 rgba(28,22,17,.25)">
+  <div style="width:48px;height:5px;border-radius:3px;background:#1c1611;margin:0 auto 10px;opacity:.5"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div style="font:26px 'Luckiest Guy',cursive;color:#1c1611">PULL A BLOCK!</div>
+    <button onClick="{{ closeSheet }}" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:2.5px solid #1c1611;background:#fbf4e2;font:22px 'Luckiest Guy',cursive;color:#1c1611;cursor:pointer;padding-top:4px">×</button>
+  </div>
+  <div style="margin:10px 0 12px;background:#fbf4e2;border:3px solid #1c1611;border-radius:14px;padding:6px 14px;display:flex;justify-content:flex-end;align-items:baseline;gap:8px">
+    <span style="font:54px/1.1 'Luckiest Guy',cursive;color:#c7372f;-webkit-text-stroke:2px #1c1611;paint-order:stroke fill">{{ amtTxt }}</span>
+    <span style="font:22px 'Luckiest Guy',cursive;color:#1c1611">kr</span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px">
+    <sc-for list="{{ cats }}" as="c" hint-placeholder-count="6">
+      <button onClick="{{ c.pick }}" style="font:13px 'Rye',serif;letter-spacing:.05em;padding:7px 12px;border-radius:999px;border:2.5px solid #1c1611;background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;min-height:44px">{{ c.name }}</button>
+    </sc-for>
+  </div>
+  <input value="{{ label }}" onChange="{{ onLabel }}" placeholder="what was it? (optional)" style="width:100%;box-sizing:border-box;font:700 15px 'Courier Prime',monospace;color:#1c1611;background:transparent;border:none;border-bottom:2.5px dashed #1c1611;padding:8px 2px;margin-bottom:12px">
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px">
+    <sc-for list="{{ keys }}" as="key" hint-placeholder-count="12">
+      <button onClick="{{ key.press }}" style="height:52px;font:26px/1 'Luckiest Guy',cursive;padding-top:5px;color:#1c1611;background:#fbf4e2;border:2.5px solid #1c1611;border-radius:14px;box-shadow:0 4px 0 #1c1611;cursor:pointer" style-active="transform:translateY(3px);box-shadow:0 1px 0 #1c1611">{{ key.k }}</button>
+    </sc-for>
+  </div>
+  <button onClick="{{ confirm }}" style="margin-top:14px;width:100%;height:60px;font:26px/1 'Luckiest Guy',cursive;padding-top:5px;color:#f2e6c9;-webkit-text-stroke:2px #1c1611;paint-order:stroke fill;background:#c7372f;border:3px solid #1c1611;border-radius:16px;box-shadow:0 5px 0 #1c1611;cursor:pointer;opacity:{{ confirmOp }}" style-active="transform:translateY(4px);box-shadow:0 1px 0 #1c1611">PULL IT!</button>
+</div>
+
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:31;background:#f2e6c9;border-top:3px solid #1c1611;border-radius:30px 30px 0 0;padding:12px 20px 34px;transform:translateY({{ ledgerY }});transition:transform .5s cubic-bezier(.2,1.25,.35,1)">
+  <div style="width:48px;height:5px;border-radius:3px;background:#1c1611;margin:0 auto 10px;opacity:.5"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <div style="font:28px 'Luckiest Guy',cursive;color:#1c1611">THE LEDGER</div>
+    <button onClick="{{ closeSheet }}" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:2.5px solid #1c1611;background:#fbf4e2;font:22px 'Luckiest Guy',cursive;color:#1c1611;cursor:pointer;padding-top:4px">×</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+      <button onClick="{{ t.pick }}" style="flex:1;height:44px;font:13px 'Rye',serif;letter-spacing:.08em;border:2.5px solid #1c1611;border-radius:12px;background:{{ t.bg }};color:{{ t.fg }};cursor:pointer">{{ t.name }}</button>
+    </sc-for>
+  </div>
+  <sc-if value="{{ showHistory }}" hint-placeholder-val="{{ false }}">
+  <div style="max-height:430px;overflow-y:auto">
+    <sc-if value="{{ noHistory }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:40px 10px;text-align:center;font:15px/1.5 'Rye',serif;color:#1c1611">No finished months yet.<br>Survive this one first!</div>
+    </sc-if>
+    <sc-for list="{{ histRows }}" as="h" hint-placeholder-count="3">
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1.5px dashed rgba(28,22,17,.45)">
+        <div style="min-width:0">
+          <div style="font:20px 'Luckiest Guy',cursive;color:#1c1611;padding-top:3px">{{ h.month }}</div>
+          <div style="font:700 13px 'Courier Prime',monospace;color:#1c1611">{{ h.line }}</div>
+        </div>
+        <div style="transform:rotate(-6deg);font:15px 'Rye',serif;letter-spacing:.1em;color:{{ h.color }};border:2.5px solid {{ h.color }};border-radius:6px;padding:4px 8px">{{ h.stamp }}</div>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{ showMonth }}" hint-placeholder-val="{{ true }}">
+  <div style="font:700 13px 'Courier Prime',monospace;color:#1c1611;padding-bottom:10px;border-bottom:3px double #1c1611">{{ spentLine }}</div>
+  <div style="max-height:430px;overflow-y:auto">
+    <sc-if value="{{ noEntries }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:40px 0;text-align:center;font:15px 'Rye',serif;color:#1c1611">Tower's untouched. For now…</div>
+    </sc-if>
+    <sc-for list="{{ rows }}" as="r" hint-placeholder-count="4">
+      <div style="display:grid;grid-template-columns:52px minmax(0,1fr) auto 44px;gap:8px;align-items:center;padding:10px 0;border-bottom:1.5px dashed rgba(28,22,17,.45)">
+        <div style="font:700 12px/1.1 'Courier Prime',monospace;color:#1c1611;text-align:center;border:2px solid #1c1611;border-radius:8px;padding:4px 0">{{ r.date }}</div>
+        <div style="min-width:0">
+          <div style="font:700 15px 'Courier Prime',monospace;color:#1c1611;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div>
+          <div style="font:11px 'Rye',serif;letter-spacing:.08em;color:#8e2a36">{{ r.cat }}</div>
+        </div>
+        <div style="font:20px 'Luckiest Guy',cursive;color:#c7372f;padding-top:3px">{{ r.amtTxt }}</div>
+        <button onClick="{{ r.undo }}" aria-label="Delete purchase and put the block back" style="width:44px;height:44px;border-radius:50%;border:2px solid #1c1611;background:#fbf4e2;font:16px 'Luckiest Guy',cursive;color:#1c1611;cursor:pointer;padding-top:3px">↺</button>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+</div>
+
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:31;background:#f2e6c9;border-top:3px solid #1c1611;border-radius:30px 30px 0 0;padding:12px 20px 34px;transform:translateY({{ settingsY }});transition:transform .5s cubic-bezier(.2,1.25,.35,1)">
+  <div style="width:48px;height:5px;border-radius:3px;background:#1c1611;margin:0 auto 10px;opacity:.5"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div style="font:28px 'Luckiest Guy',cursive;color:#1c1611">SETTINGS</div>
+    <button onClick="{{ closeSheet }}" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:2.5px solid #1c1611;background:#fbf4e2;font:22px 'Luckiest Guy',cursive;color:#1c1611;cursor:pointer;padding-top:4px">×</button>
+  </div>
+  <div style="display:flex;flex-direction:column;border-top:3px double #1c1611">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:60px;border-bottom:1.5px dashed rgba(28,22,17,.45)">
+      <div>
+        <div style="font:14px 'Rye',serif;letter-spacing:.06em;color:#1c1611">MONTHLY BUDGET</div>
+        <div style="font:700 14px 'Courier Prime',monospace;color:#1c1611">{{ budgetTxt }}</div>
+      </div>
+      <button onClick="{{ openSetup }}" style="height:44px;padding:0 16px;font:13px 'Rye',serif;letter-spacing:.06em;color:#1c1611;background:#fbf4e2;border:2.5px solid #1c1611;border-radius:999px;cursor:pointer">CHANGE</button>
+    </div>
+    <sc-for list="{{ toggles }}" as="tg" hint-placeholder-count="2">
+      <button onClick="{{ tg.flip }}" role="switch" aria-checked="{{ tg.on }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:60px;border:none;border-bottom:1.5px dashed rgba(28,22,17,.45);background:transparent;padding:0;cursor:pointer;text-align:left">
+        <div>
+          <div style="font:14px 'Rye',serif;letter-spacing:.06em;color:#1c1611">{{ tg.name }}</div>
+          <div style="font:400 12px 'Courier Prime',monospace;color:#1c1611">{{ tg.sub }}</div>
+        </div>
+        <div style="flex:none;width:54px;height:32px;border-radius:999px;border:2.5px solid #1c1611;background:{{ tg.bg }};display:flex;justify-content:{{ tg.jc }};align-items:center;padding:0 3px;box-sizing:border-box">
+          <div style="width:22px;height:22px;border-radius:50%;background:#fbf4e2;border:2px solid #1c1611"></div>
+        </div>
+      </button>
+    </sc-for>
+  </div>
+  <div style="margin-top:14px;background:#fbf4e2;border:2.5px solid #1c1611;border-radius:14px;padding:12px 14px">
+    <div style="font:14px 'Rye',serif;letter-spacing:.06em;color:#1c1611">YOUR PRIVACY</div>
+    <div style="font:400 13px/1.45 'Courier Prime',monospace;color:#1c1611;margin-top:4px;text-wrap:pretty">No account, no bank connection, no tracking. Your budget and purchases are stored only on this phone.</div>
+    <a href="#" style="display:inline-block;margin-top:6px;font:700 13px 'Courier Prime',monospace;color:#c7372f">Privacy Policy →</a>
+  </div>
+  <button onClick="{{ erase }}" style="margin-top:14px;width:100%;height:48px;font:14px 'Rye',serif;letter-spacing:.08em;color:{{ eraseFg }};background:{{ eraseBg }};border:2.5px solid #c7372f;border-radius:14px;cursor:pointer">{{ eraseTxt }}</button>
+  <div style="margin-top:12px;text-align:center;font:400 12px 'Courier Prime',monospace;color:#1c1611">Money Jenga 1.0</div>
+</div>
+
+<div style="position:absolute;inset:0;z-index:40;transform:translateY({{ setupY }});transition:transform .7s cubic-bezier(.6,-0.25,.3,1);background:#cbb68f;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:0 26px;box-sizing:border-box">
+  <div style="position:absolute;inset:-50px;background:repeating-conic-gradient(from 0deg at 50% 60%,#f2e7cf 0deg 7deg,#d1bc93 12deg 20deg,#f2e7cf 25deg 28deg);filter:blur(12px);pointer-events:none"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 55% 40% at 50% 60%,rgba(255,252,242,.9),rgba(245,232,205,.35) 55%,transparent 85%);pointer-events:none"></div>
+  <sc-if value="{{ hasBudget }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ cancelSetup }}" aria-label="Close" style="position:absolute;top:52px;right:22px;width:44px;height:44px;border-radius:50%;border:2.5px solid #1c1611;background:#f2e6c9;font:22px 'Luckiest Guy',cursive;color:#1c1611;cursor:pointer;padding-top:4px;z-index:2">×</button>
+  </sc-if>
+  <div style="position:relative;margin-top:110px;font:15px 'Rye',serif;letter-spacing:.3em;color:#e9b949;text-shadow:2px 2px 0 #1c1611">~ PRESENTING ~</div>
+  <div style="position:relative;text-align:center;font:86px/.86 'Luckiest Guy',cursive;color:#e9b949;-webkit-text-stroke:4px #1c1611;paint-order:stroke fill;text-shadow:-3px 0 0 rgba(230,30,60,.5),3px 0 0 rgba(40,170,230,.4),6px 6px 0 #1c1611;margin-top:14px;transform:rotate(-3deg)">MONEY<br>JENGA</div>
+  <div style="position:relative;margin-top:20px;background:#c7372f;color:#f2e6c9;font:14px 'Rye',serif;letter-spacing:.12em;padding:7px 28px;border:3px solid #1c1611;clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%,6% 50%)">THE TOWER OF LIFE</div>
+  <div style="position:relative;margin-top:auto;margin-bottom:46px;width:100%;background:#f2e6c9;border:3px solid #1c1611;border-radius:20px;box-shadow:6px 6px 0 #1c1611;padding:18px 18px 18px;box-sizing:border-box">
+    <div style="font:22px 'Luckiest Guy',cursive;color:#1c1611;text-align:center">HOW TALL'S YOUR TOWER THIS MONTH?</div>
+    <div style="display:flex;align-items:baseline;gap:8px;border-bottom:3px solid #1c1611;margin:8px 0 12px;padding:0 4px">
+      <input value="{{ setupAmt }}" onChange="{{ onSetupAmt }}" inputmode="numeric" style="flex:1;min-width:0;font:52px/1.15 'Luckiest Guy',cursive;color:#3f8a55;-webkit-text-stroke:2px #1c1611;paint-order:stroke fill;background:transparent;border:none;text-align:right;padding:0">
+      <span style="font:26px 'Luckiest Guy',cursive;color:#1c1611">kr</span>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">
+      <sc-for list="{{ quick }}" as="q" hint-placeholder-count="3">
+        <button onClick="{{ q.pick }}" style="font:13px 'Rye',serif;padding:7px 12px;border-radius:999px;border:2.5px solid #1c1611;background:#fbf4e2;color:#1c1611;cursor:pointer;min-height:44px">{{ q.txt }}</button>
+      </sc-for>
+    </div>
+    <button onClick="{{ fillPrimary }}" style="width:100%;height:60px;font:26px/1 'Luckiest Guy',cursive;padding-top:5px;color:#f2e6c9;-webkit-text-stroke:2px #1c1611;paint-order:stroke fill;background:#3f8a55;border:3px solid #1c1611;border-radius:16px;box-shadow:0 5px 0 #1c1611;cursor:pointer" style-active="transform:translateY(4px);box-shadow:0 1px 0 #1c1611">{{ primaryTxt }}</button>
+    <sc-if value="{{ hasBudget }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ fillFresh }}" style="margin-top:10px;width:100%;height:48px;font:14px 'Rye',serif;letter-spacing:.08em;color:#1c1611;background:transparent;border:2.5px dashed #1c1611;border-radius:14px;cursor:pointer">START A FRESH MONTH</button>
+    </sc-if>
+    <div style="margin-top:12px;text-align:center;font:700 12px/1.4 'Courier Prime',monospace;color:#1c1611;text-wrap:pretty">No bank login. No account. Your numbers never leave this phone.</div>
+  </div>
+</div>
+
+<div style="position:absolute;inset:0;z-index:50;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 42%,rgba(60,36,18,.55) 100%)"></div>
+<div style="position:absolute;inset:0;z-index:50;pointer-events:none;background:#c89a5a;opacity:.16;mix-blend-mode:color"></div>
+<div ref="{{ flickerRef }}" style="position:absolute;inset:0;z-index:51;pointer-events:none;background:#ffe2a8;opacity:.06;mix-blend-mode:multiply"></div>
+<div ref="{{ grainRef }}" style="position:absolute;inset:-60px;z-index:52;pointer-events:none;mix-blend-mode:overlay;opacity:{{ grainOp }};background-size:180px 180px"></div>
+<div ref="{{ grain2Ref }}" style="position:absolute;inset:-60px;z-index:52;pointer-events:none;mix-blend-mode:multiply;opacity:{{ grain2Op }};background-size:260px 260px"></div>
+<canvas ref="{{ filmRef }}" style="position:absolute;left:0;top:0;width:390px;height:844px;z-index:54;pointer-events:none"></canvas>
+<div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:35px;border-radius:20px;background:#000;z-index:55"></div>
+<div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#1c1611;z-index:53;opacity:.8"></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;pileStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Pyramid&quot;,&quot;Towers&quot;,&quot;Jenga&quot;],&quot;default&quot;:&quot;Jenga&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;grain&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;default&quot;:0.8,&quot;tsType&quot;:&quot;number&quot;},&quot;boil&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const INK = '#1c1611';
+const KEY = 'topple.v1';
+const monthKey = (d = new Date()) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+const monthLabel = k => { const [y, m] = k.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleString('en', { month: 'long', year: 'numeric' }).toUpperCase(); };
+const CATS = ['Grub', 'Fun', 'Stuff', 'Rides', 'Bills', 'Misc'];
+const fmt = n => Math.round(n).toLocaleString('da-DK');
+const rnd = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(KEY) || localStorage.getItem('doughMountain.v1')); } catch (e) {}
+    d = d || {};
+    const b = d.budget || 0, cur = monthKey();
+    let entries = d.entries || [], history = d.history || [];
+    if (d.month && d.month !== cur && entries.length) { history = [{ month: d.month, budget: b, spent: entries.reduce((a, e) => a + e.amt, 0) }, ...history]; entries = []; }
+    const prm = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.state = { budget: b, entries, history, screen: 'setup', sheet: null, amt: '', label: '', cat: 'Grub', setupAmt: String(b || 10000), shown: null,
+      reduceMotion: d.reduceMotion ?? prm, grainOn: d.grainOn ?? true, eraseArm: false, ledgerTab: 'month' };
+    this.baseRef = React.createRef(); this.fxRef = React.createRef(); this.grainRef = React.createRef();
+    this.flickerRef = React.createRef(); this.screenRef = React.createRef(); this.grain2Ref = React.createRef(); this.filmRef = React.createRef(); this.weave = 0; this.scratches = [];
+  }
+  save() { const s = this.state; localStorage.setItem(KEY, JSON.stringify({ budget: s.budget, entries: s.entries, history: s.history, month: monthKey(), reduceMotion: s.reduceMotion, grainOn: s.grainOn })); }
+  spent(s = this.state) { return s.entries.reduce((a, e) => a + e.amt, 0); }
+  rem(s = this.state) { return s.budget - this.spent(s); }
+  exactFor(r, budget = this.state.budget) { if (this.style === 'Jenga') return budget ? this.N : 0; return budget ? this.N * Math.max(0, Math.min(1, r / budget)) : 0; }
+
+  componentDidMount() {
+    this.W = 390; this.H = 844; this.T = 610; this.bw = 50; this.bh = 19;
+    this.dpr = Math.min(3, window.devicePixelRatio || 1);
+    [this.baseRef.current, this.fxRef.current, this.filmRef.current].forEach(c => { c.width = this.W * this.dpr; c.height = this.H * this.dpr; });
+    this.dy = []; this.vy = []; this.vis = 0; this.bills = []; this.thrown = []; this.puffs = []; this.glove = null;
+    this.floor = []; this.boilF = 0; this.boilT = 0; this.shake = 0; this.tween = null; this.time = 0;
+    this.wob = 0; this.wobV = 0;
+    this.buildLayout(); this.syncJenga();
+    if (this.state.budget) {
+      this.floor = this.genFloor(this.spent());
+    }
+    const g = this.grainRef.current;
+    g.style.backgroundImage = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")`;
+    const g2 = this.grain2Ref.current;
+    g2.style.backgroundImage = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .1  0 0 0 0 .06  0 0 0 0 .03  0 0 0 -2.4 1.3'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>")`;
+    this.grainTimer = setInterval(() => {
+      if (this.state.reduceMotion || !this.state.grainOn) {
+        this.weave = 0; if (this.flickerRef.current) this.flickerRef.current.style.opacity = '.04';
+        const fc = this.filmRef.current; if (fc) fc.getContext('2d').clearRect(0, 0, fc.width, fc.height);
+        return;
+      }
+      g2.style.transform = `translate(${(Math.random() * 60 - 30) | 0}px,${(Math.random() * 60 - 30) | 0}px)`;
+      this.weave = Math.random() < .15 ? (Math.random() - .5) * 2.4 : this.weave * .5;
+      this.drawFilm();
+      g.style.transform = `translate(${(Math.random() * 60 - 30) | 0}px,${(Math.random() * 60 - 30) | 0}px)`;
+      if (this.flickerRef.current) this.flickerRef.current.style.opacity = (0.02 + Math.random() * 0.06).toFixed(3);
+    }, 70);
+    this.last = performance.now();
+    this.raf = requestAnimationFrame(this.tick);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); clearInterval(this.grainTimer); clearTimeout(this.dropT); }
+
+  buildLayout() {
+    this.style = this.props.pileStyle || 'Jenga';
+    const jRows = Math.max(10, Math.min(30, Math.round(6 * Math.log2(Math.max(1250, this.state.budget || 10000) / 1250))));
+    this.layoutBudget = this.state.budget;
+    this.bh = this.style === 'Jenga' ? Math.min(24, 280 / jRows) : 19;
+    const sW = Math.max(.6, Math.min(1.25, this.bh / 15.5));
+    const W = this.W, T = this.T, bw = this.bw, bh = this.bh, L = [];
+    if (this.style === 'Jenga') {
+      const tw = 156 * sW, cx = W / 2;
+      for (let row = 0; row < jRows; row++) {
+        const y = T - (row + 1) * bh;
+        if (row % 2 === 0) L.push({ x: cx - tw / 2, y, w: tw, row, k: -1 });
+        else {
+          [0, 1, 2].forEach(k => { L.push({ x: cx - tw / 2 + k * 54 * sW, y, w: 48 * sW, row, k }); });
+        }
+      }
+    } else if (this.style === 'Towers') {
+      const hs = [9, 13, 7, 11, 5], maxH = 13;
+      for (let row = 0; row < maxH; row++) hs.forEach((h, k) => {
+        if (row < h) L.push({ x: W / 2 + (k - 2) * 62 - bw / 2 + (rnd(k * 9 + row) - .5) * 5, y: T - (row + 1) * bh });
+      });
+    } else {
+      const counts = [6, 6, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1];
+      counts.forEach((c, row) => {
+        const off = (rnd(row * 3.3) - .5) * 8;
+        for (let i = 0; i < c; i++) L.push({ x: W / 2 - (c * bw) / 2 + i * bw + off, y: T - (row + 1) * bh });
+      });
+    }
+    L.forEach((r, i) => { r.w = r.w || bw; r.id = i + 1; });
+    this.L = L; this.N = L.length;
+  }
+  idleWob() {
+    if (this.style !== 'Jenga' || !this.state.budget) return 0;
+    const s = 1 - Math.max(0, Math.min(1, this.rem() / this.state.budget)), a = Math.pow(s, 1.8) * .045;
+    return a * (Math.sin(this.time * 2.3) * .7 + Math.sin(this.time * 5.1 + 1) * .3);
+  }
+  syncJenga() { this.jRem = this.style === 'Jenga' ? this.jengaRemoved(this.state.entries) : null; }
+  jengaRemoved(entries) {
+    const bv = this.state.budget / this.N, rem = new Set(); let cum = 0;
+    if (!bv) return rem;
+    entries.forEach(e => {
+      cum += e.amt; const left = this.state.budget - cum;
+      const cap = this.L.filter(r => r.k === 0).length * 2;
+      let target = Math.max(Math.round(Math.min(1, cum / this.state.budget) * cap), rem.size + (e.amt >= 200 ? 1 : 0));
+      target = left > 0 ? Math.min(target, cap) : this.N;
+      let n = 0; while (rem.size < target) rem.add(this.pickJenga(rem, e.amt, e.id + n++, Math.min(1, cum / this.state.budget)));
+    });
+    return rem;
+  }
+  pickJenga(rem, amt, seed, frac) {
+    const L = this.L, alive = L.map((r, i) => i).filter(i => !rem.has(i));
+    const topRow = Math.max(...alive.map(i => L[i].row));
+    const ok = (i, relaxed) => {
+      const r = L[i]; if (r.row === topRow) return true; if (r.k < 0) return false;
+      const left = alive.filter(j => j !== i && L[j].row === r.row).map(j => L[j].k);
+      return relaxed ? left.length >= 1 : left.includes(1) || (left.includes(0) && left.includes(2));
+    };
+    const cand = alive.filter(i => ok(i, false)); if (!cand.length) return alive[alive.length - 1];
+    if (amt < 200) return Math.max(...cand);
+    const bv = this.state.budget / this.N, size = Math.min(1, amt / (bv * 6));
+    const depth = 1;
+    const want = topRow * (1 - depth);
+    let deep = alive.filter(i => L[i].row <= topRow - 3 && ok(i, false));
+    const sides = deep.filter(i => L[i].k !== 1); if (sides.length) deep = sides;
+    const pool = deep.length ? deep : cand;
+    const dist = i => Math.abs(L[i].row - want), best = Math.min(...pool.map(dist));
+    const pick = pool.filter(i => dist(i) <= best + .01);
+    return pick[Math.floor(rnd(seed) * pick.length)];
+  }
+  genFloor(spent) {
+    const bv = this.state.budget / this.N || 1, n = Math.min(150, Math.round(spent / bv * 5)), out = [];
+    for (let i = 0; i < n; i++) out.push({ x: 10 + rnd(i * 2.1) * 370, y: 748 + rnd(i * 3.7) * 70, rot: rnd(i * 5.3) * 6.28, id: 500 + i });
+    return out;
+  }
+  setVis(v) {
+    const a = this.vis, start = Math.ceil(a - 1e-6);
+    if (v > a) for (let i = start; i < Math.ceil(v - 1e-6); i++) { this.dy[i] = -(this.T + 140 + (i - start) * 34); this.vy[i] = 0; }
+    this.vis = v;
+  }
+  jit(id, k) { if (this.props.boil !== true) return 0; return rnd(id * 17.3 + k * 5.1 + this.boilF * 11.7) * 2 - 1; }
+  rr(ctx, x, y, w, h, id, a = .9) {
+    const J = k => this.jit(id, k) * a;
+    ctx.beginPath(); ctx.moveTo(x + J(1), y + J(2)); ctx.lineTo(x + w + J(3), y + J(4));
+    ctx.lineTo(x + w + J(5), y + h + J(6)); ctx.lineTo(x + J(7), y + h + J(8)); ctx.closePath();
+  }
+  ell(ctx, x, y, rx, ry, id, fill, lw = 2.5) {
+    ctx.beginPath(); ctx.ellipse(x + this.jit(id, 1) * .7, y + this.jit(id, 2) * .7, rx, ry, 0, 0, Math.PI * 2);
+    ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = lw; ctx.strokeStyle = INK; ctx.stroke();
+  }
+  bundle(ctx, x, y, w, h, id) {
+    ctx.lineJoin = 'round';
+    this.rr(ctx, x, y, w, h, id, .8); ctx.fillStyle = '#3f8a55'; ctx.fill();
+    ctx.save(); ctx.clip();
+    ctx.fillStyle = '#5aab6d'; ctx.fillRect(x, y, w, Math.min(4, h));
+    ctx.strokeStyle = 'rgba(16,46,26,.5)'; ctx.lineWidth = 1;
+    for (let yy = y + 5.5; yy < y + h - 1; yy += 3.3) { ctx.beginPath(); ctx.moveTo(x + 3, yy); ctx.lineTo(x + w - 3, yy + this.jit(id, yy) * .4); ctx.stroke(); }
+    const bx = x + w * .64; ctx.fillStyle = '#efe4c6'; ctx.fillRect(bx, y - 2, 6, h + 4);
+    ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(bx, y); ctx.lineTo(bx, y + h); ctx.moveTo(bx + 6, y); ctx.lineTo(bx + 6, y + h); ctx.stroke();
+    ctx.restore();
+    this.rr(ctx, x, y, w, h, id, .8); ctx.strokeStyle = INK; ctx.lineWidth = 2.2; ctx.stroke();
+  }
+  bill(ctx, x, y, rot, sy, id) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(1, sy);
+    this.rr(ctx, -15, -7.5, 30, 15, id, .7); ctx.fillStyle = '#8fc79b'; ctx.fill(); ctx.lineWidth = 1.7; ctx.strokeStyle = INK; ctx.stroke();
+    ctx.lineWidth = .9; ctx.strokeStyle = '#3f8a55'; ctx.strokeRect(-11, -4.5, 22, 9);
+    ctx.beginPath(); ctx.arc(0, 0, 3.4, 0, 6.29); ctx.fillStyle = '#e6efd2'; ctx.fill(); ctx.lineWidth = 1; ctx.strokeStyle = INK; ctx.stroke();
+    ctx.restore();
+  }
+  table(ctx) {
+    const W = this.W, T = this.T;
+    ctx.fillStyle = 'rgba(30,8,6,.35)'; ctx.beginPath(); ctx.ellipse(W / 2, T + 128, 118, 11, 0, 0, 6.29); ctx.fill();
+    this.ell(ctx, W / 2, T + 100, 64, 26, 910, '#4e1820');
+    this.rr(ctx, W / 2 - 18, T + 28, 36, 58, 911); ctx.fillStyle = '#5c1d27'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke();
+    this.ell(ctx, W / 2, T + 60, 30, 13, 912, '#6b2330');
+    this.rr(ctx, 24, T + 14, W - 48, 16, 901); ctx.fillStyle = '#8e2a36'; ctx.fill(); ctx.stroke();
+    this.rr(ctx, 14, T, W - 28, 16, 900); ctx.fillStyle = '#ecdcb6'; ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = 'rgba(28,22,17,.35)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(30, T + 5); ctx.lineTo(110, T + 5); ctx.stroke();
+  }
+  glovePath(ctx, gl) {
+    const { x, y, ang, closed } = gl;
+    ctx.save(); ctx.lineCap = 'round';
+    const cx = x + Math.cos(ang) * 26, cy = y + Math.sin(ang) * 26;
+    ctx.beginPath(); ctx.moveTo(this.W + 40, y + 170); ctx.bezierCurveTo(this.W - 10, y + 150, cx + 60, cy + 60, cx, cy);
+    ctx.strokeStyle = INK; ctx.lineWidth = 11; ctx.stroke();
+    ctx.translate(x, y); ctx.rotate(ang);
+    (gl.carry || []).forEach((c, k) => this.bundle(ctx, -2 - c.w + c.ox, -6 - c.oy - c.h, c.w, c.h, 700 + k));
+    ctx.beginPath(); ctx.moveTo(14, -12); ctx.lineTo(32, -17); ctx.lineTo(32, 17); ctx.lineTo(14, 12); ctx.closePath();
+    ctx.fillStyle = '#fbf6ea'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke();
+    const f = closed ? [[-12, -8, 6, 5], [-14, 0, 6, 5], [-12, 8, 6, 5]] : [[-21, -9, 11, 5.5], [-24, 0, 12, 5.5], [-21, 9, 11, 5.5]];
+    f.forEach((p, i) => this.ell(ctx, p[0], p[1], p[2], p[3], 800 + i, '#fbf6ea', 2.2));
+    this.ell(ctx, 0, 0, 17, 15, 810, '#fbf6ea');
+    this.ell(ctx, closed ? -8 : -4, -15, 5, 8, 811, '#fbf6ea', 2.2);
+    ctx.lineWidth = 1.6; ctx.beginPath();
+    [-5, 0, 5].forEach(yy => { ctx.moveTo(2, yy); ctx.lineTo(9, yy * 1.2); }); ctx.stroke();
+    ctx.restore();
+  }
+
+  startThrow(oldR, newR, amount) {
+    if (this.glove) { if (this.glove.jSet) this.jRem = this.glove.jSet; else this.vis = this.glove.newE; this.glove = null; }
+    const oldE = this.exactFor(oldR), newE = this.exactFor(newR), bh = this.bh;
+    const pieces = [];
+    for (let i = Math.floor(newE); i < Math.ceil(oldE - 1e-6); i++) {
+      const hOld = i < Math.floor(oldE) ? bh : bh * (oldE - Math.floor(oldE));
+      const hNew = i < Math.floor(newE) ? bh : (i === Math.floor(newE) ? bh * (newE - Math.floor(newE)) : 0);
+      if (hOld - hNew > 1) pieces.push({ h: hOld - hNew, w: this.L[i].w });
+    }
+    let topI = Math.max(0, Math.ceil(oldE - 1e-6) - 1), jSet = null, risk = 0;
+    if (this.style === 'Jenga') {
+      jSet = this.jengaRemoved(this.state.entries); const old = this.jRem || new Set();
+      const diff = [...jSet].filter(i => !old.has(i)).sort((a, b) => a - b);
+      pieces.length = 0; diff.forEach(i => pieces.push({ h: bh, w: this.L[i].w }));
+      const alive = this.L.map((r, i) => i).filter(i => !old.has(i));
+      topI = diff.length ? diff[0] : (alive.length ? alive[alive.length - 1] : 0);
+      if (!diff.length && amount >= 200 && alive.length) topI = alive[Math.floor(alive.length * .3)];
+      if (diff.length) { const topRow = Math.max(...alive.map(i => this.L[i].row)); risk = Math.max(0, 1 - this.L[topI].row / Math.max(1, topRow)); }
+    }
+    const r = this.L[topI] || { x: this.W / 2, y: this.T };
+    const grab = { x: r.x + (r.w || this.bw) + 30, y: (oldE > 0 ? r.y : this.T) + 4 };
+    let oy = 0; const carry = pieces.slice(0, 9).map((p, k) => { const h = p.h; const c = { h, w: p.w, ox: (rnd(k * 4.4) - .5) * 10, oy }; oy += h; return c; });
+    const bv = this.state.budget / this.N;
+    const loose = pieces.length ? 4 + (pieces.length - carry.length) * 6 : Math.max(2, Math.min(14, Math.round(amount / bv * 10)));
+    this.glove = { t: 0, from: { x: this.W + 80, y: grab.y - 90 }, grab, fling: { x: 120, y: 170 }, x: this.W + 80, y: grab.y - 90, ang: 0, closed: false, oldE, newE, jSet, risk, pend: carry, carry: null, loose, grabbed: false, released: false, oldR, newR };
+  }
+  burst(x, y, n, vxb = 0, vyb = 0) {
+    for (let i = 0; i < n; i++) this.bills.push({
+      x: x + (Math.random() - .5) * 30, y: y + (Math.random() - .5) * 14, vx: vxb + (Math.random() - .5) * 440, vy: vyb - 80 - Math.random() * 320,
+      rot: Math.random() * 6.28, vr: (Math.random() - .5) * 10, ph: Math.random() * 6.28, ff: 5 + Math.random() * 7, age: 0,
+      land: 748 + Math.random() * 72, id: 300 + ((Math.random() * 1e4) | 0)
+    });
+    this.puffs.push({ x, y, t: 0, r: 16 });
+  }
+  tick = (now) => {
+    const dt = Math.min(.033, (now - this.last) / 1000); this.last = now; this.time += dt;
+    if (this.props.boil !== false) { this.boilT += dt; if (this.boilT > .083) { this.boilT = 0; this.boilF++; } }
+    if ((this.props.pileStyle || 'Jenga') !== this.style || (this.style === 'Jenga' && this.state.budget && this.state.budget !== this.layoutBudget)) { this.buildLayout(); this.syncJenga(); this.vis = 0; this.setVis(this.exactFor(this.rem())); }
+    const bh = this.bh;
+    for (let i = 0; i < Math.ceil(this.vis - 1e-6); i++) {
+      if ((this.dy[i] || 0) < 0 || this.vy[i]) {
+        this.vy[i] = (this.vy[i] || 0) + 2600 * dt; this.dy[i] = (this.dy[i] || 0) + this.vy[i] * dt;
+        if (this.dy[i] >= 0 && this.vy[i] > 0) {
+          this.dy[i] = 0;
+          if (this.vy[i] > 350) { const r = this.L[i]; if (this.vy[i] > 900) this.puffs.push({ x: r.x + (Math.random() < .5 ? 0 : r.w), y: r.y + bh, t: 0, r: 7 }); this.vy[i] = -this.vy[i] * .22; }
+          else this.vy[i] = 0;
+        }
+      }
+    }
+    this.wobV += (-this.wob * 55 - this.wobV * 2.2) * dt; this.wob += this.wobV * dt;
+    const g = this.glove;
+    if (g) {
+      g.t += dt; const t = g.t, e1 = x => 1 - Math.pow(1 - x, 3), e2 = x => x * x * (3 - 2 * x);
+      if (t < .4) { const k = e1(t / .4); g.x = g.from.x + (g.grab.x - g.from.x) * k; g.y = g.from.y + (g.grab.y - g.from.y) * k; g.ang = -.15 * (1 - k); }
+      else if (t < .75) {
+        if (!g.grabbed) { g.grabbed = true; g.closed = true; g.carry = g.pend; if (g.jSet) { this.jRem = g.jSet; this.wobV += (g.risk > .15 ? .9 + 1.3 * g.risk : .25) * (Math.random() < .5 ? -1 : 1); if (g.risk > .15) this.shake = .25; } else this.vis = g.newE; }
+        const k = e2((t - .4) / .35), px = g.x, py = g.y;
+        g.x = g.grab.x + (g.fling.x - g.grab.x) * k; g.y = g.grab.y + (g.fling.y - g.grab.y) * k - Math.sin(k * Math.PI) * 60 + (k < .2 ? k * 60 : 0);
+        g.ang = -1.0 * k + .25 * Math.sin(k * 6); g.vx = (g.x - px) / dt; g.vy = (g.y - py) / dt;
+      } else {
+        if (!g.released) {
+          g.released = true; g.closed = false; this.shake = .3;
+          (g.carry || []).forEach((c, k) => {
+            const lx = -2 - c.w / 2 + c.ox, ly = -6 - c.oy - c.h / 2, ca = Math.cos(g.ang), sa = Math.sin(g.ang);
+            this.thrown.push({ x: g.x + lx * ca - ly * sa, y: g.y + lx * sa + ly * ca, h: c.h, w: c.w, rot: g.ang, vr: (Math.random() - .5) * 9, vx: -260 + (Math.random() - .5) * 260, vy: -420 - Math.random() * 220, age: 0, id: 900 + k });
+          });
+          g.carry = null;
+          this.burst(g.x - 30, g.y - 10, g.loose, -160, -120);
+          this.tween = { from: g.oldR, to: g.newR, t: 0, dur: .8 };
+        }
+        const k = e2(Math.min(1, (t - .75) / .45));
+        g.x = g.fling.x + (this.W + 90 - g.fling.x) * k; g.y = g.fling.y + (40 - g.fling.y) * k; g.ang = -1 + k * .6;
+        if (t > 1.2) this.glove = null;
+      }
+    }
+    this.thrown = this.thrown.filter(b => {
+      b.age += dt; b.vy += 1500 * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.rot += b.vr * dt;
+      if (b.age > .3) { this.burst(b.x, b.y, 6, b.vx * .4, b.vy * .3); return false; } return true;
+    });
+    this.bills = this.bills.filter(b => {
+      b.age += dt; b.vy = Math.min(b.vy + 900 * dt, 230); b.vx *= Math.pow(.2, dt);
+      b.x += (b.vx + Math.sin(b.ph + this.time * 3.2) * 70) * dt; b.y += b.vy * dt; b.rot += b.vr * dt; b.vr *= Math.pow(.5, dt);
+      if (b.y >= b.land && b.vy > 0 && b.age > .4) { this.floor.push({ x: Math.max(8, Math.min(382, b.x)), y: b.land, rot: b.rot, id: b.id }); if (this.floor.length > 170) this.floor.shift(); return false; }
+      return b.y < this.H + 40;
+    });
+    this.puffs = this.puffs.filter(p => (p.t += dt) < .45);
+    if (this.tween) {
+      const tw = this.tween; tw.t += dt; const k = Math.min(1, tw.t / tw.dur), e = 1 - Math.pow(1 - k, 3);
+      this.setState({ shown: tw.from + (tw.to - tw.from) * e });
+      if (k >= 1) { this.tween = null; this.setState({ shown: null }); }
+    }
+    if (this.screenRef.current) {
+      this.shake = Math.max(0, this.shake - dt); const s = this.state.reduceMotion ? 0 : this.shake / .3 * 6;
+      this.screenRef.current.style.transform = `translate(${(Math.random() - .5) * s}px,${(Math.random() - .5) * s + this.weave}px)`;
+    }
+    this.draw();
+    this.raf = requestAnimationFrame(this.tick);
+  };
+  drawFilm() {
+    const c = this.filmRef.current; if (!c) return;
+    const ctx = c.getContext('2d'), d = this.dpr, W = this.W, H = this.H, amt = this.state.grainOn ? (this.props.grain ?? .8) : 0;
+    ctx.setTransform(d, 0, 0, d, 0, 0); ctx.clearRect(0, 0, W, H);
+    if (Math.random() < .12 * amt) this.scratches.push({ x: Math.random() * W, life: 3 + (Math.random() * 10 | 0), w: .6 + Math.random() * 1.2, dark: Math.random() < .6 });
+    this.scratches = this.scratches.filter(s => {
+      s.x += (Math.random() - .5) * 3; ctx.strokeStyle = s.dark ? 'rgba(28,14,8,.45)' : 'rgba(255,240,215,.5)'; ctx.lineWidth = s.w;
+      ctx.beginPath(); let y = 0; ctx.moveTo(s.x, 0); while (y < H) { y += 40; ctx.lineTo(s.x + (Math.random() - .5) * 1.5, y); } ctx.stroke();
+      return --s.life > 0;
+    });
+    const n = Math.round((2 + Math.random() * 6) * amt);
+    for (let i = 0; i < n; i++) {
+      const x = Math.random() * W, y = Math.random() * H, r = .6 + Math.random() * 2.2, dark = Math.random() < .55;
+      ctx.fillStyle = dark ? 'rgba(20,10,6,.7)' : 'rgba(255,245,225,.75)';
+      ctx.beginPath(); ctx.ellipse(x, y, r, r * (.5 + Math.random()), Math.random() * 3, 0, 6.29); ctx.fill();
+    }
+    if (Math.random() < .06 * amt) {
+      const x = Math.random() * W, y = Math.random() * H; ctx.strokeStyle = 'rgba(20,10,6,.6)'; ctx.lineWidth = .9;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.bezierCurveTo(x + 10, y - 14, x + 18, y + 12, x + 8 + Math.random() * 20, y + 24); ctx.stroke();
+    }
+  }
+  draw() {
+    const d = this.dpr, bc = this.baseRef.current.getContext('2d'), fc = this.fxRef.current.getContext('2d');
+    [bc, fc].forEach(c => { c.setTransform(d, 0, 0, d, 0, 0); c.clearRect(0, 0, this.W, this.H); });
+    this.table(bc);
+    const n = this.vis, fl = Math.floor(n + 1e-6), jr = this.style === 'Jenga' ? this.jRem : null;
+    bc.save(); bc.translate(this.W / 2, this.T); bc.rotate(this.state.reduceMotion ? 0 : this.wob * .06 + this.idleWob()); bc.translate(-this.W / 2, -this.T);
+    for (let i = 0; i < Math.ceil(n - 1e-6) && i < this.N; i++) {
+      if (jr && jr.has(i)) continue;
+      const r = this.L[i], h = i < fl || jr ? this.bh : this.bh * (n - fl);
+      if (h < 1.5) continue;
+      if (jr) {
+        const tw = (rnd(r.id * 3.1) - .5) * .05, ox = (rnd(r.id * 6.7) - .5) * 7, cx = r.x + r.w / 2 + ox, cy = r.y + this.bh / 2 + (this.dy[i] || 0);
+        bc.save(); bc.translate(cx, cy); bc.rotate(tw); this.bundle(bc, -r.w / 2, -h / 2, r.w, h, r.id); bc.restore();
+      } else
+      this.bundle(bc, r.x, r.y + (this.bh - h) + (this.dy[i] || 0), r.w, h, r.id);
+    }
+    bc.restore();
+    this.floor.forEach(b => this.bill(bc, b.x, b.y, b.rot, .55, b.id));
+    this.puffs.forEach(p => {
+      const k = p.t / .45; fc.globalAlpha = 1 - k;
+      for (let i = 0; i < 3; i++) { fc.beginPath(); fc.arc(p.x + (i - 1) * p.r * .9, p.y - k * 10, p.r * (.6 + k), 0, 6.29); fc.fillStyle = '#f2e6c9'; fc.fill(); fc.lineWidth = 2; fc.strokeStyle = INK; fc.stroke(); }
+      fc.globalAlpha = 1;
+    });
+    this.thrown.forEach(b => { fc.save(); fc.translate(b.x, b.y); fc.rotate(b.rot); this.bundle(fc, -b.w / 2, -b.h / 2, b.w, b.h, b.id); fc.restore(); });
+    this.bills.forEach(b => this.bill(fc, b.x, b.y, b.rot, .2 + .8 * Math.abs(Math.cos(b.ph + b.age * b.ff)), b.id));
+    if (this.glove) this.glovePath(fc, this.glove);
+  }
+
+  confirm = () => {
+    const a = parseInt(this.state.amt || '0', 10); if (!a) return;
+    const oldR = this.rem();
+    const e = { id: Date.now(), amt: a, label: this.state.label.trim(), cat: this.state.cat, ts: Date.now() };
+    this.setState(s => ({ entries: [...s.entries, e], sheet: null, amt: '', label: '', shown: oldR }), () => {
+      this.save(); setTimeout(() => this.startThrow(oldR, oldR - a, a), 420);
+    });
+  };
+  undo(id) {
+    const e = this.state.entries.find(x => x.id === id); if (!e) return;
+    const oldR = this.rem(), newR = oldR + e.amt, bv = this.state.budget / this.N;
+    this.setState(s => ({ entries: s.entries.filter(x => x.id !== id) }), () => {
+      this.save();
+      if (this.style === 'Jenga') {
+        const ns = this.jengaRemoved(this.state.entries); let k = 0;
+        (this.jRem ? [...this.jRem] : []).filter(i => !ns.has(i)).sort((a, b) => a - b).forEach(i => { this.dy[i] = -(this.T + 140 + k++ * 34); this.vy[i] = 0; });
+        this.jRem = ns;
+      }
+      this.setVis(this.exactFor(newR)); this.tween = { from: oldR, to: newR, t: 0, dur: .8 };
+      this.floor.splice(0, Math.min(this.floor.length, Math.round(e.amt / bv * 5)));
+    });
+  }
+  fill(clear) {
+    const b = parseInt(String(this.state.setupAmt).replace(/\D/g, '') || '0', 10); if (!b) return;
+    const entries = clear ? [] : this.state.entries;
+    const history = clear && this.state.entries.length ? [{ month: monthKey(), budget: this.state.budget, spent: this.spent() }, ...this.state.history] : this.state.history;
+    const ns = { budget: b, entries, history };
+    const oldShown = this.state.budget ? this.rem() : 0;
+    this.setState({ ...ns, screen: 'main', sheet: null }, () => {
+      this.save();
+      if (clear) { this.floor = []; this.vis = 0; }
+      this.syncJenga();
+      this.floor = clear ? [] : this.genFloor(this.spent());
+      const newR = this.rem();
+      this.tween = { from: clear ? 0 : oldShown, to: newR, t: 0, dur: 1.4 };
+      this.dropT = setTimeout(() => this.setVis(this.exactFor(newR)), 450);
+    });
+  }
+
+  renderVals() {
+    const s = this.state, r = this.rem(), shown = s.shown != null ? s.shown : r;
+    const now = new Date(), dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate(), left = dim - now.getDate() + 1;
+    const amt = parseInt(s.amt || '0', 10);
+    const keyList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '00', '0', '⌫'];
+    return {
+      screenRef: this.screenRef, baseRef: this.baseRef, fxRef: this.fxRef, grainRef: this.grainRef, flickerRef: this.flickerRef,
+      grainOp: s.grainOn ? Math.min(1, (this.props.grain ?? .8) * 1.1) : 0, grain2Op: s.grainOn ? Math.min(1, (this.props.grain ?? .8) * .9) : 0,
+      openSettings: () => this.setState({ sheet: 'settings', eraseArm: false }),
+      settingsY: s.sheet === 'settings' ? '0%' : '112%',
+      budgetTxt: s.budget ? fmt(s.budget) + ' kr / month' : 'Not set',
+      toggles: [
+        { name: 'REDUCE MOTION', sub: 'No shaking, swaying or flicker', key: 'reduceMotion' },
+        { name: 'FILM GRAIN', sub: 'Old-cartoon film texture', key: 'grainOn' },
+      ].map(t => { const on = !!s[t.key]; return { ...t, on, bg: on ? '#3f8a55' : '#d9cba8', jc: on ? 'flex-end' : 'flex-start', flip: () => this.setState(st => ({ [t.key]: !st[t.key] }), () => this.save()) }; }),
+      eraseTxt: s.eraseArm ? 'TAP AGAIN TO ERASE EVERYTHING' : 'ERASE ALL DATA',
+      eraseFg: s.eraseArm ? '#f2e6c9' : '#c7372f', eraseBg: s.eraseArm ? '#c7372f' : 'transparent',
+      erase: () => {
+        if (!s.eraseArm) { this.setState({ eraseArm: true }); clearTimeout(this.eraseT); this.eraseT = setTimeout(() => this.setState({ eraseArm: false }), 4000); return; }
+        localStorage.removeItem(KEY); this.floor = []; this.bills = []; this.vis = 0; this.entered = false;
+        this.setState({ budget: 0, entries: [], history: [], sheet: null, screen: 'setup', setupAmt: '10000', eraseArm: false }, () => this.syncJenga());
+      },
+      tabs: [['month', 'THIS MONTH'], ['history', 'PAST MONTHS']].map(([k, n]) => ({ name: n, bg: s.ledgerTab === k ? INK : '#fbf4e2', fg: s.ledgerTab === k ? '#f2e6c9' : INK, pick: () => this.setState({ ledgerTab: k }) })),
+      showMonth: s.ledgerTab === 'month', showHistory: s.ledgerTab === 'history', noHistory: !s.history.length,
+      histRows: s.history.map(h => { const ok = h.spent <= h.budget; return { month: monthLabel(h.month), line: `${fmt(h.spent)} of ${fmt(h.budget)} kr spent`, stamp: ok ? 'SURVIVED' : 'TOPPLED', color: ok ? '#3f8a55' : '#c7372f' }; }), grain2Ref: this.grain2Ref, filmRef: this.filmRef,
+      monthName: now.toLocaleString('en', { month: 'long' }).toUpperCase() + ' ' + now.getFullYear(),
+      towerMood: (() => { const k = s.budget ? r / s.budget : 1; return k > .75 ? 'Solid as a rock, pal.' : k > .5 ? 'A little wobble never hurt nobody.' : k > .3 ? 'Easy there… she\'s creakin\'!' : k > .12 ? 'Hold your breath, one wrong pull…' : k > 0 ? 'One more and it\'s CURTAINS!' : 'TIMBERRR! The tower of life has fallen.'; })(),
+      placardLabel: shown < 0 ? 'IN THE HOLE!' : 'LEFT TO SPEND',
+      bigNum: fmt(shown), numColor: shown < 0 ? '#c7372f' : '#f2e6c9',
+      subA: `of ${fmt(s.budget)} kr this month`,
+      subB: r > 0 ? `≈ ${fmt(r / left)} kr a day · ${left} day${left === 1 ? '' : 's'} to go` : (r === 0 ? 'Flat broke. Not a nickel left!' : `over by ${fmt(-r)} kr — yikes!`),
+      openSpend: () => this.setState({ sheet: 'spend' }),
+      openLedger: () => this.setState({ sheet: 'ledger' }),
+      openSetup: () => this.setState({ sheet: null, screen: 'setup', setupAmt: String(s.budget || 10000) }),
+      closeSheet: () => this.setState({ sheet: null }),
+      backdropOp: s.sheet ? 1 : 0, backdropPE: s.sheet ? 'auto' : 'none',
+      spendY: s.sheet === 'spend' ? '0%' : '112%', ledgerY: s.sheet === 'ledger' ? '0%' : '112%',
+      setupY: s.screen === 'setup' ? '0%' : '-104%',
+      amtTxt: amt ? '−' + fmt(amt) : '0', confirmOp: amt ? 1 : .45,
+      label: s.label, onLabel: e => this.setState({ label: e.target.value }),
+      cats: CATS.map(c => ({ name: c, bg: c === s.cat ? INK : '#fbf4e2', fg: c === s.cat ? '#f2e6c9' : INK, pick: () => this.setState({ cat: c }) })),
+      keys: keyList.map(k => ({ k, press: () => this.setState(st => {
+        if (k === '⌫') return { amt: st.amt.slice(0, -1) };
+        const v = (st.amt + k).replace(/^0+/, ''); return v.length > 7 ? null : { amt: v };
+      }) })),
+      confirm: this.confirm,
+      spentLine: `SPENT ${fmt(this.spent())} KR OF ${fmt(s.budget)} KR`,
+      noEntries: s.entries.length === 0,
+      rows: [...s.entries].reverse().map(e => {
+        const d = new Date(e.ts);
+        return { date: d.getDate() + ' ' + d.toLocaleString('en', { month: 'short' }).toUpperCase(), title: e.label || e.cat, cat: e.cat.toUpperCase(), amtTxt: '−' + fmt(e.amt), undo: () => this.undo(e.id) };
+      }),
+      hasBudget: !!s.budget,
+      cancelSetup: () => this.setState({ screen: 'main' }),
+      setupAmt: s.setupAmt, onSetupAmt: e => this.setState({ setupAmt: e.target.value.replace(/\D/g, '').slice(0, 8) }),
+      quick: [5000, 10000, 20000].map(v => ({ txt: fmt(v), pick: () => this.setState({ setupAmt: String(v) }) })),
+      primaryTxt: !s.budget ? "STACK 'EM UP!" : (String(s.budget) === String(s.setupAmt) ? "LET'S PLAY!" : 'UPDATE BUDGET'),
+      fillPrimary: () => {
+        if (s.budget && String(s.budget) === String(s.setupAmt)) {
+          const first = !this.entered; this.entered = true;
+          this.setState({ screen: 'main' }, () => { if (first) { this.tween = { from: 0, to: this.rem(), t: 0, dur: 1.4 }; this.dropT = setTimeout(() => this.setVis(this.exactFor(this.rem())), 450); } });
+        } else { this.entered = true; this.fill(!s.budget); }
+      }, fillFresh: () => this.fill(true),
+    };
+  }
+}
+</script>
+</body>
+</html>

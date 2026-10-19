@@ -3,94 +3,47 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
-import { AnnotationMarkers, asNote, noteKey, noteLines, type Note } from "@/components/release-timeline-scroll"
 
 /*
  * The Money Jenga scroll story. Same mechanics as the release timeline: the
- * narrative scrolls on the left, a pinned frame on the right crossfades to each
- * step's screen, and annotation lines draw in beside it. The frame is a phone
- * here, so every note's `line` is a percentage of the phone's height.
+ * narrative scrolls on the left while a pinned phone on the right crossfades to
+ * each step's screen. Three beats, no annotations: the screens explain
+ * themselves. Styled for the dark, sepia stage it sits on.
  */
 
 type Step = {
   num: string
   title: string
-  text: string[]
+  text: string
   screen: { src: string; alt: string; animated?: boolean }
-  notes: Note[]
 }
 
 const steps: Step[] = [
   {
     num: "01",
-    title: "One number a month",
-    text: ["At the start of the month I type in one sum.", "No bank login and no account."],
+    title: "One sum a month",
+    text: "I type in how much I can spend this month, and it stacks up as a tower of cash.",
     screen: { src: "/images/money-jenga/setup.webp", alt: "Setup screen asking how tall the tower should be this month, set to 10.000 kr" },
-    notes: [
-      { text: "Typed in by hand", line: { top: 61, bottom: 72 } },
-      { text: "Nothing leaves the phone", line: { top: 87, bottom: 93 } },
-    ],
   },
   {
     num: "02",
-    title: "A tower of cash",
-    text: [
-      "The budget stacks up as a tower of cash bundles.",
-      "A placard shows what's left, and how much I can spend each day.",
-    ],
-    screen: { src: "/images/money-jenga/tower.webp", alt: "The full tower of cash with 10.000 kr left to spend" },
-    notes: [
-      { text: "Left to spend, and per day", line: { top: 12, bottom: 33 } },
-      { text: "10.000 kr in cash bundles", line: { top: 38, bottom: 68 } },
-    ],
-  },
-  {
-    num: "03",
-    title: "Taking money out",
-    text: ["Every purchase is a pull.", "Type the amount, pick a category, and press Pull it."],
-    screen: { src: "/images/money-jenga/keypad.webp", alt: "The Pull a block sheet with 2.400 kr typed in and the Stuff category selected" },
-    notes: [
-      { text: "Amount", line: { top: 30, bottom: 38 } },
-      { text: "Category", line: { top: 40, bottom: 52 } },
-      { text: "Keypad", line: { top: 58, bottom: 88 } },
-    ],
-  },
-  {
-    num: "04",
-    title: "Pulling a block",
-    text: [
-      "A cartoon glove pulls the blocks out. Small buys come off the top, big ones from the bottom.",
-      "The bills fly off and pile up on the floor.",
-    ],
+    title: "Every purchase is a pull",
+    text: "Small buys come off the top. Big ones pull from the bottom, so the tower gets wobbly.",
     screen: {
       src: "/images/money-jenga/pull.webp",
       alt: "Animation: a cartoon glove pulls a block out of the cash tower after a 2.400 kr purchase",
       animated: true,
     },
-    notes: [
-      { text: "Big buys pull from below", line: { top: 40, bottom: 68 } },
-      { text: "Bills on the floor", line: { top: 87, bottom: 97 } },
-    ],
   },
   {
-    num: "05",
-    title: "Getting shaky",
-    text: ["The less money is left, the hollower the tower gets.", "When it runs out, the tower falls."],
-    screen: { src: "/images/money-jenga/shaky.webp", alt: "A hollow, wobbly tower with 1.100 kr left and the warning One more and it's curtains" },
-    notes: [
-      { text: "“One more and it's curtains!”", line: { top: 27, bottom: 34 } },
-      { text: "Hollow and wobbly", line: { top: 40, bottom: 68 } },
-    ],
-  },
-  {
-    num: "06",
-    title: "The ledger",
-    text: ["Every purchase is listed, and any of them can be undone.", "Past months are stamped Survived or Toppled."],
-    screen: { src: "/images/money-jenga/ledger.webp", alt: "The ledger listing this month's three purchases, 8.900 kr of 10.000 kr spent" },
-    notes: [
-      { text: "Spent so far", line: { top: 61, bottom: 66 } },
-      { text: "Each purchase, with undo", line: { top: 68, bottom: 98 } },
-    ],
+    num: "03",
+    title: "Timberrr",
+    text: "When the money runs out, the tower falls. Hard to ignore, and a little funny.",
+    screen: {
+      src: "/images/money-jenga/topple.webp",
+      alt: "Animation: the last blocks are pulled and the tower collapses into a pile of bills, with the message Timberrr, the tower of life has fallen",
+      animated: true,
+    },
   },
 ]
 
@@ -106,16 +59,28 @@ function Screen({ screen }: { screen: Step["screen"] }) {
   return <Image src={screen.src} alt={screen.alt} fill className="object-contain" sizes="300px" />
 }
 
+function useIsDesktop() {
+  const [desktop, setDesktop] = useState(false)
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)")
+    const sync = () => setDesktop(query.matches)
+    sync()
+    query.addEventListener("change", sync)
+    return () => query.removeEventListener("change", sync)
+  }, [])
+  return desktop
+}
+
 function NarrativeStep({
   step,
   index,
   registerRef,
-  reduceMotion,
+  animate,
 }: {
   step: Step
   index: number
   registerRef: (index: number, el: HTMLElement | null) => void
-  reduceMotion: boolean
+  animate: boolean
 }) {
   const sectionRef = useRef<HTMLElement | null>(null)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] })
@@ -130,35 +95,18 @@ function NarrativeStep({
         sectionRef.current = el
         registerRef(index, el)
       }}
-      className="flex min-h-[60vh] flex-col justify-center py-10 lg:block lg:min-h-screen lg:py-0"
+      className="flex flex-col justify-center py-12 lg:block lg:min-h-screen lg:py-0"
     >
-      <motion.div style={reduceMotion ? undefined : { opacity, y }} className="w-full max-w-[280px] lg:sticky lg:top-24">
-        <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">{step.num}</span>
-        <h2 className="mt-2 text-2xl font-medium tracking-tight text-foreground md:text-3xl">{step.title}</h2>
-        <div className="mt-4 space-y-3">
-          {step.text.map((paragraph) => (
-            <p key={paragraph} className="text-base leading-relaxed text-[var(--text-secondary)]">
-              {paragraph}
-            </p>
-          ))}
-        </div>
+      {/* The scroll fade only runs beside the pinned phone. On phones the text
+          sits above its own screen and must stay fully readable. */}
+      <motion.div style={animate ? { opacity, y } : undefined} className="w-full max-w-[300px] lg:sticky lg:top-[40vh]">
+        <span className="font-mono text-sm tabular-nums text-[#c9b48a]">{step.num}</span>
+        <h2 className="mt-2 text-3xl font-medium tracking-tight text-[#f4ead6] md:text-4xl">{step.title}</h2>
+        <p className="mt-4 text-base leading-relaxed text-[#cbbd9f]">{step.text}</p>
       </motion.div>
 
-      {/* Inline phone + notes — mobile only */}
-      <div className="mt-8 w-full lg:hidden">
-        <div className={`relative mx-auto w-[240px] ${PHONE_RATIO}`}>
-          <Screen screen={step.screen} />
-        </div>
-        <ul className="mt-5 space-y-2">
-          {step.notes.map(asNote).map((note) => (
-            <li key={noteKey(note)} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-              <span aria-hidden className="mt-[1px] text-[var(--text-tertiary)]">
-                ↳
-              </span>
-              <span>{noteLines(note).join(" ")}</span>
-            </li>
-          ))}
-        </ul>
+      <div className={`relative mx-auto mt-8 w-[240px] lg:hidden ${PHONE_RATIO}`}>
+        <Screen screen={step.screen} />
       </div>
     </section>
   )
@@ -168,6 +116,7 @@ export function MoneyJengaScroll() {
   const [active, setActive] = useState(0)
   const stepRefs = useRef<Array<HTMLElement | null>>([])
   const reduceMotion = useReducedMotion()
+  const desktop = useIsDesktop()
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -185,17 +134,17 @@ export function MoneyJengaScroll() {
     return () => observer.disconnect()
   }, [])
 
-  const activeStep = steps[active]
-
   return (
-    <div className="mx-auto grid max-w-[1100px] grid-cols-1 gap-12 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-10">
-      <div>
+    <div className="mx-auto grid max-w-[1000px] grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
+      {/* Bottom padding keeps the phone pinned through the last step instead of
+          sliding up under the header while its text is still on screen. */}
+      <div className="lg:pb-[25vh]">
         {steps.map((step, i) => (
           <NarrativeStep
             key={step.num}
             step={step}
             index={i}
-            reduceMotion={!!reduceMotion}
+            animate={desktop && !reduceMotion}
             registerRef={(idx, el) => {
               stepRefs.current[idx] = el
             }}
@@ -203,33 +152,26 @@ export function MoneyJengaScroll() {
         ))}
       </div>
 
-      {/* Pinned phone + annotations — desktop only */}
+      {/* Pinned phone — desktop only */}
       <div className="hidden lg:block">
-        <div className="sticky top-[max(6rem,calc(50vh-320px))]">
-          <div className="flex items-stretch justify-center gap-10">
-            <div className={`relative w-[300px] ${PHONE_RATIO} drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]`}>
-              {/* Every screen stays mounted and only its opacity animates, so the
-                  crossfade never re-decodes an image mid-fade. */}
-              {steps.map((step, i) => {
-                const on = i === active
-                return (
-                  <motion.div
-                    key={step.num}
-                    className="absolute inset-0"
-                    style={{ zIndex: on ? 2 : 1 }}
-                    initial={false}
-                    animate={{ opacity: on ? 1 : 0 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.4, 0, 0.2, 1] }}
-                  >
-                    <Screen screen={step.screen} />
-                  </motion.div>
-                )
-              })}
-            </div>
-            <div className="relative w-[200px] shrink-0">
-              <AnnotationMarkers key={active} notes={activeStep.notes} reduceMotion={!!reduceMotion} />
-            </div>
-          </div>
+        <div className={`sticky top-[max(6rem,calc(50vh-320px))] w-[300px] ${PHONE_RATIO} drop-shadow-[0_40px_50px_rgba(0,0,0,0.55)]`}>
+          {/* Every screen stays mounted and only its opacity animates, so the
+              crossfade never re-decodes an image mid-fade. */}
+          {steps.map((step, i) => {
+            const on = i === active
+            return (
+              <motion.div
+                key={step.num}
+                className="absolute inset-0"
+                style={{ zIndex: on ? 2 : 1 }}
+                initial={false}
+                animate={{ opacity: on ? 1 : 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <Screen screen={step.screen} />
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </div>
