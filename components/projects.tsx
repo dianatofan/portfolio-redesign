@@ -26,6 +26,16 @@ type WorkProject = {
 
 export const workProjects: readonly WorkProject[] = [
     {
+        slug: "dianas-diamonds",
+        title: "Building a prototype library to scale AI-driven design",
+        navigationTitle: "Diana's Diamonds",
+        image: "/images/dianas-diamonds/field-13-card@2x.webp",
+        tags: ["2026", "Tactile Games"],
+        featured: true,
+        aspect: "aspect-[3/2]",
+        isPasswordProtected: true,
+    },
+    {
         slug: "liveops-alerting",
         title: "Designing a LiveOps alerting system to reduce production incidents",
         navigationTitle: "LiveOps Alerting",

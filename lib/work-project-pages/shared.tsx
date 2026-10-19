@@ -160,3 +160,42 @@ export function CaseStudyImage({
     </div>
   )
 }
+
+/**
+ * A terminal or Claude Code window with a few lines in it. Commands get a `$`
+ * prompt, messages to Claude get a `>`, comments and output are dimmed. Long
+ * lines scroll inside the window, never the page.
+ */
+export function TerminalSnippet({
+  title = "Terminal",
+  lines,
+}: {
+  title?: string
+  lines: Array<{ kind: "cmd" | "prompt" | "comment" | "out"; text: string }>
+}) {
+  return (
+    <div className="mt-8 overflow-hidden rounded-xl bg-[#16181d] shadow-sm ring-1 ring-black/10">
+      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-[#ff5f57]" aria-hidden="true" />
+        <span className="h-3 w-3 rounded-full bg-[#febc2e]" aria-hidden="true" />
+        <span className="h-3 w-3 rounded-full bg-[#28c840]" aria-hidden="true" />
+        <span className="ml-2 text-xs text-white/50">{title}</span>
+      </div>
+      <pre className="overflow-x-auto px-5 py-4 font-mono text-[13px] leading-relaxed">
+        {lines.map((line, index) => (
+          <div
+            key={index}
+            className={`${line.kind === "comment" || line.kind === "out" ? "text-white/45" : "text-white/90"} ${
+              // A message to Claude is prose: it wraps rather than scrolls.
+              line.kind === "prompt" ? "whitespace-pre-wrap" : ""
+            }`}
+          >
+            {line.kind === "cmd" && <span className="select-none text-[#7ee0a1]">$ </span>}
+            {line.kind === "prompt" && <span className="select-none text-[#c4a7ff]">&gt; </span>}
+            {line.kind === "comment" ? `# ${line.text}` : line.text}
+          </div>
+        ))}
+      </pre>
+    </div>
+  )
+}
