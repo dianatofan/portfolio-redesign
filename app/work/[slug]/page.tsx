@@ -54,7 +54,7 @@ export default async function ProjectPage({ params }: PageProps) {
     <main className="min-h-screen bg-white">
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-white/80 backdrop-blur-sm">
         <div className="mx-auto grid grid-cols-12 gap-x-6 items-center">
-          <div className="col-span-6 md:col-sppman-2">
+          <div className="col-span-6 md:col-span-2">
             <Link
               href="/"
               className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
@@ -140,6 +140,26 @@ export default async function ProjectPage({ params }: PageProps) {
                   </div>
                 ))}
               </div>
+
+              {projectPage.highlights && projectPage.highlights.length > 0 ? (
+                <div className="pt-10">
+                  <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)] mb-6">
+                    At a glance
+                  </h2>
+                  <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+                    {projectPage.highlights.map((item) => (
+                      <div key={item.title} className="border-l-2 border-accent pl-4">
+                        <dt className="text-lg font-medium text-foreground leading-snug">
+                          {item.title}
+                        </dt>
+                        <dd className="mt-1 text-sm leading-relaxed text-[var(--text-secondary)]">
+                          {item.description}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

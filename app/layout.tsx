@@ -41,6 +41,20 @@ export const metadata: Metadata = {
     },
 }
 
+// Read by search engines and AI screeners, which can't see the hero graph or the
+// locked case studies. Keep in step with public/llms.txt.
+const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Diana Tofan",
+    url: "https://dianatofan.net",
+    jobTitle: "Design Engineer",
+    worksFor: { "@type": "Organization", name: "Tactile Games" },
+    address: { "@type": "PostalAddress", addressLocality: "Copenhagen", addressCountry: "DK" },
+    knowsAbout: ["Product design", "Prototyping in code", "Internal tools", "Observability", "Design systems"],
+    sameAs: ["https://www.linkedin.com/in/diana-tofan-43730013b/", "https://github.com/dianatofan"],
+}
+
 export const viewport: Viewport = {
     themeColor: "#F5F5F5",
 }
@@ -115,6 +129,10 @@ export default function RootLayout({
                     dangerouslySetInnerHTML={{
                         __html: `(function(){try{var el=document.getElementById('copenhagen-clock');if(!el)return;var t=new Date().toLocaleTimeString('en-US',{timeZone:'Europe/Copenhagen',hour:'numeric',minute:'2-digit',hour12:true}).replace(/\\s?(AM|PM)$/,'$1');el.textContent=t;}catch(e){}})();`,
                     }}
+                />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
                 />
                 <Analytics />
             </body>

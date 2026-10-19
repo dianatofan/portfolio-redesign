@@ -1,0 +1,27 @@
+# Diana Tofan
+
+> Design engineer and product designer based in Copenhagen, Denmark. I design and prototype in code, mostly for complex systems: internal tools, observability, LiveOps and platform workflows. Currently a Product Designer at Tactile Games (2024 to present). Previously a UX Engineer at Google (2022 to 2024) and a UX/UI Designer at Famly.
+
+Some case studies are partly password protected on the site. Each summary below is public and matches the numbers on the page.
+
+## Case studies
+
+- [LiveOps alerting system](https://dianatofan.net/work/liveops-alerting): Tactile Games, 2025. Product Designer, 3 months, with a PM, the CTO and 3 engineers. LiveOps creators had no view of backend failures inside the LiveOps Dashboard and learned about them from Slack, support tickets or player metrics. I redesigned the Dashboard to surface failures early: a critical issues banner, persistent sidebar signals, issue lists with ownership and watchers, and notification settings. Shipped. Results: critical failures detected in minutes instead of hours, 22% fewer production incidents, less reliance on Slack and external monitoring.
+- [Game setup automation](https://dianatofan.net/work/game-setup-automation): Tactile Games, 2025. Product Designer, 3 months, with a PM, a tech lead and 3 engineers. Every new game had to be registered by hand across LiveOps, analytics, build pipelines, permissions and infrastructure. I designed a guided four-step setup flow with automated provisioning and clear post-launch ownership. Shipped. Results: about 2x faster game setup and 3 more games launched per quarter.
+- [Travel planning on Google Search](https://dianatofan.net/work/travel-planning): Google, summer 2024. UX Engineer with 3 UX designers, a UX researcher and a PM. Search handled single queries, not the multi-session reality of planning a trip. We defined a planning framework (get inspired, look into alternatives, rediscover the journey) and I built React prototypes with real Maps data for user testing. Concept work. Results: validated by UX leadership and fed into the 2024 Google Search roadmap shift toward more visual results.
+- [Famly design system](https://dianatofan.net/work/design-system): Famly, 2024. UX/UI Designer, 3 months. An off-the-shelf UI kit had turned into inconsistent patterns and rising support calls. I built and rolled out a design system the team owns. Shipped. Results: 35% faster UI development and 18% fewer support calls.
+- [Release timeline](https://dianatofan.net/work/release-timeline): Tactile Games, 2026. A release timeline inside the LiveOps Dashboard, prototyped in code, to show release impact across live games and cut debugging time.
+
+## Side projects
+
+- [Beouf Salad Decorator](https://dianatofan.net/salata-de-boeuf/index.html): a web app that turns the Romanian tradition of over-decorated Christmas salads into shareable retro holiday cards.
+- [Human Redundancy Terminal](https://dianatofan.github.io/risk-assessment-terminal): a glitchy CRT terminal built with Kaggle data and Google AI Studio.
+
+## More
+
+- [About](https://dianatofan.net/about)
+- [Colophon](https://dianatofan.net/colophon): how this site was built and what AI did
+- [Resume (PDF)](https://dianatofan.net/Diana-Tofan-CV-Design-Engineer.pdf)
+- [LinkedIn](https://www.linkedin.com/in/diana-tofan-43730013b/)
+- [GitHub](https://github.com/dianatofan)
+- Email: dianatofan.dt@gmail.com

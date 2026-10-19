@@ -1,16 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import dynamic from "next/dynamic"
 import { formatCopenhagenTime, isCopenhagenNight } from "@/lib/copenhagen-time"
-
-/*
- * three.js is ~120KB gzipped and was imported statically, which put it on the
- * critical path: the case-study cards below could not paint until it had been
- * downloaded, parsed and hydrated. PixelBlast renders an empty div until its
- * effect runs, so ssr:false costs nothing in markup.
- */
-const PixelBlast = dynamic(() => import("./PixelBlast"), { ssr: false })
+import { UntangleGraph } from "./untangle-graph"
 
 export function Hero() {
     /*
@@ -28,22 +20,6 @@ export function Hero() {
 
     // NEW: controls scroll indicator visibility
     const [showScrollIndicator, setShowScrollIndicator] = useState(true)
-
-    /*
-     * Deciding here rather than inside PixelBlast means the three.js chunk is
-     * never even requested when the visitor has asked for reduced motion.
-     */
-    const [allowShader, setAllowShader] = useState(false)
-
-    useEffect(() => {
-        const query = window.matchMedia("(prefers-reduced-motion: reduce)")
-        const sync = () => setAllowShader(!query.matches)
-
-        sync()
-        query.addEventListener("change", sync)
-
-        return () => query.removeEventListener("change", sync)
-    }, [])
 
     useEffect(() => {
         let interval: number | undefined
@@ -87,27 +63,7 @@ export function Hero() {
 
     return (
         <section className="relative h-[80vh] min-h-[560px] flex items-center overflow-hidden">
-            <div className="absolute inset-0">
-                {allowShader && (
-                    <PixelBlast
-                        variant="diamond"
-                        pixelSize={5}
-                        color="#B19EEF"
-                        patternScale={2}
-                        patternDensity={0.7}
-                        pixelSizeJitter={0}
-                        enableRipples
-                        rippleSpeed={0.4}
-                        rippleThickness={0.12}
-                        rippleIntensityScale={1.5}
-                        speed={0.5}
-                        edgeFade={0.25}
-                        transparent
-                        className="w-full h-full"
-                        style={{ display: "block" }}
-                    />
-                )}
-            </div>
+            <UntangleGraph />
 
             <div className="w-full mx-auto px-6">
                 <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
@@ -134,6 +90,10 @@ export function Hero() {
 
                         <p className="text-base font-medium text-[var(--text-tertiary)]">
                             Copenhagen, Denmark
+                        </p>
+
+                        <p className="mt-4 text-sm text-[var(--text-tertiary)] max-w-[28ch]">
+                            {"Currently designing LiveOps tools at Tactile Games"}
                         </p>
                     </div>
 

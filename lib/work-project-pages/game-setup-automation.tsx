@@ -5,7 +5,29 @@ import ForceGraph from "@/components/work/force-graph"
 import { Clock3, Layers, ShieldCheck, Wrench } from "lucide-react"
 import { ConstraintCards, OutcomeCards } from "./shared"
 
+// Shared by the public "At a glance" block and the full Impact section, so the
+// headline numbers above the password gate always match the ones below it.
+const impact = [
+  {
+    title: "~2x faster game setup",
+    description: "Teams moved through game creation with clearer sequencing and fewer blockers.",
+  },
+  {
+    title: "+3 games / quarter",
+    description: "Guardrails and validation reduced risky configuration errors.",
+  },
+  {
+    title: "Stronger ownership",
+    description: "Roles and responsibilities became explicit during setup and easier to manage after launch.",
+  },
+  {
+    title: "More scalable workflow",
+    description: "The flow supported more independent launches without proportional process overhead.",
+  },
+]
+
 export const gameSetupAutomationPage: WorkProjectPage = {
+  highlights: impact,
   description: "Automating game setup to enable team independence and scale releases.",
   meta: [
     { label: "Role", values: ["Product Designer"] },
@@ -379,24 +401,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       <section id="impact">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Impact</h2>
         <OutcomeCards
-          items={[
-            {
-              title: "~2x faster game setup",
-              description: "Teams moved through game creation with clearer sequencing and fewer blockers.",
-            },
-            {
-              title: "+3 games / quarter",
-              description: "Guardrails and validation reduced risky configuration errors.",
-            },
-            {
-              title: "Stronger ownership",
-              description: "Roles and responsibilities became explicit during setup and easier to manage after launch.",
-            },
-            {
-              title: "More scalable workflow",
-              description: "The flow supported more independent launches without proportional process overhead.",
-            },
-          ]}
+          items={impact}
         />
       </section>
     </>

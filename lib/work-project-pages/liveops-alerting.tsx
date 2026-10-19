@@ -4,7 +4,29 @@ import { BeforeAfterVideoCard } from "@/components/work/before-after-video-card"
 import type { WorkProjectPage } from "./types"
 import { OutcomeCards } from "./shared"
 
+// Shared by the public "At a glance" block and the full Impact section, so the
+// headline numbers above the password gate always match the ones below it.
+const impact = [
+  {
+    title: "Faster detection",
+    description: "Critical failures detected in minutes instead of hours",
+  },
+  {
+    title: "Less escalation",
+    description: "Teams relied less on Slack and external monitoring",
+  },
+  {
+    title: "22% fewer incidents",
+    description: "One in five production issues caught before full rollout",
+  },
+  {
+    title: "Trusted workflow",
+    description: "Alerting system became part of daily LiveOps work",
+  },
+]
+
 export const liveopsAlertingPage: WorkProjectPage = {
+  highlights: impact,
   description:
     "Surfacing critical production failures in real time to reduce incidents and player impact.",
   meta: [
@@ -318,24 +340,7 @@ export const liveopsAlertingPage: WorkProjectPage = {
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Impact</h2>
         <div className="mb-6">
           <OutcomeCards
-            items={[
-              {
-                title: "Faster detection",
-                description: "Critical failures detected in minutes instead of hours",
-              },
-              {
-                title: "Less escalation",
-                description: "Teams relied less on Slack and external monitoring",
-              },
-              {
-                title: "22% fewer incidents",
-                description: "One in five production issues caught before full rollout",
-              },
-              {
-                title: "Trusted workflow",
-                description: "Alerting system became part of daily LiveOps work",
-              },
-            ]}
+            items={impact}
           />
         </div>
       </section>

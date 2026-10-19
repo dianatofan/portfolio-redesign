@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { CursorContext } from "@/context/CursorContext"
@@ -15,6 +15,9 @@ interface ProjectCardProps {
     isPasswordProtected?: boolean
     showCaptionTags?: boolean
     eager?: boolean
+    outcome?: string
+    shipped?: boolean
+    previewVideo?: string
 }
 
 export function ProjectCard({
@@ -27,9 +30,33 @@ export function ProjectCard({
     isPasswordProtected = false,
     showCaptionTags = true,
     eager = false,
+    outcome,
+    shipped = false,
+    previewVideo,
 }: ProjectCardProps) {
     const { setVariant } = useContext(CursorContext)
     const [isImageLoaded, setIsImageLoaded] = useState(false)
+    /*
+     * The preview clip is only mounted once the card is first hovered or focused,
+     * so the homepage never downloads video nobody asked for. After that it stays
+     * mounted and just pauses, so a second hover starts instantly.
+     */
+    const [wantsPreview, setWantsPreview] = useState(false)
+    const [isPreviewing, setIsPreviewing] = useState(false)
+    const videoRef = useRef<HTMLVideoElement>(null)
+
+    const startPreview = () => {
+        if (!previewVideo) return
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        setWantsPreview(true)
+        setIsPreviewing(true)
+        videoRef.current?.play().catch(() => {})
+    }
+
+    const stopPreview = () => {
+        setIsPreviewing(false)
+        videoRef.current?.pause()
+    }
     const aspect = aspectClass ?? (featured ? "aspect-[16/9]" : "aspect-[4/3]")
 
     /*
@@ -49,10 +76,22 @@ export function ProjectCard({
         <Link
             href={href}
             className="group block"
-            onMouseEnter={() => setVariant("open")}
-            onMouseLeave={() => setVariant("default")}
-            onFocus={() => setVariant("open")}
-            onBlur={() => setVariant("default")}
+            onMouseEnter={() => {
+                setVariant("open")
+                startPreview()
+            }}
+            onMouseLeave={() => {
+                setVariant("default")
+                stopPreview()
+            }}
+            onFocus={() => {
+                setVariant("open")
+                startPreview()
+            }}
+            onBlur={() => {
+                setVariant("default")
+                stopPreview()
+            }}
             onClick={() => setVariant("default")}
         >
             <article>
@@ -100,6 +139,47 @@ export function ProjectCard({
                         onLoad={() => setIsImageLoaded(true)}
                     />
 
+                    {wantsPreview && previewVideo && (
+                        <video
+                            ref={videoRef}
+                            src={previewVideo}
+                            muted
+                            loop
+                            playsInline
+                            autoPlay
+                            preload="metadata"
+                            aria-hidden="true"
+                            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out"
+                            style={{ opacity: isPreviewing ? 1 : 0 }}
+                        />
+                    )}
+
+                    {/* Status badges: always visible, top-right, so they read at a
+                        glance without crowding the caption on narrow screens. */}
+                    {(shipped || isPasswordProtected) && (
+                        <div className="absolute right-3 top-3 flex items-center gap-1.5 pointer-events-none">
+                            {shipped && (
+                                <span className="inline-flex items-center rounded-full bg-accent px-2.5 py-1 text-xs font-medium tracking-wide uppercase text-accent-foreground">
+                                    Shipped
+                                </span>
+                            )}
+                            {isPasswordProtected && (
+                                <span
+                                    className="inline-flex items-center rounded-full bg-white/85 px-1.5 py-1 text-foreground backdrop-blur-sm"
+                                    title="Full case study is password protected. The summary is public."
+                                >
+                                    <span
+                                        className="material-symbols-outlined text-[16px] leading-none"
+                                        aria-hidden="true"
+                                    >
+                                        lock
+                                    </span>
+                                    <span className="sr-only">Full case study is password protected</span>
+                                </span>
+                            )}
+                        </div>
+                    )}
+
                     {/* Glass chips (appear on hover, animate top->down) */}
                     {tags.length > 0 && (
                         <div
@@ -140,43 +220,21 @@ export function ProjectCard({
                 </div>
 
                 {/* Caption row under image */}
-                <div className="mt-3 flex items-baseline justify-between gap-6">
-                    <h3 className="font-medium text-foreground leading-snug max-w-[60ch]">
-                        {title}
-                    </h3>
+                <div className="mt-3 flex items-start justify-between gap-6">
+                    <div className="min-w-0">
+                        <h3 className="font-medium text-foreground leading-snug max-w-[60ch]">
+                            {title}
+                        </h3>
+                        {outcome && (
+                            <p className="mt-1 text-sm leading-snug text-[var(--text-secondary)] max-w-[60ch]">
+                                {outcome}
+                            </p>
+                        )}
+                    </div>
 
-                    {((showCaptionTags && tags.length > 0) || isPasswordProtected) && (
-                        <div className="shrink-0 flex items-center gap-2">
-                            {showCaptionTags && tags.length > 0 && (
-                                <div className="text-xs md:text-sm text-[var(--text-tertiary)] tracking-wide uppercase">
-                                    {tags.join(" \u00A0\u2022\u00A0 ")}
-                                </div>
-                            )}
-
-                            {isPasswordProtected && (
-                                <span
-                                    className="
-                      inline-flex items-center gap-1
-                    rounded-full
-                    px-2.5 py-1
-                    text-xs md:text-sm
-                    tracking-wide uppercase
-                    text-[var(--text-tertiary)]
-                    border border-[color:rgba(0,0,0,0.12)]
-                    dark:border-white/15
-                  "
-                                    aria-label="Password protected"
-                                    title="Password protected"
-                                >
-                                    <span
-                                        className="material-symbols-outlined text-[16px] leading-none"
-                                        aria-hidden="true"
-                                    >
-                                        lock
-                                    </span>
-                                    <span className="sr-only">Password protected</span>
-                                </span>
-                            )}
+                    {showCaptionTags && tags.length > 0 && (
+                        <div className="shrink-0 text-xs md:text-sm text-[var(--text-tertiary)] tracking-wide uppercase">
+                            {tags.join(" \u00A0\u2022\u00A0 ")}
                         </div>
                     )}
                 </div>

@@ -29,7 +29,7 @@ export function Footer() {
                             </Link>
 
                             <h2 className="mt-8 mb-8 md:mb-0 text-3xl md:text-[32px] font-medium leading-tight text-[var(--footer-foreground)]">
-                                {"Let's get in touch"}
+                                {"Let's work together"}
                             </h2>
                         </div>
 
@@ -139,6 +139,13 @@ export function Footer() {
                                 rel="noopener noreferrer"
                             >
                                 Tailwind
+                            </Link>
+                            {" · "}
+                            <Link
+                                href="/colophon"
+                                className="underline underline-offset-2 hover:text-[var(--footer-foreground)] transition-colors duration-200"
+                            >
+                                Colophon
                             </Link>
                         </p>
                     </div>

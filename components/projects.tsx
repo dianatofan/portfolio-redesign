@@ -13,6 +13,15 @@ type WorkProject = {
     aspect: string
     isPasswordProtected: boolean
     category?: "work" | "experiment"
+    // Headline result shown under the card title. Taken from the case study's own
+    // Impact section, so the number on the card always matches the page.
+    outcome?: string
+    // Only for work that went out to real users. Concept and research work leaves
+    // it unset rather than claiming a launch it didn't have.
+    shipped?: boolean
+    // Looping interface clip that plays over the cover on hover, so the card shows
+    // the product running instead of a still.
+    previewVideo?: string
 }
 
 export const workProjects: readonly WorkProject[] = [
@@ -26,6 +35,9 @@ export const workProjects: readonly WorkProject[] = [
         featured: true,
         aspect: "aspect-[3/2]",
         isPasswordProtected: true,
+        outcome: "22% fewer production incidents, critical failures caught in minutes",
+        shipped: true,
+        previewVideo: "https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610317/homepage-video.mp4",
     },
     {
         slug: "game-setup-automation",
@@ -38,6 +50,9 @@ export const workProjects: readonly WorkProject[] = [
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: true,
+        outcome: "About 2x faster game setup and 3 more games launched per quarter",
+        shipped: true,
+        previewVideo: "https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610262/step1-demo.mp4",
     },
     {
         slug: "travel-planning",
@@ -49,6 +64,7 @@ export const workProjects: readonly WorkProject[] = [
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: true,
+        outcome: "Concepts adopted into the 2024 Google Search roadmap",
     },
     {
         slug: "design-system",
@@ -60,6 +76,8 @@ export const workProjects: readonly WorkProject[] = [
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: false,
+        outcome: "35% faster UI development and 18% fewer support calls",
+        shipped: true,
     },
     {
         slug: "release-timeline",
@@ -129,7 +147,10 @@ function WorkSection() {
                         href={`/work/${project.slug}`}
                         featured={false}
                         aspectClass={project.aspect}
-                        isPasswordProtected={false}
+                        isPasswordProtected={project.isPasswordProtected}
+                        outcome={project.outcome}
+                        shipped={project.shipped}
+                        previewVideo={project.previewVideo}
                         showCaptionTags={false}
                         /*
                          * All four, not the first two. These are the page's

@@ -13,8 +13,16 @@ export type WorkProjectMetaItem = {
   values: string[]
 }
 
+export type WorkProjectHighlight = {
+  title: string
+  description: string
+}
+
 export type WorkProjectPage = {
   displayTitle?: ReactNode
+  // Headline results, shown publicly under the meta row. Locked case studies
+  // keep their full write-up behind the gate, but the outcome is never hidden.
+  highlights?: WorkProjectHighlight[]
   subtitle?: string
   heroImage?: string
   description?: string

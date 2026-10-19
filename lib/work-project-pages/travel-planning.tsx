@@ -1,7 +1,33 @@
 import type { WorkProjectPage } from "./types"
 import { CaseStudyImage, InsightCards, OutcomeCards } from "./shared"
 
+// Shared by the public "At a glance" block and the full Impact section, so the
+// headline numbers above the password gate always match the ones below it.
+const impact = [
+  {
+    title: "Adopted into the roadmap",
+    description:
+      "Concepts were validated by the UX steering committee and directly informed Search's planning priorities.",
+  },
+  {
+    title: "Shifted the product direction",
+    description:
+      "The work helped define the 2024 Google Search shift on the product roadmap and supported the move toward more visual, cross-vertical results.",
+  },
+  {
+    title: "Prototype as a research tool",
+    description:
+      "React prototypes with real Maps data replaced static mocks in user testing, producing sharper and more reliable insights.",
+  },
+  {
+    title: "A unified experience",
+    description:
+      "Three separately designed stages were brought into a single coherent visual and interaction language.",
+  },
+]
+
 export const travelPlanningPage: WorkProjectPage = {
+  highlights: impact,
   description:
     "Rethinking travel planning in Google Search as a continuous journey, not a series of isolated queries.",
   heroImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto:best,w_1920/v1769610470/cover.png",
@@ -267,28 +293,7 @@ export const travelPlanningPage: WorkProjectPage = {
       <section id="outcome">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Outcome</h2>
         <OutcomeCards
-          items={[
-            {
-              title: "Adopted into the roadmap",
-              description:
-                "Concepts were validated by the UX steering committee and directly informed Search's planning priorities.",
-            },
-            {
-              title: "Shifted the product direction",
-              description:
-                "The work helped define the 2024 Google Search shift on the product roadmap and supported the move toward more visual, cross-vertical results.",
-            },
-            {
-              title: "Prototype as a research tool",
-              description:
-                "React prototypes with real Maps data replaced static mocks in user testing, producing sharper and more reliable insights.",
-            },
-            {
-              title: "A unified experience",
-              description:
-                "Three separately designed stages were brought into a single coherent visual and interaction language.",
-            },
-          ]}
+          items={impact}
         />
         <p className="text-base leading-relaxed text-[var(--text-secondary)] mt-6">
           The sprint ran alongside a major organisational restructure at Google, which made for an

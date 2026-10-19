@@ -6,7 +6,7 @@
  * than a timeline in JavaScript. The component only advances a number.
  *
  * Ported from the Tactile A/B-test dialog, where this was MUI `sx`. Kept as a
- * stylesheet (like About.css / PixelBlast.css) because phase selectors such as
+ * stylesheet (like About.css) because phase selectors such as
  * `[data-phase="3"] .hd-seg-fill` are unreadable as Tailwind arbitrary variants.
  */
 

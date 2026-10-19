@@ -1,7 +1,33 @@
 import type { WorkProjectPage } from "./types"
 import { BeforeAfterCompare, CaseStudyImage, CaseStudyImageGrid, InsightCards, OutcomeCards } from "./shared"
 
+// Shared by the public "At a glance" block and the full Impact section, so the
+// headline numbers above the password gate always match the ones below it.
+const impact = [
+  {
+    title: "35% faster UI development",
+    description:
+      "Teams stopped rebuilding common patterns and spent more time shipping product work.",
+  },
+  {
+    title: "18% fewer support calls",
+    description:
+      "A more consistent product reduced user confusion and eased pressure on support.",
+  },
+  {
+    title: "Stronger design-dev alignment",
+    description:
+      "A shared language made handoff clearer and reduced back-and-forth between teams.",
+  },
+  {
+    title: "A foundation the team owns",
+    description:
+      "Instead of working around a third-party kit, teams had a system they could extend and trust.",
+  },
+]
+
 export const designSystemPage: WorkProjectPage = {
+  highlights: impact,
   displayTitle: "Building a design system to eliminate design debt",
   heroImage: "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto:best,w_1920/v1775069463/cover_1.png",
   meta: [
@@ -141,28 +167,7 @@ export const designSystemPage: WorkProjectPage = {
       <section id="impact">
         <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Impact</h2>
         <OutcomeCards
-          items={[
-            {
-              title: "35% faster UI development",
-              description:
-                "Teams stopped rebuilding common patterns and spent more time shipping product work.",
-            },
-            {
-              title: "18% fewer support calls",
-              description:
-                "A more consistent product reduced user confusion and eased pressure on support.",
-            },
-            {
-              title: "Stronger design-dev alignment",
-              description:
-                "A shared language made handoff clearer and reduced back-and-forth between teams.",
-            },
-            {
-              title: "A foundation the team owns",
-              description:
-                "Instead of working around a third-party kit, teams had a system they could extend and trust.",
-            },
-          ]}
+          items={impact}
         />
       </section>
     </>
