@@ -80,7 +80,7 @@ export function GrowthChart() {
     const sx = x(step.date)
     const sy = y(step.total)
     // Keep the label inside the chart near either edge.
-    const anchorEnd = sx > W - 200
+    const anchorEnd = sx > W - 120
 
     return (
         <figure className="mt-8 flex max-w-[760px] flex-col gap-2.5">
@@ -124,31 +124,35 @@ export function GrowthChart() {
                     <line x1={sx} x2={sx} y1={T} y2={H - B} stroke="var(--ink-meta)" strokeDasharray="2 3" strokeWidth="1" />
                 )}
                 <circle cx={sx} cy={sy} r="4.5" fill="var(--brand)" />
-                <text
-                    x={anchorEnd ? sx - 10 : sx + 10}
-                    y={sy - 10}
-                    textAnchor={anchorEnd ? "end" : "start"}
-                    fontSize="13"
-                    fontWeight="500"
-                    fill="var(--brand)"
-                >
-                    {step.total}
-                    {active !== null && (
-                        <tspan fontWeight="400" fill="var(--ink-muted)">
+                {/*
+                  At rest, the latest count sits just above its point. On hover the
+                  label moves to the top of the plot, above the dashed marker, so the
+                  step line can never run through it.
+                */}
+                {active === null ? (
+                    <text x={sx - 6} y={sy - 12} textAnchor="end" fontSize="11" fontWeight="500" fill="var(--brand)">
+                        {step.total}
+                    </text>
+                ) : (
+                    <text x={sx} y={T - 12} textAnchor={anchorEnd ? "end" : sx < L + 80 ? "start" : "middle"} fontSize="11">
+                        <tspan fontWeight="500" fill="var(--brand)">{step.total}</tspan>
+                        <tspan fill="var(--ink-muted)">
                             {"  "}
                             {fmt(step.date)} · +{step.names.length}
                         </tspan>
-                    )}
-                </text>
+                    </text>
+                )}
             </svg>
-
-            {/* Which prototypes arrived on the marked day; announced as it changes. */}
-            <p aria-live="polite" className="min-h-[1.45em] text-[13px] text-ink-muted">
-                {active !== null ? step.names.join(", ") : "Hover the line to see what was added each day."}
-            </p>
-            <figcaption className="text-[13px] text-ink-meta">
-                <span className="text-ink [counter-increment:fig] before:content-['Fig._'_counter(fig)]" /> — Prototypes in the library, by
-                the day each one was added. Source: the library&apos;s git history.
+            {/* One line under the chart: the caption, or on hover what arrived that day (announced). */}
+            <figcaption aria-live="polite" className="text-[13px] leading-[1.5] text-ink-meta">
+                {active !== null ? (
+                    <span className="text-ink">{step.names.join(", ")}</span>
+                ) : (
+                    <>
+                        <span className="text-ink [counter-increment:fig] before:content-['Fig._'_counter(fig)]" /> — Prototypes in
+                        the library, from its git history. Hover the line for each day.
+                    </>
+                )}
             </figcaption>
         </figure>
     )

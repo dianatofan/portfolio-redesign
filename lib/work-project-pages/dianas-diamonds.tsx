@@ -1,79 +1,41 @@
 import Image from "next/image"
 import type { WorkProjectPage } from "./types"
 import {
-  IconCards,
-  NumberedDecision,
-  TerminalSnippet,
-  TlDr,
-  UnderTheHood,
+  EditorsNote,
+  FigCaption,
+  ProblemSolution,
+  MarginNote,
+  SidebarBox,
+  WithMargin,
   csHeading,
   csParagraph,
-  csPullQuote,
 } from "./shared"
 import { GrowthChart } from "@/components/work/growth-chart"
+import { LiveGem } from "@/components/work/live-gem"
 import { ProductTour, type TourSlide } from "@/components/work/product-tour"
-import { ArrowRight, CalendarClock, FileDiff, GitPullRequest, Handshake, Link2, SearchX, Undo2, UserCheck } from "lucide-react"
+import { CalendarClock, FileDiff, Handshake, SearchX, Undo2, UserCheck } from "lucide-react"
 
 const paragraph = csParagraph
 const heading = csHeading
 const media = "/images/dianas-diamonds"
 
-/** A cut gem outline; the three finishes stand for a task's status, as the hub's diamonds do. */
-function Gem({ finish }: { finish: "frosted" | "clear" | "sparkling" }) {
-  // Rendered by the hub itself: the same stone in the To Do, In Progress and In Review finishes.
-  const file = finish === "frosted" ? "frosted" : finish === "clear" ? "clear" : "brilliant"
+/** The three diamond finishes, live and turning, as the status a ticket is in. No cards: the stones sit on the page. */
+function StatusBand() {
   return (
-    <div className="relative aspect-[68/50] w-full overflow-hidden rounded-[4px]">
-      <Image
-        src={`/images/dianas-diamonds/finish-${file}.webp`}
-        alt=""
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 30vw, 200px"
-      />
-    </div>
-  )
-}
-
-/** The project management loop at a glance: what happens when a pull request opens, and what the diamond says. */
-function PmGraphic() {
-  const steps = [
-    { icon: GitPullRequest, label: "Pull request opens" },
-    { icon: Link2, label: "Link added to the task" },
-  ]
-  return (
-    <div className="mt-8 rounded-xl bg-background p-6 md:p-8">
-      <div className="flex flex-col items-stretch gap-3 md:flex-row md:items-center">
-        {steps.map(({ icon: Icon, label }) => (
-          <div key={label} className="flex items-center gap-3 md:contents">
-            <div className="flex flex-1 items-center gap-3 rounded-lg bg-card p-4 ring-1 ring-black/5">
-              <Icon size={18} className="shrink-0 text-foreground" aria-hidden="true" />
-              <span className="text-sm font-medium text-foreground">{label}</span>
-            </div>
-            <ArrowRight size={18} className="hidden shrink-0 text-[var(--text-tertiary)] md:block" aria-hidden="true" />
-          </div>
-        ))}
-        <div className="flex flex-1 items-center gap-2 rounded-lg bg-card p-4 ring-1 ring-black/5">
-          <span className="rounded-full bg-background px-2.5 py-0.5 text-xs font-medium text-[var(--text-secondary)]">To Do</span>
-          <ArrowRight size={14} className="text-[var(--text-tertiary)]" aria-hidden="true" />
-          <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-foreground">In Progress</span>
-        </div>
-      </div>
-      <div className="mt-8 grid grid-cols-3 gap-4">
-        {(
-          [
-            ["frosted", "Not started"],
-            ["clear", "In progress"],
-            ["sparkling", "Ready for review"],
-          ] as const
-        ).map(([finish, label]) => (
-          <div key={finish} className="flex flex-col items-center gap-3 rounded-lg bg-card p-5 ring-1 ring-black/5">
-            <Gem finish={finish} />
-            <span className="text-center text-sm text-[var(--text-secondary)]">{label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
+    <ol className="grid grid-cols-3 gap-3">
+      {(
+        [
+          ["frosted", "Not started"],
+          ["clear", "In progress"],
+          ["brilliant", "Ready for review"],
+        ] as const
+      ).map(([finish, label], i) => (
+        <li key={finish} className="flex flex-col items-center gap-2">
+          <LiveGem finish={finish} rotateOffset={i * 1.3} className="w-full max-w-[200px]" label={`A ${finish} diamond: ${label}`} />
+          <span className="text-[13px] leading-[1.5] text-ink-muted">{label}</span>
+        </li>
+      ))}
+    </ol>
   )
 }
 
@@ -194,8 +156,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
   highlights: impact,
   heroImage: "/images/dianas-diamonds/hero-fall-poster.jpg",
   heroVideo: "/images/dianas-diamonds/hero-fall.webm",
-  heroCaption: "Diana's Diamonds: all 18 prototypes falling into place",
-  displayTitle: "Building a prototype library to scale AI-driven design",
+  heroCaption: "All 18 prototypes falling into place",
+  displayTitle: "Diana's Diamonds",
+  subtitle: "Building a prototype library to scale AI-driven design",
   description:
     "A scalable catalogue for AI-built prototypes at Tactile: one place to find them, see what changed, and ship them to production.",
   meta: [
@@ -218,64 +181,69 @@ export const dianasDiamondsPage: WorkProjectPage = {
   ],
   renderBeforeGate: () => (
     <>
+      {/* The standfirst under the title says the problem; this is the story, with the name's joke in the margin. */}
       <section id="overview">
-        <h2 className={heading}>Overview</h2>
-        <TlDr>
-          <p>
-            Every company adopting AI runs into the same problem: prototypes get cheap to make, and
-            just as easy to lose.
-          </p>
-          <p>
-            At Tactile I build prototypes on top of our real source code, so developers can pick them
-            up and ship them to production. But I was building a lot, and our internal pipeline
-            couldn&apos;t keep up, so I started a tool to bring them all into one place. And it&apos;s
-            built to outlive me: when I hand over, a new designer can pick it up in about twenty
-            minutes and keep growing the diamonds.
-          </p>
-          <p>
-            The name started as a joke: my coworkers said I polish my prototypes like diamonds. So
-            I took it literally, and every prototype in the hub is a 3D diamond.
-          </p>
-          <p>
-            For the business: past work stays findable, PMs catch up in a minute, and developers
-            start from the design, not from zero.
-          </p>
-        </TlDr>
+        <WithMargin
+          aside={
+            <MarginNote label="Why diamonds?" media={<LiveGem finish="brilliant" className="w-44" />}>
+              The name started as a joke: my coworkers said I polish my prototypes like diamonds.
+              <span className="mt-3 block text-ink-muted">
+                I designed the stone with Tactile&apos;s 3D artists, cut like a Swarovski crystal so it
+                catches light the way a real one does.
+              </span>
+              <span className="mt-4 block text-[18px] font-medium text-ink">&ldquo;They are actual diamonds!&rdquo;</span>
+              <span className="block text-[13px] text-ink-meta">A coworker, on seeing the hub</span>
+            </MarginNote>
+          }
+        >
+          <div className="flex flex-col gap-4">
+            <p className={paragraph}>
+              Every company adopting AI runs into the same problem: prototypes get cheap to make, and
+              just as easy to lose.
+            </p>
+            <p className={paragraph}>
+              At Tactile I build prototypes on top of our real source code, so developers can pick them
+              up and ship them to production. But I was building a lot, and our internal pipeline
+              couldn&apos;t keep up, so I started a tool to bring them all into one place. And it&apos;s
+              built to outlive me: when I hand over, a new designer can pick it up in about twenty
+              minutes and keep growing the diamonds.
+            </p>
+            <p className={paragraph}>
+              For the business: past work stays findable, PMs catch up in a minute, and developers
+              start from the design, not from zero.
+            </p>
+          </div>
+        </WithMargin>
       </section>
 
       <section id="problem">
-        <h2 className={heading}>Problem</h2>
-        <p className={paragraph}>
-          With one repository and deploy per prototype, cleanups deleted past work. Then a PM would
-          ask for one from a few months back, and it was gone. Any team designing with
-          AI hits this: the question isn&apos;t how to make prototypes, it&apos;s where they live
-          once the meeting is over.
-        </p>
-        <IconCards
-          items={[
+        {/* The statement is the heading for the evidence below it: before, and what the library does. */}
+        <h2 className="max-w-[1100px] text-[36px] font-medium leading-[1.1] tracking-[-0.035em] text-ink text-balance">
+          The question isn&apos;t how to make prototypes,{" "}
+          it&apos;s where they live once the meeting is over.
+        </h2>
+        <ProblemSolution
+          rows={[
             {
               icon: SearchX,
-              title: "Prototypes got lost",
-              description: "Links lived in Slack and tickets, and cleanups deleted past work.",
+              problem: "Prototypes got lost",
+              detail: "Links lived in Slack and tickets, and cleanups deleted past work. A PM would ask for one from a few months back, and it was gone.",
+              answer: "Every prototype lives in one library, so nothing gets deleted to save space.",
             },
             {
               icon: FileDiff,
-              title: "Nothing said what changed",
-              description: "A prototype copies the real app, so the new design was hard to spot.",
+              problem: "Nothing said what changed",
+              detail: "A prototype copies the real app, so the new design was hard to spot.",
+              answer: "Each prototype walks you through what changed, step by step.",
             },
             {
               icon: Undo2,
-              title: "Handoff started from zero",
-              description: "Frontenders had to dig the design change out of a separate repo.",
+              problem: "Handoff started from zero",
+              detail: "Frontenders had to dig the design change out of a separate repo.",
+              answer: "Prototypes use the real codebase and design system, so developers get the design as a diff.",
             },
           ]}
         />
-        <div className={csPullQuote}>
-          <p>
-            One permanent home where anyone can find a prototype, see what it changes, and take it
-            to production, whether there are a dozen or a hundred.
-          </p>
-        </div>
       </section>
     </>
   ),
@@ -283,25 +251,26 @@ export const dianasDiamondsPage: WorkProjectPage = {
     <>
       <section
         id="tour"
-        className="tour-dark w-[calc(100vw-2*var(--gutter))] max-w-none rounded-[24px] p-6 sm:p-10 xl:p-12"
+        className="tour-dark relative left-1/2 w-[calc(100vw-2*var(--gutter))] -translate-x-1/2 rounded-[24px] p-6 sm:p-10 xl:p-12"
       >
         <h2 className={heading}>Take the tour</h2>
         <ProductTour label="Diana's Diamonds, screen by screen" slides={tourSlides} />
       </section>
 
       <section id="adoption">
-        <h2 className={heading}>Getting it adopted</h2>
-        <IconCards
+        <SidebarBox
+          title="How it got adopted"
           items={[
             {
               icon: Handshake,
-              title: "Foundations with Alvaro",
-              description: "I worked with Alvaro, our engineer, to set the foundations the library runs on.",
+              title: "Foundations with our backend engineer",
+              description: "Together we set up the foundations the library runs on.",
             },
             {
               icon: UserCheck,
               title: "Tested the handover",
-              description: "I user tested it with the other designer at Tactile, to check he can add new prototypes on his own once I've left.",
+              description:
+                "The other designer at Tactile added prototypes on his own, just from the published guidelines.",
             },
             {
               icon: CalendarClock,
@@ -313,46 +282,71 @@ export const dianasDiamondsPage: WorkProjectPage = {
       </section>
 
       <section id="cut">
-        <h2 className={heading}>What I cut: an AI agent in the browser</h2>
-        <p className={paragraph}>
-          I built a way to add and update prototypes straight from the hub, with an AI agent in the
-          UI. Then I switched it off with our infrastructure engineer. The tokens were too
-          expensive, and Tactile has only two designers in the whole company. Everyone already uses
-          Claude in the terminal.
-        </p>
+        <EditorsNote
+          label="Trade-off"
+          title="An AI agent in the browser"
+          figure={
+            <figure className="flex flex-col gap-2.5">
+              <div className="relative aspect-[8/5] overflow-hidden rounded-2xl bg-surface ring-1 ring-black/[0.06]">
+                <Image
+                  src={`${media}/agent-request.jpg`}
+                  alt="The hub's Request a change form: Claude makes the change on a branch of its own"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(min-width: 1100px) 55vw, 100vw"
+                />
+              </div>
+              <FigCaption>The request form, before I switched it off.</FigCaption>
+            </figure>
+          }
+        >
+          I built a way to add and update prototypes straight from the hub, with an AI agent in the UI.
+          Then I switched it off with our backend engineer. The tokens were too expensive, and
+          Tactile has only two designers in the whole company. Everyone already uses Claude in the
+          terminal.
+        </EditorsNote>
       </section>
 
       <section id="workflow">
         <h2 className={heading}>It keeps itself up to date.</h2>
-        <p className={paragraph}>
-          The ticket gets the prototype&apos;s link on its own, and the diamond shows how far along it is.
-        </p>
-        <PmGraphic />
-        <UnderTheHood>
-          Six Claude Code skills cover the whole loop, from setting up a laptop to building the design
-          for real. Claude can open a pull request, but it can never merge or push to main. Merging is
-          always a person&apos;s click.
-        </UnderTheHood>
-        <TerminalSnippet
-          title="Claude Code"
-          lines={[
-            { kind: "comment", text: "Designer" },
-            { kind: "prompt", text: "Start a prototype from the A/B tests page." },
-            { kind: "prompt", text: "Publish holdout-groups." },
-            { kind: "out", text: " " },
-            { kind: "comment", text: "Developer" },
-            { kind: "prompt", text: "Build holdout-groups in the real Dashboard." },
-          ]}
-        />
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,640px)_minmax(0,1fr)] xl:items-center xl:gap-16">
+          <div className="flex flex-col gap-4">
+            <p className={paragraph}>
+              The ticket gets the prototype&apos;s link on its own, and the diamond shows how far along it is.
+            </p>
+            <p className="text-[18px] leading-[1.6] text-ink-muted text-pretty">
+              Six Claude Code skills cover the whole loop, from setting up a laptop to building the design
+              for real. Claude can open a pull request, but it can never merge or push to main. Merging is
+              always a person&apos;s click.
+            </p>
+          </div>
+          <StatusBand />
+        </div>
       </section>
 
       <section id="impact">
         <h2 className={heading}>Impact</h2>
-        <p className={paragraph}>
-          In five weeks: 18 prototypes in one library, and one deploy pipeline instead of one per
-          prototype.
+        <p className={`${paragraph} mb-10`}>
+          Anyone can open and play with my prototypes, so they&apos;re much easier to share with
+          stakeholders.
         </p>
-        <GrowthChart />
+        <div className="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,760px)_minmax(0,1fr)] xl:gap-16">
+          <GrowthChart />
+          <aside className="flex flex-col gap-6 self-start xl:mt-8">
+            <span className="text-[13px] leading-[1.5] text-ink-meta">What I learned</span>
+            <ol className="flex flex-col gap-5">
+              {[
+                "Nobody asked me to solve this, and that's no reason not to. It made my own job simpler, and my coworkers appreciated it.",
+                "AI prototypes are worthless if they're not collected in one central place. Scattered, they lose their meaning.",
+              ].map((line, i) => (
+                <li key={line} className="flex gap-4 border-t border-hairline pt-5 first:border-t-0 first:pt-0">
+                  <span className="text-[18px] leading-[1.6] text-brand">{i + 1}</span>
+                  <p className="text-[18px] leading-[1.6] text-ink text-pretty">{line}</p>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        </div>
       </section>
     </>
   ),

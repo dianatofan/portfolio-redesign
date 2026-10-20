@@ -3,9 +3,9 @@ import type { CSSProperties, ReactNode } from "react"
 /**
  * Retro silver Lab frames, one family (Macintosh material).
  * All sizes in cqw so frames keep proportions at any card width.
- * types: "mac" | "powerbook" | "window" | "phone"
+ * types: "mac" | "powerbook" | "window" | "phone" | "crt"
  */
-export type LabFrameType = "mac" | "powerbook" | "window" | "phone"
+export type LabFrameType = "mac" | "powerbook" | "window" | "phone" | "crt"
 type Props = {
     type: LabFrameType
     src?: string | string[]
@@ -13,6 +13,26 @@ type Props = {
     url?: string
     play?: boolean
     className?: string
+}
+
+/** A .webm or .mp4 src plays as a muted loop (its poster is the same name as .jpg); anything else is a still. */
+function MediaEl({ src, alt, style }: { src: string; alt: string; style: CSSProperties }) {
+    if (/\.(webm|mp4)$/.test(src)) {
+        return (
+            <video
+                src={src}
+                poster={src.replace(/\.(webm|mp4)$/, ".jpg")}
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-label={alt || undefined}
+                style={style}
+            />
+        )
+    }
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={src} alt={alt} loading="lazy" style={style} />
 }
 
 const SILVER = "linear-gradient(160deg,#d6d7d9 0%,#b3b5b8 55%,#a7a9ac 100%)"
@@ -58,7 +78,6 @@ function Screen({
                 }}
             >
                 {src && (
-                    // A .webm or .mp4 src plays as a muted loop; anything else is a still.
                     <MediaEl
                         src={src}
                         alt={alt ?? ""}
@@ -86,14 +105,6 @@ function Screen({
             </div>
         </div>
     )
-}
-
-function MediaEl({ src, alt, style }: { src: string; alt: string; style: CSSProperties }) {
-    if (/\.(webm|mp4)$/.test(src)) {
-        return <video src={src} poster={src.replace(/\.(webm|mp4)$/, ".jpg")} autoPlay muted loop playsInline aria-label={alt || undefined} style={style} />
-    }
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} loading="lazy" style={style} />
 }
 
 const key = (w: string): CSSProperties => ({
@@ -356,12 +367,185 @@ function Phone({ src, alt }: { src?: string; alt?: string }) {
     )
 }
 
+const rod: CSSProperties = {
+    position: "absolute",
+    left: 0,
+    bottom: 0,
+    width: ".5cqw",
+    height: "9cqw",
+    background: "linear-gradient(90deg,#8e9094,#e2e3e5,#8e9094)",
+    borderRadius: 999,
+    transformOrigin: "bottom center",
+}
+const knob = (d: string): CSSProperties => ({
+    width: d,
+    height: d,
+    borderRadius: "50%",
+    background: "radial-gradient(circle at 35% 30%,#f2f2f3,#9a9ca0 70%)",
+    boxShadow: "0 .4cqw .8cqw rgba(0,0,0,.35),inset 0 0 0 .3cqw rgba(0,0,0,.12)",
+})
+const leg = (sk: number): CSSProperties => ({
+    width: "1.4cqw",
+    height: "4cqw",
+    background: "linear-gradient(90deg,#9a9ca0,#c6c8cb)",
+    borderRadius: "0 0 .4cqw .4cqw",
+    transform: `skewX(${sk}deg)`,
+})
+
+function Crt({ src, alt }: { src?: string; alt?: string }) {
+    return (
+        <div
+            style={{
+                position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "2cqw",
+            }}
+        >
+            <div
+                style={{
+                    position: "relative",
+                    width: "64cqw",
+                    boxSizing: "border-box",
+                    padding: "2.4cqw",
+                    display: "flex",
+                    gap: "2.4cqw",
+                    borderRadius: "2.8cqw",
+                    background: SILVER,
+                    boxShadow: `${HL},${DROP}`,
+                }}
+            >
+                <div
+                    style={{
+                        position: "absolute",
+                        left: "50%",
+                        bottom: "100%",
+                        width: 0,
+                        height: 0,
+                    }}
+                >
+                    <span style={{ ...rod, transform: "rotate(-28deg)" }} />
+                    <span style={{ ...rod, transform: "rotate(24deg)" }} />
+                    <span
+                        style={{
+                            position: "absolute",
+                            left: "-3cqw",
+                            bottom: 0,
+                            width: "6.5cqw",
+                            height: "2.2cqw",
+                            borderRadius: "50% 50% 0 0",
+                            background: "linear-gradient(180deg,#c6c8cb,#9a9ca0)",
+                        }}
+                    />
+                </div>
+                <div
+                    style={{
+                        flex: 1,
+                        background: "linear-gradient(180deg,#9a9ca0,#c6c8cb)",
+                        borderRadius: "2cqw",
+                        padding: "1.3cqw",
+                        boxShadow:
+                            "inset 0 1cqw 2.2cqw rgba(0,0,0,.18),inset 0 -.3cqw 0 rgba(255,255,255,.7)",
+                    }}
+                >
+                    <div
+                        style={{
+                            position: "relative",
+                            aspectRatio: "4/3",
+                            borderRadius: "18% / 22%",
+                            overflow: "hidden",
+                            background: "#e9eaed",
+                        }}
+                    >
+                        {src && (
+                            <MediaEl
+                                src={src}
+                                alt={alt ?? ""}
+                                style={{
+                                    position: "absolute",
+                                    inset: 0,
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    display: "block",
+                                }}
+                            />
+                        )}
+                        <div
+                            style={{
+                                position: "absolute",
+                                inset: 0,
+                                pointerEvents: "none",
+                                borderRadius: "inherit",
+                                background:
+                                    "repeating-linear-gradient(180deg,rgba(0,0,0,.08) 0 1px,transparent 1px 3px),radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.35),transparent 45%)",
+                                boxShadow:
+                                    "inset 0 0 3cqw rgba(0,0,0,.3),inset 0 0 0 .5cqw #2c2c2a",
+                            }}
+                        />
+                    </div>
+                </div>
+                <div
+                    style={{
+                        width: "9cqw",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "2cqw",
+                        padding: "1cqw 0",
+                        borderRadius: "1cqw",
+                        background: "linear-gradient(180deg,#9a9ca0,#c6c8cb)",
+                        boxShadow:
+                            "inset 0 1cqw 2cqw rgba(0,0,0,.15),inset 0 -.3cqw 0 rgba(255,255,255,.7)",
+                    }}
+                >
+                    <span style={knob("5.6cqw")} />
+                    <span style={knob("4.2cqw")} />
+                    <span
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: ".5cqw",
+                            width: "5cqw",
+                        }}
+                    >
+                        {[0, 1, 2, 3].map((i) => (
+                            <span
+                                key={i}
+                                style={{
+                                    height: ".4cqw",
+                                    borderRadius: 999,
+                                    background: "rgba(0,0,0,.28)",
+                                }}
+                            />
+                        ))}
+                    </span>
+                </div>
+            </div>
+            <div
+                style={{
+                    width: "54cqw",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "0 3cqw",
+                    boxSizing: "border-box",
+                }}
+            >
+                <span style={leg(8)} />
+                <span style={leg(-8)} />
+            </div>
+        </div>
+    )
+}
+
 export function LabFrame({ type, src, alt, url, play = true, className }: Props) {
     const one = Array.isArray(src) ? src[0] : src
     let frame: ReactNode
     if (type === "mac") frame = <Mac src={one} alt={alt} />
     else if (type === "powerbook") frame = <PowerBook src={one} alt={alt} />
     else if (type === "window") frame = <Window src={one} alt={alt} url={url} />
+    else if (type === "crt") frame = <Crt src={one} alt={alt} />
     else frame = <Phone src={one} alt={alt} />
     return (
         <div
@@ -406,5 +590,5 @@ export default LabFrame
 <LabFrame type="powerbook" src="/lab/golden-goose.png" />
 <LabFrame type="mac" src="/lab/terminal.png" />
 <LabFrame type="phone" src="/lab/jenga.png" />
-<LabFrame type="window" src="/lab/boeuf.png" url="dianatofan.net/salata-de-boeuf" />
+<LabFrame type="crt" src="/lab/boeuf.png" />
 */

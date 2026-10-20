@@ -118,6 +118,8 @@
     --faint: #f0f0f2;
     --surface: #f4f4f4;
     --brand: #4f35b8;
+    /* A light lavender wash of the brand, used only where the work answers a problem. */
+    --brand-tint: #f3f0fc;
     --chart-neutral: #d4d3d9;
 
     --background: #FFFFFF;
@@ -173,6 +175,7 @@
     --color-faint: var(--faint);
     --color-surface: var(--surface);
     --color-brand: var(--brand);
+    --color-brand-tint: var(--brand-tint);
     --color-chart-neutral: var(--chart-neutral);
 
     /* The tablet/desktop split the handoff uses for gutters and the case-study TOC. */

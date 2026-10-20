@@ -121,7 +121,7 @@ export default async function ProjectPage({ params }: PageProps) {
         </figure>
       </div>
 
-      <section className="flex flex-col gap-7 px-gutter pt-12 pb-4 min-[720px]:pt-16">
+      <section className="flex flex-col gap-7 px-[max(var(--gutter),calc((100%-1200px)/2))] pt-12 pb-4 min-[720px]:pt-16">
         <div className="flex flex-col gap-5">
           <span className="text-[13px] text-ink-meta">{metaLine}</span>
           <h1
@@ -134,7 +134,8 @@ export default async function ProjectPage({ params }: PageProps) {
             {projectPage.displayTitle ?? project.title}
           </h1>
           {projectPage.subtitle ? (
-            <p className="mt-2 max-w-[820px] text-[clamp(20px,2vw,26px)] leading-[1.3] tracking-[-0.015em] text-pretty">
+            // The standfirst: one lead paragraph under the title, as in a newspaper.
+            <p className="mt-2 max-w-[760px] text-[24px] leading-[1.35] tracking-[-0.015em] text-pretty">
               {projectPage.subtitle}
             </p>
           ) : null}
@@ -143,7 +144,7 @@ export default async function ProjectPage({ params }: PageProps) {
           {projectPage.meta.map((item) => (
             <div key={item.label} className="flex flex-col gap-1">
               <dt className="text-[13px] text-ink-meta">{item.label}</dt>
-              <dd className="text-[15px]">
+              <dd className="text-[18px]">
                 {item.values.map((value, index) => (
                   <span key={`${item.label}-${value}`}>
                     {index > 0 && <br />}
@@ -157,12 +158,12 @@ export default async function ProjectPage({ params }: PageProps) {
       </section>
 
       {stats.length > 0 ? (
-        <section aria-label="At a glance" className="px-gutter pt-12 pb-16 min-[720px]:pb-24">
+        <section aria-label="At a glance" className="px-[max(var(--gutter),calc((100%-1200px)/2))] pt-12 pb-16 min-[720px]:pb-24">
           <dl className="grid grid-cols-1 gap-3 min-[720px]:grid-cols-3">
             {stats.map((item) => (
               <div key={item.value + item.label} className="flex flex-col-reverse justify-end gap-2 rounded-2xl bg-surface p-6">
-                <dt className="text-[15px] text-ink-muted">{item.label}</dt>
-                <dd className="text-[clamp(40px,4.4vw,64px)] font-medium leading-none tracking-[-0.05em]">
+                <dt className="text-[18px] text-ink-muted">{item.label}</dt>
+                <dd className="text-[36px] font-medium leading-[1.1] tracking-[-0.04em]">
                   {item.value}
                 </dd>
               </div>
@@ -173,7 +174,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
       {/* With no stat band, the band's bottom padding moves here. */}
       <section
-        className={`px-gutter pb-24 ${stats.length > 0 ? "" : "pt-16 min-[720px]:pt-24"}`}
+        className={`px-[max(var(--gutter),calc((100%-1200px)/2))] pb-24 ${stats.length > 0 ? "" : "pt-16 min-[720px]:pt-24"}`}
       >
           {/* Ruler-style contents, fixed to the right edge of the viewport. */}
           <ProjectTableOfContents
@@ -183,10 +184,10 @@ export default async function ProjectPage({ params }: PageProps) {
           />
 
           {/*
-            Each top-level section opens with its number, then the headline
-            stacked above its text; see case-study-sections.
+            Each top-level section opens with its headline, stacked above its
+            text; see case-study-sections. Sections vary their own shape.
           */}
-          <div className="cs-article flex min-w-0 max-w-[1320px] flex-col gap-24 [&_section[id]]:scroll-mt-24 [&_[data-cs-head]_h2]:mb-6">
+          <div className="cs-article flex min-w-0 flex-col gap-24 [&_section[id]]:scroll-mt-24 [&_[data-cs-head]_h2]:mb-6">
             {withSectionLabels(projectPage.renderBeforeGate(), projectPage.sections)}
 
             {postGateContent &&
@@ -200,15 +201,15 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
       </section>
 
-      <Link href={`/work/${nextProject.slug}`} className="group block px-gutter">
+      <Link href={`/work/${nextProject.slug}`} className="group block px-[max(var(--gutter),calc((100%-1200px)/2))]">
         <div className="flex items-end justify-between gap-8 border-t border-hairline pt-7 pb-10 transition-colors group-hover:text-brand">
           <div className="flex flex-col gap-2.5">
             <span className="text-[13px] text-ink-meta">{isLab ? "Next in the Lab" : "Next case study"}</span>
-            <span className="max-w-[900px] text-[clamp(32px,4vw,56px)] font-medium leading-none tracking-[-0.045em] text-balance">
+            <span className="max-w-[900px] text-[24px] font-medium leading-[1.35] tracking-[-0.03em] text-balance sm:text-[36px] sm:leading-[1.1]">
               {nextProject.title}
             </span>
           </div>
-          <span aria-hidden="true" className="text-[32px]">
+          <span aria-hidden="true" className="text-[24px]">
             →
           </span>
         </div>

@@ -8,14 +8,14 @@ import { ReactCompareSlider, ReactCompareSliderImage } from "react-compare-slide
  * one system: 18px ink body, tight display headings, 13px grey meta.
  */
 export const csHeading =
-  "mb-5 text-[clamp(28px,2.6vw,36px)] font-medium leading-[1.1] tracking-[-0.035em] text-ink text-balance"
-export const csSubheading = "mb-2 text-xl font-medium leading-snug tracking-[-0.02em] text-ink"
+  "mb-5 text-[24px] sm:text-[36px] font-medium leading-[1.35] sm:leading-[1.1] tracking-[-0.035em] text-ink text-balance"
+export const csSubheading = "mb-2 text-[18px] font-medium leading-[1.6] tracking-[-0.02em] text-ink"
 export const csParagraph = "max-w-[640px] text-lg leading-[1.6] text-ink text-pretty"
 export const csEyebrow = "mb-3 text-[13px] text-ink-meta"
 export const csCaption = "mt-2.5 text-[13px] text-ink-meta"
 /** A line set between two hairlines, 24px under what precedes it. */
 export const csPullQuote =
-  "mt-6 border-y border-hairline py-8 text-[clamp(28px,3vw,40px)] font-medium leading-[1.1] tracking-[-0.035em] text-ink text-balance"
+  "mt-6 border-y border-hairline py-8 text-[24px] font-medium leading-[1.1] tracking-[-0.035em] text-ink text-balance"
 
 /**
  * "Fig. N — caption". N comes from the `fig` CSS counter the case-study page
@@ -42,8 +42,8 @@ export function InsightCards({
     <div className="mt-8 grid grid-cols-1 gap-x-6 border-t border-hairline md:grid-cols-3">
       {items.map((item) => (
         <div id={item.id} key={item.id ?? item.title} className="border-b border-hairline py-5 md:border-b-0">
-          <p className="text-[15px] font-medium text-ink">{item.title}</p>
-          <p className="mt-1 text-[15px] leading-[1.45] text-ink-muted">
+          <p className="text-[18px] font-medium leading-[1.6] text-ink">{item.title}</p>
+          <p className="mt-1 text-[18px] leading-[1.6] text-ink-muted">
             {item.description}
           </p>
         </div>
@@ -69,8 +69,8 @@ export function ConstraintCards({
         return (
           <div key={item.title} className="border-b border-hairline py-5">
             <Icon size={18} className="mb-3 text-ink" aria-hidden="true" />
-            <p className="text-[15px] font-medium text-ink">{item.title}</p>
-            <p className="mt-1 text-[15px] leading-[1.45] text-ink-muted">
+            <p className="text-[18px] font-medium leading-[1.6] text-ink">{item.title}</p>
+            <p className="mt-1 text-[18px] leading-[1.6] text-ink-muted">
               {item.description}
             </p>
           </div>
@@ -92,10 +92,10 @@ export function OutcomeCards({
     <div className="grid grid-cols-1 gap-x-6 border-t border-hairline md:grid-cols-2">
       {items.map((item) => (
         <div key={item.title} className="flex flex-col gap-1.5 border-b border-hairline py-6">
-          <p className="text-[clamp(24px,2.4vw,32px)] font-medium leading-[1.1] tracking-[-0.03em] text-ink">
+          <p className="text-[24px] font-medium leading-[1.35] tracking-[-0.03em] text-ink">
             {item.title}
           </p>
-          <p className="max-w-[420px] text-[15px] leading-[1.45] text-ink-muted">{item.description}</p>
+          <p className="max-w-[420px] text-[18px] leading-[1.6] text-ink-muted">{item.description}</p>
         </div>
       ))}
     </div>
@@ -221,7 +221,7 @@ export function TerminalSnippet({
         <span className="h-3 w-3 rounded-full bg-[#ff5f57]" aria-hidden="true" />
         <span className="h-3 w-3 rounded-full bg-[#febc2e]" aria-hidden="true" />
         <span className="h-3 w-3 rounded-full bg-[#28c840]" aria-hidden="true" />
-        <span className="ml-2 text-xs text-white/50">{title}</span>
+        <span className="ml-2 text-[13px] text-white/50">{title}</span>
       </div>
       <pre className="overflow-x-auto px-5 py-4 font-mono text-[13px] leading-relaxed">
         {lines.map((line, index) => (
@@ -233,7 +233,7 @@ export function TerminalSnippet({
             }`}
           >
             {line.kind === "cmd" && <span className="select-none text-[#7ee0a1]">$ </span>}
-            {line.kind === "prompt" && <span className="select-none text-[#c4a7ff]">&gt; </span>}
+            {line.kind === "prompt" && <span className="select-none text-[#a99ae6]">&gt; </span>}
             {line.kind === "comment" ? `# ${line.text}` : line.text}
           </div>
         ))}
@@ -270,10 +270,10 @@ export function IconCards({
   return (
     <div className={`mt-8 grid grid-cols-1 gap-3 ${columns === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
       {items.map(({ icon: Icon, title, description }) => (
-        <div key={title} className="flex flex-col gap-2 rounded-[8px] bg-surface p-5">
+        <div key={title} className="flex flex-col gap-2 rounded-2xl bg-surface p-5">
           <Icon size={18} className="text-brand" aria-hidden="true" />
-          <p className="mt-1 text-[15px] font-medium text-ink">{title}</p>
-          <p className="text-[15px] leading-[1.45] text-ink-muted">{description}</p>
+          <p className="mt-1 text-[18px] font-medium leading-[1.6] text-ink">{title}</p>
+          <p className="text-[18px] leading-[1.6] text-ink-muted">{description}</p>
         </div>
       ))}
     </div>
@@ -307,11 +307,11 @@ export function NumberedDecision({
       }`}
     >
       <div className="flex min-w-0 flex-col gap-3 xl:sticky xl:top-28 xl:self-start">
-        <span className="text-[40px] font-medium leading-none tracking-[-0.04em] text-brand">{n}</span>
-        <h3 className="text-[clamp(22px,2vw,28px)] font-medium leading-[1.15] tracking-[-0.025em] text-ink text-balance">
+        <span className="text-[36px] font-medium leading-[1.1] tracking-[-0.04em] text-brand">{n}</span>
+        <h3 className="text-[24px] font-medium leading-[1.35] tracking-[-0.025em] text-ink text-balance">
           {title}
         </h3>
-        <div className="max-w-[640px] text-[17px] leading-[1.55] text-ink-muted text-pretty">{children}</div>
+        <div className="max-w-[640px] text-[18px] leading-[1.6] text-ink-muted text-pretty">{children}</div>
       </div>
       {visual ? <div className="min-w-0">{visual}</div> : null}
     </div>
@@ -322,9 +322,9 @@ export function NumberedDecision({
 export function FeatureCard({ media, title, description }: { media: ReactNode; title: string; description: string }) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="overflow-hidden rounded-[8px] bg-surface">{media}</div>
-      <p className="text-[17px] font-medium tracking-[-0.01em] text-ink">{title}</p>
-      <p className="-mt-1.5 text-[15px] leading-[1.45] text-ink-muted text-pretty">{description}</p>
+      <div className="overflow-hidden rounded-2xl bg-surface">{media}</div>
+      <p className="text-[18px] font-medium leading-[1.6] tracking-[-0.01em] text-ink">{title}</p>
+      <p className="-mt-1.5 text-[18px] leading-[1.6] text-ink-muted text-pretty">{description}</p>
     </div>
   )
 }
@@ -332,7 +332,7 @@ export function FeatureCard({ media, title, description }: { media: ReactNode; t
 /** A technical aside in a grey box, led by "Under the hood:". */
 export function UnderTheHood({ children }: { children: ReactNode }) {
   return (
-    <div className="mt-8 rounded-[8px] bg-surface px-6 py-5 text-[17px] leading-[1.55] text-ink-muted text-pretty">
+    <div className="mt-8 rounded-2xl bg-surface px-6 py-5 text-[18px] leading-[1.6] text-ink-muted text-pretty">
       <span className="font-medium text-ink">Under the hood: </span>
       {children}
     </div>
@@ -357,10 +357,10 @@ export function BeforeAfterSlider({
   caption?: ReactNode
   ratio?: string
 }) {
-  const pill = "pointer-events-none absolute top-3 rounded-full bg-white/90 px-2.5 py-1 text-[12px] font-medium text-ink shadow-[0_1px_2px_rgba(22,21,26,0.12)]"
+  const pill = "pointer-events-none absolute top-3 rounded-full bg-white/90 px-2.5 py-1 text-[13px] font-medium text-ink shadow-[0_1px_2px_rgba(22,21,26,0.12)]"
   return (
     <figure className="flex flex-col gap-2.5">
-      <div className="relative overflow-hidden rounded-[8px] bg-surface" style={{ aspectRatio: ratio }}>
+      <div className="relative overflow-hidden rounded-2xl bg-surface" style={{ aspectRatio: ratio }}>
         <ReactCompareSlider
           itemOne={<ReactCompareSliderImage src={before} alt={`${alt}: ${beforeLabel}`} style={{ objectFit: "cover", width: "100%", height: "100%" }} />}
           itemTwo={<ReactCompareSliderImage src={after} alt={`${alt}: ${afterLabel}`} style={{ objectFit: "cover", width: "100%", height: "100%" }} />}
@@ -379,8 +379,161 @@ export function Reflection({ icon: Icon, title, children }: { icon: LucideIcon; 
   return (
     <div className="flex max-w-[640px] flex-col gap-3">
       <Icon size={20} className="text-brand" aria-hidden="true" />
-      <p className="text-[clamp(20px,1.8vw,24px)] font-medium leading-[1.2] tracking-[-0.02em] text-ink text-balance">{title}</p>
-      <div className="text-[17px] leading-[1.55] text-ink-muted text-pretty">{children}</div>
+      <p className="text-[24px] font-medium leading-[1.35] tracking-[-0.02em] text-ink text-balance">{title}</p>
+      <div className="text-[18px] leading-[1.6] text-ink-muted text-pretty">{children}</div>
+    </div>
+  )
+}
+
+/*
+ * Editorial blocks: the magazine furniture for skimming. A pull quote in the
+ * margin, a problem-and-answer spread, a sidebar box and an editor's note.
+ */
+
+/** A line lifted into the margin: a short purple rule, then 24px ink. */
+/**
+ * A quiet aside for the margin: a small label, an optional thumbnail and one
+ * line at body size. For anecdotes, so they don't compete with a PullQuote.
+ */
+export function MarginNote({
+  label,
+  image,
+  media,
+  children,
+}: {
+  label: string
+  image?: string
+  /** Any visual in place of the image, e.g. a live diamond; it floats the same way. */
+  media?: ReactNode
+  children: ReactNode
+}) {
+  return (
+    <aside className="flex max-w-[360px] flex-col gap-4 border-t border-hairline pt-5">
+      {/* Kept here so the float never depends on a stylesheet rebuild. */}
+      <style>{"@keyframes gem-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}"}</style>
+      <span className="text-[13px] leading-[1.5] text-ink-meta">{label}</span>
+      {image && (
+        // multiply drops the render's near-white background into the page.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={image}
+          alt=""
+          // The render has a light grey backdrop; a soft oval mask fades it into the page.
+          style={{
+            maskImage: "radial-gradient(ellipse 50% 46% at 50% 50%, #000 62%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(ellipse 50% 46% at 50% 50%, #000 62%, transparent 100%)",
+          }}
+          className="-ml-3 w-44 mix-blend-multiply motion-safe:animate-[gem-float_6s_ease-in-out_infinite]"
+        />
+      )}
+      {media && <div className="-ml-3 motion-safe:animate-[gem-float_6s_ease-in-out_infinite]">{media}</div>}
+      <p className="text-[18px] leading-[1.6] text-ink text-pretty">{children}</p>
+    </aside>
+  )
+}
+
+export function PullQuote({ children }: { children: ReactNode }) {
+  return (
+    <blockquote className="m-0 flex max-w-[380px] flex-col gap-5">
+      <span aria-hidden="true" className="block h-0.5 w-10 bg-brand" />
+      <p className="text-[24px] font-medium leading-[1.35] tracking-[-0.02em] text-ink text-balance">{children}</p>
+    </blockquote>
+  )
+}
+
+/** Running text beside a pull quote in the right margin; stacked below 1100px. */
+export function WithMargin({ children, aside }: { children: ReactNode; aside: ReactNode }) {
+  return (
+    <div className="grid grid-cols-1 gap-x-28 gap-y-12 xl:grid-cols-[minmax(0,640px)_minmax(0,1fr)] xl:items-start">
+      <div className="min-w-0">{children}</div>
+      <aside className="xl:pt-2">{aside}</aside>
+    </div>
+  )
+}
+
+/** Each problem beside its answer, read across a hairline. */
+export function ProblemSolution({
+  rows,
+}: {
+  rows: Array<{ icon: LucideIcon; problem: string; detail: string; answer: string }>
+}) {
+  return (
+    <div className="mt-12 flex flex-col">
+      <div className="hidden grid-cols-[minmax(0,1fr)_72px_minmax(0,1fr)] pb-4 text-[13px] leading-[1.5] text-ink-meta md:grid">
+        <span>Before</span>
+        <span />
+        <span>What the library does</span>
+      </div>
+      {rows.map(({ icon: Icon, problem, detail, answer }) => (
+        <div
+          key={problem}
+          className="grid grid-cols-1 gap-y-4 border-t border-hairline py-8 md:grid-cols-[minmax(0,1fr)_72px_minmax(0,1fr)] md:items-center"
+        >
+          <div className="flex gap-3">
+            <Icon size={18} className="mt-0.5 shrink-0 text-brand" aria-hidden="true" />
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[18px] font-medium leading-[1.6] text-ink">{problem}</p>
+              <p className="text-[18px] leading-[1.6] text-ink-muted">{detail}</p>
+            </div>
+          </div>
+          <span aria-hidden="true" className="hidden text-center text-[18px] leading-[1.6] text-ink-muted md:block">
+            →
+          </span>
+          <p className="rounded-[16px] bg-surface px-6 py-5 text-[18px] leading-[1.6] text-ink text-pretty">{answer}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** A tinted aside, like a magazine sidebar: a title and a few tight lines. */
+export function SidebarBox({
+  title,
+  items,
+}: {
+  title: string
+  items: Array<{ icon: LucideIcon; title: string; description: string }>
+}) {
+  return (
+    <div className="flex flex-col gap-6 rounded-2xl bg-surface p-6 sm:p-8 xl:p-10">
+      <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.02em] whitespace-nowrap text-ink sm:text-[36px] sm:leading-[1.1] sm:tracking-[-0.035em]">
+        {title}
+      </h2>
+      <ul className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
+        {items.map(({ icon: Icon, title: t, description }) => (
+          <li key={t} className="flex gap-3">
+            <Icon size={18} className="mt-0.5 shrink-0 text-brand" aria-hidden="true" />
+            <p className="text-[18px] leading-[1.6] text-ink-muted">
+              <span className="font-medium text-ink">{t}. </span>
+              {description}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** An editor's note: a bordered box with a small label, the text, and a figure beside it. */
+export function EditorsNote({
+  label,
+  title,
+  children,
+  figure,
+}: {
+  label: string
+  title: string
+  children: ReactNode
+  figure?: ReactNode
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-8 rounded-2xl border border-hairline p-6 sm:p-8 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] xl:gap-12 xl:p-10">
+      <div className="flex flex-col gap-3">
+        <span className="self-start rounded-[4px] bg-surface px-2 py-0.5 text-[13px] leading-[1.5] font-medium text-ink-meta">{label}</span>
+        <h2 className="mb-3 text-[36px] font-medium leading-[1.1] tracking-[-0.035em] text-ink text-balance">{title}</h2>
+        <div className="text-[18px] leading-[1.6] text-ink-muted text-pretty">{children}</div>
+      </div>
+      {figure ? <div className="min-w-0">{figure}</div> : null}
     </div>
   )
 }

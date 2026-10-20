@@ -175,7 +175,7 @@ const labItems: LabItem[] = [
     {
         title: "Boeuf Salad Decorator",
         description: "Retro Christmas cards from salads",
-        frame: { type: "window", src: "/images/lab/boeuf.webm", url: "dianatofan.net/salata-de-boeuf" },
+        frame: { type: "crt", src: "/images/lab/boeuf-1986.jpg" },
         href: "/work/boeuf-salad-decorator",
     },
 ]
