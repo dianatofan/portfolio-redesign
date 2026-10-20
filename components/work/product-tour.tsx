@@ -410,15 +410,18 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                                     className="absolute grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-brand"
                                     style={{ left: `${(note.x + note.w / 2) * 100}%`, top: `${(note.y + note.h / 2) * 100}%` }}
                                 >
+                                    {/* Soft and dimmed at rest, in the pencil arrow's lavender; full when its note is hovered. */}
                                     {!reduced && (
                                         <span
-                                            className="absolute h-3 w-3 rounded-full bg-brand/50"
-                                            style={{ animation: "tour-pulse 2.2s ease-out infinite" }}
+                                            className="absolute h-4 w-4 rounded-full bg-[#a99ae6]/30"
+                                            style={{ animation: "tour-pulse 3.2s ease-out infinite" }}
                                         />
                                     )}
                                     <span
-                                        className={`relative h-3 w-3 rounded-full bg-brand shadow-[0_0_0_2px_#fff,0_2px_6px_rgba(22,21,26,0.35)] transition-transform duration-200 ${
-                                            hot === i ? "scale-150" : ""
+                                        className={`relative h-3.5 w-3.5 rounded-full border-[1.5px] transition-[background-color,border-color,transform] duration-300 ${
+                                            hot === i
+                                                ? "scale-125 border-[#a99ae6] bg-[#a99ae6]"
+                                                : "border-[#a99ae6]/70 bg-[#a99ae6]/25"
                                         }`}
                                     />
                                 </button>
