@@ -50,8 +50,8 @@ const impact = [
     description: "One pipeline for the whole library, not one per prototype.",
   },
   {
-    title: "240+ prototypes, tested to scale",
-    description: "The field was stress-tested with more than 240 diamonds and stays smooth.",
+    title: "2x faster handoff to developers",
+    description: "Developers start from the design as a diff, not from zero.",
   },
 ]
 
@@ -162,7 +162,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
   description:
     "A scalable catalogue for AI-built prototypes at Tactile: one place to find them, see what changed, and ship them to production.",
   meta: [
-    { label: "Role", values: ["Product Designer", "Design Engineer"] },
+    { label: "Role", values: ["Lead Designer", "Design Engineer"] },
     { label: "Duration", values: ["September–October 2026"] },
     { label: "Used by", values: ["Designers", "PMs", "Frontenders"] },
     {
@@ -272,7 +272,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
             {
               icon: CalendarClock,
               title: "Shared every week",
-              description: "I share the library with stakeholders and users every week. What's new is the part they like most.",
+              description: "I share the library with stakeholders and users every week. What's new is the part they like most, and PMs and other teams started using it too.",
             },
           ]}
         />
@@ -309,7 +309,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,640px)_minmax(0,1fr)] xl:items-center xl:gap-16">
           <div className="flex flex-col gap-4">
             <p className={paragraph}>
-              The ticket gets the prototype&apos;s link on its own, and the diamond shows how far along it is.
+              Every time a prototype changes, its ticket updates with the link on its own, and the diamond shows how far along it is.
             </p>
             <p className="text-[18px] leading-[1.6] text-ink-muted text-pretty">
               Six Claude Code skills cover the whole loop, from setting up a laptop to building the design
@@ -330,8 +330,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
       <section id="impact">
         <h2 className={heading}>Impact</h2>
         <p className={`${paragraph} mb-10`}>
-          Anyone can open and play with my prototypes, so they&apos;re much easier to share with
-          stakeholders.
+          Every prototype that reached done made it into the real product, and handoff to developers
+          got 2x faster. Anyone can open and play with my prototypes, so they&apos;re much easier to
+          share with stakeholders.
         </p>
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,760px)_minmax(0,1fr)] xl:gap-16">
           <GrowthChart />
@@ -348,6 +349,12 @@ export const dianasDiamondsPage: WorkProjectPage = {
                 </li>
               ))}
             </ol>
+            <div className="flex flex-col gap-2 border-t border-hairline pt-5">
+              <span className="text-[13px] leading-[1.5] text-ink-meta">What&apos;s next</span>
+              <p className="text-[18px] leading-[1.6] text-ink text-pretty">
+                The other designer at Tactile will keep expanding it after I leave.
+              </p>
+            </div>
           </aside>
         </div>
       </section>
