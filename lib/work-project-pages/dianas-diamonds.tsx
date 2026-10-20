@@ -212,10 +212,9 @@ export const dianasDiamondsPage: WorkProjectPage = {
         </WithMargin>
       </section>
 
-      <section id="problem">
+      {/* The hairline on top closes the Overview before the problem statement. */}
+      <section id="problem" className="border-t border-hairline pt-16">
         {/* The statement is the heading for the evidence below it: before, and what the library does. */}
-        {/* A hairline closes the Overview before the problem statement. */}
-        <div aria-hidden="true" className="mb-16 border-t border-hairline" />
         <h2 className="max-w-[1100px] text-[36px] font-medium leading-[1.1] tracking-[-0.035em] text-ink text-balance">
           The question isn&apos;t how to make prototypes,{" "}
           it&apos;s where they live once the meeting is over.
