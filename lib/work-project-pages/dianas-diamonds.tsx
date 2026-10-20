@@ -121,7 +121,7 @@ const tourSlides: TourSlide[] = [
   {
     tab: "Tickets",
     title: "Every ticket. Every version.",
-    text: "A prototype links all its tickets, and you can step back to how it looked at each one.",
+    text: "Every ticket is linked, so you can step back to each version.",
     video: `${media}/tickets-history.webm`,
     poster: `${media}/tickets-history-poster.jpg`,
     alt: "Stepping back to the earlier ticket's version of a prototype, then forward again",
