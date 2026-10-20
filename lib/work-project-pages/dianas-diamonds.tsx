@@ -187,11 +187,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
           aside={
             <MarginNote label="Why diamonds?" media={<LiveGem finish="brilliant" className="w-44" />}>
               The name started as a joke: my coworkers said I polish my prototypes like diamonds.
-              <span className="mt-3 block text-ink-muted">
-                I designed the stone with Tactile&apos;s 3D artists, cut like a Swarovski crystal so it
-                catches light the way a real one does.
-              </span>
-              <span className="mt-4 block text-[18px] font-medium text-ink">&ldquo;They are actual diamonds!&rdquo;</span>
+              <span className="mt-5 block border-t border-hairline pt-5 text-[18px] font-medium text-ink">&ldquo;They are actual diamonds!&rdquo;</span>
               <span className="block text-[13px] text-ink-meta">A coworker, on seeing the hub</span>
             </MarginNote>
           }
@@ -218,6 +214,8 @@ export const dianasDiamondsPage: WorkProjectPage = {
 
       <section id="problem">
         {/* The statement is the heading for the evidence below it: before, and what the library does. */}
+        {/* A hairline closes the Overview before the problem statement. */}
+        <div aria-hidden="true" className="mb-16 border-t border-hairline" />
         <h2 className="max-w-[1100px] text-[36px] font-medium leading-[1.1] tracking-[-0.035em] text-ink text-balance">
           The question isn&apos;t how to make prototypes,{" "}
           it&apos;s where they live once the meeting is over.
@@ -320,7 +318,13 @@ export const dianasDiamondsPage: WorkProjectPage = {
               always a person&apos;s click.
             </p>
           </div>
-          <StatusBand />
+          <div className="flex flex-col gap-4">
+            <StatusBand />
+            <p className="text-[13px] leading-[1.5] text-ink-meta text-pretty">
+              I designed the stone with Tactile&apos;s 3D artists, cut like a Swarovski crystal so it
+              catches light the way a real one does.
+            </p>
+          </div>
         </div>
       </section>
 
