@@ -48,6 +48,7 @@ const GLOW = { opacity: 0.16, filter: "blur(80px) saturate(1.5)", transform: "sc
 
 // Kept here, not in globals.css, so the tour never depends on a stylesheet rebuild.
 const KEYFRAMES = `
+@keyframes tour-breathe{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.18);opacity:.85}}
 @keyframes tour-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes tour-in{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
 @keyframes tour-out{from{opacity:1;transform:none}to{opacity:0;transform:scale(.98)}}
@@ -229,14 +230,16 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
             const lb = label.getBoundingClientRect()
             const x1 = lb.left - g.left - 10
             const y1 = lb.top - g.top + lb.height / 2
-            const x2 = sc.left - g.left + (note.x + note.w / 2) * sc.width + 14
-            const y2 = sc.top - g.top + (note.y + note.h / 2) * sc.height
-            const dx = x2 - x1
+            const cx = sc.left - g.left + (note.x + note.w / 2) * sc.width
+            const cy = sc.top - g.top + (note.y + note.h / 2) * sc.height
+            const dx = cx - x1
             const bow = Math.min(90, Math.abs(dx) * 0.25)
-            const c1x = x1 + dx * 0.3, c1y = Math.min(y1, y2) - bow
-            const c2x = x1 + dx * 0.75, c2y = y2 - bow * 0.6
-            // Head: two short strokes along the curve's final direction.
-            const ang = Math.atan2(y2 - c2y, x2 - c2x)
+            const c1x = x1 + dx * 0.3, c1y = Math.min(y1, cy) - bow
+            const c2x = x1 + dx * 0.75, c2y = cy - bow * 0.6
+            // The tip stops on the dot's edge (radius 9), along the curve's final direction.
+            const ang = Math.atan2(cy - c2y, cx - c2x)
+            const x2 = cx - 9 * Math.cos(ang)
+            const y2 = cy - 9 * Math.sin(ang)
             const h = 10
             const p = (a: number) => `${(x2 - h * Math.cos(ang + a)).toFixed(1)} ${(y2 - h * Math.sin(ang + a)).toFixed(1)}`
             setArrow({
@@ -263,6 +266,13 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
             className="flex flex-col gap-5 outline-none focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-brand"
         >
             <style>{KEYFRAMES}</style>
+            {/* The crayon texture the dots share with the arrows. */}
+            <svg aria-hidden="true" className="absolute h-0 w-0">
+                <filter id="tour-crayon" x="-30%" y="-30%" width="160%" height="160%">
+                    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n" />
+                    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G" />
+                </filter>
+            </svg>
 
             {/* The screens by name, so it reads as a tour at a glance; also how you jump around. */}
             <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-2" role="tablist" aria-label="Screens">
@@ -315,7 +325,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                     <button
                         type="button"
                         onClick={() => goByHand(index + 1)}
-                        className="flex h-9 items-center gap-1.5 rounded-full bg-ink pr-3 pl-4 text-[15px] text-[var(--paper)] transition-colors hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                        className="flex h-9 items-center gap-1.5 rounded-full bg-ink pr-3 pl-4 text-[15px] text-[var(--paper)] transition-colors hover:bg-[#a99ae6] hover:text-[#16151a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                     >
                         {next.tab}
                         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
@@ -410,20 +420,20 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                                     className="absolute grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-brand"
                                     style={{ left: `${(note.x + note.w / 2) * 100}%`, top: `${(note.y + note.h / 2) * 100}%` }}
                                 >
-                                    {/* Soft and dimmed at rest, in the pencil arrow's lavender; full when its note is hovered. */}
-                                    {!reduced && (
-                                        <span
-                                            className="absolute h-4 w-4 rounded-full bg-[#a99ae6]/30"
-                                            style={{ animation: "tour-pulse 3.2s ease-out infinite" }}
-                                        />
-                                    )}
-                                    <span
-                                        className={`relative h-3.5 w-3.5 rounded-full border-[1.5px] transition-[background-color,border-color,transform] duration-300 ${
-                                            hot === i
-                                                ? "scale-125 border-[#a99ae6] bg-[#a99ae6]"
-                                                : "border-[#a99ae6]/70 bg-[#a99ae6]/25"
+                                    {/* A crayon circle in the arrow's lavender: dimmed at rest, full when its note is hovered. */}
+                                    <svg
+                                        aria-hidden="true"
+                                        viewBox="0 0 24 24"
+                                        className={`h-6 w-6 overflow-visible transition-[opacity,transform] duration-300 ${
+                                            hot === i ? "scale-110 opacity-100" : "opacity-60"
                                         }`}
-                                    />
+                                        style={!reduced && hot !== i ? { animation: "tour-breathe 3.2s ease-in-out infinite" } : undefined}
+                                    >
+                                        <g filter="url(#tour-crayon)" stroke="#a99ae6" strokeLinecap="round">
+                                            <circle cx="12" cy="12" r="5.5" fill={hot === i ? "#a99ae6" : "rgba(169,154,230,0.25)"} strokeWidth="1.8" />
+                                            <path d="M5.2 9.5 C 6.5 4.8, 15.5 3.6, 18.6 8.4" fill="none" strokeWidth="1" opacity="0.6" />
+                                        </g>
+                                    </svg>
                                 </button>
                             ))}
                         </div>
@@ -473,7 +483,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                                 >
                                     <span
                                         aria-hidden="true"
-                                        className={`w-0.5 shrink-0 self-stretch rounded-full transition-colors ${hot === i ? "bg-brand" : "bg-brand/35"}`}
+                                        className={`w-0.5 shrink-0 self-stretch rounded-full transition-colors ${hot === i ? "bg-[#a99ae6]" : "bg-[#a99ae6]/35"}`}
                                     />
                                     {note.label}
                                 </button>

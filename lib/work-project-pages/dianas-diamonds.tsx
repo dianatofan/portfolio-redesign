@@ -72,7 +72,7 @@ const tourSlides: TourSlide[] = [
       { x: 0.03, y: 0.68, w: 0.94, h: 0.31, label: "Every prototype is a diamond" },
       { x: 0.1, y: 0.158, w: 0.183, h: 0.04, label: "Search by name or ticket" },
       { x: 0.287, y: 0.158, w: 0.126, h: 0.04, label: "Filter by status" },
-      { x: 0.876, y: 0.024, w: 0.108, h: 0.04, label: "Switch to the grid" },
+      { x: 0.932, y: 0.028, w: 0.051, h: 0.033, label: "Switch to the grid" },
     ],
   },
   {
