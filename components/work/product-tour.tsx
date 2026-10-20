@@ -195,7 +195,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
             type="button"
             onClick={() => goByHand(index + dir)}
             aria-label={dir < 0 ? "Previous screen" : "Next screen"}
-            className="grid h-9 w-9 place-items-center rounded-full border border-hairline bg-transparent text-ink transition-colors hover:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            className="grid h-9 w-9 place-items-center rounded-full border border-hairline bg-transparent text-ink transition-colors hover:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a99ae6]"
         >
             <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <path
@@ -263,7 +263,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
             onKeyDown={onKeyDown}
             onPointerEnter={(e) => e.pointerType === "mouse" && setHovering(true)}
             onPointerLeave={() => setHovering(false)}
-            className="flex flex-col gap-5 outline-none focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-brand"
+            className="flex flex-col gap-5 outline-none focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-[#a99ae6]"
         >
             <style>{KEYFRAMES}</style>
             {/* The crayon texture the dots share with the arrows. */}
@@ -285,7 +285,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                             role="tab"
                             aria-selected={active}
                             onClick={() => goByHand(i)}
-                            className={`relative isolate shrink-0 overflow-hidden flex h-9 items-center rounded-full px-4 text-[15px] whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-brand ${
+                            className={`relative isolate shrink-0 overflow-hidden flex h-9 items-center rounded-full px-4 text-[15px] whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a99ae6] focus-visible:ring-inset ${
                                 active
                                     ? reduced
                                         ? "bg-ink text-[var(--paper)]"
@@ -325,7 +325,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                     <button
                         type="button"
                         onClick={() => goByHand(index + 1)}
-                        className="flex h-9 items-center gap-1.5 rounded-full bg-ink pr-3 pl-4 text-[15px] text-[var(--paper)] transition-colors hover:bg-[#a99ae6] hover:text-[#16151a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                        className="flex h-9 items-center gap-1.5 rounded-full bg-ink pr-3 pl-4 text-[15px] text-[var(--paper)] transition-colors hover:bg-[#a99ae6] hover:text-[#16151a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a99ae6]"
                     >
                         {next.tab}
                         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
@@ -417,7 +417,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                                     onFocus={() => setHot(i)}
                                     onBlur={() => setHot(null)}
                                     aria-label={note.label}
-                                    className="absolute grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-brand"
+                                    className="absolute grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-[#a99ae6]"
                                     style={{ left: `${(note.x + note.w / 2) * 100}%`, top: `${(note.y + note.h / 2) * 100}%` }}
                                 >
                                     {/* A crayon circle in the arrow's lavender: dimmed at rest, full when its note is hovered. */}
@@ -477,7 +477,7 @@ export function ProductTour({ slides, label }: { slides: TourSlide[]; label: str
                                     onMouseLeave={() => setHot(null)}
                                     onFocus={() => setHot(i)}
                                     onBlur={() => setHot(null)}
-                                    className={`flex w-full gap-3 text-left text-[18px] leading-[1.6] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
+                                    className={`flex w-full gap-3 text-left text-[18px] leading-[1.6] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a99ae6] ${
                                         hot === i ? "text-ink" : "text-ink-muted"
                                     }`}
                                 >
