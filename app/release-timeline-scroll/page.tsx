@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import Link from "next/link"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { LabHero, LabIntro, LabSection, NextInLab, labBody, labContainer } from "@/components/work/lab-chrome"
 import { MovingGradient } from "@/components/moving-gradient"
 import { ReleaseTimelineScroll } from "@/components/release-timeline-scroll"
 
@@ -20,124 +20,74 @@ const meta = [
 
 export default function ReleaseTimelineScrollPage() {
   return (
-    <main className="min-h-screen bg-white">
-      <header className="fixed left-0 right-0 top-0 z-50 bg-white/80 px-6 py-4 backdrop-blur-sm">
-        <div className="mx-auto grid grid-cols-12 items-center gap-x-6">
-          <div className="col-span-6 md:col-span-2">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-[var(--text-secondary)]"
-            >
-              <ChevronLeft size={16} aria-hidden />
-              Back
-            </Link>
-          </div>
+    <main className="min-h-screen bg-white text-ink">
+      <Header />
 
-          <div className="col-span-6 flex justify-end md:col-span-4 md:col-start-9">
-            <Link
-              href="/work/liveops-tooling"
-              className="flex items-center gap-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-[var(--text-secondary)]"
-            >
-              Next: LiveOps at Tactile
-              <ChevronRight size={16} aria-hidden />
-            </Link>
-          </div>
+      <LabIntro
+        title="Visualizing release impact across live games"
+        standfirst="Building a release timeline to answer one question: what changed?"
+      />
+
+      <LabHero
+        specs={[
+          ...meta.map((item) => ({ label: item.label, value: item.values.join(", ") })),
+          { label: "Year", value: "2026" },
+        ]}
+      >
+        <div className="relative aspect-[2/1] w-full bg-surface">
+          <Image
+            src="/images/release-timeline-hero.webp"
+            alt="Release timeline: client releases and events plotted against crash rate and DAU"
+            fill
+            priority
+            className="object-cover object-top"
+            sizes="(max-width: 1200px) 100vw, 1200px"
+          />
         </div>
-      </header>
+      </LabHero>
 
-      {/* Hero image — matches the LiveOps at Tactile page hero dimensions */}
-      <section className="pt-28">
-        <div className="mx-auto max-w-[1800px] px-6">
-          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl bg-card">
-            <Image
-              src="/images/release-timeline-hero.webp"
-              alt="Release timeline: client releases and events plotted against crash rate and DAU"
-              fill
-              priority
-              className="object-cover object-top"
-              sizes="100vw"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Title + meta + intro */}
-      <section className="mx-auto max-w-[1100px] px-6 py-12 md:py-16">
-        <h1 className="max-w-3xl text-3xl font-medium leading-[1.08] tracking-tight text-foreground md:text-[52px]">
-          Visualizing release impact across live games
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[var(--text-secondary)]">
-          Building a release timeline to answer one question: what changed?
+      <LabSection label="Why a timeline?">
+        <p className={labBody}>
+          On live games, when something breaks the first question is rarely{" "}
+          <span className="font-medium text-ink">why did it happen?</span> It&apos;s{" "}
+          <span className="font-medium text-ink">what changed?</span> A release, experiment,
+          configuration update, or backend change could all affect the player experience. That
+          information already existed, but it was buried in tables and spread across tools. Visual
+          patterns are far easier to spot in a chart.
         </p>
-
-        <div className="mt-10 grid grid-cols-2 gap-8 border-b border-border pb-12 md:grid-cols-4">
-          {meta.map((item) => (
-            <div key={item.label}>
-              <p className="mb-2 text-sm font-medium text-[var(--text-tertiary)]">{item.label}</p>
-              <p className="text-base font-medium text-foreground">
-                {item.values.map((value, index) => (
-                  <span key={`${item.label}-${value}`}>
-                    {index > 0 && <br />}
-                    {value}
-                  </span>
-                ))}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10 max-w-2xl">
-          <h2 className="text-xl font-medium tracking-tight text-foreground md:text-2xl">
-            Why a timeline?
-          </h2>
-          <div className="mt-5 space-y-4 text-base leading-relaxed text-[var(--text-secondary)]">
-            <p>
-              On live games, when something breaks the first question is rarely{" "}
-              <span className="font-medium text-foreground">why did it happen?</span> It&apos;s{" "}
-              <span className="font-medium text-foreground">what changed?</span> A release, experiment,
-              configuration update, or backend change could all affect the player experience. That
-              information already existed, but it was buried in tables and spread across tools.
-              Visual patterns are far easier to spot in a chart.
-            </p>
-          </div>
-        </div>
-      </section>
+      </LabSection>
 
       {/* Scroll story over a soft moving purple gradient */}
-      <section className="relative mt-16 py-20 md:mt-24 md:py-28">
+      <section className="relative mt-[72px] py-20 md:py-28">
         <MovingGradient />
-        <div className="relative mx-auto w-full max-w-[2000px] px-6">
+        <div className="relative mx-auto w-full max-w-[2000px] px-gutter">
           <ReleaseTimelineScroll />
         </div>
       </section>
 
-      {/* What I learned */}
-      <section className="mx-auto max-w-[1100px] px-6 pt-20 md:pt-28">
-        <div className="max-w-2xl">
-          <h2 className="text-xl font-medium tracking-tight text-foreground md:text-2xl">
-            What I learned
-          </h2>
-          <div className="mt-5 space-y-4 text-base leading-relaxed text-[var(--text-secondary)]">
-            <p>
-              The hardest part wasn&apos;t designing the chart. It was deciding where it belonged.
-            </p>
-            <p>Good tools fit into existing workflows instead of creating new ones.</p>
-          </div>
+      <LabSection label="What I learned">
+        <div className={`space-y-4 ${labBody}`}>
+          <p>
+            The hardest part wasn&apos;t designing the chart. It was deciding where it belonged.
+          </p>
+          <p>Good tools fit into existing workflows instead of creating new ones.</p>
         </div>
+      </LabSection>
+
+      {/* Outcome, as a pull quote between rules */}
+      <section className={`${labContainer} pt-[72px]`}>
+        <blockquote className="mx-auto max-w-[860px] border-y border-ink py-8 text-center text-[clamp(24px,2.6vw,36px)] font-medium leading-[1.2] tracking-[-0.03em] text-ink text-balance">
+          A single place to answer one question:{" "}
+          <span className="text-ink-muted">What changed?</span>
+        </blockquote>
       </section>
 
-      {/* Outcome */}
-      <section className="mx-auto max-w-[1100px] px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-            Outcome
-          </p>
-          <p className="text-2xl font-medium leading-snug tracking-tight text-foreground md:text-3xl">
-            A single place to answer one question:{" "}
-            <span className="text-[var(--text-secondary)]">What changed?</span>
-          </p>
-        </div>
-      </section>
+      <NextInLab
+        label="Next case study"
+        title="LiveOps Alerting"
+        href="/work/liveops-alerting"
+        image="/images/project-liveops.webp"
+      />
 
       <Footer />
     </main>

@@ -1,5 +1,5 @@
 import type { WorkProjectPage } from "./types"
-import { BeforeAfterCompare, CaseStudyImage, CaseStudyImageGrid, InsightCards, OutcomeCards } from "./shared"
+import { BeforeAfterCompare, CaseStudyImage, CaseStudyImageGrid, InsightCards, OutcomeCards, csHeading, csParagraph, csPullQuote } from "./shared"
 
 // Shared by the public "At a glance" block and the full Impact section, so the
 // headline numbers above the password gate always match the ones below it.
@@ -52,8 +52,8 @@ export const designSystemPage: WorkProjectPage = {
   renderBeforeGate: () => (
     <>
       <section id="overview">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Overview</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <h2 className={csHeading}>Overview</h2>
+        <p className={csParagraph}>
           In Famly's early days, engineers built the UI using an off-the-shelf UI kit to move
           fast. It worked until the product scaled. As the codebase grew, that approach started
           creating real cracks: inconsistent patterns, rising support calls, and usability issues
@@ -63,8 +63,8 @@ export const designSystemPage: WorkProjectPage = {
       </section>
 
       <section id="problem">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Problem</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Problem</h2>
+        <p className={`${csParagraph} mb-4`}>
           Scaling on top of a UI kit the team didn't control left visible seams across the product.
           Users ran into inconsistent interactions and confusing flows, which drove up support
           volume. Internally, engineers were patching the same things repeatedly with no shared
@@ -93,9 +93,9 @@ export const designSystemPage: WorkProjectPage = {
 
 
         <section id="goal">
-            <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Goal</h2>
-            <div className="bg-accent/20 border-l-4 border-accent p-6 rounded-r-lg">
-                <p className="text-lg font-medium text-foreground">
+            <h2 className={csHeading}>Goal</h2>
+            <div className={csPullQuote}>
+                <p>
                     Replace the inherited UI kit with a design system Famly owned end-to-end — one that
                     reduced inconsistency, made delivery faster, and gave both design and engineering a
                     shared language to build from.</p>
@@ -105,8 +105,8 @@ export const designSystemPage: WorkProjectPage = {
 
 
       <section id="strategy">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Strategy</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <h2 className={csHeading}>Strategy</h2>
+        <p className={csParagraph}>
           I audited the product to find where inconsistency was costing the team, then conducted
           user interviews across the company to understand the biggest pain points and identify
           which components to prioritise first. We focused on the patterns touched most often, the
@@ -120,15 +120,15 @@ export const designSystemPage: WorkProjectPage = {
       </section>
 
       <section id="rollout">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Rollout</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Rollout</h2>
+        <p className={`${csParagraph} mb-4`}>
           The system was built across Figma, React, and Storybook, starting with typography,
           colour, spacing, and the component patterns that appeared everywhere. Documentation
           covered not just what existed, but when and how to use it. To drive product adoption, we
           presented updates at the weekly company demo and shared progress through internal email
           newsletters so teams stayed in the loop as the system grew.
         </p>
-        <div className="mt-8 rounded-lg overflow-hidden bg-card">
+        <div className="mt-8 rounded-[4px] overflow-hidden bg-surface">
           <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609987/styleguide1.png" alt="Style guide — typography and colour" topMargin={false} background={false} />
           <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609978/styleguide2.png" alt="Style guide — spacing and layout" topMargin={false} background={false} />
           <CaseStudyImage src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609981/styleguide3.png" alt="Style guide — iconography" topMargin={false} background={false} />
@@ -138,7 +138,7 @@ export const designSystemPage: WorkProjectPage = {
       </section>
 
       <section id="before-after">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Before &amp; After</h2>
+        <h2 className={csHeading}>Before &amp; After</h2>
         <BeforeAfterCompare
           pairs={[
             {
@@ -156,7 +156,7 @@ export const designSystemPage: WorkProjectPage = {
       </section>
 
       <section id="ui-in-practice">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">UI in Practice</h2>
+        <h2 className={csHeading}>UI in Practice</h2>
         <CaseStudyImage
           src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610265/ui.png"
           alt="Design system applied in the product UI"
@@ -165,7 +165,7 @@ export const designSystemPage: WorkProjectPage = {
       </section>
 
       <section id="impact">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Impact</h2>
+        <h2 className={csHeading}>Impact</h2>
         <OutcomeCards
           items={impact}
         />

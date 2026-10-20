@@ -1,16 +1,40 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 
-export function HeroImage({ src, alt }: { src: string; alt: string }) {
+export function HeroImage({ src, alt, video }: { src: string; alt: string; video?: string }) {
   const [loaded, setLoaded] = useState(false)
+  const [reduced, setReduced] = useState(true)
+
+  // Video heroes play once and rest on their last frame; with reduced motion
+  // they stay on the poster.
+  useEffect(() => {
+    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+  }, [])
+
+  if (video && !reduced) {
+    return (
+      <div className="relative aspect-video overflow-hidden rounded-2xl bg-surface">
+        <video
+          src={video}
+          poster={src}
+          autoPlay
+          muted
+          playsInline
+          aria-label={alt}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-black/[0.08] ring-inset" />
+      </div>
+    )
+  }
 
   return (
-    <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-card">
+    <div className="relative aspect-video overflow-hidden rounded-2xl bg-surface">
       {/* Keep placeholder lightweight so image paints as fast as possible. */}
       <div
-        className={`absolute inset-0 bg-[#f4f4f5] transition-opacity duration-150 ${
+        className={`absolute inset-0 bg-surface transition-opacity duration-150 ${
           loaded ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       />
@@ -29,11 +53,7 @@ export function HeroImage({ src, alt }: { src: string; alt: string }) {
         fetchPriority="high"
         onLoad={() => setLoaded(true)}
       />
-      {/* Hairline edge, so a light hero doesn't bleed into the white page. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/[0.06]"
-      />
+      <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-black/[0.08] ring-inset" />
     </div>
   )
 }

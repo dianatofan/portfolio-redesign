@@ -167,17 +167,22 @@ export function ProjectCard({
                     {(shipped || isPasswordProtected) && (
                         <div className="absolute right-3 top-3 flex items-center gap-1.5 pointer-events-none">
                             {shipped && (
-                                <span className="inline-flex items-center rounded-full bg-accent px-2.5 py-1 text-xs font-medium tracking-wide uppercase text-accent-foreground">
+                                <span className="inline-flex h-6 items-center rounded-full bg-accent px-2.5 text-xs font-medium tracking-wide uppercase text-accent-foreground">
                                     Shipped
                                 </span>
                             )}
                             {isPasswordProtected && (
                                 <span
-                                    className="inline-flex items-center rounded-full bg-white/85 px-1.5 py-1 text-foreground backdrop-blur-sm"
+                                    // Fixed h-6 on both chips so the lock matches the Shipped
+                                    // label. The icon's size is inline because globals.css sets
+                                    // .material-symbols-outlined to 24px outside any layer,
+                                    // which beats a Tailwind text-[] utility.
+                                    className="inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-white/85 text-foreground backdrop-blur-sm"
                                     title="Full case study is password protected. The summary is public."
                                 >
                                     <span
-                                        className="material-symbols-outlined text-[16px] leading-none"
+                                        className="material-symbols-outlined leading-none"
+                                        style={{ fontSize: 14 }}
                                         aria-hidden="true"
                                     >
                                         lock

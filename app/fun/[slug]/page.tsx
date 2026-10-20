@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import Link from "next/link"
 import { notFound } from "next/navigation"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import { LabHero, LabIntro, LabSection, labBody } from "@/components/work/lab-chrome"
 
 type FunPost = {
   slug: string
@@ -96,78 +98,36 @@ export default async function FunProjectPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-background">
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto grid grid-cols-4 md:grid-cols-12 gap-x-3 items-center">
-          <div className="col-span-4 md:col-span-3 flex items-center">
-            <Link
-              href="/#built-in-code"
-              className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-              Back
-            </Link>
-          </div>
+    <main className="min-h-screen bg-white text-ink">
+      <Header />
+
+      <LabIntro title={post.title} standfirst={post.content.intro} />
+
+      {/* The design's hero is 600px tall in the 1200px column. */}
+      <LabHero>
+        <div className="relative aspect-[2/1] w-full bg-[#111113]">
+          <Image
+            src={post.coverImage}
+            alt={`${post.title} cover`}
+            fill
+            priority
+            className="object-cover"
+            sizes="(max-width: 1200px) 100vw, 1200px"
+          />
         </div>
-      </header>
+      </LabHero>
 
-      <article className="pt-24 pb-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="relative w-full overflow-hidden rounded-2xl bg-card aspect-[16/9]">
-            <Image
-              src={post.coverImage}
-              alt={`${post.title} cover`}
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
+      {post.content.sections.map((section) => (
+        <LabSection key={section.heading} label={section.heading}>
+          <div className={`space-y-4 ${labBody}`}>
+            {section.body.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
+        </LabSection>
+      ))}
 
-          <div className="mt-10 max-w-3xl">
-            <p className="text-sm text-[var(--text-tertiary)]">
-              {post.published} · {post.readTime}
-            </p>
-            <h1 className="mt-3 text-3xl md:text-5xl font-medium tracking-tight text-foreground">
-              {post.title}
-            </h1>
-            <p className="mt-5 text-lg leading-relaxed text-[var(--text-secondary)]">
-              {post.content.intro}
-            </p>
-
-            <div className="mt-12 space-y-10">
-              {post.content.sections.map((section) => (
-                <section key={section.heading}>
-                  <h2 className="text-2xl font-medium text-foreground">{section.heading}</h2>
-                  <div className="mt-4 space-y-4">
-                    {section.body.map((paragraph) => (
-                      <p
-                        key={paragraph}
-                        className="text-base leading-relaxed text-[var(--text-secondary)]"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </div>
-          </div>
-        </div>
-      </article>
+      <Footer />
     </main>
   )
 }
-

@@ -1,5 +1,5 @@
 import type { WorkProjectPage } from "./types"
-import { CaseStudyImage, InsightCards, OutcomeCards } from "./shared"
+import { CaseStudyImage, InsightCards, OutcomeCards, csHeading, csParagraph, csPullQuote, csSubheading } from "./shared"
 
 // Shared by the public "At a glance" block and the full Impact section, so the
 // headline numbers above the password gate always match the ones below it.
@@ -52,9 +52,9 @@ export const travelPlanningPage: WorkProjectPage = {
   renderBeforeGate: () => (
     <>
       <section id="overview">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Overview</h2>
+        <h2 className={csHeading}>Overview</h2>
         <div className="space-y-4">
-          <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+          <p className={csParagraph}>
             91% of travellers turned to search engines for trip inspiration, and Google was the
             first stop for most of them. But Search was built around a single query, not the
             multi-session reality of actually planning a trip. Over a summer sprint, we defined a
@@ -67,8 +67,8 @@ export const travelPlanningPage: WorkProjectPage = {
 
 
       <section id="problem">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Problem</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <h2 className={csHeading}>Problem</h2>
+        <p className={csParagraph}>
           Search returned text-based links with no memory between sessions. Every
           visit started from zero. Travellers had to stitch together inspiration, comparisons, and
           logistics on their own, across tabs, screenshots, and half-remembered searches. The
@@ -96,9 +96,9 @@ export const travelPlanningPage: WorkProjectPage = {
       </section>
 
         <section id="goal">
-            <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Goal</h2>
-            <div className="bg-accent/20 border-l-4 border-accent p-6 rounded-r-lg">
-                <p className="text-lg font-medium text-foreground">
+            <h2 className={csHeading}>Goal</h2>
+            <div className={csPullQuote}>
+                <p>
                     Design a travel planning experience in Google Search that helps flexible travellers move
                     from inspiration to decision across multiple sessions, without losing context along the
                     way.                </p>
@@ -110,14 +110,14 @@ export const travelPlanningPage: WorkProjectPage = {
     <>
 
       <section id="research">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Research</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Research</h2>
+        <p className={`${csParagraph} mb-4`}>
           We didn't start from scratch. Google had a large database of existing user research and I
           spent time going deep into it before touching a single frame. The patterns were
           consistent: people planning trips were flexible and undecided. Most hadn't committed to a
           destination, a date, or even a duration.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           Three friction points kept coming up: getting inspired, comparing options without losing
           context, and resuming a search without starting over. Those gaps became the backbone of
           the framework.
@@ -125,8 +125,8 @@ export const travelPlanningPage: WorkProjectPage = {
       </section>
 
       <section id="framework">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Framework</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Framework</h2>
+        <p className={`${csParagraph} mb-4`}>
           We structured the work around a three-stage traveller journey, with each designer owning
           one stage. My primary responsibility was stage three, Rediscover the Journey. On top of
           that, I took on the work of pulling all three stages into a coherent experience, since
@@ -141,8 +141,8 @@ export const travelPlanningPage: WorkProjectPage = {
 
         <div className="mt-8 space-y-10">
           <div id="framework-get-inspired" className="space-y-4 scroll-mt-20">
-            <h3 className="text-xl font-medium text-foreground">I. Get inspired</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>I. Get inspired</h3>
+            <p className={csParagraph}>
               A visual, cross-vertical surface that surfaces destinations, stays, and things to do
               before any destination has been decided on.
             </p>
@@ -155,7 +155,7 @@ export const travelPlanningPage: WorkProjectPage = {
                   ratioClass="aspect-[6/5]"
                 />
               </div>
-              <div className="rounded-xl bg-gray-50 p-6 md:p-8 mt-12">
+              <div className="rounded-[4px] bg-surface p-6 md:p-8 mt-12">
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-center">
                   <div className="mx-auto w-full max-w-[320px] flex flex-col items-center justify-center">
                     <div className="w-full rounded-[32px] bg-black p-[2px]">
@@ -170,7 +170,7 @@ export const travelPlanningPage: WorkProjectPage = {
                         </div>
                       </div>
                     </div>
-                    <p className="mt-3 text-sm text-center text-gray-400">
+                    <p className="mt-3 text-[13px] text-center text-ink-meta">
                       Without map: Broad exploration
                     </p>
                   </div>
@@ -187,7 +187,7 @@ export const travelPlanningPage: WorkProjectPage = {
                         </div>
                       </div>
                     </div>
-                    <p className="mt-3 text-sm text-center text-gray-400">
+                    <p className="mt-3 text-[13px] text-center text-ink-meta">
                       With map: Contextual exploration
                     </p>
                   </div>
@@ -197,8 +197,8 @@ export const travelPlanningPage: WorkProjectPage = {
           </div>
 
           <div id="framework-look-into-alternatives" className="space-y-4 scroll-mt-20">
-            <h3 className="text-xl font-medium text-foreground">II. Look into alternatives</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>II. Look into alternatives</h3>
+            <p className={csParagraph}>
               Side-by-side comparisons with price signals and sustainability cues to help weigh
               tradeoffs without jumping between tabs.
             </p>
@@ -211,7 +211,7 @@ export const travelPlanningPage: WorkProjectPage = {
                   ratioClass="aspect-[4/3]"
                 />
               </div>
-              <div className="rounded-xl bg-gray-50 p-6 md:p-8 mt-12">
+              <div className="rounded-[4px] bg-surface p-6 md:p-8 mt-12">
                 <div className="mx-auto w-full max-w-[320px]">
                   <div className="w-full rounded-[32px] bg-black p-[2px]">
                     <div className="overflow-hidden rounded-[30px] bg-black">
@@ -231,8 +231,8 @@ export const travelPlanningPage: WorkProjectPage = {
           </div>
 
           <div id="framework-rediscover-the-journey" className="space-y-4 scroll-mt-20">
-            <h3 className="text-xl font-medium text-foreground">III. Rediscover the journey</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>III. Rediscover the journey</h3>
+            <p className={csParagraph}>
               A curated view of the user's search history, personalised and kept up to date, so
               returning to a trip mid-planning feels like picking up a conversation, not starting a
               new one.
@@ -246,7 +246,7 @@ export const travelPlanningPage: WorkProjectPage = {
                   ratioClass="aspect-[4/3]"
                 />
               </div>
-              <div className="rounded-xl bg-gray-50 p-6 md:p-8 mt-12">
+              <div className="rounded-[4px] bg-surface p-6 md:p-8 mt-12">
                 <div className="mx-auto w-full max-w-[320px]">
                   <div className="w-full rounded-[32px] bg-black p-[2px]">
                     <div className="overflow-hidden rounded-[30px] bg-black">
@@ -268,8 +268,8 @@ export const travelPlanningPage: WorkProjectPage = {
       </section>
 
       <section id="solution">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Prototyping</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Prototyping</h2>
+        <p className={`${csParagraph} mb-4`}>
           I always start with quick sketches to make the delivery clear, align the team early, and
           pressure-test the idea before investing in high fidelity.
         </p>
@@ -278,10 +278,10 @@ export const travelPlanningPage: WorkProjectPage = {
           alt="Sketching and aligning with the team before prototyping"
           topMargin={false}
         />
-        <p className="mt-3 mb-6 text-sm text-center text-gray-400">
+        <p className="mt-3 mb-6 text-[13px] text-center text-ink-meta">
           Me in action, brainstorming with the team.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           I built high-fidelity mobile prototypes in React with a live Google Maps integration,
           something that wasn't possible in Figma at the time, before AI tools existed to bridge
           that gap. The prototypes were used directly in user research sessions and made it possible
@@ -291,11 +291,11 @@ export const travelPlanningPage: WorkProjectPage = {
       </section>
 
       <section id="outcome">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Outcome</h2>
+        <h2 className={csHeading}>Outcome</h2>
         <OutcomeCards
           items={impact}
         />
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mt-6">
+        <p className={`${csParagraph} mt-6`}>
           The sprint ran alongside a major organisational restructure at Google, which made for an
           uncertain backdrop. Teams were shifting, priorities were being renegotiated, and it wasn't
           always clear who the work ultimately belonged to. Getting anything across the line in that

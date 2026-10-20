@@ -2,7 +2,7 @@ import Image from "next/image"
 import { LiveopsBackgroundBlock } from "@/components/work/liveops-background-block"
 import { BeforeAfterVideoCard } from "@/components/work/before-after-video-card"
 import type { WorkProjectPage } from "./types"
-import { OutcomeCards } from "./shared"
+import { FigCaption, OutcomeCards, csHeading, csParagraph, csPullQuote, csSubheading } from "./shared"
 
 // Shared by the public "At a glance" block and the full Impact section, so the
 // headline numbers above the password gate always match the ones below it.
@@ -54,9 +54,9 @@ export const liveopsAlertingPage: WorkProjectPage = {
       <LiveopsBackgroundBlock />
 
       <section id="goal">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Goal</h2>
-        <div className="bg-accent/20 border-l-4 border-accent p-6 rounded-r-lg">
-          <p className="text-lg font-medium text-foreground">
+        <h2 className={csHeading}>Goal</h2>
+        <div className={csPullQuote}>
+          <p>
             Surface backend failures to LiveOps creators early so they can act before players are
             affected
           </p>
@@ -67,21 +67,21 @@ export const liveopsAlertingPage: WorkProjectPage = {
   renderAfterGate: () => (
     <>
       <section id="discovery">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Discovery</h2>
-        <h3 className="text-xl font-medium text-foreground mb-3">
+        <h2 className={csHeading}>Discovery</h2>
+        <h3 className={csSubheading}>
           Critical signals lived outside the LiveOps Dashboard
         </h3>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           I worked closely with LiveOps creators, backend engineers, and support teams to
           understand how production issues were detected and handled in practice.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           While backend systems reliably flagged failures at runtime through monitoring and logs,
           creators had no direct visibility in the LiveOps Dashboard. Instead, they relied on
           indirect signals: Slack messages from engineers, support tickets, or noticing anomalies
           in player metrics.
         </p>
-        <div className="mt-8 overflow-hidden">
+        <figure className="mt-3 flex flex-col gap-2.5">
           <Image
             src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610137/observability-gap.png"
             alt="Observability gap: alerts appear in engineering tools while the LiveOps Dashboard shows no alerts"
@@ -90,16 +90,16 @@ export const liveopsAlertingPage: WorkProjectPage = {
             className="w-full h-auto object-contain"
             sizes="(max-width: 768px) 100vw, 60vw"
           />
-          <p className="mt-3 text-sm text-[var(--text-tertiary)]">
+          <FigCaption>
             Failures were detectable in engineering tools, but creators worked in the Dashboard,
             creating an observability gap
-          </p>
-        </div>
+          </FigCaption>
+        </figure>
       </section>
 
       <section id="solution">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Solution</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <h2 className={csHeading}>Solution</h2>
+        <p className={csParagraph}>
           To close the observability gap, I redesigned the LiveOps Dashboard to surface the right
           signals, to the right people, at the right time. The solution combines UI surfacing with
           ownership and subscription logic, so failures are visible, actionable, and clearly owned.
@@ -107,17 +107,17 @@ export const liveopsAlertingPage: WorkProjectPage = {
       </section>
 
       <section id="homepage">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+        <h2 className={csHeading}>
           Homepage: Early Visibility
         </h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           The homepage previously showed only creator-configured shortcuts, with no indication when
           systems were failing.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           I added 2 new sections at the top of the homepage:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-base text-[var(--text-secondary)] mb-4">
+        <ul className="list-disc list-inside space-y-2 text-base text-ink-muted mb-4">
           <li>
             A critical issues banner that appears only when blocking issues exist and links directly
             to the Issues view
@@ -127,11 +127,11 @@ export const liveopsAlertingPage: WorkProjectPage = {
             scoped to resources they own or watch
           </li>
         </ul>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           These sections act as previews, helping creators understand the current state before they
           start configuring features.
         </p>
-        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-[4px]">
           <video autoPlay loop muted playsInline className="h-full w-full object-cover">
             <source
               src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610317/homepage-video.mp4"
@@ -144,14 +144,14 @@ export const liveopsAlertingPage: WorkProjectPage = {
       <section id="sidebar">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:items-start">
           <div>
-            <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+            <h2 className={csHeading}>
               Sidebar: Persistent Attention Signals
             </h2>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+            <p className={`${csParagraph} mb-4`}>
               In practice, many users do not always land on the homepage. Some navigate directly to a
               specific game or resource.
             </p>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <p className={csParagraph}>
               To account for this, I made critical states visible directly in the left-hand sidebar,
               where they could not be missed. This ensures issues draw attention regardless of entry
               point, without interrupting workflows.
@@ -169,8 +169,8 @@ export const liveopsAlertingPage: WorkProjectPage = {
           </div>
         </div>
         <div className="mt-8 grid grid-cols-1 gap-4">
-          <figure>
-            <div className="relative aspect-video overflow-hidden rounded-lg">
+          <figure className="flex flex-col gap-2.5">
+            <div className="relative aspect-video overflow-hidden rounded-[4px]">
               <video autoPlay loop muted playsInline className="h-full w-full object-cover">
                 <source
                   src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610490/avatar-sidebar.mp4"
@@ -178,13 +178,13 @@ export const liveopsAlertingPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
+            <FigCaption>
               Avatar-level signal
-            </figcaption>
+            </FigCaption>
           </figure>
 
-          <figure>
-            <div className="relative aspect-video overflow-hidden rounded-lg">
+          <figure className="flex flex-col gap-2.5">
+            <div className="relative aspect-video overflow-hidden rounded-[4px]">
               <video autoPlay loop muted playsInline className="h-full w-full object-cover">
                 <source
                   src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610494/game-sidebar.mp4"
@@ -192,27 +192,27 @@ export const liveopsAlertingPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
+            <FigCaption>
               Game-level signals
-            </figcaption>
+            </FigCaption>
           </figure>
         </div>
       </section>
 
       <section id="list-views">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+        <h2 className={csHeading}>
           List Views: From Awareness to Action
         </h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           Clicking into the Critical Issues or Latest Updates views reveals structured lists with
           clear context.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           For critical issues, users can see what is broken, where it occurs, which resources are
           affected, and how the issue was detected. Issues can be resolved or reopened, and deeper
           links provide access to backend or monitoring sources when needed.
         </p>
-        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-[4px]">
           <video autoPlay loop muted playsInline className="h-full w-full object-cover">
             <source
               src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610246/list-views1.mp4"
@@ -223,21 +223,21 @@ export const liveopsAlertingPage: WorkProjectPage = {
       </section>
 
       <section id="ownership">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+        <h2 className={csHeading}>
           Ownership and Watchers
         </h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           Alerting only works if responsibility is clear.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           I introduced ownership as a first-class concept across LiveOps resources. The creator
           becomes the default owner, ownership can be transferred, and owners are automatically
           subscribed to critical issues affecting their resources. Owners cannot unsubscribe from
           these issues.
         </p>
         <div className="mt-8 grid grid-cols-1 gap-4">
-          <figure>
-            <div className="relative aspect-video overflow-hidden rounded-lg">
+          <figure className="flex flex-col gap-2.5">
+            <div className="relative aspect-video overflow-hidden rounded-[4px]">
               <video autoPlay loop muted playsInline className="h-full w-full object-cover">
                 <source
                   src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610439/transfer-ownership.mp4"
@@ -245,13 +245,13 @@ export const liveopsAlertingPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
+            <FigCaption>
               Transfering ownership of a resource
-            </figcaption>
+            </FigCaption>
           </figure>
 
-          <figure>
-            <div className="relative aspect-video overflow-hidden rounded-lg">
+          <figure className="flex flex-col gap-2.5">
+            <div className="relative aspect-video overflow-hidden rounded-[4px]">
               <video autoPlay loop muted playsInline className="h-full w-full object-cover">
                 <source
                   src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1775044437/adding-watcher.mp4"
@@ -259,23 +259,23 @@ export const liveopsAlertingPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-sm text-[var(--text-tertiary)]">
+            <FigCaption>
               Adding watcher to a resource
-            </figcaption>
+            </FigCaption>
           </figure>
         </div>
       </section>
 
       <section id="notifications">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+        <h2 className={csHeading}>
           Notification Settings
         </h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           To balance signal and noise, I designed a subscription-based notification model. Users can
           manage which games and resource types they follow, and whether they receive critical
           issues, updates, or both.
         </p>
-        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-[4px]">
           <video autoPlay loop muted playsInline className="h-full w-full object-cover">
             <source
               src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610452/notifications-settings.mp4"
@@ -286,11 +286,11 @@ export const liveopsAlertingPage: WorkProjectPage = {
       </section>
 
       <section id="tradeoffs">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Key tradeoffs</h2>
+        <h2 className={csHeading}>Key tradeoffs</h2>
         <div className="space-y-8">
           <div>
-            <h3 className="text-lg font-medium text-foreground mb-3">Homepage as preview</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>Homepage as preview</h3>
+            <p className={csParagraph}>
               Early versions showed only unread updates, causing items to disappear once marked as
               read. I changed this to show all updates from the last 10 days, treating the homepage
               as a preview while the full Updates view remains the source of truth.
@@ -298,13 +298,13 @@ export const liveopsAlertingPage: WorkProjectPage = {
             <BeforeAfterVideoCard />
           </div>
           <div>
-            <h3 className="text-lg font-medium text-foreground mb-3">One badge per game</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>One badge per game</h3>
+            <p className={csParagraph}>
               Separate badges for issues and updates created visual noise and were hard to scan at
               scale. I consolidated to a single, severity-based badge per game: red for critical
               issues, blue for updates only.
             </p>
-            <div className="w-full mt-8 bg-[#E3E8F1] p-8 rounded-2xl justify-center flex">
+            <div className="w-full mt-8 bg-surface p-8 rounded-[4px] justify-center flex">
               <Image
                 src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610097/one-badge.png"
                 alt="Sidebar with a single severity-based badge per game"
@@ -316,13 +316,13 @@ export const liveopsAlertingPage: WorkProjectPage = {
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-medium text-foreground mb-3">No email notifications</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>No email notifications</h3>
+            <p className={csParagraph}>
               Although email was initially considered, we removed it to avoid delayed responses and
               alert fatigue. The system focuses on in-dashboard alerts as the source of truth, with
               Slack used only for time-sensitive awareness.
             </p>
-            <div className="mt-8 w-full bg-[#E3E8F1] p-8 rounded-2xl">
+            <div className="mt-8 w-full bg-surface p-8 rounded-[4px]">
               <Image
                 src="https://res.cloudinary.com/dzpdf5ygh/image/upload/v1769610116/email-notifications-removed.png"
                 alt="Notification settings with email notifications removed"
@@ -337,7 +337,7 @@ export const liveopsAlertingPage: WorkProjectPage = {
       </section>
 
       <section id="impact">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Impact</h2>
+        <h2 className={csHeading}>Impact</h2>
         <div className="mb-6">
           <OutcomeCards
             items={impact}

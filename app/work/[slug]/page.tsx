@@ -2,11 +2,32 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Footer } from "@/components/footer"
+import { Header } from "@/components/header"
 import { InlinePasswordGate } from "@/components/inline-password-gate"
 import { workProjects } from "@/components/projects"
 import { ProjectTableOfContents } from "@/components/project-table-of-contents"
 import { getWorkProjectPage } from "@/lib/work-project-pages"
 import { HeroImage } from "@/components/hero-image"
+import { ScrollFade } from "@/components/scroll-fade"
+import { LabStoryPage } from "@/components/work/lab-story-page"
+import { withSectionLabels } from "@/components/case-study-sections"
+import type { WorkProjectHighlight } from "@/lib/work-project-pages/types"
+
+/*
+ * The stat band shows a big figure over a short label ("16" / "AI-built
+ * prototypes in one library"). Highlights are written as one line, so the
+ * band takes the ones that lead with a number and splits it off: "35% faster
+ * UI development" becomes "35%" over "faster UI development". The rest are
+ * still in each study's Impact section.
+ */
+function toStats(highlights: WorkProjectHighlight[]) {
+  return highlights
+    .flatMap((item) => {
+      const match = item.title.match(/^([~+]?\d[\d.,]*(?:%|x|\+)?)\s+(.+)$/)
+      return match ? [{ value: match[1], label: match[2] }] : []
+    })
+    .slice(0, 3)
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -46,192 +67,154 @@ export default async function ProjectPage({ params }: PageProps) {
     notFound()
   }
 
-  const currentIndex = workProjects.findIndex((item) => item.slug === slug)
-  const nextProject = workProjects[(currentIndex + 1) % workProjects.length]
-  const nextProjectLabel = nextProject.navigationTitle ?? nextProject.title
+  const isLab = project.category === "experiment"
+  // Next of the same kind: case studies lead to case studies, Lab posts to Lab posts.
+  const siblings = workProjects.filter((item) => (item.category === "experiment") === isLab)
+  const nextProject = siblings[(siblings.findIndex((item) => item.slug === slug) + 1) % siblings.length]
   const postGateContent = projectPage.renderAfterGate?.()
+  const shortTitle = project.navigationTitle ?? project.title
+  const metaLine = [
+    isLab ? "Lab" : "Case study",
+    project.tags.find((tag) => !/^\d{4}$/.test(tag)),
+    projectPage.published,
+    projectPage.readTime,
+  ]
+    .filter(Boolean)
+    .join(" · ")
+  const stats = toStats(projectPage.highlights ?? [])
+
+  // Short Lab posts have their own layout (Lab Project.dc.html).
+  if (projectPage.story) {
+    return (
+      <main className="min-h-screen bg-white text-ink">
+        <Header />
+        <LabStoryPage
+          page={projectPage}
+          title={project.title}
+          image={project.image}
+          year={project.tags.find((tag) => /^\d{4}$/.test(tag))}
+          next={{ title: nextProject.title, href: `/work/${nextProject.slug}`, image: nextProject.image }}
+        />
+        <Footer />
+      </main>
+    )
+  }
 
   return (
-    <main className="min-h-screen bg-white">
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-white/80 backdrop-blur-sm">
-        <div className="mx-auto grid grid-cols-12 gap-x-6 items-center">
-          <div className="col-span-6 md:col-span-2">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-              Back
-            </Link>
-          </div>
+    // The hero is Fig. 1; figures in the body count on from there.
+    <main className="min-h-screen bg-white text-ink [counter-reset:fig_1]">
+      <Header />
 
-          <div className="col-span-6 md:col-span-4 md:col-start-9 flex justify-end">
-            <Link
-              href={`/work/${nextProject.slug}`}
-              className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-[var(--text-secondary)] transition-colors duration-200"
-            >
-              {`Next: ${nextProjectLabel}`}
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* The work first: back link, then the hero, then the headline as its caption. */}
+      <div className="flex flex-col gap-6 px-gutter pt-8 min-[720px]:pt-10">
+        {/* Case studies go back through the header breadcrumb; Lab posts keep their link. */}
+        {isLab && (
+          <Link href="/#lab" className="self-start text-[13px] text-ink-meta transition-colors hover:text-brand">
+            ← Lab
+          </Link>
+        )}
+        <figure className="flex flex-col gap-2.5">
+          <HeroImage src={projectPage.heroImage ?? project.image} video={projectPage.heroVideo} alt={`${project.title} cover`} />
+          <figcaption className="max-w-[640px] text-[13px] text-ink-meta">
+            <span className="text-ink">Fig. 1</span> — {projectPage.heroCaption ?? shortTitle}
+          </figcaption>
+        </figure>
+      </div>
 
-      <section className="pt-28">
-        <div className="max-w-[1800px] mx-auto px-6">
-          <HeroImage
-            src={projectPage.heroImage ?? project.image}
-            alt={`${project.title} cover`}
-          />
+      <section className="flex flex-col gap-7 px-gutter pt-12 pb-4 min-[720px]:pt-16">
+        <div className="flex flex-col gap-5">
+          <span className="text-[13px] text-ink-meta">{metaLine}</span>
+          <h1
+            className={
+              isLab
+                ? "max-w-[900px] text-[clamp(40px,5vw,64px)] font-medium leading-none tracking-[-0.04em] text-balance"
+                : "max-w-[1100px] text-[clamp(48px,6.5vw,96px)] font-medium leading-[0.95] tracking-[-0.05em] text-balance"
+            }
+          >
+            {projectPage.displayTitle ?? project.title}
+          </h1>
+          {projectPage.subtitle ? (
+            <p className="mt-2 max-w-[820px] text-[clamp(20px,2vw,26px)] leading-[1.3] tracking-[-0.015em] text-pretty">
+              {projectPage.subtitle}
+            </p>
+          ) : null}
         </div>
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink pt-4 min-[720px]:grid-cols-4">
+          {projectPage.meta.map((item) => (
+            <div key={item.label} className="flex flex-col gap-1">
+              <dt className="text-[13px] text-ink-meta">{item.label}</dt>
+              <dd className="text-[15px]">
+                {item.values.map((value, index) => (
+                  <span key={`${item.label}-${value}`}>
+                    {index > 0 && <br />}
+                    {value}
+                  </span>
+                ))}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
-      <section className="py-12 md:py-16">
-        <div className="max-w-[1800px] mx-auto px-6">
-          <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
-            <div className="col-span-4 md:col-span-8 md:col-start-3">
-              {projectPage.readTime ? (
-                <p className="mb-4 text-sm text-[var(--text-tertiary)]">
-                  {[projectPage.published, projectPage.readTime].filter(Boolean).join(" · ")}
-                </p>
-              ) : null}
-              <h1 className="text-3xl md:text-[48px] lg:text-[56px] font-medium leading-[1.08] tracking-tight text-foreground mb-12">
-                {projectPage.displayTitle ?? project.title}
-              </h1>
-
-              {projectPage.subtitle ? (
-                <p className="-mt-6 mb-12 max-w-3xl text-lg leading-relaxed text-[var(--text-secondary)]">
-                  {projectPage.subtitle}
-                </p>
-              ) : null}
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-border">
-                {projectPage.meta.map((item) => (
-                  <div key={item.label}>
-                    <p className="text-sm font-medium text-[var(--text-tertiary)] mb-2">
-                      {item.label}
-                    </p>
-                    <p className="text-base font-medium text-foreground">
-                      {item.values.map((value, index) => (
-                        <span key={`${item.label}-${value}`}>
-                          {index > 0 && <br />}
-                          {value}
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-                ))}
+      {stats.length > 0 ? (
+        <section aria-label="At a glance" className="px-gutter pt-12 pb-16 min-[720px]:pb-24">
+          <dl className="grid grid-cols-1 gap-3 min-[720px]:grid-cols-3">
+            {stats.map((item) => (
+              <div key={item.value + item.label} className="flex flex-col-reverse justify-end gap-2 rounded-2xl bg-surface p-6">
+                <dt className="text-[15px] text-ink-muted">{item.label}</dt>
+                <dd className="text-[clamp(40px,4.4vw,64px)] font-medium leading-none tracking-[-0.05em]">
+                  {item.value}
+                </dd>
               </div>
-
-              {!projectPage.story && projectPage.highlights && projectPage.highlights.length > 0 ? (
-                <div className="pt-10">
-                  <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)] mb-6">
-                    At a glance
-                  </h2>
-                  <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
-                    {projectPage.highlights.map((item) => (
-                      <div key={item.title} className="border-l-2 border-accent pl-4">
-                        <dt className="text-lg font-medium text-foreground leading-snug">
-                          {item.title}
-                        </dt>
-                        <dd className="mt-1 text-sm leading-relaxed text-[var(--text-secondary)]">
-                          {item.description}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {projectPage.story ? (
-        <section className="pb-24 md:pb-32">
-          <div className="max-w-[1800px] mx-auto px-6">
-            <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
-              <ol className="col-span-4 md:col-span-8 md:col-start-3 space-y-16 md:space-y-24">
-                {projectPage.story.map((step, index) => (
-                  <li
-                    key={step.title}
-                    className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-12"
-                  >
-                    <div className={step.visual ? "" : "lg:col-span-2 max-w-2xl"}>
-                      <span className="font-mono text-sm tabular-nums text-[var(--text-tertiary)]">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <h2 className="mt-2 text-2xl font-medium tracking-tight text-foreground md:text-3xl">
-                        {step.title}
-                      </h2>
-                      <div className="mt-4 space-y-3">
-                        {step.text.map((paragraph) => (
-                          <p key={paragraph} className="text-base leading-relaxed text-[var(--text-secondary)]">
-                            {paragraph}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-                    {step.visual ? <div className="min-w-0">{step.visual}</div> : null}
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
+            ))}
+          </dl>
         </section>
-      ) : (
-      <section className="pb-24 md:pb-32">
-        <div className="max-w-[1800px] mx-auto px-6">
-          <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3">
-            <div className="hidden md:block col-span-3">
-              <ProjectTableOfContents
-                sections={projectPage.sections}
-                projectSlug={project.slug}
-                isPasswordProtected={project.isPasswordProtected}
-              />
-            </div>
+      ) : null}
 
-            <div className="col-span-4 md:col-span-7 md:col-start-5 space-y-16">
-              {projectPage.renderBeforeGate()}
+      {/* With no stat band, the band's bottom padding moves here. */}
+      <section
+        className={`px-gutter pb-24 ${stats.length > 0 ? "" : "pt-16 min-[720px]:pt-24"}`}
+      >
+          {/* Ruler-style contents, fixed to the right edge of the viewport. */}
+          <ProjectTableOfContents
+            sections={projectPage.sections}
+            projectSlug={project.slug}
+            isPasswordProtected={project.isPasswordProtected}
+          />
 
-              {postGateContent &&
-                (project.isPasswordProtected ? (
-                  <InlinePasswordGate enabled projectSlug={project.slug} correctPassword="pixies">
-                    {postGateContent}
-                  </InlinePasswordGate>
-                ) : (
-                  postGateContent
-                ))}
-            </div>
+          {/*
+            Each top-level section opens with its number, then the headline
+            stacked above its text; see case-study-sections.
+          */}
+          <div className="cs-article flex min-w-0 max-w-[1320px] flex-col gap-24 [&_section[id]]:scroll-mt-24 [&_[data-cs-head]_h2]:mb-6">
+            {withSectionLabels(projectPage.renderBeforeGate(), projectPage.sections)}
+
+            {postGateContent &&
+              (project.isPasswordProtected ? (
+                <InlinePasswordGate enabled projectSlug={project.slug} correctPassword="pixies">
+                  {withSectionLabels(postGateContent, projectPage.sections)}
+                </InlinePasswordGate>
+              ) : (
+                withSectionLabels(postGateContent, projectPage.sections)
+              ))}
           </div>
-        </div>
       </section>
-      )}
 
+      <Link href={`/work/${nextProject.slug}`} className="group block px-gutter">
+        <div className="flex items-end justify-between gap-8 border-t border-hairline pt-7 pb-10 transition-colors group-hover:text-brand">
+          <div className="flex flex-col gap-2.5">
+            <span className="text-[13px] text-ink-meta">{isLab ? "Next in the Lab" : "Next case study"}</span>
+            <span className="max-w-[900px] text-[clamp(32px,4vw,56px)] font-medium leading-none tracking-[-0.045em] text-balance">
+              {nextProject.title}
+            </span>
+          </div>
+          <span aria-hidden="true" className="text-[32px]">
+            →
+          </span>
+        </div>
+      </Link>
+
+      <ScrollFade root=".cs-article" />
       <Footer />
     </main>
   )

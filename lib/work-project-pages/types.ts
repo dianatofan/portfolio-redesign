@@ -37,6 +37,10 @@ export type WorkProjectPage = {
   highlights?: WorkProjectHighlight[]
   subtitle?: string
   heroImage?: string
+  // A recording to play in place of the hero still; heroImage is its poster.
+  heroVideo?: string
+  // "Fig. 1" caption under the hero. Falls back to the project's short name.
+  heroCaption?: string
   description?: string
   meta: WorkProjectMetaItem[]
   sections: WorkProjectSection[]
@@ -47,7 +51,8 @@ export type WorkProjectPage = {
 export type WorkProjectSlug =
   | "dianas-diamonds"
   | "golden-goose-museum"
-  | "liveops-tooling"
+  | "liveops-alerting"
+  | "game-setup-automation"
   | "travel-planning"
   | "design-system"
   | "release-timeline"

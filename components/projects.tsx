@@ -1,6 +1,5 @@
-import { ProjectCard } from "./project-card"
-import { BuiltInCodeGallery } from "./built-in-code-gallery"
-import { EarlierWorkList } from "./earlier-work-list"
+import { SelectedWork, type SelectedWorkRow } from "./selected-work"
+import { LabGrid, type LabItem } from "./lab-grid"
 import { Microcomponents } from "./microcomponents"
 
 type WorkProject = {
@@ -14,9 +13,6 @@ type WorkProject = {
     aspect: string
     isPasswordProtected: boolean
     category?: "work" | "experiment"
-    // Older studies drop out of the tile grid into compact hover rows under
-    // "Earlier work", so current work gets the visual weight.
-    earlier?: boolean
     // Headline result shown under the card title. Taken from the case study's own
     // Impact section, so the number on the card always matches the page.
     outcome?: string
@@ -26,6 +22,11 @@ type WorkProject = {
     // Looping interface clip that plays over the cover on hover, so the card shows
     // the product running instead of a still.
     previewVideo?: string
+    // The homepage row: a shorter title, the status line, one short line saying
+    // what it is, and the year. Only projects with one are listed under Selected work.
+    // Looping clip for the homepage row's thumbnail.
+    rowVideo?: string
+    row?: { title: string; outcome: string; status: string; year: string }
 }
 
 export const workProjects: readonly WorkProject[] = [
@@ -39,10 +40,14 @@ export const workProjects: readonly WorkProject[] = [
         tags: ["2026", "Tactile Games"],
         featured: true,
         aspect: "aspect-[3/2]",
-        isPasswordProtected: true,
+        isPasswordProtected: false,
         outcome: "16 AI-built prototypes in one library, with handoff to developers built in",
         shipped: true,
         previewVideo: "/images/dianas-diamonds/field-real.mp4",
+        rowVideo: "/images/dianas-diamonds/field-18.webm",
+        row: {
+            title: "Diana's Diamonds",
+            outcome: "A tool I built so designers can share AI-made prototypes", status: "Shipped · Tactile", year: "2026" },
     },
     {
         slug: "liveops-alerting",
@@ -57,6 +62,9 @@ export const workProjects: readonly WorkProject[] = [
         outcome: "22% fewer production incidents, critical failures caught in minutes",
         shipped: true,
         previewVideo: "https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610317/homepage-video.mp4",
+        row: {
+            title: "Production alerting",
+            outcome: "Real-time alerts for production failures in live games", status: "Shipped · Tactile", year: "2025" },
     },
     {
         slug: "game-setup-automation",
@@ -72,6 +80,12 @@ export const workProjects: readonly WorkProject[] = [
         outcome: "About 2x faster game setup and 3 more games launched per quarter",
         shipped: true,
         previewVideo: "https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610262/step1-demo.mp4",
+        row: {
+            title: "Game setup automation",
+            outcome: "A guided flow that lets teams set up new games on their own",
+            status: "Shipped · Tactile",
+            year: "2025",
+        },
     },
     {
         slug: "travel-planning",
@@ -83,8 +97,10 @@ export const workProjects: readonly WorkProject[] = [
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: true,
-        earlier: true,
         outcome: "Concepts adopted into the 2024 Google Search roadmap",
+        row: {
+            title: "Travel on Google Search",
+            outcome: "A three-stage trip-planning framework for Google Search", status: "Concept · Google", year: "2023" },
     },
     {
         slug: "design-system",
@@ -96,7 +112,6 @@ export const workProjects: readonly WorkProject[] = [
         featured: false,
         aspect: "aspect-[3/2]",
         isPasswordProtected: false,
-        earlier: true,
         outcome: "35% faster UI development and 18% fewer support calls",
         shipped: true,
     },
@@ -137,141 +152,91 @@ export const workProjects: readonly WorkProject[] = [
 
 export const projects = workProjects
 
-// Rows for the "Built in Code" gallery. `src` is the image that follows the
-// cursor on hover, so every entry needs a real screenshot — a placeholder would
-// show up as the dashed "missing image" box mid-hover.
-const builtInCodeProjects = [
-    // `tags` rather than `year`: the gallery's right-hand column joins tags when
-    // no year is set, which is how each row states its context — client work vs
-    // a personal side project.
-    //
-    // Newest first: add new projects at the top.
+// Lab cards on the homepage, newest first. Each sets its screenshot in a device frame.
+const labItems: LabItem[] = [
     {
         title: "Golden Goose Digital Museum",
-        src: "/images/golden-goose-colourways.webp",
+        description: "3D sneakers and the tool to paint them",
+        frame: { type: "powerbook", src: "/images/golden-goose-painter.webp" },
         href: "/work/golden-goose-museum",
-        tags: ["2026", "Side project"],
-        subtitle: "Seven 3D Superstar sneakers for a digital museum, and the AI-assisted part painter I built to make them.",
-    },
-    {
-        title: "Money Jenga",
-        src: "/images/money-jenga-screens.webp",
-        href: "/work/money-jenga",
-        tags: ["2026", "Side project"],
-        subtitle: "An iPhone budget app where every purchase pulls a block out of a tower of cash. Built in SwiftUI with Claude Code.",
-    },
-    {
-        title: "Beouf Salad Decorator",
-        src: "/images/fun-boeuf-salad-decorator.webp",
-        href: "/work/boeuf-salad-decorator",
-        tags: ["2026", "Side project"],
-        subtitle: "A playful web app that turns the Romanian tradition of over-decorated Christmas salads into shareable retro holiday cards.",
-    },
-    {
-        title: "Visualizing release impact across live games",
-        src: "/images/release-timeline-thumb.webp",
-        href: "/work/release-timeline",
-        tags: ["2026", "Tactile Games"],
-        subtitle: "A release timeline inside the LiveOps Dashboard, prototyped in code, to cut debugging time.",
     },
     {
         title: "Human Redundancy Terminal",
-        src: "/images/fun-human-redundancy.webp",
+        description: "A glitchy CRT with dark humour",
+        frame: { type: "mac", src: "/images/lab/terminal.webm" },
         href: "https://dianatofan.github.io/risk-assessment-terminal",
-        tags: ["2026", "Side project"],
-        subtitle: "An apocalyptic, glitchy CRT terminal with dark humor, built with Kaggle data and Google AI Studio.",
     },
-] as const
+    {
+        title: "Money Jenga",
+        description: "A budget app shaped like a Jenga tower",
+        frame: { type: "phone", src: "/images/money-jenga/setup.webp" },
+        href: "/work/money-jenga",
+    },
+    {
+        title: "Boeuf Salad Decorator",
+        description: "Retro Christmas cards from salads",
+        frame: { type: "window", src: "/images/lab/boeuf.webm", url: "dianatofan.net/salata-de-boeuf" },
+        href: "/work/boeuf-salad-decorator",
+    },
+]
 
-function WorkSection() {
-    const caseStudies = workProjects.filter((project) => project.category !== "experiment")
-    const currentStudies = caseStudies.filter((project) => !project.earlier)
-    const earlierStudies = caseStudies.filter((project) => project.earlier)
+/*
+ * The Google Maps prototypes live on their own route, not the case-study
+ * template, so their row is added here rather than coming from workProjects.
+ * Its thumbnail is the Travel cover until a still from the recordings exists.
+ */
 
-    return (
-        <section className="space-y-6 md:space-y-8">
-            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                Case Studies
-            </h2>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-                {currentStudies.map((project) => (
-                    /*
-                     * The featured study spans both columns, which also keeps an odd
-                     * number of case studies from leaving one card alone on a row.
-                     */
-                    <div key={project.slug} className={project.featured ? "md:col-span-2" : undefined}>
-                        <ProjectCard
-                            title={project.title}
-                            image={project.homepageImage ?? project.image}
-                            tags={[...project.tags]}
-                            href={`/work/${project.slug}`}
-                            featured={project.featured}
-                            aspectClass={project.featured ? "aspect-[3/2] md:aspect-[21/9]" : project.aspect}
-                            isPasswordProtected={project.isPasswordProtected}
-                            outcome={project.outcome}
-                            shipped={project.shipped}
-                            previewVideo={project.previewVideo}
-                            showCaptionTags={false}
-                            /*
-                             * All of them, not the first two. These are the page's
-                             * primary content, and holding two of them back meant they
-                             * could not begin downloading until React had hydrated and
-                             * then queued behind it — measured on the live site at
-                             * ~1.4-1.8s to appear, against ~140ms of actual transfer
-                             * for the two that were preloaded. Preloading them all
-                             * starts every card at around 420ms instead.
-                             */
-                            eager
-                        />
-                    </div>
-                ))}
-            </div>
-
-            {earlierStudies.length > 0 ? (
-                <div className="space-y-2 pt-6 md:pt-10">
-                    <h3 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                        Earlier work
-                    </h3>
-                    <EarlierWorkList
-                        projects={earlierStudies.map((project) => ({
-                            title: project.title,
-                            src: project.image,
-                            href: `/work/${project.slug}`,
-                            // Company first: "Google · 2024" reads as context at a glance.
-                            tags: [...project.tags].reverse(),
-                            subtitle: project.outcome,
-                        }))}
-                    />
-                </div>
-            ) : null}
-        </section>
-    )
+const mapsPrototypesRow: SelectedWorkRow = {
+    title: "Prototyping at Google",
+    outcome: "Exploring product directions for Maps and Search",
+    status: "Concept · Google",
+    year: "2023",
+    href: "/prototypes/google-maps",
+    image: "/images/project-travel.png",
 }
 
-function BuiltInCodeSection() {
+const caseStudyRows: SelectedWorkRow[] = workProjects.flatMap((project) =>
+    project.row
+        ? [
+              {
+                  ...project.row,
+                  href: `/work/${project.slug}`,
+                  image: project.homepageImage ?? project.image,
+                  video: project.rowVideo,
+              },
+          ]
+        : []
+)
+
+const selectedWork: SelectedWorkRow[] = [...caseStudyRows, mapsPrototypesRow]
+
+function SectionHead({ title, note }: { title: string; note: string }) {
     return (
-        // id kept in sync with the "Back" links on /prototypes/* and /fun/*.
-        <section id="built-in-code" className="space-y-6 md:space-y-8">
-            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                Built in Code
-            </h2>
-            <BuiltInCodeGallery projects={[...builtInCodeProjects]} />
-        </section>
+        <div className="flex items-baseline justify-between gap-6 border-b border-ink pb-4 text-[15px]">
+            <h2 className="font-medium">{title}</h2>
+            <span className="text-right text-ink-meta">{note}</span>
+        </div>
     )
 }
 
 export function Projects() {
     return (
-        <section id="work" className="relative z-20 pb-16 md:pb-24">
-            <div className="mx-auto w-full max-w-[1800px] px-6">
-                <div className="space-y-16 md:space-y-20">
-                    <WorkSection />
+        <>
+            <section id="work" className="scroll-mt-16 px-gutter py-6">
+                <SectionHead title="Selected work" note="2023 — now" />
+                <SelectedWork rows={selectedWork} />
+            </section>
 
-                    <BuiltInCodeSection />
+            {/* id kept in sync with the "Back" links on the Lab pages. */}
+            <section id="lab" className="scroll-mt-16 px-gutter pt-14 pb-6 sm:pt-20">
+                <SectionHead title="Lab" note="Built for fun, mostly with AI" />
+                <LabGrid items={labItems} />
+            </section>
 
-                    <Microcomponents />
-                </div>
-            </div>
-        </section>
+            <section id="microcomponents" className="scroll-mt-16 px-gutter pt-14 sm:pt-20">
+                <SectionHead title="Microcomponents" note="Small details, live. Pick one." />
+                <Microcomponents />
+            </section>
+        </>
     )
 }

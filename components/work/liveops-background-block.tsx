@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Image from "next/image"
+import { FigCaption, csHeading, csParagraph } from "@/lib/work-project-pages/shared"
 
 type Mode = "ideal" | "error"
 
@@ -32,18 +33,22 @@ export function LiveopsBackgroundBlock() {
 
     return (
         <>
+            {/* Renders its own sections, so it adds the number and the head/body split the page adds elsewhere. */}
             <section id="overview">
-                <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
-                    Live mobile games rely on continuous updates after release.
-                </h2>
+                <div data-cs-head="">
+                    <h2 className={csHeading}>
+                        Live mobile games rely on continuous updates after release.
+                    </h2>
+                </div>
+                <div data-cs-body="">
 
                 <div className="space-y-4">
-                    <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+                    <p className={csParagraph}>
                         At Tactile, updates are managed through an internal LiveOps Dashboard,
                         where teams configure events, experiments, player targeting, and feature
                         rollouts without shipping new app versions.
                     </p>
-                    <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+                    <p className={csParagraph}>
                         The flow looks simple, but it depends on multiple backend systems staying
                         in sync. When something breaks, the impact often appears first in the live
                         game.
@@ -81,10 +86,8 @@ export function LiveopsBackgroundBlock() {
                     <button
                         type="button"
                         onClick={() => setMode("ideal")}
-                        className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                            mode === "ideal"
-                                ? "bg-foreground text-background"
-                                : "bg-card text-[var(--text-secondary)] border border-border"
+                        className={`rounded-full border px-3 py-1.5 text-[13px] transition-colors ${
+                            mode === "ideal" ? "border-ink bg-ink text-white" : "border-hairline text-ink-muted hover:text-brand"
                         }`}
                     >
                         Ideal flow
@@ -92,18 +95,16 @@ export function LiveopsBackgroundBlock() {
                     <button
                         type="button"
                         onClick={() => setMode("error")}
-                        className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                            mode === "error"
-                                ? "bg-foreground text-background"
-                                : "bg-card text-[var(--text-secondary)] border border-border"
+                        className={`rounded-full border px-3 py-1.5 text-[13px] transition-colors ${
+                            mode === "error" ? "border-ink bg-ink text-white" : "border-hairline text-ink-muted hover:text-brand"
                         }`}
                     >
                         Error flow
                     </button>
                 </div>
 
-                <figure className="mt-4">
-                    <div className="rounded-lg overflow-hidden bg-card border border-border p-8 bg-gray-50">
+                <figure className="mt-3 flex flex-col gap-2.5">
+                    <div className="overflow-hidden bg-surface p-8">
                         <div className="grid">
                             {(["ideal", "error"] as const).map((key) => {
                                 const item = images[key]
@@ -130,24 +131,26 @@ export function LiveopsBackgroundBlock() {
                             })}
                         </div>
                     </div>
-                    <figcaption className="mt-4 border-l-2 border-border pl-4 transition-colors duration-300">
-                        <p className="text-sm font-medium text-foreground">{active.captionTitle}</p>
-                        <p className="mt-1 text-sm leading-relaxed text-[var(--text-secondary)]">
-                            {active.captionBody}
-                        </p>
-                    </figcaption>
+                    <FigCaption>
+                        {active.captionTitle}. {active.captionBody}
+                    </FigCaption>
                 </figure>
+                </div>
             </section>
 
-            <section id="problem" className="mt-14">
-                <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
-                    The problem
-                </h2>
-                <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <section id="problem">
+                <div data-cs-head="">
+                    <h2 className={csHeading}>
+                        The problem
+                    </h2>
+                </div>
+                <div data-cs-body="">
+                <p className={csParagraph}>
                     Failures were detected by backend systems, but not surfaced in the LiveOps
                     Dashboard. As a result, creators had no indication that a live feature was
                     failing until players or support teams raised the issue.
                 </p>
+                </div>
             </section>
         </>
     )

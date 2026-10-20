@@ -106,36 +106,77 @@
 
 
 :root {
-    --background: #F5F5F5;
-    --foreground: #131417;
-    --card: #FFFFFF;
-    --card-foreground: #131417;
+    /*
+     * Editorial redesign (design_handoff_portfolio). One ink, two greys, two
+     * rules, one surface and a single purple accent. The shadcn names below
+     * point at the same values so components/ui keeps working.
+     */
+    --ink: #16151a;
+    --ink-muted: #6f6d78;
+    --ink-meta: #8b8e95;
+    --hairline: #e4e3e8;
+    --faint: #f0f0f2;
+    --surface: #f4f4f4;
+    --brand: #4f35b8;
+    --chart-neutral: #d4d3d9;
+
+    --background: #FFFFFF;
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
     --popover: #FFFFFF;
-    --popover-foreground: #131417;
-    --primary: #131417;
+    --popover-foreground: var(--ink);
+    --primary: var(--ink);
     --primary-foreground: #FFFFFF;
-    --secondary: #F9F3EE;
-    --secondary-foreground: #131417;
-    --muted: #F9F3EE;
-    --muted-foreground: #4D4E50;
+    --secondary: var(--surface);
+    --secondary-foreground: var(--ink);
+    --muted: var(--surface);
+    --muted-foreground: var(--ink-muted);
     --accent: #C0E3D1;
     --accent-foreground: #142218;
     --destructive: oklch(0.577 0.245 27.325);
     --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: #E5E5E5;
-    --input: #E5E5E5;
-    --ring: #93887C;
+    --border: var(--hairline);
+    --input: var(--hairline);
+    --ring: var(--brand);
     --radius: 1rem;
-    --text-secondary: #4D4E50;
-    --text-tertiary: #949494;
+    --text-secondary: var(--ink-muted);
+    --text-tertiary: var(--ink-meta);
     --pixel-color: #B19EEF;
     --footer-bg: #131417;
     --footer-foreground: #FFFFFF;
+
+    /* Page gutter: 20px under 640, 32px to 1100, 48px above. */
+    --gutter: 20px;
+}
+
+@media (min-width: 640px) {
+    :root {
+        --gutter: 32px;
+    }
+}
+
+@media (min-width: 1100px) {
+    :root {
+        --gutter: 48px;
+    }
 }
 
 @theme inline {
-    --font-sans: "Saans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans";
+    --font-sans: "Saans", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans";
     --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New";
+
+    --color-ink: var(--ink);
+    --color-ink-muted: var(--ink-muted);
+    --color-ink-meta: var(--ink-meta);
+    --color-hairline: var(--hairline);
+    --color-faint: var(--faint);
+    --color-surface: var(--surface);
+    --color-brand: var(--brand);
+    --color-chart-neutral: var(--chart-neutral);
+
+    /* The tablet/desktop split the handoff uses for gutters and the case-study TOC. */
+    --breakpoint-xl: 68.75rem;
 
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -175,6 +216,89 @@
     body {
         font-family: var(--font-sans);
         font-weight: 400;
+        background: #fff;
+        color: var(--ink);
+        /* Full-bleed bands (100vw) would otherwise add a sideways scroll. */
+        overflow-x: clip;
+        /* No antialiased smoothing: on macOS it draws Saans noticeably thinner. */
+    }
+}
+
+@utility px-gutter {
+    padding-inline: var(--gutter);
+}
+
+/* Editorial link: ink at rest, the one accent on hover. */
+@utility link-ink {
+    color: var(--ink);
+    transition: color 0.2s;
+    &:hover {
+        color: var(--brand);
+    }
+}
+
+
+/*
+ * A dark panel (the case-study tour). Flips the ink and greys, so every token
+ * utility inside reads light on dark; --paper is the colour text takes on an
+ * ink-filled pill.
+ */
+:root {
+    --paper: #ffffff;
+}
+
+.tour-dark {
+    --ink: #ffffff;
+    --ink-muted: rgba(255, 255, 255, 0.64);
+    --ink-meta: rgba(255, 255, 255, 0.42);
+    --hairline: rgba(255, 255, 255, 0.14);
+    --surface: rgba(255, 255, 255, 0.06);
+    --chart-neutral: rgba(255, 255, 255, 0.22);
+    --paper: #16151a;
+    background: #16151a;
+    color: var(--ink);
+}
+
+/* The same light-on-dark tokens, without a background: for UI floating over a dark panel. */
+.on-dark {
+    --ink: #ffffff;
+    --ink-muted: rgba(255, 255, 255, 0.64);
+    --ink-meta: rgba(255, 255, 255, 0.42);
+    --hairline: rgba(255, 255, 255, 0.14);
+    --chart-neutral: rgba(255, 255, 255, 0.3);
+}
+
+/* A tour dot's halo, breathing out and fading. */
+@keyframes tour-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(3.2);
+        opacity: 0;
+    }
+}
+
+/* A product-tour screen arriving: a short fade with a slight drift. */
+@keyframes tour-in {
+    from {
+        opacity: 0;
+        transform: translateX(12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Stroke-dash draw for the hand-drawn nav/TOC brackets. */
+@keyframes scrib {
+    from {
+        stroke-dashoffset: 1;
+    }
+    to {
+        stroke-dashoffset: 0;
     }
 }
 

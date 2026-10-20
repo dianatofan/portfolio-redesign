@@ -3,7 +3,7 @@ import type { WorkProjectPage } from "./types"
 import { BeforeAfterVideoCard } from "@/components/work/before-after-video-card"
 import ForceGraph from "@/components/work/force-graph"
 import { Clock3, Layers, ShieldCheck, Wrench } from "lucide-react"
-import { ConstraintCards, OutcomeCards } from "./shared"
+import { ConstraintCards, FigCaption, OutcomeCards, csHeading, csParagraph, csPullQuote, csSubheading } from "./shared"
 
 // Shared by the public "At a glance" block and the full Impact section, so the
 // headline numbers above the password gate always match the ones below it.
@@ -53,20 +53,20 @@ export const gameSetupAutomationPage: WorkProjectPage = {
   renderBeforeGate: () => (
     <>
       <section id="context">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+        <h2 className={csHeading}>
           Why this project existed
         </h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           Every new game at Tactile had to be registered across LiveOps, analytics, build pipelines,
           permissions, and infrastructure before it could launch.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           Most of that work depended on a small Core Team.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-8">
+        <p className={`${csParagraph} mb-8`}>
           As more teams started shipping games in parallel, setup became a bottleneck.
         </p>
-        <div className="mt-8 rounded-2xl border border-gray-200 bg-white overflow-hidden">
+        <div className="mt-8 rounded-[4px] border border-gray-200 bg-white overflow-hidden">
           <div className="bg-white">
             <ForceGraph
               className="w-full"
@@ -136,7 +136,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
               ] as any}
             />
           </div>
-          <div className="px-5 py-4 md:px-6 border-t border-gray-100 bg-gray-50">
+          <div className="px-5 py-4 md:px-6 border-t border-gray-100 bg-surface">
             <p className="text-xs md:text-sm leading-relaxed text-gray-800">
               Conceptual illustration of the many interconnected systems involved in game setup.
             </p>
@@ -145,9 +145,9 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="goal">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Goal</h2>
-        <div className="bg-accent/20 border-l-4 border-accent p-6 rounded-r-lg">
-          <p className="text-lg font-medium text-foreground">
+        <h2 className={csHeading}>Goal</h2>
+        <div className={csPullQuote}>
+          <p>
             Enable teams to launch more games per quarter through fast, safe, self-serve game setup.
           </p>
         </div>
@@ -157,15 +157,15 @@ export const gameSetupAutomationPage: WorkProjectPage = {
   renderAfterGate: () => (
     <>
       <section id="discovery">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Shifting gears</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Shifting gears</h2>
+        <p className={`${csParagraph} mb-4`}>
           The original request was simple: automate game setup.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-8">
+        <p className={`${csParagraph} mb-8`}>
           After running a workshop with stakeholders, it became clear that some steps could be
           automated, while others still required team input and decisions.
         </p>
-        <div className="max-w-5xl rounded-2xl border border-gray-200 bg-white overflow-hidden">
+        <div className="max-w-5xl rounded-[4px] border border-gray-200 bg-white overflow-hidden">
           <div className="relative w-full">
             <Image
               src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610260/workshop-compressed.png"
@@ -176,7 +176,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
               sizes="(max-width: 768px) 100vw, 80vw"
             />
           </div>
-          <div className="px-5 py-4 md:px-6 border-t border-gray-100 bg-gray-50">
+          <div className="px-5 py-4 md:px-6 border-t border-gray-100 bg-surface">
             <p className="text-xs md:text-sm leading-relaxed text-gray-800">
               Workshop outputs mapping setup steps, constraints, and system dependencies.
             </p>
@@ -185,10 +185,10 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="constraints">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
+        <h2 className={csHeading}>
           Principles that shaped the solution
         </h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <p className={`${csParagraph} mb-4`}>
           A few principles emerged from the workshop:
         </p>
         <ConstraintCards
@@ -218,8 +218,8 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="solution">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Solution</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <h2 className={csHeading}>Solution</h2>
+        <p className={csParagraph}>
           I designed a wizard-style setup tool inspired by Firebase to keep the process fast and
           safe. Teams start with just the essentials, while more complex setup is pushed to later
           steps so they do not get overwhelmed or make early mistakes.
@@ -227,15 +227,15 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="step-1">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Step 1: Define the essentials</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Step 1: Define the essentials</h2>
+        <p className={`${csParagraph} mb-4`}>
           Teams set the game's identity and ownership, the minimum needed to create a game.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           A helper panel explains each field and required format, making the first step clear and
           low risk.
         </p>
-        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-[4px]">
           <video autoPlay loop muted playsInline className="h-full w-full object-cover">
             <source
               src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610262/step1-demo.mp4"
@@ -246,15 +246,15 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="step-2">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Step 2: Configure services</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Step 2: Configure services</h2>
+        <p className={`${csParagraph} mb-4`}>
           Teams select and set up the services their game depends on.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           Services appear as cards with clear states like ready, in progress, or failed. Some are
           automatic, others need input. Teams can keep going without finishing everything at once.
         </p>
-        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-[4px]">
           <video autoPlay loop muted playsInline className="h-full w-full object-cover">
             <source
               src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610445/step2-services.mp4"
@@ -265,15 +265,15 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="step-3">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Step 3: Permissions</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Step 3: Permissions</h2>
+        <p className={`${csParagraph} mb-4`}>
           Access is managed through simple roles like Viewer, Editor, and Publisher.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           Teams can assign roles and instantly see who has access, with safeguards to prevent
           mistakes.
         </p>
-        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-[4px]">
           <video autoPlay loop muted playsInline className="h-full w-full object-cover">
             <source
               src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610423/step3-permissions.mp4"
@@ -284,14 +284,14 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="step-4">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Step 4: Integration credentials</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>Step 4: Integration credentials</h2>
+        <p className={`${csParagraph} mb-4`}>
           External details like IDs or keys are added in a separate step.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           Strict validation helps avoid errors while keeping earlier steps fast and simple.
         </p>
-        <div className="mt-8 relative aspect-video overflow-hidden rounded-lg">
+        <div className="mt-8 relative aspect-video overflow-hidden rounded-[4px]">
           <video autoPlay loop muted playsInline className="h-full w-full object-cover">
             <source
               src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610466/step4-credentials.mp4"
@@ -302,15 +302,15 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="provisioning">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">System behavior</h2>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-4">
+        <h2 className={csHeading}>System behavior</h2>
+        <p className={`${csParagraph} mb-4`}>
           Setup runs across multiple systems in the background.
         </p>
-        <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+        <p className={csParagraph}>
           Each module shows its status and allows actions like Configure or Retry, so teams can keep
           moving without waiting.
         </p>
-        <div className="w-full bg-gray-50 rounded-lg px-6 md:px-8 py-20 flex justify-center mt-8">
+        <div className="w-full bg-surface rounded-[4px] px-6 md:px-8 py-20 flex justify-center mt-8">
           <div className="w-full max-w-5xl">
             <Image
               src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610092/provisioning.png"
@@ -327,15 +327,15 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       <section id="post-setup">
         <div className="grid grid-cols-1 gap-8 items-start">
           <div className="max-w-xl">
-            <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Post-setup ownership</h2>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h2 className={csHeading}>Post-setup ownership</h2>
+            <p className={csParagraph}>
               Teams land in a central overview to track progress, fix issues, and manage access over
               time.
             </p>
           </div>
 
-          <figure>
-            <div className="relative overflow-hidden rounded-xl">
+          <figure className="flex flex-col gap-2.5">
+            <div className="relative overflow-hidden rounded-[4px]">
               <video autoPlay loop muted playsInline className="w-full">
                 <source
                   src="https://res.cloudinary.com/dzpdf5ygh/video/upload/v1769610479/post-setup.mp4"
@@ -343,19 +343,19 @@ export const gameSetupAutomationPage: WorkProjectPage = {
                 />
               </video>
             </div>
-            <figcaption className="mt-3 text-xs md:text-sm text-[var(--text-tertiary)]">
+            <FigCaption>
               Switching between overview, permissions, and integration settings for a partially configured game.
-            </figcaption>
+            </FigCaption>
           </figure>
         </div>
       </section>
 
       <section id="tradeoffs">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Key tradeoffs</h2>
+        <h2 className={csHeading}>Key tradeoffs</h2>
         <div className="space-y-8">
           <div>
-            <h3 className="text-lg font-medium text-foreground mb-3">Progressive expansion</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>Progressive expansion</h3>
+            <p className={csParagraph}>
               Showing all service cards expanded by default made the setup long and overwhelming as more services were added. I moved to a progressive expansion model where only the core services stay open by default, while the rest can be expanded as needed, with each user&apos;s preference saved locally.
             </p>
             <BeforeAfterVideoCard
@@ -364,11 +364,11 @@ export const gameSetupAutomationPage: WorkProjectPage = {
             />
           </div>
           <div>
-            <h3 className="text-lg font-medium text-foreground mb-3">Fewer, clearer module states</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>Fewer, clearer module states</h3>
+            <p className={csParagraph}>
               Early designs exposed many granular states, which were accurate but hard to scan. I reduced these to a small, consistent set that clearly communicates readiness and required action at a glance.
             </p>
-            <div className="mt-8 w-full bg-[#E3E8F1] p-8 rounded-2xl">
+            <div className="mt-8 w-full bg-surface p-8 rounded-[4px]">
               <Image
                 src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769609945/module-statuses.png"
                 alt="Module status states showing readiness and required action"
@@ -380,11 +380,11 @@ export const gameSetupAutomationPage: WorkProjectPage = {
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-medium text-foreground mb-3">Inherited access</h3>
-            <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+            <h3 className={csSubheading}>Inherited access</h3>
+            <p className={csParagraph}>
               Restricting access to the game creator quickly became a bottleneck. I introduced inherited access so users with global LiveOps permissions are automatically added to new games, reducing manual permission management while keeping ownership explicit.
             </p>
-            <div className="mt-8 w-full bg-[#E3E8F1] p-8 rounded-2xl">
+            <div className="mt-8 w-full bg-surface p-8 rounded-[4px]">
               <Image
                 src="https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto/v1769610209/inherited-access.png"
                 alt="Inherited access model for game permissions"
@@ -399,7 +399,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
       </section>
 
       <section id="impact">
-        <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-4">Impact</h2>
+        <h2 className={csHeading}>Impact</h2>
         <OutcomeCards
           items={impact}
         />

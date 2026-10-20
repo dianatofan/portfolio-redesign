@@ -5,16 +5,14 @@ import { Footer } from "@/components/footer"
 export const metadata = {
     title: "About - Diana Tofan",
     description:
-        "Learn more about Diana Tofan, a product designer specializing in complex systems and enterprise tools.",
+        "Diana Tofan is a product designer who designs in code, joining 3Shape in November. Before that: Tactile, Google, Famly and Maersk.",
 }
 
 export default function AboutPage() {
     return (
         <main>
             <Header />
-            <section className="pt-28">
-                <About />
-            </section>
+            <About />
             <Footer />
         </main>
     )

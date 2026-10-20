@@ -20,7 +20,6 @@ export function formatCopenhagenTime(now: Date = new Date()): string {
             minute: "2-digit",
             hour12: true,
         })
-        .replace(/\s?(AM|PM)$/, "$1") // no space before AM/PM
 }
 
 export function isCopenhagenNight(now: Date = new Date()): boolean {

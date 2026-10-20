@@ -1,431 +1,250 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import BounceCards from "./BounceCards"
-import { BRAND_COLORS, BrandIcon, type BrandName } from "./brand-icons"
-import "./About.css"
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
+import { useEffect, useRef, useState, type ReactNode } from "react"
+import { BmoTooltip } from "./about/bmo-tooltip"
+import { PortraitLoupe } from "./about/portrait-loupe"
 
-const workHistory = [
-    {
-        id: "tactile-games",
-        role: "Product Designer",
-        company: "Tactile Games",
-        period: "2024 — Present",
-        description:
-            "This role strengthened my ability to design systems, not just features. I learned how internal tools clarity directly impacts team velocity, and how to align stakeholders around complex workflows without overcomplicating solutions.",
-    },
-    {
-        id: "google",
-        role: "UX Engineer",
-        company: "Google",
-        period: "2022 — 2024",
-        description:
-            "Working at Google expanded my sense of what’s possible. I used code to translate ambitious ideas into high-fidelity prototypes that made abstract concepts tangible and informed product direction before significant engineering investment.",
-    },
-    {
-        id: "famly",
-        role: "UX/UI Designer",
-        company: "Famly",
-        period: "2022",
-        description:
-            "Rebuilding the design foundation of a mature product taught me that systems only work if they’re adopted. Eliminating design debt required clear standards, alignment, and consistent reinforcement across teams.",
-    },
-    {
-        id: "maersk",
-        role: "Frontend Engineer",
-        company: "Maersk",
-        period: "2019 — 2021",
-        description:
-            "This role strengthened my technical foundation. Working on a global cargo booking platform taught me to design for scale, reliability, and real operational constraints. Those principles still guide how I work today.",
-    },
-]
-
-// Grouped so the list reads as a design engineer rather than a pile of logos.
-// Everything here is backed by work shown elsewhere on the site.
-// `icon` is omitted for the entries that are practices rather than products —
-// there is no brand mark for "design systems", and inventing one would be worse
-// than the small inconsistency of a text-only pill.
-// `href` is omitted for the same entries that have no icon: they're practices,
-// not products, so there's nothing to link to. Those chips stay non-interactive.
-type StackItem = { label: string; icon?: BrandName; href?: string }
-type StackGroup = { id: string; label: string; items: StackItem[] }
-
-const stack: StackGroup[] = [
-    {
-        id: "design",
-        label: "Design",
-        items: [
-            { label: "Figma", icon: "Figma", href: "https://www.figma.com" },
-            { label: "Design systems" },
-            { label: "Prototyping in code" },
-        ],
-    },
-    {
-        id: "code",
-        label: "Code",
-        items: [
-            {
-                label: "TypeScript",
-                icon: "TypeScript",
-                href: "https://www.typescriptlang.org",
-            },
-            {
-                label: "CSS",
-                icon: "Css",
-                href: "https://developer.mozilla.org/en-US/docs/Web/CSS",
-            },
-            {
-                label: "SVG",
-                icon: "Svg",
-                href: "https://developer.mozilla.org/en-US/docs/Web/SVG",
-            },
-            { label: "React", icon: "React", href: "https://react.dev" },
-            { label: "Next.js", icon: "NextDotJs", href: "https://nextjs.org" },
-            { label: "Tailwind", icon: "Tailwind", href: "https://tailwindcss.com" },
-            { label: "framer-motion", icon: "Framer", href: "https://motion.dev" },
-            { label: "three.js", icon: "ThreeDotJs", href: "https://threejs.org" },
-            { label: "d3", icon: "D3", href: "https://d3js.org" },
-            { label: "Git", icon: "Git", href: "https://git-scm.com" },
-            { label: "Storybook", icon: "Storybook", href: "https://storybook.js.org" },
-            { label: "Vercel", icon: "Vercel", href: "https://vercel.com" },
-        ],
-    },
-    {
-        id: "ai",
-        label: "AI",
-        items: [
-            {
-                label: "Claude Code",
-                icon: "Claude",
-                href: "https://claude.com/claude-code",
-            },
-            {
-                label: "GitHub Copilot",
-                icon: "GitHubCopilot",
-                href: "https://github.com/features/copilot",
-            },
-            // No Simple Icons mark exists for AI Studio itself; Gemini is the
-            // model and brand behind it, so its mark is the honest stand-in.
-            {
-                label: "Google AI Studio",
-                icon: "GoogleGemini",
-                href: "https://aistudio.google.com",
-            },
-        ],
-    },
-]
-
-/**
- * A single stack chip. Renders as a link when the entry has a home page, and as
- * plain text otherwise — practices like "design systems" have nowhere to point.
- *
- * `--brand` carries the brand colour so the icon can stay a currentColor glyph
- * and only take on that colour on hover or keyboard focus.
+/*
+ * Editorial About page (About v9 in the design handoff): a big greeting, the
+ * portrait beside a short intro, a pull quote, the tools I use, and what each
+ * role taught me.
  */
-function StackChip({ item }: { item: StackItem }) {
-    const chipClass =
-        "inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm text-[var(--text-secondary)]"
 
-    const brandStyle = item.icon
-        ? ({ "--brand": BRAND_COLORS[item.icon] } as React.CSSProperties)
-        : undefined
+const tools = [
+    { group: "Design", items: ["Figma", "Design systems", "Prototyping in code"] },
+    {
+        group: "Code",
+        items: [
+            "TypeScript",
+            "CSS",
+            "SVG",
+            "React",
+            "Next.js",
+            "Tailwind",
+            "framer-motion",
+            "three.js",
+            "d3",
+            "Git",
+            "Storybook",
+            "Vercel",
+        ],
+    },
+    { group: "AI", items: ["Claude Code", "Cursor", "ChatGPT", "Midjourney"] },
+]
 
-    const icon = item.icon ? (
-        <BrandIcon
-            name={item.icon}
-            className="h-3.5 w-3.5 shrink-0 opacity-60 transition-[color,opacity] duration-200 group-hover:text-[var(--brand)] group-hover:opacity-100 group-focus-visible:text-[var(--brand)] group-focus-visible:opacity-100"
-        />
-    ) : null
+const roles = [
+    {
+        company: "3Shape",
+        role: "Product Designer",
+        note: "Healthcare is where I’ve wanted to end up for a while, so this one feels personal. I start in November, designing the account portal.",
+    },
+    {
+        company: "Tactile Games",
+        role: "Product Designer",
+        note: "I never thought I’d work at a gaming company, but the people were too nice to say no. The domain was super hard at first, but somehow it’s a lot like e-commerce: A/B tests, scheduled features, offers.",
+    },
+    {
+        company: "Google",
+        role: "UX Engineer",
+        note: "Working at Google expanded my sense of what’s possible. I used code to translate ambitious ideas into high-fidelity prototypes that made abstract concepts tangible and informed product direction before significant engineering investment.",
+    },
+    {
+        company: "Famly",
+        role: "UX/UI Designer",
+        note: "A short job before Google stole me. Famly had no design system, so I laid the foundations, and getting people to actually adopt it was the trickiest part.",
+    },
+    {
+        company: "Maersk",
+        role: "Frontend Engineer",
+        note: "This is where I started, as a frontend engineer on a global cargo booking platform. It taught me to build for scale, and I still design that way.",
+    },
+]
 
-    if (!item.href) {
-        return (
-            <span className={chipClass} style={brandStyle}>
-                {icon}
-                {item.label}
-            </span>
+/*
+ * Fades a block up as it enters the viewport, as the design does for every
+ * block, including those on screen at load. Content stays visible if
+ * JavaScript never runs.
+ */
+function Reveal({ children, className }: { children: ReactNode; className?: string }) {
+    const ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const el = ref.current
+        if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        el.style.opacity = "0"
+        el.style.transform = "translateY(8px)"
+        el.style.transition =
+            "opacity .6s cubic-bezier(.2,0,0,1), transform .6s cubic-bezier(.2,0,0,1)"
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return
+                observer.disconnect()
+                el.style.opacity = "1"
+                el.style.transform = "none"
+            },
+            { rootMargin: "0px 0px -12% 0px", threshold: 0.15 }
         )
-    }
+        observer.observe(el)
+        return () => observer.disconnect()
+    }, [])
 
     return (
-        <a
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={brandStyle}
-            className={`group ${chipClass} transition-colors duration-200 hover:border-[var(--brand)] focus-visible:border-[var(--brand)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]`}
-        >
-            {icon}
-            {item.label}
-            <span className="sr-only">(opens in a new tab)</span>
-        </a>
+        <div ref={ref} className={className}>
+            {children}
+        </div>
     )
 }
 
+function SectionHead({ title, meta }: { title: string; meta: string }) {
+    return (
+        <Reveal className="flex items-baseline justify-between border-b border-ink pb-4 text-[15px]">
+            <h2 className="font-medium">{title}</h2>
+            <span className="text-ink-meta">{meta}</span>
+        </Reveal>
+    )
+}
+
+const introParagraph = "mb-4 text-[18px] leading-[1.55] text-ink text-pretty break-inside-avoid"
+
 export function About() {
-    const [time, setTime] = useState("")
-    const [isNight, setIsNight] = useState(false)
-    const [currentRole, setCurrentRole] = useState(0)
-    const [displayText, setDisplayText] = useState("")
-
-    const bioText1 =
-        "I work across design and engineering, with a background in frontend, UX engineering, and product design. I build and ship product experiences, using code to explore ideas, test decisions early, and make things tangible."
-    const bioText2 =
-        "I enjoy shaping decisions and bringing people onto the same page, especially in complex problem spaces where things are still undefined. At the same time, I stay close to the work. I prototype, build, and ship, because that's how I think best and move things forward."
-    const bioText3 =
-        "I've worked across gaming, big tech, SaaS, and logistics, and I'm comfortable navigating different domains, constraints, and levels of ambiguity."
-
-    const roles = ["frontend developer", "product designer", "design engineer"]
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
-
-    // Decrypt effect
-    useEffect(() => {
-        const targetText = roles[currentRole]
-        let iteration = 0
-        const interval = setInterval(() => {
-            setDisplayText(
-                targetText
-                    .split("")
-                    .map((char, index) => {
-                        if (char === " ") return " "
-                        if (index < iteration) {
-                            return targetText[index]
-                        }
-                        return chars[Math.floor(Math.random() * chars.length)]
-                    })
-                    .join("")
-            )
-
-            if (iteration >= targetText.length) {
-                clearInterval(interval)
-            }
-
-            iteration += 1 / 2 // Faster iteration
-        }, 20) // Faster interval
-
-        return () => clearInterval(interval)
-    }, [currentRole])
-
-    // Rotate through the career arc once, then stop at "design engineer"
-    useEffect(() => {
-        const roleInterval = setInterval(() => {
-            setCurrentRole((prev) => {
-                const next = prev + 1
-                // Stop at the last role (design engineer)
-                if (next >= roles.length) {
-                    clearInterval(roleInterval)
-                    return roles.length - 1
-                }
-                return next
-            })
-        }, 2000) // Change every 2 seconds
-
-        return () => clearInterval(roleInterval)
-    }, [])
-
-    useEffect(() => {
-        let interval: number | undefined
-        let timeout: number | undefined
-
-        const updateTime = () => {
-            const now = new Date()
-            const copenhagenTime = now
-                .toLocaleTimeString("en-US", {
-                    timeZone: "Europe/Copenhagen",
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                })
-                .replace(/\s?(AM|PM)$/, "$1")
-            setTime(copenhagenTime)
-            const hour = Number(
-                new Intl.DateTimeFormat("en-US", {
-                    timeZone: "Europe/Copenhagen",
-                    hour: "numeric",
-                    hour12: false,
-                }).format(now)
-            )
-            setIsNight(hour >= 20 || hour < 6)
-        }
-
-        updateTime()
-        const now = new Date()
-        const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds()
-        timeout = window.setTimeout(() => {
-            updateTime()
-            interval = window.setInterval(updateTime, 60_000)
-        }, msToNextMinute)
-
-        return () => {
-            if (timeout) window.clearTimeout(timeout)
-            if (interval) window.clearInterval(interval)
-        }
-    }, [])
-
-    const images = [
-        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610255/mountain.png",
-        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610309/run.jpg",
-        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610275/minime.jpg",
-        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610442/museum.png",
-        "https://res.cloudinary.com/dzpdf5ygh/image/upload/f_auto,q_auto,dpr_auto,c_fill,g_auto,w_900,h_1170/v1769610318/img.webp",
-    ] as const
-
-    const transformStyles = [
-        "rotate(8deg) translate(-280px)",
-        "rotate(-3deg) translate(-140px)",
-        "rotate(-5deg)",
-        "rotate(3deg) translate(140px)",
-        "rotate(-8deg) translate(280px)",
-    ] as const
+    const [openRole, setOpenRole] = useState(-1)
 
     return (
-        <>
-            {/* Full-width BounceCards collage */}
-            <div id="bounce-cards" className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] pt-24 mb-16 md:mb-24">
-                <BounceCards
-                    className="about-bounce-cards"
-                    images={images as any}
-                    containerHeight={600}
-                    animationStagger={0.08}
-                    easeType="elastic.out(1, 0.5)"
-                    transformStyles={transformStyles as any}
-                    enableHover
-                />
-            </div>
+        <div className="text-ink">
+            <section className="px-gutter pt-6 min-[720px]:pt-[72px]">
+                <h1 className="mt-12 text-[clamp(44px,11vw,150px)] leading-[0.9] font-medium tracking-[-0.06em]">
+                    Hi, I&apos;m Diana.
+                </h1>
+                <p className="mt-7 max-w-[640px] text-[clamp(20px,1.8vw,24px)] leading-[1.35] tracking-[-0.015em] text-pretty">
+                    Product designer, joining 3Shape in November.{" "}
+                    <span className="text-ink-meta">Ex Tactile, Google, Maersk.</span>
+                </p>
+            </section>
 
-            <section id="about" className="relative z-20 pb-16 md:pb-24">
-                <div className="w-full mx-auto px-6">
-                    {/* Meta + Headline row — same grid as homepage hero */}
-                    <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 gap-y-8 mb-16 md:mb-24">
-                        {/* Left: meta block (time / location) */}
-                        <div className="col-span-4 md:col-span-3 flex flex-col justify-end pb-8 md:pb-0">
-                            <span
-                                className="material-symbols-outlined text-foreground leading-none mb-1 font-medium"
-                                aria-hidden="true"
-                                style={{
-                                    fontSize: 18,
-                                    fontVariationSettings:
-                                        '"FILL" 0, "wght" 500, "GRAD" 0, "opsz" 20',
-                                }}
-                            >
-                                {isNight ? "bedtime" : "sunny"}
-                            </span>
-                            <span
-                                className="text-base font-medium text-foreground"
-                                aria-label="Current time in Copenhagen"
-                            >
-                                {time || "..."}
-                            </span>
-                            <p className="text-base font-medium text-[var(--text-tertiary)]">
-                                Copenhagen, Denmark
-                            </p>
-                        </div>
-
-                        {/* Right: headline + bio */}
-                        <div className="col-span-4 md:col-span-7 md:col-start-6 flex flex-col justify-center">
-                            <h1 className="text-4xl md:text-[36px] lg:text-[48px] font-medium leading-[1.08] text-foreground text-balance tracking-tight mb-8 max-w-[840px]">
-                                Hi, I'm Diana, a{" "}
-                                <span className="role-text-container">
-                                    <span className="role-text">{displayText || roles[0]}</span>
-                                </span>
-                                .
-                            </h1>
-                            <div id="bio" className="relative z-20">
-                                <p id="bio-paragraph-1" className="text-base leading-relaxed max-w-[680px]">
-                                    {bioText1}
-                                </p>
-                                <p id="bio-paragraph-2" className="text-base mt-4 leading-relaxed max-w-[680px]">
-                                    {bioText2}
-                                </p>
-                                <p id="bio-paragraph-3" className="text-base mt-4 leading-relaxed max-w-[680px]">
-                                    {bioText3}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Stack section */}
-                    <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 border-t border-[#F0F0F0] pt-12 md:pt-16 mb-12 md:mb-16">
-                        {/* Left: section label */}
-                        <div className="col-span-4 md:col-span-3 mb-8 md:mb-0">
-                            <p className="text-base font-medium text-foreground">
-                                {"What I work with"}
-                            </p>
-                        </div>
-
-                        {/* Right: grouped stack — aligned with intro text */}
-                        <div className="col-span-4 md:col-span-7 md:col-start-6">
-                            <dl className="max-w-[680px] flex flex-col gap-6">
-                                {stack.map((group) => (
-                                    <div key={group.id}>
-                                        <dt className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)] mb-3">
-                                            {group.label}
-                                        </dt>
-                                        <dd>
-                                            <ul className="flex flex-wrap gap-x-2 gap-y-2">
-                                                {group.items.map((item) => (
-                                                    <li key={item.label}>
-                                                        <StackChip item={item} />
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </dd>
-                                    </div>
-                                ))}
-                            </dl>
-                        </div>
-                    </div>
-
-                    {/* "Where I've worked" section */}
-                    <div className="grid grid-cols-4 md:grid-cols-12 gap-x-3 border-t border-[#F0F0F0] pt-12 md:pt-16">
-                        {/* Left: section label */}
-                        <div className="col-span-4 md:col-span-3 mb-8 md:mb-0">
-                            <p className="text-base font-medium text-foreground">
-                                {"What each role taught me"}
-                            </p>
-                        </div>
-
-                        {/* Right: accordion - aligned with intro text */}
-                        <div className="col-span-4 md:col-span-7 md:col-start-6">
-                            <div className="max-w-[680px]">
-                                <Accordion type="single" collapsible>
-                                    {workHistory.map((item) => (
-                                        <AccordionItem
-                                            key={item.id}
-                                            value={item.id}
-                                            className="border-[#F0F0F0]"
-                                        >
-                                            <AccordionTrigger className="text-base font-medium text-foreground hover:no-underline py-5">
-                                                <span>
-                                                    {item.role}
-                                                    <span className="text-[var(--text-tertiary)] font-normal ml-2">
-                                                        {item.company}
-                                                    </span>
-                                                </span>
-                                            </AccordionTrigger>
-                                            <AccordionContent>
-                                                <div className="flex flex-col gap-2 pb-2 text-base">
-                                                    <span className="text-sm text-[var(--text-tertiary)]">
-                                                        {item.period}
-                                                    </span>
-                                                    <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-                                                        {item.description}
-                                                    </p>
-                                                </div>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    ))}
-                                </Accordion>
-                            </div>
-                        </div>
+            <section className="grid items-start gap-[clamp(32px,4vw,80px)] px-gutter pt-10 pb-14 min-[720px]:grid-cols-[clamp(260px,36vw,420px)_minmax(0,1fr)] min-[720px]:pt-16 sm:pb-20 xl:grid-cols-[clamp(300px,30vw,640px)_minmax(0,1fr)]">
+                <div className="row-start-2 min-[720px]:col-start-2 min-[720px]:row-start-1">
+                    <div className="max-w-[1200px] gap-[clamp(32px,3vw,56px)] border-t border-ink pt-5 xl:columns-2">
+                        <p className={introParagraph}>
+                            {
+                                "I started as a frontend developer, moved into product design, and now I work where the two meet, designing in code and building with AI."
+                            }
+                        </p>
+                        <p className={introParagraph}>
+                            {
+                                "I've worked across gaming, big tech, SaaS and logistics. Along the way, I realised I care most about products that have a real, positive impact on people's lives, which is what brought me to healthcare."
+                            }
+                        </p>
+                        <p className={introParagraph}>
+                            Outside work, I&apos;m usually out running, hunting for specialty coffee
+                            and a good <BmoTooltip>BMO</BmoTooltip>, doing a bit of shopping
+                            therapy, or on a plane to somewhere warm.
+                        </p>
                     </div>
                 </div>
+
+                <Reveal className="col-start-1 row-start-1 w-full max-w-[480px] min-[720px]:max-w-none">
+                    <figure className="m-0 flex flex-col gap-2.5">
+                        <PortraitLoupe />
+                        <figcaption className="flex justify-between gap-3 text-[13px] text-ink-meta">
+                            <span>
+                                <span className="text-ink">Fig. 1</span> — Sibiu, Romania, October
+                                2026
+                            </span>
+                        </figcaption>
+                    </figure>
+                </Reveal>
             </section>
-        </>
+
+            <section className="px-gutter pb-14 sm:pb-20">
+                <Reveal>
+                    <blockquote className="m-0 border-y border-hairline px-[max(0px,calc((100%-900px)/2))] py-12 text-center text-[clamp(32px,3.6vw,52px)] leading-[1.08] font-medium tracking-[-0.04em] text-balance">
+                        “I care most about products that have a real, positive impact on
+                        people&apos;s lives.”
+                    </blockquote>
+                </Reveal>
+            </section>
+
+            <section className="px-gutter pb-14 sm:pb-20">
+                <SectionHead title="What I work with" meta="Tools" />
+                <div>
+                    {tools.map((tool) => (
+                        <Reveal
+                            key={tool.group}
+                            className="grid grid-cols-12 items-baseline gap-1.5 border-b border-hairline py-[18px] min-[720px]:gap-6"
+                        >
+                            <span className="col-span-12 text-[13px] text-ink-meta min-[720px]:col-span-4">
+                                {tool.group}
+                            </span>
+                            <p className="col-span-12 text-[18px] leading-[1.55] text-pretty min-[720px]:col-span-8 min-[720px]:col-start-5">
+                                {tool.items.join(", ")}.
+                            </p>
+                        </Reveal>
+                    ))}
+                </div>
+            </section>
+
+            {/* Tops the footer's own 80px margin up or down to the design's gap: 72px on phones, 120px above. */}
+            <section className="-mb-2 px-gutter min-[720px]:mb-0 min-[720px]:pb-10">
+                <SectionHead title="What each role taught me" meta="Experience" />
+                {roles.map((role, i) => {
+                    const open = openRole === i
+                    return (
+                        <Reveal key={role.company} className="border-b border-hairline">
+                            <button
+                                type="button"
+                                aria-expanded={open}
+                                aria-controls={`role-note-${i}`}
+                                onClick={() => setOpenRole(open ? -1 : i)}
+                                className="grid w-full grid-cols-12 items-baseline gap-6 py-[18px] text-left text-ink transition-colors duration-200 hover:text-brand"
+                            >
+                                <span className="col-span-11 row-start-1 text-[clamp(24px,2.5vw,32px)] leading-[1.1] font-medium tracking-[-0.025em] min-[720px]:col-span-4">
+                                    {role.company}
+                                </span>
+                                <span className="col-span-12 row-start-2 flex items-baseline gap-2.5 text-[15px] text-ink-muted min-[720px]:col-span-7 min-[720px]:col-start-5 min-[720px]:row-start-1">
+                                    {role.role}
+                                    {i === 0 && (
+                                        <span className="text-[13px] text-ink-meta">From November</span>
+                                    )}
+                                </span>
+                                {/* A plus whose vertical bar folds away into a minus. */}
+                                <span
+                                    aria-hidden="true"
+                                    className="relative col-start-12 row-start-1 ml-auto h-3 w-3 self-center text-ink-meta"
+                                >
+                                    <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-current" />
+                                    <span
+                                        className={`absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-current transition-transform duration-300 ease-[cubic-bezier(.2,0,0,1)] motion-reduce:transition-none ${
+                                            open ? "scale-y-0" : "scale-y-100"
+                                        }`}
+                                    />
+                                </span>
+                            </button>
+                            {/*
+                              * Always rendered so it can animate: the grid row goes from
+                              * 0fr to 1fr, which eases to the note's real height without
+                              * measuring it. Closed notes are inert, so they can't be
+                              * tabbed into or read out.
+                              */}
+                            <div
+                                id={`role-note-${i}`}
+                                inert={!open}
+                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(.2,0,0,1)] motion-reduce:transition-none ${
+                                    open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                                }`}
+                            >
+                                <div className="overflow-hidden">
+                                    <div className="grid grid-cols-12 gap-6 pb-5">
+                                        <p className="col-span-12 text-[18px] leading-[1.55] text-pretty min-[720px]:col-span-6 min-[720px]:col-start-5">
+                                            {role.note}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Reveal>
+                    )
+                })}
+            </section>
+        </div>
     )
 }

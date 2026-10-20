@@ -1,100 +1,131 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { PrototypeDeck } from "@/components/prototypes/prototype-deck"
+import { Footer } from "@/components/footer"
+import { Header } from "@/components/header"
+import { PrototypeMedia } from "@/components/prototypes/prototype-media"
+import { googleMapsPrototypes } from "@/lib/prototypes/google-maps-prototypes"
+import { csHeading, csParagraph } from "@/lib/work-project-pages/shared"
 
 export const metadata: Metadata = {
-  title: "Exploring Product Directions at Google Maps - Diana Tofan",
-  description:
-    "A swipeable deck of Google Maps and Search prototypes — the product questions behind each one, the interaction I explored, and what happened after the review.",
+    title: "Exploring Product Directions at Google - Diana Tofan",
+    description:
+        "Four React prototypes I built at Google for Search and Maps: the question behind each one, what I tried, and what happened after the review.",
 }
 
 const meta = [
-  { label: "Role", values: ["UX Engineer"] },
-  { label: "Company", values: ["Google"] },
-  { label: "Team", values: ["UX Leads", "Researchers", "Product Managers"] },
-  { label: "Skills", values: ["Prototyping", "Interaction Design"] },
-  { label: "Tools", values: ["React", "Google Maps API"] },
+    { label: "Role", values: ["UX Engineer"] },
+    { label: "Company", values: ["Google"] },
+    { label: "Team", values: ["UX Leads", "Researchers", "Product Managers"] },
+    { label: "Skills", values: ["Prototyping", "Interaction Design"] },
+    { label: "Tools", values: ["React", "Google Maps API"] },
 ]
 
+/*
+ * The prototypes as an editorial case study: one numbered section each, in the
+ * same type and rules as app/work/[slug]. Every section reads question →
+ * solution → outcome, with the review result as a small label on its rule.
+ */
 export default function GoogleMapsPrototypesPage() {
-  return (
-    <main className="min-h-screen bg-white">
-      <header className="fixed left-0 right-0 top-0 z-50 bg-white/80 px-6 py-4 backdrop-blur-sm">
-        <div className="mx-auto grid grid-cols-12 items-center gap-x-6">
-          <div className="col-span-6 md:col-span-2">
-            <Link
-              href="/#fun"
-              className="flex items-center gap-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-[var(--text-secondary)]"
-            >
-              <ChevronLeft size={16} aria-hidden />
-              Back
-            </Link>
-          </div>
+    return (
+        <main className="min-h-screen bg-white text-ink">
+            <Header />
 
-          <div className="col-span-6 flex justify-end md:col-span-4 md:col-start-9">
-            <Link
-              href="/work/release-timeline"
-              className="flex items-center gap-2 text-sm font-medium text-foreground transition-colors duration-200 hover:text-[var(--text-secondary)]"
-            >
-              Next: Release Timeline
-              <ChevronRight size={16} aria-hidden />
-            </Link>
-          </div>
-        </div>
-      </header>
+            <section className="flex flex-col gap-7 px-gutter pt-10 pb-12 min-[720px]:pt-[72px]">
+                <Link href="/#work" className="self-start text-[13px] text-ink-meta transition-colors hover:text-brand">
+                    ← Work
+                </Link>
+                <div className="flex flex-col gap-5">
+                    <span className="text-[13px] text-ink-meta">Prototypes · Google</span>
+                    <h1 className="max-w-[1400px] text-[clamp(52px,9vw,140px)] font-medium leading-[0.9] tracking-[-0.06em] text-balance">
+                        Exploring Product Directions at Google
+                    </h1>
+                    <p className="mt-2 max-w-[820px] text-[clamp(20px,2vw,26px)] leading-[1.3] tracking-[-0.015em] text-pretty">
+                        As a UX Engineer on Google Travel, I built dozens of React prototypes to help teams explore new
+                        product directions, validate assumptions and make decisions faster. Not every prototype shipped,
+                        but every prototype answered a question.
+                    </p>
+                </div>
+                <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink pt-4 min-[720px]:grid-cols-5">
+                    {meta.map((item) => (
+                        <div key={item.label} className="flex flex-col gap-1">
+                            <dt className="text-[13px] text-ink-meta">{item.label}</dt>
+                            <dd className="text-[15px]">
+                                {item.values.map((value, index) => (
+                                    <span key={`${item.label}-${value}`}>
+                                        {index > 0 && <br />}
+                                        {value}
+                                    </span>
+                                ))}
+                            </dd>
+                        </div>
+                    ))}
+                </dl>
+            </section>
 
-      {/* Title — same layout as the case study pages */}
-      <div className="mx-auto max-w-[1200px] px-6 pt-28 md:pt-32">
-        <section className="max-w-4xl">
-          <h1 className="mb-12 text-3xl font-medium leading-[1.08] tracking-tight text-foreground md:text-[48px] lg:text-[56px]">
-            Exploring Product Directions at Google
-          </h1>
+            <div className="flex max-w-[1180px] flex-col gap-24 px-gutter pt-12 pb-24 min-[720px]:pt-16">
+                {googleMapsPrototypes.map((prototype, i) => {
+                    const n = String(i + 1).padStart(2, "0")
+                    const approved = prototype.status === "APPROVED"
 
-          <div className="grid grid-cols-2 gap-8 border-b border-border pb-12 md:grid-cols-5">
-            {meta.map((item) => (
-              <div key={item.label}>
-                <p className="mb-2 text-sm font-medium text-[var(--text-tertiary)]">{item.label}</p>
-                <p className="text-base font-medium text-foreground">
-                  {item.values.map((value, index) => (
-                    <span key={`${item.label}-${value}`}>
-                      {index > 0 && <br />}
-                      {value}
+                    return (
+                        <section key={prototype.id} id={prototype.id} className="scroll-mt-24">
+                            <div className="mb-5 flex items-baseline justify-between gap-3.5 border-t border-ink pt-3.5">
+                                <span className="flex items-baseline gap-3.5">
+                                    <span className="text-[13px] text-ink-meta">{n}</span>
+                                    <span className="text-[15px] font-medium">Prototype</span>
+                                </span>
+                                <span className={`text-[13px] ${approved ? "text-brand" : "text-ink-muted"}`}>
+                                    {approved ? "Approved" : "Not shipped"}
+                                </span>
+                            </div>
+
+                            <h2 className={csHeading}>{prototype.title}</h2>
+                            <p className="mb-8 max-w-[760px] text-2xl leading-[1.3] tracking-[-0.015em] text-ink-muted text-pretty">
+                                {prototype.question}
+                            </p>
+
+                            <div className="grid grid-cols-1 gap-x-14 gap-y-8 min-[1100px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                                <div className="flex flex-col gap-6">
+                                    <div>
+                                        <p className="mb-1.5 text-[13px] text-ink-meta">What I built</p>
+                                        <p className={csParagraph}>{prototype.solution}</p>
+                                    </div>
+                                    <div>
+                                        <p className="mb-1.5 text-[13px] text-ink-meta">What happened</p>
+                                        <p className={csParagraph}>{prototype.outcome}</p>
+                                    </div>
+                                    {prototype.details && (
+                                        <p className="max-w-[560px] text-[13px] leading-[1.5] text-ink-muted">
+                                            {prototype.details}
+                                        </p>
+                                    )}
+                                </div>
+
+                                <figure className="flex flex-col gap-2.5">
+                                    <PrototypeMedia device={prototype.device} label={prototype.title} />
+                                    <figcaption className="text-[13px] text-ink-meta">
+                                        <span className="text-ink">Fig. {i + 1}</span> — Recording coming soon
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        </section>
+                    )
+                })}
+            </div>
+
+            <section className="px-gutter">
+                <Link
+                    href="/work/dianas-diamonds"
+                    className="group flex flex-col gap-2 border-t border-ink pt-6 transition-colors hover:text-brand"
+                >
+                    <span className="text-[13px] text-ink-meta">Next case study →</span>
+                    <span className="text-[clamp(40px,6vw,88px)] font-medium leading-[0.95] tracking-[-0.05em]">
+                        Diana&apos;s Diamonds
                     </span>
-                  ))}
-                </p>
-              </div>
-            ))}
-          </div>
+                </Link>
+            </section>
 
-          <div className="mt-12 max-w-3xl space-y-4 text-base leading-relaxed text-[var(--text-secondary)]">
-            <p>
-              As a UX Engineer on Google Travel, I built dozens of React prototypes to help teams
-              explore new product directions, validate assumptions, and make decisions faster.
-            </p>
-            <p>Not every prototype shipped, but every prototype answered a question.</p>
-            <p>Here are a few examples.</p>
-          </div>
-        </section>
-      </div>
-
-      {/* Full-bleed gradient surface with the centered deck */}
-      <section
-        className="relative mt-16 w-full overflow-hidden py-16 md:mt-20 md:py-24"
-        style={{
-          background:
-            "radial-gradient(70% 60% at 18% 8%, rgba(177,158,239,0.30), transparent 60%), radial-gradient(60% 60% at 88% 92%, rgba(129,140,248,0.22), transparent 60%), linear-gradient(180deg, #f5f3fc 0%, #f7f7fb 100%)",
-        }}
-      >
-        {/* Soft top + bottom fade so the band blends into the white page */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white to-transparent"
-        />
-        <div className="relative mx-auto max-w-[560px] px-6">
-          <PrototypeDeck />
-        </div>
-      </section>
-    </main>
-  )
+            <Footer />
+        </main>
+    )
 }

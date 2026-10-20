@@ -4,9 +4,8 @@ import dynamic from "next/dynamic"
 import { DeferUntilNear } from "@/components/defer-until-near"
 
 /*
- * The heading and the section wrapper stay here, in the initial HTML: they cost
- * almost nothing, they keep `#microcomponents` a valid anchor target, and they
- * keep the section legible to crawlers.
+ * The heading and the section wrapper live in components/projects.tsx, in the
+ * initial HTML, so `#microcomponents` stays a valid anchor target.
  *
  * Everything with weight — the data array, both renderings, framer-motion's
  * layout animations, ai-composer.css — lives in ./body and arrives only once the
@@ -16,20 +15,9 @@ const MicrocomponentsBody = dynamic(() => import("./body"), { ssr: false })
 
 export function Microcomponents() {
     return (
-        <section id="microcomponents" className="space-y-6 md:space-y-8">
-            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-                Microcomponents
-            </h2>
-
-            {/* Reserve matches the measured body height at each breakpoint — 640px
-                for the desktop grid, ~200px for the mobile drawer list — so the
-                footer doesn't jump when the body mounts. */}
-            <DeferUntilNear
-                mountOnHash="microcomponents"
-                className="min-h-[200px] lg:min-h-[640px]"
-            >
-                <MicrocomponentsBody />
-            </DeferUntilNear>
-        </section>
+        // Reserves the board's height so the footer doesn't jump when it mounts.
+        <DeferUntilNear mountOnHash="microcomponents" className="min-h-[624px] min-[62.5rem]:min-h-[464px]">
+            <MicrocomponentsBody />
+        </DeferUntilNear>
     )
 }

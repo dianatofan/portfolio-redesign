@@ -56,7 +56,7 @@ const personJsonLd = {
 }
 
 export const viewport: Viewport = {
-    themeColor: "#F5F5F5",
+    themeColor: "#FFFFFF",
 }
 
 export default function RootLayout({
@@ -108,7 +108,7 @@ export default function RootLayout({
                     crossOrigin="anonymous"
                 />
             </head>
-            <body className="font-sans antialiased">
+            <body className="font-sans">
                 {/*
                  * Paints the Copenhagen clock during HTML parse, roughly when the
                  * hero text appears, instead of leaving "..." on screen until
@@ -127,7 +127,7 @@ export default function RootLayout({
                 {/* After {children}, so the element it fills has been parsed. */}
                 <script
                     dangerouslySetInnerHTML={{
-                        __html: `(function(){try{var el=document.getElementById('copenhagen-clock');if(!el)return;var t=new Date().toLocaleTimeString('en-US',{timeZone:'Europe/Copenhagen',hour:'numeric',minute:'2-digit',hour12:true}).replace(/\\s?(AM|PM)$/,'$1');el.textContent=t;}catch(e){}})();`,
+                        __html: `(function(){try{var el=document.getElementById('copenhagen-clock');if(!el)return;var t=new Date().toLocaleTimeString('en-US',{timeZone:'Europe/Copenhagen',hour:'numeric',minute:'2-digit',hour12:true});el.textContent=t;}catch(e){}})();`,
                     }}
                 />
                 <script

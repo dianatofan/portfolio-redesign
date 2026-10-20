@@ -85,7 +85,7 @@ export function InlinePasswordGate({
     if (isUnlocked || !enabled) {
         return (
             <div
-                className={`transition-all duration-300 ease-out [&>section+section]:mt-16 ${
+                className={`transition-all duration-300 ease-out [&>section+section]:mt-24 ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                 }`}
             >
@@ -101,23 +101,29 @@ export function InlinePasswordGate({
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}
         >
-            <h2 className="text-2xl md:text-3xl font-medium text-foreground">Solution</h2>
-            <div className="rounded-lg border border-border bg-card p-6">
-                <p className="text-base text-[var(--text-secondary)]">Add password to keep reading.</p>
+            <h2 className="text-[clamp(30px,3.2vw,44px)] font-medium leading-[1.05] tracking-[-0.04em] text-ink">
+                Solution
+            </h2>
+            <div className="border-y border-hairline py-6">
+                <p className="text-lg text-ink">Add password to keep reading.</p>
                 <form onSubmit={handleUnlock} className="mt-4 flex flex-col gap-3 sm:flex-row">
                     <Input
                         type="password"
                         placeholder="Enter password"
+                        aria-label="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="sm:max-w-xs"
+                        className="h-11 rounded-none border-hairline text-[15px] shadow-none sm:max-w-xs"
                     />
-                    <Button type="submit" className="sm:w-auto">
+                    <Button
+                        type="submit"
+                        className="h-11 rounded-full bg-ink px-5 text-[15px] font-medium text-white hover:bg-brand sm:w-auto"
+                    >
                         Unlock section
                     </Button>
                 </form>
                 {error && (
-                    <p className="mt-2 text-sm text-red-600" role="alert">
+                    <p className="mt-2 text-[13px] text-red-600" role="alert">
                         {error}
                     </p>
                 )}

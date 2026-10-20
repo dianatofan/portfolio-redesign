@@ -8,9 +8,9 @@
 // component trees, none of which are visible when the homepage opens. Keeping
 // them out of the initial bundle is what lets the hero's renderer start sooner.
 
+import { useState } from "react"
 import { AiComposer, AiComposerPreview } from "./ai-composer"
-import { DoorGrid } from "./door-grid"
-import { DoorList } from "./door-list"
+import { Board } from "./board"
 import { HoldoutDiagram, HoldoutDiagramPreview } from "./holdout-diagram"
 import { SwitchboardFilter, SwitchboardPreview } from "./switchboard-filter"
 import type { Microcomponent } from "./types"
@@ -76,21 +76,8 @@ export const microcomponents: Microcomponent[] = [
     },
 ]
 
-/**
- * One dataset, two renderings — a grid of doors with room to hover, a stack of
- * drawers where there isn't.
- *
- * Default export so `next/dynamic` can pick it up without a selector.
- */
+// Default export so `next/dynamic` can pick it up without a selector.
 export default function MicrocomponentsBody() {
-    return (
-        <>
-            <div className="hidden lg:block">
-                <DoorGrid items={microcomponents} />
-            </div>
-            <div className="lg:hidden">
-                <DoorList items={microcomponents} />
-            </div>
-        </>
-    )
+    const [index, setIndex] = useState(0)
+    return <Board items={microcomponents} index={index} onPick={setIndex} />
 }
