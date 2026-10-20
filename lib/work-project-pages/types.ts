@@ -41,6 +41,12 @@ export type WorkProjectPage = {
   heroVideo?: string
   // "Fig. 1" caption under the hero. Falls back to the project's short name.
   heroCaption?: string
+  // Replaces "Fig. 1" as the caption's ink lead-in, e.g. "Why diamonds?".
+  heroCaptionLabel?: string
+  // "v3": the Case Study v3 editorial layout (Diana's Diamonds): hero with 20px
+  // corners, linked eyebrow, 104px title, hairline meta row with 15px values,
+  // and stats under an ink rule instead of cards. Others keep the default.
+  layout?: "v3"
   description?: string
   meta: WorkProjectMetaItem[]
   sections: WorkProjectSection[]

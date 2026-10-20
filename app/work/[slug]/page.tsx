@@ -82,6 +82,9 @@ export default async function ProjectPage({ params }: PageProps) {
     .filter(Boolean)
     .join(" · ")
   const stats = toStats(projectPage.highlights ?? [])
+  // Case Study v3 (Diana's Diamonds): see WorkProjectPage.layout.
+  const v3 = projectPage.layout === "v3"
+  const COL = "px-[max(var(--gutter),calc((100%-1200px)/2))]"
 
   // Short Lab posts have their own layout (Lab Project.dc.html).
   if (projectPage.story) {
@@ -106,58 +109,117 @@ export default async function ProjectPage({ params }: PageProps) {
       <Header />
 
       {/* The work first: back link, then the hero, then the headline as its caption. */}
-      <div className="flex flex-col gap-6 px-gutter pt-8 min-[720px]:pt-10">
+      <div className={`flex flex-col gap-6 px-gutter ${v3 ? "pt-6" : "pt-8 min-[720px]:pt-10"}`}>
         {/* Case studies go back through the header breadcrumb; Lab posts keep their link. */}
         {isLab && (
           <Link href="/#lab" className="self-start text-[13px] text-ink-meta transition-colors hover:text-brand">
             ← Lab
           </Link>
         )}
-        <figure className="flex flex-col gap-2.5">
-          <HeroImage src={projectPage.heroImage ?? project.image} video={projectPage.heroVideo} alt={`${project.title} cover`} />
-          <figcaption className="max-w-[640px] text-[13px] text-ink-meta">
-            <span className="text-ink">Fig. 1</span> — {projectPage.heroCaption ?? shortTitle}
+        <figure className={`flex flex-col ${v3 ? "gap-3" : "gap-2.5"}`}>
+          <HeroImage
+            src={projectPage.heroImage ?? project.image}
+            video={projectPage.heroVideo}
+            alt={`${project.title} cover`}
+            radius={v3 ? "rounded-[20px]" : undefined}
+          />
+          <figcaption className={`${v3 ? "" : "max-w-[640px] "}text-[13px] text-ink-meta`}>
+            {projectPage.heroCaptionLabel ? (
+              <>
+                <span className="text-ink">{projectPage.heroCaptionLabel}</span> {projectPage.heroCaption}
+              </>
+            ) : (
+              <>
+                <span className="text-ink">Fig. 1</span> — {projectPage.heroCaption ?? shortTitle}
+              </>
+            )}
           </figcaption>
         </figure>
       </div>
 
+      {v3 ? (
+        // Case Study v3 title block: linked eyebrow, title and standfirst over 9 columns, then a hairline meta row.
+        <section className={`${COL} grid grid-cols-12 gap-6 pt-14`}>
+          <div className="col-span-12 flex flex-col gap-4 xl:col-span-9">
+            <h1 className="m-0 text-[clamp(52px,7vw,104px)] font-medium leading-[0.96] tracking-[-0.05em] text-balance">
+              {projectPage.displayTitle ?? project.title}
+            </h1>
+            {projectPage.subtitle ? (
+              <p className="m-0 text-[24px] leading-[1.3] tracking-[-0.015em] text-[#3d3c44] text-pretty">
+                {projectPage.subtitle}
+              </p>
+            ) : null}
+          </div>
+          <dl className="col-span-12 mt-4 grid grid-cols-2 gap-6 border-t border-hairline pt-6 min-[720px]:grid-cols-4">
+            {projectPage.meta.map((item) => (
+              <div key={item.label} className="flex flex-col gap-1">
+                <dt className="text-[13px] text-ink-meta">{item.label}</dt>
+                <dd className="text-[15px] leading-[1.45]">
+                  {item.values.map((value, index) => (
+                    <span key={`${item.label}-${value}`}>
+                      {index > 0 && <br />}
+                      {value}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : (
       <section className="flex flex-col gap-7 px-[max(var(--gutter),calc((100%-1200px)/2))] pt-12 pb-4 min-[720px]:pt-16">
-        <div className="flex flex-col gap-5">
-          <span className="text-[13px] text-ink-meta">{metaLine}</span>
-          <h1
-            className={
-              isLab
-                ? "max-w-[900px] text-[clamp(40px,5vw,64px)] font-medium leading-none tracking-[-0.04em] text-balance"
-                : "max-w-[1100px] text-[clamp(48px,6.5vw,96px)] font-medium leading-[0.95] tracking-[-0.05em] text-balance"
-            }
-          >
-            {projectPage.displayTitle ?? project.title}
-          </h1>
-          {projectPage.subtitle ? (
-            // The standfirst: one lead paragraph under the title, as in a newspaper.
-            <p className="mt-2 max-w-[760px] text-[24px] leading-[1.35] tracking-[-0.015em] text-pretty">
-              {projectPage.subtitle}
-            </p>
-          ) : null}
-        </div>
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink pt-4 min-[720px]:grid-cols-4">
-          {projectPage.meta.map((item) => (
-            <div key={item.label} className="flex flex-col gap-1">
-              <dt className="text-[13px] text-ink-meta">{item.label}</dt>
-              <dd className="text-[18px]">
-                {item.values.map((value, index) => (
-                  <span key={`${item.label}-${value}`}>
-                    {index > 0 && <br />}
-                    {value}
-                  </span>
-                ))}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+          <div className="flex flex-col gap-5">
+            <span className="text-[13px] text-ink-meta">{metaLine}</span>
+            <h1
+              className={
+                isLab
+                  ? "max-w-[900px] text-[clamp(40px,5vw,64px)] font-medium leading-none tracking-[-0.04em] text-balance"
+                  : "max-w-[1100px] text-[clamp(48px,6.5vw,96px)] font-medium leading-[0.95] tracking-[-0.05em] text-balance"
+              }
+            >
+              {projectPage.displayTitle ?? project.title}
+            </h1>
+            {projectPage.subtitle ? (
+              // The standfirst: one lead paragraph under the title, as in a newspaper.
+              <p className="mt-2 max-w-[760px] text-[24px] leading-[1.35] tracking-[-0.015em] text-pretty">
+                {projectPage.subtitle}
+              </p>
+            ) : null}
+          </div>
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink pt-4 min-[720px]:grid-cols-4">
+            {projectPage.meta.map((item) => (
+              <div key={item.label} className="flex flex-col gap-1">
+                <dt className="text-[13px] text-ink-meta">{item.label}</dt>
+                <dd className="text-[18px]">
+                  {item.values.map((value, index) => (
+                    <span key={`${item.label}-${value}`}>
+                      {index > 0 && <br />}
+                      {value}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
 
-      {stats.length > 0 ? (
+      {stats.length > 0 && v3 ? (
+        // Case Study v3 stats: big figures under an ink rule, no cards.
+        <section aria-label="At a glance" className={`${COL} pt-[72px]`}>
+          <dl className="grid grid-cols-1 gap-6 min-[720px]:grid-cols-3">
+            {stats.map((item) => (
+              <div key={item.value + item.label} className="flex flex-col gap-2 border-t border-ink pt-4">
+                <dt className="order-2 text-[15px] text-ink-muted">{item.label}</dt>
+                <dd className="order-1 text-[clamp(48px,5vw,72px)] font-medium leading-none tracking-[-0.05em]">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
+      {stats.length > 0 && !v3 ? (
         <section aria-label="At a glance" className="px-[max(var(--gutter),calc((100%-1200px)/2))] pt-12 pb-16 min-[720px]:pb-24">
           <dl className="grid grid-cols-1 gap-3 min-[720px]:grid-cols-3">
             {stats.map((item) => (
@@ -174,7 +236,9 @@ export default async function ProjectPage({ params }: PageProps) {
 
       {/* With no stat band, the band's bottom padding moves here. */}
       <section
-        className={`px-[max(var(--gutter),calc((100%-1200px)/2))] pb-24 ${stats.length > 0 ? "" : "pt-16 min-[720px]:pt-24"}`}
+        className={`px-[max(var(--gutter),calc((100%-1200px)/2))] pb-24 ${
+          v3 ? "pt-14" : stats.length > 0 ? "" : "pt-16 min-[720px]:pt-24"
+        }`}
       >
           {/* Ruler-style contents, fixed to the right edge of the viewport. */}
           <ProjectTableOfContents
@@ -187,7 +251,7 @@ export default async function ProjectPage({ params }: PageProps) {
             Each top-level section opens with its headline, stacked above its
             text; see case-study-sections. Sections vary their own shape.
           */}
-          <div className="cs-article flex min-w-0 flex-col gap-24 [&_section[id]]:scroll-mt-24 [&_[data-cs-head]_h2]:mb-6">
+          <div className={`cs-article flex min-w-0 flex-col ${v3 ? "gap-28" : "gap-24"} [&_section[id]]:scroll-mt-24 [&_[data-cs-head]_h2]:mb-6`}>
             {withSectionLabels(projectPage.renderBeforeGate(), projectPage.sections)}
 
             {postGateContent &&
@@ -201,19 +265,40 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
       </section>
 
+      {v3 ? (
+        // Case Study v3: the next study under one hairline; the footer follows with its own rule.
+        // Full width at the page gutter, like the header and footer.
+        <section className="px-gutter">
+          <Link
+            href={`/work/${nextProject.slug}`}
+            className="flex items-end justify-between gap-6 border-t border-hairline pt-8 pb-4 text-ink transition-colors hover:text-brand"
+          >
+            <span className="flex flex-col gap-2">
+              <span className="text-[13px] text-ink-meta">Next case study</span>
+              <span className="max-w-[760px] text-[clamp(28px,3vw,44px)] font-medium leading-[1.08] tracking-[-0.035em] text-balance">
+                {nextProject.title}
+              </span>
+            </span>
+            <span aria-hidden="true" className="text-[24px]">
+              →
+            </span>
+          </Link>
+        </section>
+      ) : (
       <Link href={`/work/${nextProject.slug}`} className="group block px-[max(var(--gutter),calc((100%-1200px)/2))]">
-        <div className="flex items-end justify-between gap-8 border-t border-hairline pt-7 pb-10 transition-colors group-hover:text-brand">
-          <div className="flex flex-col gap-2.5">
-            <span className="text-[13px] text-ink-meta">{isLab ? "Next in the Lab" : "Next case study"}</span>
-            <span className="max-w-[900px] text-[24px] font-medium leading-[1.35] tracking-[-0.03em] text-balance sm:text-[36px] sm:leading-[1.1]">
-              {nextProject.title}
+          <div className="flex items-end justify-between gap-8 border-t border-hairline pt-7 pb-10 transition-colors group-hover:text-brand">
+            <div className="flex flex-col gap-2.5">
+              <span className="text-[13px] text-ink-meta">{isLab ? "Next in the Lab" : "Next case study"}</span>
+              <span className="max-w-[900px] text-[24px] font-medium leading-[1.35] tracking-[-0.03em] text-balance sm:text-[36px] sm:leading-[1.1]">
+                {nextProject.title}
+              </span>
+            </div>
+            <span aria-hidden="true" className="text-[24px]">
+              →
             </span>
           </div>
-          <span aria-hidden="true" className="text-[24px]">
-            →
-          </span>
-        </div>
-      </Link>
+        </Link>
+      )}
 
       <ScrollFade root=".cs-article" />
       <Footer />

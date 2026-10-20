@@ -3,7 +3,18 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 
-export function HeroImage({ src, alt, video }: { src: string; alt: string; video?: string }) {
+export function HeroImage({
+  src,
+  alt,
+  video,
+  radius = "rounded-2xl",
+}: {
+  src: string
+  alt: string
+  video?: string
+  /** Corner radius class for the frame and its hairline edge. */
+  radius?: string
+}) {
   const [loaded, setLoaded] = useState(false)
   const [reduced, setReduced] = useState(true)
 
@@ -15,7 +26,7 @@ export function HeroImage({ src, alt, video }: { src: string; alt: string; video
 
   if (video && !reduced) {
     return (
-      <div className="relative aspect-video overflow-hidden rounded-2xl bg-surface">
+      <div className={`relative aspect-video overflow-hidden ${radius} bg-surface`}>
         <video
           src={video}
           poster={src}
@@ -25,13 +36,13 @@ export function HeroImage({ src, alt, video }: { src: string; alt: string; video
           aria-label={alt}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-black/[0.08] ring-inset" />
+        <span aria-hidden className={`pointer-events-none absolute inset-0 ${radius} ring-1 ring-black/[0.08] ring-inset`} />
       </div>
     )
   }
 
   return (
-    <div className="relative aspect-video overflow-hidden rounded-2xl bg-surface">
+    <div className={`relative aspect-video overflow-hidden ${radius} bg-surface`}>
       {/* Keep placeholder lightweight so image paints as fast as possible. */}
       <div
         className={`absolute inset-0 bg-surface transition-opacity duration-150 ${
@@ -53,7 +64,7 @@ export function HeroImage({ src, alt, video }: { src: string; alt: string; video
         fetchPriority="high"
         onLoad={() => setLoaded(true)}
       />
-      <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-black/[0.08] ring-inset" />
+      <span aria-hidden className={`pointer-events-none absolute inset-0 ${radius} ring-1 ring-black/[0.08] ring-inset`} />
     </div>
   )
 }
