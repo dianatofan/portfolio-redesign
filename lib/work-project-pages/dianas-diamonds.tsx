@@ -330,8 +330,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
       <section id="impact">
         <h2 className={heading}>Impact</h2>
         <p className={`${paragraph} mb-10`}>
-          Every prototype that reached done made it into the real product, and handoff to developers
-          got 2x faster. Anyone can open and play with my prototypes, so they&apos;re much easier to
+          All 18 prototypes made it into the real product, and handoff to developers got 2x faster. Anyone can open and play with my prototypes, so they&apos;re much easier to
           share with stakeholders.
         </p>
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,760px)_minmax(0,1fr)] xl:gap-16">
