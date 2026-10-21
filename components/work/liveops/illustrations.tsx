@@ -368,10 +368,10 @@ export function AlertingSketch({ caption }: { caption: ReactNode }) {
   )
 }
 
-export type Media = { label: string; alt: string; video?: string; image?: string; width?: number; height?: number }
+export type Media = { label: string; alt: string; caption?: string; video?: string; image?: string; width?: number; height?: number }
 
-/** Several recordings in one frame; tabs under it switch between them. */
-export function TabbedMedia({ items, caption }: { items: Media[]; caption: ReactNode }) {
+/** Several recordings in one frame; tabs under it switch between them. An item's own caption wins over the shared one. */
+export function TabbedMedia({ items, caption }: { items: Media[]; caption?: ReactNode }) {
   const [sel, setSel] = useState(0)
   return (
     <figure className="m-0 flex flex-col gap-3">
@@ -393,7 +393,7 @@ export function TabbedMedia({ items, caption }: { items: Media[]; caption: React
       </div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <figcaption className="text-[13px] text-ink-meta">
-          <span className="text-ink [counter-increment:fig] before:content-['Fig._'_counter(fig)]" /> — {caption}
+          <span className="text-ink [counter-increment:fig] before:content-['Fig._'_counter(fig)]" /> — {items[sel].caption ?? caption}
         </figcaption>
         <Tabs labels={items.map((i) => i.label)} value={sel} onChange={setSel} className="ml-auto bg-[#f1f2f4]" />
       </div>
