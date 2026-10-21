@@ -13,7 +13,14 @@ export const metadata = {
  * topic between hairlines. Copy is from Colophon.dc.html in the design handoff.
  */
 const rows: Array<{ label: string; lines: string[] }> = [
-    { label: "Time", lines: ["One working day, redesigning my previous site from scratch."] },
+    { label: "Time", lines: ["Three days, redesigning my previous site from scratch."] },
+    {
+        label: "Why",
+        lines: [
+            "I wanted a space for my vibecoded projects.",
+            "And a magazine, newspaper feel: editorial, bold and confident.",
+        ],
+    },
     {
         label: "What I did",
         lines: [
@@ -57,7 +64,7 @@ export default function ColophonPage() {
                         How this site was made
                     </h1>
                     <p className="max-w-[640px] text-xl leading-normal text-ink-muted text-pretty">
-                        I redesigned my old portfolio in one working day, with AI as a pair.
+                        I redesigned my old portfolio in three days, with AI as a pair.
                         Here&apos;s who did what, and the decisions behind it.
                     </p>
                 </div>
