@@ -8,6 +8,7 @@ import { workProjects } from "@/components/projects"
 import { ProjectTableOfContents } from "@/components/project-table-of-contents"
 import { getWorkProjectPage } from "@/lib/work-project-pages"
 import { HeroImage } from "@/components/hero-image"
+import { StatBars } from "@/components/work/stat-bars"
 import { ScrollFade } from "@/components/scroll-fade"
 import { LabStoryPage } from "@/components/work/lab-story-page"
 import { withSectionLabels } from "@/components/case-study-sections"
@@ -249,28 +250,9 @@ export default async function ProjectPage({ params }: PageProps) {
       {v4 && stats.length > 0 ? (
         // v4 stats: the figure over an ink rule, with bars for how much it moved.
         <section aria-label="Results" className={`${COL} grid grid-cols-1 gap-6 pt-[72px] min-[720px]:grid-cols-[repeat(auto-fit,minmax(260px,1fr))]`}>
-          {stats.map((item) => {
-            const pct = parseFloat(item.value)
-            const fewer = item.value.endsWith("%") && /fewer|faster|less|reduc/i.test(item.label)
-            return (
-              <div key={item.value + item.label} className="flex flex-col gap-3.5 border-t border-ink pt-4">
-                <span className="text-[clamp(40px,5.2vw,80px)] font-medium leading-none tracking-[-0.055em]">{item.value}</span>
-                <span className="text-[15px] text-ink-muted">{item.label}</span>
-                {fewer && (
-                  <div aria-hidden="true" className="flex flex-col gap-2 pt-1.5 text-[13px]">
-                    <div className="grid grid-cols-[52px_1fr] items-center gap-2.5 text-ink-meta">
-                      <span>Before</span>
-                      <span className="h-2.5 rounded-full bg-[#c9c8d0]" />
-                    </div>
-                    <div className="grid grid-cols-[52px_1fr] items-center gap-2.5">
-                      <span>After</span>
-                      <span className="h-2.5 rounded-full bg-brand" style={{ width: `${100 - pct}%` }} />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )
-          })}
+          {stats.map((item) => (
+            <StatBars key={item.value + item.label} value={item.value} label={item.label} />
+          ))}
         </section>
       ) : null}
       {v4 && projectPage.glance ? (
