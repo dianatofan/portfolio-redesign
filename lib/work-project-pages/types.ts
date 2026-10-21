@@ -46,7 +46,12 @@ export type WorkProjectPage = {
   // "v3": the Case Study v3 editorial layout (Diana's Diamonds): hero with 20px
   // corners, linked eyebrow, 104px title, hairline meta row with 15px values,
   // and stats under an ink rule instead of cards. Others keep the default.
-  layout?: "v3"
+  // "v4": the LiveOps layout. A 16:9 hero with no caption, eyebrow with read
+  // time over an 80px title, a stat with before/after bars, the at-a-glance
+  // box, and Previous / Next at the end. The body draws its own section spacing.
+  layout?: "v3" | "v4"
+  // The at-a-glance box under the stats (v4).
+  glance?: { problem: string; did: string; outcome: string }
   description?: string
   meta: WorkProjectMetaItem[]
   sections: WorkProjectSection[]

@@ -7,8 +7,8 @@ import type { WorkProjectSection } from "@/lib/work-project-pages/types"
  * them, this walks the rendered fragment and rewrites the first element holding
  * each top-level section's id.
  *
- * Only plain DOM elements are rewritten. A component that renders its own
- * sections (LiveopsBackgroundBlock) does the same split itself.
+ * Only plain DOM elements are rewritten; a component that renders its own
+ * sections is left as it is.
  */
 
 type Props = { id?: string; children?: ReactNode }

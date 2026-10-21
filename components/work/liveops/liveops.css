@@ -1,0 +1,18 @@
+/* Loops for the LiveOps Alerting illustrations. */
+@keyframes loSeg1 { 0% { left: 0; opacity: 0 } 10% { opacity: 1 } 45% { left: 100%; opacity: 1 } 50%, 100% { left: 100%; opacity: 0 } }
+@keyframes loSeg2 { 0%, 50% { left: 0; opacity: 0 } 60% { opacity: 1 } 95% { left: 100%; opacity: 1 } 100% { left: 100%; opacity: 0 } }
+@keyframes loSegBack { 0% { left: 100%; opacity: 0 } 10% { opacity: 1 } 80% { left: 0; opacity: 1 } 100% { left: 0; opacity: 0 } }
+@keyframes loSegStop { 0% { left: 0; opacity: 0 } 10% { opacity: 1 } 45%, 100% { left: 100%; opacity: 1 } }
+@keyframes loShake { 0%, 60%, 100% { transform: none } 65% { transform: translateX(-3px) } 70% { transform: translateX(3px) } 75% { transform: translateX(-2px) } }
+@keyframes loAlert { 0%, 8% { background: #fff; color: #8b8e95 } 14%, 86% { background: #fff0f0; color: #16151a } 94%, 100% { background: #fff; color: #8b8e95 } }
+@keyframes loDot { 0%, 8% { background: #c9c8d0 } 14%, 86% { background: #e5484d } 94%, 100% { background: #dcdde2 } }
+@keyframes loBanner { 0%, 12% { transform: translateY(-120%); opacity: 0 } 20%, 85% { transform: none; opacity: 1 } 95%, 100% { transform: translateY(-120%); opacity: 0 } }
+@keyframes loRow { 0%, 22% { opacity: 0; transform: translateX(-8px) } 30%, 85% { opacity: 1; transform: none } 95%, 100% { opacity: 0 } }
+@keyframes loPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(79, 53, 184, .55) } 50% { box-shadow: 0 0 0 6px rgba(79, 53, 184, 0) } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lo-anim, .lo-anim * { animation: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lo-anim .lo-pkt { display: none; }
+}

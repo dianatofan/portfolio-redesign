@@ -55,6 +55,43 @@ function useWorkInView(enabled: boolean) {
     return inView
 }
 
+/*
+ * Reading a case study: the header slides away while you scroll down past the
+ * hero and comes back as soon as you scroll up. The study's title shows in it
+ * once the page headline is out of view, and the bar under it fills as you read.
+ */
+function useReading(enabled: boolean) {
+    const [state, setState] = useState({ hidden: false, titleShown: false, progress: 0 })
+
+    useEffect(() => {
+        if (!enabled) return
+        let last = window.scrollY
+        let frame = 0
+        const update = () => {
+            frame = 0
+            const y = window.scrollY
+            const max = document.documentElement.scrollHeight - window.innerHeight
+            setState((s) => ({
+                hidden: y > 240 && y > last + 2 ? true : y < last - 2 ? false : s.hidden,
+                titleShown: y > 420,
+                progress: max > 0 ? Math.min(1, y / max) : 0,
+            }))
+            last = y
+        }
+        const onScroll = () => {
+            if (!frame) frame = requestAnimationFrame(update)
+        }
+        update()
+        window.addEventListener("scroll", onScroll, { passive: true })
+        return () => {
+            window.removeEventListener("scroll", onScroll)
+            cancelAnimationFrame(frame)
+        }
+    }, [enabled])
+
+    return state
+}
+
 export function Header() {
     const pathname = usePathname() ?? "/"
     const [menuOpen, setMenuOpen] = useState(false)
@@ -71,40 +108,65 @@ export function Header() {
         }
     }, [menuOpen])
 
-    // Inside a case study the header is just the two moves a reader needs: back
-    // to Selected work, and on to the next case study (the same order as the
-    // "Next case study" link at the end of the page).
+    // Inside a case study: the name, the study's title once its own headline has
+    // scrolled away, Work / About, and round arrows to the previous and next
+    // case study (the same order as the links at the end of the page).
     const slug = pathname.match(/^\/work\/([^/]+)/)?.[1]
     const project = slug ? workProjects.find((p) => p.slug === slug) : undefined
     const caseStudies = workProjects.filter((p) => p.category !== "experiment")
     const inCaseStudy = !!project && project.category !== "experiment"
-    const next = inCaseStudy
-        ? caseStudies[(caseStudies.findIndex((p) => p.slug === slug) + 1) % caseStudies.length]
-        : undefined
+    const index = caseStudies.findIndex((p) => p.slug === slug)
+    const prev = inCaseStudy ? caseStudies[(index - 1 + caseStudies.length) % caseStudies.length] : undefined
+    const next = inCaseStudy ? caseStudies[(index + 1) % caseStudies.length] : undefined
+    const reading = useReading(inCaseStudy)
 
     const links = [
         { label: "Work", href: `/#${WORK_SECTION_ID}`, current: pathname.startsWith("/work") || pathname.startsWith("/fun") || (isHome && workInView) },
         { label: "About", href: "/about", current: pathname.startsWith("/about") },
     ]
 
-    if (inCaseStudy && next) {
+    if (inCaseStudy && project && prev && next) {
+        const arrow = "grid h-7 w-7 place-items-center rounded-full border border-hairline bg-white text-[13px] text-ink transition-colors hover:border-ink"
         return (
-            <header className="sticky top-0 z-40 flex h-16 items-center justify-between gap-6 border-b border-black/[0.06] bg-[linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.5))] px-gutter text-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_8px_24px_-16px_rgba(22,21,26,0.18)] backdrop-blur-[20px] backdrop-saturate-[1.8]">
-                <Link href={`/#${WORK_SECTION_ID}`} className="link-ink -ml-1 flex items-center gap-1.5">
-                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="shrink-0">
-                        <path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    Back
-                </Link>
-                <Link href={`/work/${next.slug}`} className="link-ink flex min-w-0 items-center gap-1.5">
-                    <span className="truncate">
-                        <span className="hidden sm:inline">Next: </span>
-                        {next.row?.title ?? next.navigationTitle ?? next.title}
+            <header
+                className={`sticky top-0 z-40 bg-white/[0.94] backdrop-blur-[8px] transition-transform duration-[350ms] ease-[cubic-bezier(.2,0,0,1)] motion-reduce:transition-none ${
+                    reading.hidden ? "-translate-y-full" : "translate-y-0"
+                }`}
+            >
+                <div className="grid h-16 grid-cols-[1fr_auto] items-center gap-6 px-gutter text-[15px] lg:grid-cols-[1fr_auto_1fr]">
+                    <Link href="/" className="link-ink justify-self-start font-medium">
+                        Diana Tofan
+                    </Link>
+                    <span
+                        aria-hidden={!reading.titleShown}
+                        className={`hidden max-w-[46vw] truncate text-[13px] text-ink-muted transition-opacity duration-[250ms] lg:block ${
+                            reading.titleShown ? "opacity-100" : "opacity-0"
+                        }`}
+                    >
+                        {project.title}
                     </span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="shrink-0">
-                        <path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </Link>
+                    <nav aria-label="Main" className="flex items-center justify-end gap-7">
+                        {links.map((link) => (
+                            <Link key={link.label} href={link.href} className="link-ink hidden sm:inline">
+                                {link.label}
+                            </Link>
+                        ))}
+                        <span className="flex gap-1">
+                            <Link href={`/work/${prev.slug}`} aria-label={`Previous: ${prev.title}`} title={prev.title} className={arrow}>
+                                ←
+                            </Link>
+                            <Link href={`/work/${next.slug}`} aria-label={`Next: ${next.title}`} title={next.title} className={arrow}>
+                                →
+                            </Link>
+                        </span>
+                    </nav>
+                </div>
+                {/* How far through the study you are. */}
+                <div
+                    aria-hidden
+                    className="h-0.5 origin-left bg-brand"
+                    style={{ transform: `scaleX(${reading.progress})` }}
+                />
             </header>
         )
     }
