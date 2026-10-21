@@ -179,7 +179,7 @@ export function InspectionBulletin({ rules }: { rules: string[] }) {
     <figure className="m-0">
       <div className={`${panel} flex justify-center p-[clamp(24px,4vw,48px)]`}>
         <div className="relative w-full max-w-[520px] rotate-[-1deg] border border-[#d8d6cf] bg-[#fbfaf6] px-7 py-[26px] font-mono shadow-[0_14px_30px_-20px_rgba(22,21,26,.5)]">
-          <div className="border-b border-dashed border-[#9a9890] pb-3 text-center text-[13px] leading-[1.45] tracking-[.12em]">PLANUL CINCINAL · 1986</div>
+          <div className="border-b border-dashed border-[#9a9890] pb-3 text-center text-[13px] leading-[1.45] tracking-[.12em]">FOOD INSPECTION BULLETIN</div>
           {rules.map((rule) => (
             <div key={rule} className="grid grid-cols-[22px_1fr] gap-2.5 border-b border-dashed border-[#d8d6cf] py-2.5 text-[14px] leading-[1.45] text-[#2c2b31]">
               <span aria-hidden className="mt-0.5 h-3.5 w-3.5 border-[1.5px] border-[#2c2b31]" />
@@ -187,7 +187,7 @@ export function InspectionBulletin({ rules }: { rules: string[] }) {
             </div>
           ))}
           <span className="absolute right-[18px] bottom-4 rotate-[-9deg] rounded border-[2.5px] border-[#b3261e] px-3 py-1.5 text-[15px] leading-[1.2] font-bold tracking-[.1em] text-[#b3261e]">
-            APROBAT
+            APPROVED
           </span>
         </div>
       </div>
