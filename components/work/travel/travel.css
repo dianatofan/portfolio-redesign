@@ -1,0 +1,6 @@
+/* Loops for the Travel planning illustrations. */
+@keyframes tpUp { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-anim, .tp-anim * { animation: none !important; transition: none !important; }
+}

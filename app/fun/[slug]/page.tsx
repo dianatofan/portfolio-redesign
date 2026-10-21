@@ -3,11 +3,12 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { LabHero, LabIntro, LabSection, labBody } from "@/components/work/lab-chrome"
+import { LabParagraph, LabPostHeader, LabPostSection } from "@/components/work/lab-post"
 
 type FunPost = {
   slug: string
   title: string
+  href: string
   excerpt: string
   coverImage: string
   published: string
@@ -25,6 +26,7 @@ const funPosts: readonly FunPost[] = [
   {
     slug: "human-redundancy-terminal",
     title: "Human Redundancy Terminal",
+    href: "https://dianatofan.github.io/risk-assessment-terminal",
     excerpt:
       "An apocalyptic, tragic-comical terminal experiment asking if AI is coming for your job.",
     coverImage: "/images/fun-human-redundancy.webp",
@@ -101,30 +103,32 @@ export default async function FunProjectPage({ params }: PageProps) {
     <main className="min-h-screen bg-white text-ink">
       <Header />
 
-      <LabIntro title={post.title} standfirst={post.content.intro} />
-
-      {/* The design's hero is 600px tall in the 1200px column. */}
-      <LabHero>
-        <div className="relative aspect-[2/1] w-full bg-[#111113]">
-          <Image
-            src={post.coverImage}
-            alt={`${post.title} cover`}
-            fill
-            priority
-            className="object-cover"
-            sizes="(max-width: 1200px) 100vw, 1200px"
-          />
-        </div>
-      </LabHero>
+      <LabPostHeader
+        title={post.title}
+        standfirst={post.content.intro}
+        readTime={post.readTime}
+        action={{ label: "Open the terminal", href: post.href }}
+        meta={[["Published", post.published]]}
+        hero={
+          <div className="relative aspect-[2/1] w-full overflow-hidden rounded-[24px] bg-[#111113]">
+            <Image
+              src={post.coverImage}
+              alt={`${post.title} cover`}
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 1200px) 100vw, 1200px"
+            />
+          </div>
+        }
+      />
 
       {post.content.sections.map((section) => (
-        <LabSection key={section.heading} label={section.heading}>
-          <div className={`space-y-4 ${labBody}`}>
-            {section.body.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-        </LabSection>
+        <LabPostSection key={section.heading} title={section.heading}>
+          {section.body.map((paragraph) => (
+            <LabParagraph key={paragraph}>{paragraph}</LabParagraph>
+          ))}
+        </LabPostSection>
       ))}
 
       <Footer />

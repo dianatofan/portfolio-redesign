@@ -27,6 +27,8 @@ type WorkProject = {
     // Looping clip for the homepage row's thumbnail.
     rowVideo?: string
     row?: { title: string; outcome: string; status: string; year: string }
+    // Kept in the code but off the site for now: no links to it, and its page 404s.
+    hidden?: boolean
 }
 
 export const workProjects: readonly WorkProject[] = [
@@ -114,6 +116,7 @@ export const workProjects: readonly WorkProject[] = [
         isPasswordProtected: false,
         outcome: "35% faster UI development and 18% fewer support calls",
         shipped: true,
+        hidden: true,
     },
     {
         slug: "release-timeline",
@@ -125,6 +128,7 @@ export const workProjects: readonly WorkProject[] = [
         aspect: "aspect-[3/2]",
         isPasswordProtected: false,
         category: "experiment",
+        hidden: true,
     },
     // Side projects use the case-study template but stay out of the Case Studies
     // grid (category "experiment"); the Built in Code list links to them.
@@ -157,19 +161,13 @@ const labItems: LabItem[] = [
     {
         title: "Golden Goose Digital Museum",
         description: "3D sneakers and the tool to paint them",
-        frame: { type: "powerbook", src: "/images/golden-goose-painter.webp" },
+        frame: { type: "powerbook", src: "/images/golden-goose-museum-pair.jpg" },
         href: "/work/golden-goose-museum",
-    },
-    {
-        title: "Human Redundancy Terminal",
-        description: "A glitchy CRT with dark humour",
-        frame: { type: "mac", src: "/images/lab/terminal.webm" },
-        href: "https://dianatofan.github.io/risk-assessment-terminal",
     },
     {
         title: "Money Jenga",
         description: "A budget app shaped like a Jenga tower",
-        frame: { type: "phone", src: "/images/money-jenga/setup.webp" },
+        frame: { type: "phone", src: "/images/money-jenga/pull.webp" },
         href: "/work/money-jenga",
     },
     {
@@ -178,6 +176,22 @@ const labItems: LabItem[] = [
         frame: { type: "crt", src: "/images/lab/boeuf-1986.jpg" },
         href: "/work/boeuf-salad-decorator",
     },
+    {
+        title: "Human Redundancy Terminal",
+        description: "A glitchy CRT with dark humour",
+        frame: { type: "mac", src: "/images/lab/terminal.webm" },
+        href: "https://dianatofan.github.io/risk-assessment-terminal",
+    },
+]
+
+/*
+ * The Lab posts on the site, in reading order. Their Previous / Next links and
+ * the header's arrows both follow it, looping from the last back to the first.
+ */
+export const labPosts = [
+    { href: "/work/money-jenga", title: "Money Jenga" },
+    { href: "/work/boeuf-salad-decorator", title: "Boeuf Salad Decorator" },
+    { href: "/work/golden-goose-museum", title: "Golden Goose Digital Museum" },
 ]
 
 /*
@@ -196,7 +210,7 @@ const mapsPrototypesRow: SelectedWorkRow = {
 }
 
 const caseStudyRows: SelectedWorkRow[] = workProjects.flatMap((project) =>
-    project.row
+    project.row && !project.hidden
         ? [
               {
                   ...project.row,
@@ -208,7 +222,8 @@ const caseStudyRows: SelectedWorkRow[] = workProjects.flatMap((project) =>
         : []
 )
 
-const selectedWork: SelectedWorkRow[] = [...caseStudyRows, mapsPrototypesRow]
+// The Google Maps prototypes row is off the homepage for now; add mapsPrototypesRow back to show it.
+const selectedWork: SelectedWorkRow[] = caseStudyRows
 
 function SectionHead({ title, note }: { title: string; note: string }) {
     return (

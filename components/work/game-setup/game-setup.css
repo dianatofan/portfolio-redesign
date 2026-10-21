@@ -1,0 +1,8 @@
+/* Loops for the Game setup automation illustrations. */
+@keyframes gsCheck { 0%, 10% { background: #fff; border-color: #c9c8d0 } 18%, 88% { background: #16151a; border-color: #16151a } 96%, 100% { background: #fff; border-color: #c9c8d0 } }
+@keyframes gsBuild { 0%, 15% { opacity: 0; transform: scale(.92) } 28%, 86% { opacity: 1; transform: none } 96%, 100% { opacity: 0 } }
+@keyframes gsSpin { to { transform: rotate(360deg) } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gs-anim, .gs-anim * { animation: none !important; transition: none !important; }
+}

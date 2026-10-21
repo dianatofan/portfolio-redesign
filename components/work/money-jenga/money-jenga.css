@@ -1,0 +1,8 @@
+/* Loops for the Money Jenga illustrations. */
+@keyframes mjWob { 0%, 100% { transform: rotate(-2deg) } 50% { transform: rotate(2.5deg) } }
+@keyframes mjPull { 0%, 20% { transform: translateX(0); opacity: 1 } 60%, 100% { transform: translateX(34px); opacity: 0 } }
+@keyframes mjPkt { 0% { left: 0; opacity: 0 } 8% { opacity: 1 } 92% { opacity: 1 } 100% { left: 100%; opacity: 0 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mj-anim, .mj-anim * { animation: none !important; }
+}

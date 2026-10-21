@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { formatCopenhagenTime, isCopenhagenNight } from "@/lib/copenhagen-time"
 import { NavBrackets } from "./nav-brackets"
-import { workProjects } from "./projects"
+import { labPosts, workProjects } from "./projects"
 
 /*
  * Sticky editorial header: name and Copenhagen time on the left, Work / About on
@@ -66,17 +66,17 @@ function useReading(enabled: boolean) {
     useEffect(() => {
         if (!enabled) return
         let last = window.scrollY
+        let hidden = false
         let frame = 0
         const update = () => {
             frame = 0
             const y = window.scrollY
             const max = document.documentElement.scrollHeight - window.innerHeight
-            setState((s) => ({
-                hidden: y > 240 && y > last + 2 ? true : y < last - 2 ? false : s.hidden,
-                titleShown: y > 420,
-                progress: max > 0 ? Math.min(1, y / max) : 0,
-            }))
+            // Worked out here, not in the state updater: React may run the updater
+            // after `last` has already moved on, and then it never sees a scroll.
+            hidden = y > 240 && y > last + 2 ? true : y < last - 2 ? false : hidden
             last = y
+            setState({ hidden, titleShown: y > 420, progress: max > 0 ? Math.min(1, y / max) : 0 })
         }
         const onScroll = () => {
             if (!frame) frame = requestAnimationFrame(update)
@@ -108,24 +108,29 @@ export function Header() {
         }
     }, [menuOpen])
 
-    // Inside a case study: the name, the study's title once its own headline has
-    // scrolled away, Work / About, and round arrows to the previous and next
-    // case study (the same order as the links at the end of the page).
+    // Inside a case study or a Lab post: the name, the page's title once its own
+    // headline has scrolled away, Work / About, and round arrows to the previous
+    // and next one of the same kind (the same order as the links at the end of
+    // the page).
     const slug = pathname.match(/^\/work\/([^/]+)/)?.[1]
     const project = slug ? workProjects.find((p) => p.slug === slug) : undefined
-    const caseStudies = workProjects.filter((p) => p.category !== "experiment")
-    const inCaseStudy = !!project && project.category !== "experiment"
-    const index = caseStudies.findIndex((p) => p.slug === slug)
-    const prev = inCaseStudy ? caseStudies[(index - 1 + caseStudies.length) % caseStudies.length] : undefined
-    const next = inCaseStudy ? caseStudies[(index + 1) % caseStudies.length] : undefined
-    const reading = useReading(inCaseStudy)
+    const caseStudies = workProjects
+        .filter((p) => p.category !== "experiment" && !p.hidden)
+        .map((p) => ({ href: `/work/${p.slug}`, title: p.title }))
+    const inCaseStudy = !!project && project.category !== "experiment" && !project.hidden
+    const series = inCaseStudy ? caseStudies : labPosts
+    const index = series.findIndex((p) => p.href === pathname.replace(/\/$/, ""))
+    const current = index >= 0 ? series[index] : undefined
+    const prev = current ? series[(index - 1 + series.length) % series.length] : undefined
+    const next = current ? series[(index + 1) % series.length] : undefined
+    const reading = useReading(!!current)
 
     const links = [
         { label: "Work", href: `/#${WORK_SECTION_ID}`, current: pathname.startsWith("/work") || pathname.startsWith("/fun") || (isHome && workInView) },
         { label: "About", href: "/about", current: pathname.startsWith("/about") },
     ]
 
-    if (inCaseStudy && project && prev && next) {
+    if (current && prev && next) {
         const arrow = "grid h-7 w-7 place-items-center rounded-full border border-hairline bg-white text-[13px] text-ink transition-colors hover:border-ink"
         return (
             <header
@@ -146,7 +151,7 @@ export function Header() {
                             reading.titleShown ? "opacity-100" : "opacity-0"
                         }`}
                     >
-                        {project.title}
+                        {current.title}
                     </span>
                     <nav aria-label="Main" className="flex items-center justify-end gap-7">
                         {links.map((link) => (
@@ -155,10 +160,10 @@ export function Header() {
                             </Link>
                         ))}
                         <span className="flex gap-1">
-                            <Link href={`/work/${prev.slug}`} aria-label={`Previous: ${prev.title}`} title={prev.title} className={arrow}>
+                            <Link href={prev.href} aria-label={`Previous: ${prev.title}`} title={prev.title} className={arrow}>
                                 ←
                             </Link>
-                            <Link href={`/work/${next.slug}`} aria-label={`Next: ${next.title}`} title={next.title} className={arrow}>
+                            <Link href={next.href} aria-label={`Next: ${next.title}`} title={next.title} className={arrow}>
                                 →
                             </Link>
                         </span>

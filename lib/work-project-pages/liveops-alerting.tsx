@@ -1,9 +1,9 @@
 import Image from "next/image"
-import type { ReactNode } from "react"
 import { AlertingSketch, ObservabilityGap, RewardFlow } from "@/components/work/liveops/illustrations"
 import { TradeoffTable } from "@/components/work/liveops/tradeoffs"
 import type { WorkProjectPage } from "./types"
 import { FigCaption } from "./shared"
+import { Clip, Frame, Lead, Pillars, Section, body, full, right, stack } from "./v4"
 
 /*
  * LiveOps Alerting, laid out as the v4 case study (liveops-alerting.html): the
@@ -22,113 +22,6 @@ const impact = [
   { title: "22% fewer incidents", description: "One in five production issues caught before full rollout" },
   { title: "Trusted workflow", description: "Alerting system became part of daily LiveOps work" },
 ]
-
-const right = "col-span-12 lg:col-span-6 lg:col-start-7"
-const full = "col-span-12"
-// Under a full-width headline, the text stacks on the left.
-const stack = "col-span-12 lg:col-span-7"
-const lead = "m-0 text-[24px] leading-[1.25] tracking-[-0.025em] text-pretty"
-const body = "m-0 text-[18px] leading-[1.6] text-[#3d3c44] text-pretty"
-
-/*
- * A section: a major one opens under an ink rule with a 48px headline, a sub
- * one under a hairline with a smaller headline. `wide` puts the headline over
- * all 12 columns, for sections of rows or cards.
- */
-function Section({
-  id,
-  title,
-  sub,
-  wide,
-  children,
-}: {
-  id: string
-  title: string
-  sub?: boolean
-  wide?: boolean
-  children: ReactNode
-}) {
-  return (
-    <section id={id} className={sub ? "pt-14" : "pt-24"}>
-      <div
-        className={`grid grid-flow-row-dense grid-cols-12 items-start gap-x-6 gap-y-5 border-t pt-5 ${
-          sub ? "border-hairline" : "border-ink"
-        }`}
-      >
-        <h2
-          className={`m-0 ${wide ? "col-span-12" : "col-span-12 lg:col-span-5 lg:row-span-2"} font-medium leading-[1.08] tracking-[-0.035em] text-balance ${
-            sub ? "text-[24px]" : "text-[clamp(32px,3.6vw,48px)]"
-          }`}
-        >
-          {title}
-        </h2>
-        {children}
-      </div>
-    </section>
-  )
-}
-
-function Lead({ children }: { children: ReactNode }) {
-  return (
-    <p data-text="" className={`${right} ${lead}`}>
-      {children}
-    </p>
-  )
-}
-
-function P({ children }: { children: ReactNode }) {
-  return (
-    <p data-text="" className={`${right} ${body}`}>
-      {children}
-    </p>
-  )
-}
-
-function H3({ children }: { children: ReactNode }) {
-  return (
-    <h3 data-text="" className={`${right} m-0 mt-5 border-t border-hairline pt-4 text-[24px] leading-[1.3] font-medium tracking-[-0.02em]`}>
-      {children}
-    </h3>
-  )
-}
-
-/**
- * A figure in the column, numbered by the page's `fig` counter. `light` sets it
- * on a pale panel with room around it, for screenshots with a transparent edge.
- */
-function Frame({ light, caption, children }: { light?: boolean; caption: ReactNode; children: ReactNode }) {
-  return (
-    <figure className={`${full} m-0 mt-6 mb-2 flex flex-col gap-3`}>
-      <div className={light ? "flex justify-center rounded-[20px] bg-[#f6f7f8] p-[clamp(20px,3vw,40px)]" : "flex justify-center"}>
-        {children}
-      </div>
-      <FigCaption>{caption}</FigCaption>
-    </figure>
-  )
-}
-
-function Clip({ src, label }: { src: string; label: string }) {
-  return <video src={src} autoPlay loop muted playsInline aria-label={label} className="block h-auto max-h-[64vh] w-auto max-w-full rounded-[14px]" />
-}
-
-/** The three ideas of the solution, each a card that jumps to its section. */
-function Pillars({ items }: { items: { title: string; text: string; href: string }[] }) {
-  return (
-    <div className={`${full} grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4 pt-2`}>
-      {items.map((item) => (
-        <a
-          key={item.href}
-          href={item.href}
-          className="flex flex-col gap-2.5 rounded-2xl bg-[#f6f7f8] p-6 text-ink transition-colors duration-200 hover:bg-[#eceef1]"
-        >
-          <span className="text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-balance">{item.title}</span>
-          <span className="text-[15px] leading-[1.45] text-[#3d3c44] text-pretty">{item.text}</span>
-          <span className="mt-auto pt-1.5 text-[13px] leading-[1.45] text-brand">See how ↓</span>
-        </a>
-      ))}
-    </div>
-  )
-}
 
 export const liveopsAlertingPage: WorkProjectPage = {
   layout: "v4",

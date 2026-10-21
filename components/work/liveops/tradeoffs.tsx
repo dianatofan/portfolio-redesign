@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, type CSSProperties } from "react"
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react"
 import Image from "next/image"
 import "./liveops.css"
 
@@ -27,7 +27,8 @@ export type TradeoffMedia = {
   aspect?: string
 }
 
-export type Tradeoff = { decision: string; from: string; to: string; note: string; media: TradeoffMedia[] }
+/** `figure` is a drawn before and after, shown under the note in place of (or above) the media. */
+export type Tradeoff = { decision: string; from: string; to: string; note: string; media: TradeoffMedia[]; figure?: ReactNode }
 
 const cols = "grid grid-cols-[1fr_1fr_1.4fr_80px] gap-6 max-[719px]:grid-cols-[1fr_auto] max-[719px]:gap-x-4 max-[719px]:gap-y-1"
 
@@ -169,43 +170,50 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
               </div>
             </div>
             <p key={`n${open}`} className="m-0 max-w-[640px] text-[18px] leading-[1.6] text-[#3d3c44] text-pretty [animation:loUpIn_.35s_cubic-bezier(.2,0,0,1)_.04s_both]">{row.note}</p>
-            <div
-              key={`m${open}`}
-              className="grid grid-cols-1 items-start gap-6 min-[720px]:[grid-template-columns:var(--cols)]"
-              style={{ "--cols": `repeat(${row.media.length},minmax(0,1fr))` } as CSSProperties}
-            >
-              {row.media.map((m) => {
-                const l = label(m.caption)
-                return (
-                  <figure key={m.caption} className="m-0 flex flex-col gap-2.5 [animation:loUpIn_.45s_cubic-bezier(.2,0,0,1)_.12s_both]">
-                    <span className={`self-start rounded-full px-2.5 py-1 text-[13px] leading-[1.45] font-medium ${l.tone}`}>{l.text}</span>
-                    <div
-                      className={`relative overflow-hidden rounded-[14px] outline outline-offset-2 ${l.ring} ${
-                        // With its own shape the frame sizes by width (capped like the others), so it
-                        // never squashes on narrow screens and never shows padding.
-                        m.aspect ? "mx-auto w-full max-w-[min(60vh,520px)]" : "h-[min(60vh,520px)] w-full"
-                      }`}
-                      style={{ background: m.bg ?? "#f1f2f4", aspectRatio: m.aspect }}
-                    >
-                      {m.video ? (
-                        <video
-                          src={m.video}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          aria-label={m.alt}
-                          className={`absolute inset-0 block h-full w-full ${m.fit === "cover" ? "object-cover object-top" : "object-contain"}`}
-                        />
-                      ) : (
-                        <Image src={m.image!} alt={m.alt} fill className={m.fit === "cover" ? "object-cover object-top" : "object-contain"} sizes="(min-width: 1140px) 1040px, 100vw" />
-                      )}
-                    </div>
-                    <figcaption className="text-[13px] leading-[1.45] text-ink-meta">{m.caption.replace(/^(before|after):\s*(.)/i, (_, _k, c: string) => c.toUpperCase())}</figcaption>
-                  </figure>
-                )
-              })}
-            </div>
+            {row.figure && (
+              <div key={`f${open}`} className="[animation:loUpIn_.45s_cubic-bezier(.2,0,0,1)_.12s_both]">
+                {row.figure}
+              </div>
+            )}
+            {row.media.length > 0 && (
+              <div
+                key={`m${open}`}
+                className="grid grid-cols-1 items-start gap-6 min-[720px]:[grid-template-columns:var(--cols)]"
+                style={{ "--cols": `repeat(${row.media.length},minmax(0,1fr))` } as CSSProperties}
+              >
+                {row.media.map((m) => {
+                  const l = label(m.caption)
+                  return (
+                    <figure key={m.caption} className="m-0 flex flex-col gap-2.5 [animation:loUpIn_.45s_cubic-bezier(.2,0,0,1)_.12s_both]">
+                      <span className={`self-start rounded-full px-2.5 py-1 text-[13px] leading-[1.45] font-medium ${l.tone}`}>{l.text}</span>
+                      <div
+                        className={`relative overflow-hidden rounded-[14px] outline outline-offset-2 ${l.ring} ${
+                          // With its own shape the frame sizes by width (capped like the others), so it
+                          // never squashes on narrow screens and never shows padding.
+                          m.aspect ? "mx-auto w-full max-w-[min(60vh,520px)]" : "h-[min(60vh,520px)] w-full"
+                        }`}
+                        style={{ background: m.bg ?? "#f1f2f4", aspectRatio: m.aspect }}
+                      >
+                        {m.video ? (
+                          <video
+                            src={m.video}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            aria-label={m.alt}
+                            className={`absolute inset-0 block h-full w-full ${m.fit === "cover" ? "object-cover object-top" : "object-contain"}`}
+                          />
+                        ) : (
+                          <Image src={m.image!} alt={m.alt} fill className={m.fit === "cover" ? "object-cover object-top" : "object-contain"} sizes="(min-width: 1140px) 1040px, 100vw" />
+                        )}
+                      </div>
+                      <figcaption className="text-[13px] leading-[1.45] text-ink-meta">{m.caption.replace(/^(before|after):\s*(.)/i, (_, _k, c: string) => c.toUpperCase())}</figcaption>
+                    </figure>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
       </dialog>

@@ -1,0 +1,10 @@
+/* Loops for the Boeuf Salad Decorator illustrations. */
+@keyframes bsPop { 0%, 8% { opacity: 0; transform: scale(0) } 18%, 88% { opacity: 1; transform: scale(1) } 96%, 100% { opacity: 0; transform: scale(0) } }
+@keyframes bsShine { 0%, 30% { transform: translateX(-140px) } 70%, 100% { transform: translateX(160px) } }
+
+.bs-pop { transform-box: fill-box; transform-origin: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-anim, .bs-anim * { animation: none !important; }
+  .bs-anim .bs-shine { display: none; }
+}

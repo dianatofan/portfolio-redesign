@@ -52,6 +52,8 @@ export type WorkProjectPage = {
   // time over an 80px title, a stat with before/after bars, the at-a-glance
   // box, and Previous / Next at the end. The body draws its own section spacing.
   layout?: "v3" | "v4"
+  // The stat band (v4), when the figures aren't the highlights' leading numbers.
+  stats?: { value: string; label: string }[]
   // The at-a-glance box under the stats (v4).
   glance?: { problem: string; did: string; outcome: string }
   description?: string

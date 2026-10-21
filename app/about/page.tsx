@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 export const metadata = {
     title: "About - Diana Tofan",
     description:
-        "Diana Tofan is a product designer who designs in code, joining 3Shape in November. Before that: Tactile, Google, Famly and Maersk.",
+        "Diana Tofan is a product designer at 3Shape who designs in code. Before that: Tactile, Google, Famly and Maersk.",
 }
 
 export default function AboutPage() {

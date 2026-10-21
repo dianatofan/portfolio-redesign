@@ -24,7 +24,8 @@ import type { WorkProjectHighlight } from "@/lib/work-project-pages/types"
 function toStats(highlights: WorkProjectHighlight[]) {
   return highlights
     .flatMap((item) => {
-      const match = item.title.match(/^([~+]?\d[\d.,]*(?:%|x|\+)?)\s+(.+)$/)
+      // A unit of time stays with the figure: "~10 min" over "to create a game".
+      const match = item.title.match(/^([~+]?\d[\d.,]*(?:%|x|\+)?(?: (?:min|hours?|days?)\b)?)\s+(.+)$/)
       return match ? [{ value: match[1], label: match[2] }] : []
     })
     .slice(0, 3)
@@ -37,8 +38,11 @@ interface PageProps {
 export async function generateStaticParams() {
   return workProjects
     // /work/release-timeline is served by its own static route (the scroll page).
-    // Money Jenga is a static route too, for its scroll story.
-    .filter((project) => project.slug !== "release-timeline" && project.slug !== "money-jenga")
+    // The Lab posts (Money Jenga, Golden Goose) are static routes too, on the Lab post layout.
+    .filter(
+      (project) =>
+        !["release-timeline", "money-jenga", "golden-goose-museum"].includes(project.slug) && !project.hidden
+    )
     .map((project) => ({
       slug: project.slug,
     }))
@@ -64,13 +68,13 @@ export default async function ProjectPage({ params }: PageProps) {
   const project = workProjects.find((item) => item.slug === slug)
   const projectPage = getWorkProjectPage(slug)
 
-  if (!project || !projectPage) {
+  if (!project || !projectPage || project.hidden) {
     notFound()
   }
 
   const isLab = project.category === "experiment"
   // Next of the same kind: case studies lead to case studies, Lab posts to Lab posts.
-  const siblings = workProjects.filter((item) => (item.category === "experiment") === isLab)
+  const siblings = workProjects.filter((item) => (item.category === "experiment") === isLab && !item.hidden)
   const siblingIndex = siblings.findIndex((item) => item.slug === slug)
   const nextProject = siblings[(siblingIndex + 1) % siblings.length]
   const prevProject = siblings[(siblingIndex - 1 + siblings.length) % siblings.length]
@@ -84,7 +88,7 @@ export default async function ProjectPage({ params }: PageProps) {
   ]
     .filter(Boolean)
     .join(" · ")
-  const stats = toStats(projectPage.highlights ?? [])
+  const stats = projectPage.stats ?? toStats(projectPage.highlights ?? [])
   // Case Study v3 (Diana's Diamonds): see WorkProjectPage.layout.
   const v3 = projectPage.layout === "v3"
   // LiveOps layout: see WorkProjectPage.layout.

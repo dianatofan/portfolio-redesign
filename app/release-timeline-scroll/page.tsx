@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 import Image from "next/image"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -18,7 +19,12 @@ const meta = [
   { label: "Tools", values: ["Claude Code", "SVG"] },
 ]
 
+// Off the site for now (also served at /work/release-timeline). Set to false to bring it back.
+const HIDDEN = true
+
 export default function ReleaseTimelineScrollPage() {
+  if (HIDDEN) notFound()
+
   return (
     <main className="min-h-screen bg-white text-ink">
       <Header />

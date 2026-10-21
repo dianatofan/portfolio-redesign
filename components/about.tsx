@@ -36,12 +36,12 @@ const roles = [
     {
         company: "3Shape",
         role: "Product Designer",
-        note: "Healthcare is where I’ve wanted to end up for a while, so this one feels personal. I start in November, designing the account portal.",
+        note: "New job, no learnings yet.",
     },
     {
         company: "Tactile Games",
         role: "Product Designer",
-        note: "I never thought I’d work at a gaming company, but the people were too nice to say no. The domain was super hard at first, but somehow it’s a lot like e-commerce: A/B tests, scheduled features, offers.",
+        note: "This role strengthened my ability to design systems, not just features. I learned how internal tools clarity directly impacts team velocity, and how to align stakeholders around complex workflows without overcomplicating solutions.",
     },
     {
         company: "Google",
@@ -51,12 +51,12 @@ const roles = [
     {
         company: "Famly",
         role: "UX/UI Designer",
-        note: "A short job before Google stole me. Famly had no design system, so I laid the foundations, and getting people to actually adopt it was the trickiest part.",
+        note: "Rebuilding the design foundation of a mature product taught me that systems only work if they’re adopted. Eliminating design debt required clear standards, alignment, and consistent reinforcement across teams.",
     },
     {
         company: "Maersk",
         role: "Frontend Engineer",
-        note: "This is where I started, as a frontend engineer on a global cargo booking platform. It taught me to build for scale, and I still design that way.",
+        note: "This role strengthened my technical foundation. Working on a global cargo booking platform taught me to design for scale, reliability, and real operational constraints. Those principles still guide how I work today.",
     },
 ]
 
@@ -117,7 +117,7 @@ export function About() {
                     Hi, I&apos;m Diana.
                 </h1>
                 <p className="mt-7 max-w-[640px] text-[clamp(20px,1.8vw,24px)] leading-[1.35] tracking-[-0.015em] text-pretty">
-                    Product designer, joining 3Shape in November.{" "}
+                    Product designer at 3Shape.{" "}
                     <span className="text-ink-meta">Ex Tactile, Google, Maersk.</span>
                 </p>
             </section>
@@ -203,9 +203,6 @@ export function About() {
                                 </span>
                                 <span className="col-span-12 row-start-2 flex items-baseline gap-2.5 text-[15px] text-ink-muted min-[720px]:col-span-7 min-[720px]:col-start-5 min-[720px]:row-start-1">
                                     {role.role}
-                                    {i === 0 && (
-                                        <span className="text-[13px] text-ink-meta">From November</span>
-                                    )}
                                 </span>
                                 {/* A plus whose vertical bar folds away into a minus. */}
                                 <span

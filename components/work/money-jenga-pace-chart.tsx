@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react"
 
 /*
- * An example month, not real spending: 10,000 kr over 31 days, with a splurge on
- * days 10 and 11. It runs the app's own rules (Support/Pace.swift and
- * Views/LivingRoom.swift):
+ * An example of a bad month, not real spending: 10,000 kr over 31 days, ahead
+ * of pace from day 5 and gone by day 19, so the tower falls with 12 days to go.
+ * It runs the app's own rules (Support/Pace.swift and Views/LivingRoom.swift):
  *
  *   danger = clamp(0.55 × share of budget spent + 2.2 × share spent ahead of pace)
  *
@@ -14,17 +14,15 @@ import { useEffect, useRef, useState } from "react"
 const BUDGET = 10_000
 const DAYS = 31
 const PURCHASES: Record<number, { amount: number; label: string }> = {
-  2: { amount: 350, label: "Groceries" },
-  4: { amount: 600, label: "Dinner out" },
-  6: { amount: 300, label: "Groceries" },
-  8: { amount: 450, label: "Taxi" },
-  10: { amount: 2400, label: "New jacket" },
-  11: { amount: 1500, label: "Concert tickets" },
-  15: { amount: 300, label: "Groceries" },
-  19: { amount: 250, label: "Coffee beans" },
-  23: { amount: 600, label: "Groceries" },
-  27: { amount: 500, label: "Haircut" },
-  30: { amount: 300, label: "Groceries" },
+  1: { amount: 450, label: "Groceries" },
+  3: { amount: 800, label: "Dinner out" },
+  5: { amount: 1600, label: "New shoes" },
+  7: { amount: 400, label: "Taxi" },
+  9: { amount: 1500, label: "Concert tickets" },
+  11: { amount: 500, label: "Groceries" },
+  13: { amount: 2200, label: "Weekend trip" },
+  16: { amount: 900, label: "Bar tab" },
+  19: { amount: 1650, label: "Flights" },
 }
 
 export type CatState = "asleep" | "peek" | "watch" | "anxious" | "box"
@@ -76,18 +74,24 @@ const catByDay = days.map(catFor)
 const M = { top: 40, right: 84, left: 48 }
 const CHART_BOTTOM = 252
 const H = CHART_BOTTOM + 28
-const kr = (n: number) => `${n.toLocaleString("en-US").replace(/,/g, ".")} kr`
 
-// A few moments in the month where a tiny cat sits on the line. Hand-picked
-// rather than one per state change: days 10-12 change mood daily and their cats
-// would pile on top of each other. Hover still gives the exact state per day.
-const CAT_MOMENTS = [4, 11, 14, 25]
+// A few moments in the month where a tiny cat sits on the line, one per mood, in
+// the order the month goes through them. Hover gives the exact state per day.
+const CAT_MOMENTS = [2, 6, 10, 15, 25]
 
 function geometry(W: number) {
   const x = (day: number) => M.left + ((day - 1) * (W - M.left - M.right)) / (DAYS - 1)
   const y = (amount: number) => M.top + (1 - amount / BUDGET) * (CHART_BOTTOM - M.top)
 
-  const spentPath = days.map((d, i) => `${i === 0 ? "M" : "L"}${x(d)},${y(spentByDay[i])}`).join(" ")
+  // Spending moves in steps: flat between purchases, straight up on the day of one.
+  const stepPoints = (from: number, to: number) =>
+    days
+      .slice(from - 1, to)
+      .flatMap((d, i) => {
+        const now = `${x(d)},${y(spentByDay[d - 1])}`
+        return i === 0 ? [now] : [`${x(d)},${y(spentByDay[d - 2])}`, now]
+      })
+  const spentPath = `M${stepPoints(1, DAYS).join(" L")}`
 
   // One band per run of days spent ahead of pace, between the pace line and spending.
   const aheadBands: string[] = []
@@ -95,7 +99,7 @@ function geometry(W: number) {
   days.forEach((d, i) => {
     if (spentByDay[i] > paceFor(d)) run.push(d)
     if ((spentByDay[i] <= paceFor(d) || d === DAYS) && run.length) {
-      const top = run.map((rd) => `${x(rd)},${y(spentByDay[rd - 1])}`)
+      const top = stepPoints(run[0], run[run.length - 1])
       const bottom = [...run].reverse().map((rd) => `${x(rd)},${y(paceFor(rd))}`)
       aheadBands.push(`M${[...top, ...bottom].join(" L")} Z`)
       run = []
@@ -128,7 +132,6 @@ export function MoneyJengaPaceChart() {
       : {
           day: hoverDay,
           spent: spentByDay[hoverDay - 1],
-          purchase: PURCHASES[hoverDay],
           cat: catByDay[hoverDay - 1],
         }
 
@@ -141,12 +144,7 @@ export function MoneyJengaPaceChart() {
   return (
     <figure>
       <div ref={boxRef} className="relative">
-        <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="block h-auto w-full" role="img" aria-labelledby="pace-chart-title">
-          <title id="pace-chart-title">
-            Example month: money spent against an even daily pace for a 10,000 kr budget. The cat sleeps while spending
-            is on pace, turns anxious after a jacket and concert tickets on days 10 and 11, then calms down as the month
-            catches up. The month ends at 7,550 kr, so the tower survives.
-          </title>
+        <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="block h-auto w-full" role="img" aria-label="A bad spending month: ahead of pace from day 5, budget gone on day 19.">
 
           {yTicks.map((t) => (
             <g key={t}>
@@ -173,10 +171,10 @@ export function MoneyJengaPaceChart() {
           <path d={spentPath} fill="none" stroke="#1c1611" strokeWidth={2} strokeLinejoin="round" />
 
           {/* Direct labels instead of a legend: two lines, each named at its end. */}
-          <text x={x(DAYS) + 8} y={y(paceFor(DAYS))} dy="0.32em" fontSize={12} fill="var(--text-secondary)">
+          <text x={x(DAYS) + 8} y={y(paceFor(DAYS)) + 10} dy="0.32em" fontSize={12} fill="var(--text-secondary)">
             Even pace
           </text>
-          <text x={x(DAYS) + 8} y={y(spentByDay[DAYS - 1])} dy="0.32em" fontSize={12} fontWeight={500} fill="#1c1611">
+          <text x={x(DAYS) + 8} y={y(spentByDay[DAYS - 1]) - 10} dy="0.32em" fontSize={12} fontWeight={500} fill="#1c1611">
             Spent
           </text>
 
@@ -192,9 +190,7 @@ export function MoneyJengaPaceChart() {
                 y={y(spentByDay[day - 1]) - height + 2}
                 width={width}
                 height={height}
-              >
-                <title>{nameOf(state)}</title>
-              </image>
+              />
             )
           })}
 
@@ -223,25 +219,20 @@ export function MoneyJengaPaceChart() {
         </svg>
 
         {hovered && (
+          // One line: the cat, the day and her mood.
           <div
-            className="pointer-events-none absolute top-0 w-[160px] rounded-md bg-white px-3 py-2 text-xs shadow-sm ring-1 ring-black/5 tabular-nums"
-            style={{ left: `clamp(0px, calc(${(x(hovered.day) / W) * 100}% - 80px), calc(100% - 160px))` }}
+            className="pointer-events-none absolute top-0 flex -translate-x-1/2 items-center gap-1.5 rounded-md bg-white px-2.5 py-1.5 text-xs whitespace-nowrap shadow-sm ring-1 ring-black/5"
+            style={{ left: `clamp(60px, ${(x(hovered.day) / W) * 100}%, calc(100% - 60px))` }}
           >
-            <p className="font-medium text-foreground">{`Day ${hovered.day}`}</p>
-            {hovered.purchase && (
-              <p className="text-[var(--text-secondary)]">{`${hovered.purchase.label}, ${kr(hovered.purchase.amount)}`}</p>
-            )}
-            <p className="text-[var(--text-secondary)]">{`Spent ${kr(hovered.spent)}`}</p>
-            <p className="mt-1 flex items-center gap-1.5 font-medium text-foreground">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={catImg(hovered.cat)} alt="" {...catSize(hovered.cat, 0.22)} />
-              {nameOf(hovered.cat)}
-            </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={catImg(hovered.cat)} alt="" {...catSize(hovered.cat, 0.18)} />
+            <span className="font-medium text-foreground">{`Day ${hovered.day}`}</span>
+            <span className="text-[var(--text-secondary)]">{nameOf(hovered.cat)}</span>
           </div>
         )}
       </div>
       <figcaption className="mt-4 text-sm text-[var(--text-tertiary)]">
-        An example month. Shaded days are ahead of pace.
+        An example of a bad spending month. Shaded: ahead of pace.
       </figcaption>
     </figure>
   )

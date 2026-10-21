@@ -108,7 +108,8 @@ export default function RootLayout({
                     crossOrigin="anonymous"
                 />
             </head>
-            <body className="font-sans">
+            {/* Extensions like ColorZilla add attributes to <body> before React loads. */}
+            <body className="font-sans" suppressHydrationWarning>
                 {/*
                  * Paints the Copenhagen clock during HTML parse, roughly when the
                  * hero text appears, instead of leaving "..." on screen until

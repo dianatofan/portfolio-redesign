@@ -205,7 +205,10 @@ export function ProductTour({ slides, label, title = "Take the tour" }: { slides
             aria-label={label}
             tabIndex={0}
             onKeyDown={onKeyDown}
-            className="flex flex-col gap-6 rounded-[24px] bg-ink p-5 text-white outline-none sm:p-8"
+            // As wide as the window allows, but never taller than it: the 16:10 screen
+            // is capped by the window's height, so the tabs, the caption and the whole
+            // screen fit in one view. ~250px is the tabs, caption, gaps and padding.
+            className="mx-auto flex w-full max-w-[calc((100svh-250px)*1.6+64px)] flex-col gap-6 rounded-[24px] bg-ink p-5 text-white outline-none sm:p-8"
         >
             <style>{KEYFRAMES}</style>
 
