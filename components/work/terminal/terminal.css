@@ -1,0 +1,7 @@
+/* The typing loop for the Human Redundancy Terminal illustration. */
+@keyframes hrtType { 0%, 8% { width: 0 } 38%, 88% { width: 15ch } 96%, 100% { width: 0 } }
+@keyframes hrtCaret { 50% { opacity: 0 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hrt-anim, .hrt-anim * { animation: none !important; }
+}

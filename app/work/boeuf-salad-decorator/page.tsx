@@ -73,7 +73,7 @@ export default function BoeufSaladPage() {
 
       <LabPrevNext
         prev={{ title: "Money Jenga", href: "/work/money-jenga" }}
-        next={{ title: "Golden Goose Digital Museum", href: "/work/golden-goose-museum" }}
+        next={{ title: "Human Redundancy Terminal", href: "/work/human-redundancy-terminal" }}
       />
 
       <Footer />

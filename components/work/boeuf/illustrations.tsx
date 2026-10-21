@@ -1,6 +1,7 @@
 "use client"
 
-import type { CSSProperties, ReactNode } from "react"
+import { useRef, type CSSProperties, type ReactNode } from "react"
+import { useViewProgress } from "@/lib/use-view-progress"
 import "./boeuf.css"
 
 /*
@@ -137,14 +138,30 @@ export function SaladSteps() {
   )
 }
 
-/** A scale from one end to the other, with a knob where this salad lands. */
+// This salad's kitsch score, as a share of the scale.
+const KITSCH = 82
+
+/**
+ * The Kitsch-o-meter, as in the Project Pages design: a bar from German-tidy to
+ * Wedding in Botoșani that fills up to this salad's score as it scrolls through
+ * the window (entry 30% → cover 55%), with the knob riding the end of the fill.
+ * Scrolling back empties it; reduced motion shows the score.
+ */
 export function KitschScale({ caption }: { caption: ReactNode }) {
+  const ref = useRef<HTMLElement>(null)
+  const fill = useViewProgress(ref, 30, 55)
+
   return (
-    <figure className="m-0 flex flex-col gap-3">
+    <figure ref={ref} className="m-0 flex flex-col gap-3">
       <div className={`${panel} flex flex-col gap-[18px] px-[clamp(20px,5vw,64px)] py-[clamp(28px,5vw,56px)]`}>
         <span className="text-[13px] text-ink-meta">The Kitsch-o-meter</span>
-        <div className="relative h-2.5 rounded-full bg-[linear-gradient(90deg,#dcdde2,#4f35b8)]">
-          <span className="absolute top-1/2 left-[82%] h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-ink bg-white shadow-[0_2px_6px_rgba(22,21,26,.2)]" />
+        <div className="relative h-2.5 rounded-full bg-[#e4e3e8]">
+          <span
+            className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,#c9c8d0,#4f35b8)]"
+            style={{ width: `${KITSCH * fill}%` }}
+          >
+            <span className="absolute top-1/2 left-full h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-ink bg-white shadow-[0_2px_6px_rgba(22,21,26,.2)]" />
+          </span>
         </div>
         <div className="grid grid-cols-2 gap-4 text-[15px] leading-[1.45]">
           <span className="text-ink-muted">German-tidy</span>
@@ -162,7 +179,7 @@ export function InspectionBulletin({ rules }: { rules: string[] }) {
     <figure className="m-0">
       <div className={`${panel} flex justify-center p-[clamp(24px,4vw,48px)]`}>
         <div className="relative w-full max-w-[520px] rotate-[-1deg] border border-[#d8d6cf] bg-[#fbfaf6] px-7 py-[26px] font-mono shadow-[0_14px_30px_-20px_rgba(22,21,26,.5)]">
-          <div className="border-b border-dashed border-[#9a9890] pb-3 text-center text-[13px] leading-[1.45] tracking-[.12em]">FOOD INSPECTION BULLETIN</div>
+          <div className="border-b border-dashed border-[#9a9890] pb-3 text-center text-[13px] leading-[1.45] tracking-[.12em]">PLANUL CINCINAL · 1986</div>
           {rules.map((rule) => (
             <div key={rule} className="grid grid-cols-[22px_1fr] gap-2.5 border-b border-dashed border-[#d8d6cf] py-2.5 text-[14px] leading-[1.45] text-[#2c2b31]">
               <span aria-hidden className="mt-0.5 h-3.5 w-3.5 border-[1.5px] border-[#2c2b31]" />
@@ -170,7 +187,7 @@ export function InspectionBulletin({ rules }: { rules: string[] }) {
             </div>
           ))}
           <span className="absolute right-[18px] bottom-4 rotate-[-9deg] rounded border-[2.5px] border-[#b3261e] px-3 py-1.5 text-[15px] leading-[1.2] font-bold tracking-[.1em] text-[#b3261e]">
-            APPROVED
+            APROBAT
           </span>
         </div>
       </div>

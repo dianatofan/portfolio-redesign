@@ -67,7 +67,7 @@ export default function GoldenGooseMuseumPage() {
       </LabPostSection>
 
       <LabPrevNext
-        prev={{ title: "Boeuf Salad Decorator", href: "/work/boeuf-salad-decorator" }}
+        prev={{ title: "Human Redundancy Terminal", href: "/work/human-redundancy-terminal" }}
         next={{ title: "Money Jenga", href: "/work/money-jenga" }}
       />
 

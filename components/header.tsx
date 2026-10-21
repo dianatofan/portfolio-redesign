@@ -180,6 +180,7 @@ export function Header() {
     }
 
     return (
+        <>
         <header className="sticky top-0 z-40 flex h-16 items-center justify-between gap-6 border-b border-black/[0.06] bg-[linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.5))] px-gutter text-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_8px_24px_-16px_rgba(22,21,26,0.18)] backdrop-blur-[20px] backdrop-saturate-[1.8]">
             <Link href="/" aria-label="Diana Tofan, home" className="link-ink -m-2 p-2">
                 <svg width={22} height={21} viewBox="0 0 251 239" fill="currentColor" aria-hidden="true" className="block">
@@ -223,16 +224,19 @@ export function Header() {
                     />
                 </svg>
             </button>
+        </header>
 
             {/*
-              Full-screen menu on phones, on Liquid Glass: the page stays faintly
-              visible through a heavy blur. Always mounted so it can animate; the
-              links rise in one after another. Inert while closed.
+              Full-screen menu on phones, on white Liquid Glass: the page stays
+              faintly visible through a heavy blur. A sibling of the header, not a
+              child: the header's backdrop-filter would make it the menu's
+              containing block and pin the menu to the 64px bar. Always mounted so
+              it can animate; the links rise in one after another. Inert while closed.
             */}
             <div
                 inert={!menuOpen}
                 aria-hidden={!menuOpen}
-                className={`fixed inset-x-0 top-16 bottom-0 z-30 flex flex-col bg-[linear-gradient(180deg,rgba(255,255,255,0.78),rgba(255,255,255,0.6))] px-gutter pt-6 pb-10 backdrop-blur-[28px] backdrop-saturate-[1.8] transition-[opacity,visibility] duration-300 ease-[cubic-bezier(.2,0,0,1)] sm:hidden ${
+                className={`fixed inset-x-0 top-16 bottom-0 z-30 flex flex-col bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8))] px-gutter pt-6 pb-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[28px] backdrop-saturate-[1.8] transition-[opacity,visibility] duration-300 ease-[cubic-bezier(.2,0,0,1)] sm:hidden ${
                     menuOpen ? "visible opacity-100" : "invisible opacity-0"
                 }`}
             >
@@ -256,6 +260,6 @@ export function Header() {
                     ))}
                 </nav>
             </div>
-        </header>
+        </>
     )
 }

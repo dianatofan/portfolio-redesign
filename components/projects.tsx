@@ -180,7 +180,7 @@ const labItems: LabItem[] = [
         title: "Human Redundancy Terminal",
         description: "A glitchy CRT with dark humour",
         frame: { type: "mac", src: "/images/lab/terminal.webm" },
-        href: "https://dianatofan.github.io/risk-assessment-terminal",
+        href: "/work/human-redundancy-terminal",
     },
 ]
 
@@ -189,9 +189,10 @@ const labItems: LabItem[] = [
  * the header's arrows both follow it, looping from the last back to the first.
  */
 export const labPosts = [
+    { href: "/work/golden-goose-museum", title: "Golden Goose Digital Museum" },
     { href: "/work/money-jenga", title: "Money Jenga" },
     { href: "/work/boeuf-salad-decorator", title: "Boeuf Salad Decorator" },
-    { href: "/work/golden-goose-museum", title: "Golden Goose Digital Museum" },
+    { href: "/work/human-redundancy-terminal", title: "Human Redundancy Terminal" },
 ]
 
 /*
