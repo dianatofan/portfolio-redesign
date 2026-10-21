@@ -9,6 +9,7 @@ export function HeroImage({
   video,
   radius = "rounded-2xl",
   className = "",
+  aspect = "aspect-video",
 }: {
   src: string
   alt: string
@@ -17,6 +18,8 @@ export function HeroImage({
   radius?: string
   /** Extra classes for the frame, e.g. a max height. */
   className?: string
+  /** The frame's shape; defaults to 16:9. */
+  aspect?: string
 }) {
   const [loaded, setLoaded] = useState(false)
   const [reduced, setReduced] = useState(true)
@@ -29,7 +32,7 @@ export function HeroImage({
 
   if (video && !reduced) {
     return (
-      <div className={`relative aspect-video overflow-hidden ${radius} bg-surface ${className}`}>
+      <div className={`relative ${aspect} overflow-hidden ${radius} bg-surface ${className}`}>
         <video
           src={video}
           poster={src}
@@ -45,7 +48,7 @@ export function HeroImage({
   }
 
   return (
-    <div className={`relative aspect-video overflow-hidden ${radius} bg-surface ${className}`}>
+    <div className={`relative ${aspect} overflow-hidden ${radius} bg-surface ${className}`}>
       {/* Keep placeholder lightweight so image paints as fast as possible. */}
       <div
         className={`absolute inset-0 bg-surface transition-opacity duration-150 ${

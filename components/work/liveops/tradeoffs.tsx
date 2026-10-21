@@ -7,7 +7,8 @@ import "./liveops.css"
 /*
  * The Key tradeoffs table: decision, from, to. Each row opens a dialog with the
  * story and the before and after. Built on <dialog>, so Escape, focus and the
- * backdrop come from the browser.
+ * backdrop come from the browser. Inside, the tradeoffs read as a gallery:
+ * segment tabs, ← / → (buttons and keys) that wrap around, and "n of 4".
  */
 
 export type TradeoffMedia = {
@@ -18,6 +19,12 @@ export type TradeoffMedia = {
   image?: string
   width?: number
   height?: number
+  /** The frame behind the media, matched to its own background so no band shows. */
+  bg?: string
+  /** "cover" fills the frame (zoomed in, edges trimmed) instead of fitting inside it. */
+  fit?: "contain" | "cover"
+  /** The media's own shape, e.g. "1 / 1": the frame takes it, so the media fills it with no padding to colour. */
+  aspect?: string
 }
 
 export type Tradeoff = { decision: string; from: string; to: string; note: string; media: TradeoffMedia[] }
@@ -40,6 +47,8 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
     if (!dialog) return
     if (row && !dialog.open) {
       dialog.showModal()
+      // Start on ✕ rather than the first segment tab.
+      dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus()
       document.documentElement.style.overflow = "hidden"
     }
     return () => {
@@ -50,6 +59,20 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
   const close = () => {
     ref.current?.close()
   }
+
+  // Wraps around, as in the design.
+  const step = (n: number) => setOpen((i) => (i === null ? i : (i + n + rows.length) % rows.length))
+
+  const arrow = (n: -1 | 1) => (
+    <button
+      type="button"
+      onClick={() => step(n)}
+      aria-label={n < 0 ? "Previous tradeoff" : "Next tradeoff"}
+      className="grid h-8 w-8 flex-none cursor-pointer place-items-center rounded-full border border-hairline bg-white text-[15px] text-ink transition-colors hover:border-ink"
+    >
+      {n < 0 ? "←" : "→"}
+    </button>
+  )
 
   return (
     <div className="col-span-12 flex flex-col">
@@ -82,6 +105,12 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
         ref={ref}
         aria-label={row?.decision}
         onClose={() => setOpen(null)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") step(1)
+          else if (e.key === "ArrowLeft") step(-1)
+          else return
+          e.preventDefault()
+        }}
         onClick={(e) => {
           // A click on the backdrop lands on the dialog itself, outside its box.
           const box = e.currentTarget.getBoundingClientRect()
@@ -90,21 +119,58 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
         }}
         className="lo-anim m-auto max-h-[calc(100%-64px)] w-[min(1100px,calc(100%-32px))] max-w-none overflow-auto rounded-[20px] bg-white p-5 text-ink backdrop:bg-[rgba(22,21,26,.55)] min-[720px]:p-8 open:[animation:loPopIn_.4s_cubic-bezier(.2,.9,.3,1.1)_both] open:backdrop:[animation:loFadeIn_.25s_ease-out_both]"
       >
-        {row && (
+        {row && open !== null && (
           <div className="flex flex-col gap-5">
-            <div className="flex items-baseline justify-between gap-6">
-              <h3 className="m-0 text-[clamp(24px,2.4vw,32px)] leading-[1.15] font-medium tracking-[-0.025em]">{row.decision}</h3>
-              <button
-                type="button"
-                onClick={close}
-                aria-label="Close"
-                className="h-8 w-8 flex-none cursor-pointer rounded-full border border-hairline bg-white text-[15px] text-ink transition-colors hover:border-ink"
-              >
-                ✕
-              </button>
-            </div>
-            <p className="m-0 max-w-[640px] text-[18px] leading-[1.6] text-[#3d3c44] text-pretty">{row.note}</p>
+            {/* Segment tabs: one per tradeoff, the current one in ink. */}
             <div
+              role="tablist"
+              aria-label="Tradeoffs"
+              className="mb-2 grid gap-2"
+              style={{ gridTemplateColumns: `repeat(${rows.length},minmax(0,1fr))` }}
+            >
+              {rows.map((r, i) => {
+                const on = i === open
+                return (
+                  <button
+                    key={r.decision}
+                    type="button"
+                    role="tab"
+                    aria-selected={on}
+                    onClick={() => setOpen(i)}
+                    className="flex cursor-pointer flex-col gap-2 border-none bg-transparent p-0 text-left"
+                  >
+                    <span className={`block h-[3px] w-full rounded-full transition-colors duration-[250ms] ${on ? "bg-ink" : "bg-hairline"}`} />
+                    <span className={`truncate text-[13px] leading-[1.45] transition-colors duration-[250ms] ${on ? "text-ink" : "text-ink-meta"}`}>
+                      Tradeoff {i + 1}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+            <div className="flex items-baseline justify-between gap-6">
+              <h3 key={open} className="m-0 text-[24px] leading-[1.15] font-medium tracking-[-0.025em] [animation:loUpIn_.3s_cubic-bezier(.2,0,0,1)_both]">
+                {row.decision}
+              </h3>
+              <div className="flex flex-none items-center gap-2">
+                {arrow(-1)}
+                <span className="px-1 text-[13px] leading-[1.45] text-ink-meta tabular-nums">
+                  {open + 1} of {rows.length}
+                </span>
+                {arrow(1)}
+                <button
+                  type="button"
+                  data-autofocus
+                  onClick={close}
+                  aria-label="Close"
+                  className="ml-2 h-8 w-8 flex-none cursor-pointer rounded-full border border-hairline bg-white text-[15px] text-ink transition-colors hover:border-ink"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+            <p key={`n${open}`} className="m-0 max-w-[640px] text-[18px] leading-[1.6] text-[#3d3c44] text-pretty [animation:loUpIn_.35s_cubic-bezier(.2,0,0,1)_.04s_both]">{row.note}</p>
+            <div
+              key={`m${open}`}
               className="grid grid-cols-1 items-start gap-6 min-[720px]:[grid-template-columns:var(--cols)]"
               style={{ "--cols": `repeat(${row.media.length},minmax(0,1fr))` } as CSSProperties}
             >
@@ -113,18 +179,26 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
                 return (
                   <figure key={m.caption} className="m-0 flex flex-col gap-2.5 [animation:loUpIn_.45s_cubic-bezier(.2,0,0,1)_.12s_both]">
                     <span className={`self-start rounded-full px-2.5 py-1 text-[13px] leading-[1.45] font-medium ${l.tone}`}>{l.text}</span>
-                    <div className={`flex justify-center overflow-hidden rounded-[14px] bg-[#f1f2f4] outline outline-offset-2 ${l.ring}`}>
+                    <div
+                      className={`relative overflow-hidden rounded-[14px] outline outline-offset-2 ${l.ring} ${
+                        // With its own shape the frame sizes by width (capped like the others), so it
+                        // never squashes on narrow screens and never shows padding.
+                        m.aspect ? "mx-auto w-full max-w-[min(60vh,520px)]" : "h-[min(60vh,520px)] w-full"
+                      }`}
+                      style={{ background: m.bg ?? "#f1f2f4", aspectRatio: m.aspect }}
+                    >
                       {m.video ? (
-                        <video src={m.video} autoPlay loop muted playsInline aria-label={m.alt} className="block max-h-[60vh] max-w-full object-contain" />
-                      ) : (
-                        <Image
-                          src={m.image!}
-                          alt={m.alt}
-                          width={m.width}
-                          height={m.height}
-                          className="block h-auto max-h-[60vh] w-auto max-w-full object-contain"
-                          sizes="(min-width: 1140px) 1040px, 100vw"
+                        <video
+                          src={m.video}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          aria-label={m.alt}
+                          className={`absolute inset-0 block h-full w-full ${m.fit === "cover" ? "object-cover object-top" : "object-contain"}`}
                         />
+                      ) : (
+                        <Image src={m.image!} alt={m.alt} fill className={m.fit === "cover" ? "object-cover object-top" : "object-contain"} sizes="(min-width: 1140px) 1040px, 100vw" />
                       )}
                     </div>
                     <figcaption className="text-[13px] leading-[1.45] text-ink-meta">{m.caption.replace(/^(before|after):\s*(.)/i, (_, _k, c: string) => c.toUpperCase())}</figcaption>

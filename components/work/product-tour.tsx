@@ -128,7 +128,7 @@ function annotate(pins: TourPin[] = []) {
 
 export function ProductTour({ slides, label, title = "Take the tour" }: { slides: TourSlide[]; label: string; title?: string }) {
     const [index, setIndex] = useState(0)
-    const [notesOn, setNotesOn] = useState(true)
+    const [notesOn, setNotesOn] = useState(false)
     const [reduced, setReduced] = useState(false)
     const [inView, setInView] = useState(false)
 

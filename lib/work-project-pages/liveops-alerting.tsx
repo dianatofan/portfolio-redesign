@@ -1,6 +1,6 @@
 import Image from "next/image"
 import type { ReactNode } from "react"
-import { AlertingSketch, ObservabilityGap, RewardFlow, TabbedMedia } from "@/components/work/liveops/illustrations"
+import { AlertingSketch, ObservabilityGap, RewardFlow } from "@/components/work/liveops/illustrations"
 import { TradeoffTable } from "@/components/work/liveops/tradeoffs"
 import type { WorkProjectPage } from "./types"
 import { FigCaption } from "./shared"
@@ -57,7 +57,7 @@ function Section({
       >
         <h2
           className={`m-0 ${wide ? "col-span-12" : "col-span-12 lg:col-span-5 lg:row-span-2"} font-medium leading-[1.08] tracking-[-0.035em] text-balance ${
-            sub ? "text-[clamp(24px,2.4vw,32px)]" : "text-[clamp(32px,3.6vw,48px)]"
+            sub ? "text-[24px]" : "text-[clamp(32px,3.6vw,48px)]"
           }`}
         >
           {title}
@@ -132,6 +132,8 @@ function Pillars({ items }: { items: { title: string; text: string; href: string
 
 export const liveopsAlertingPage: WorkProjectPage = {
   layout: "v4",
+  // The cover is a wide browser frame; show it whole rather than cropped to 16:9.
+  heroAspect: "aspect-[2400/847]",
   readTime: "2 min read",
   highlights: impact,
   glance: {
@@ -150,6 +152,7 @@ export const liveopsAlertingPage: WorkProjectPage = {
   sections: [
     { id: "overview", title: "Context" },
     { id: "problem", title: "The problem" },
+    { id: "goal", title: "Goal" },
     { id: "discovery", title: "Discovery" },
     { id: "solution", title: "Solution", isParent: true, isGateStart: true },
     { id: "surface", title: "Surface failures", parent: "solution" },
@@ -177,12 +180,18 @@ export const liveopsAlertingPage: WorkProjectPage = {
           <h2 className="col-span-12 m-0 text-[clamp(32px,3.6vw,48px)] leading-[1.08] font-medium tracking-[-0.035em] text-balance lg:col-span-5">
             The problem
           </h2>
-          <p className={`${right} ${lead}`}>
+          <p className={`${right} m-0 text-[18px] leading-[1.6] text-pretty`}>
             Failures were detected by backend systems, but not surfaced in the LiveOps Dashboard.
           </p>
-          <p className={`${right} m-0 text-[18px] leading-[1.6] text-[#c9c8d0] text-pretty`}>
-            <span className="text-white">Goal:</span> surface backend failures to LiveOps creators early so they can act
-            before players are affected.
+        </div>
+      </section>
+
+      {/* Goal, as a centred statement under a small grey label. */}
+      <section id="goal" className="pt-[120px] pb-6">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-5 text-center">
+          <h2 className="col-span-12 m-0 text-[15px] leading-[1.45] font-normal text-ink-meta">Goal</h2>
+          <p className="col-span-12 m-0 text-[clamp(32px,3.6vw,48px)] leading-[1.25] font-medium tracking-[-0.025em] text-balance lg:col-span-10 lg:col-start-2">
+            Surface backend failures to LiveOps creators early so they can act before players are affected.
           </p>
         </div>
       </section>
@@ -230,17 +239,24 @@ export const liveopsAlertingPage: WorkProjectPage = {
       </Section>
 
       <Section id="surface" title="Surface failures where creators already work" sub>
-        <Lead>I made critical states visible directly in the left-hand sidebar, where they could not be missed.</Lead>
-        <Frame light caption="Sidebar with persistent attention badges for issues and updates">
-          <Image
-            src={`${cdn}/image/upload/f_auto,q_auto/v1769610095/sidebar-badges.png`}
-            alt="Sidebar with persistent attention badges for issues and updates"
-            width={640}
-            height={868}
-            className="h-auto max-h-[64vh] w-auto max-w-full object-contain"
-            sizes="(min-width: 1280px) 640px, 100vw"
-          />
-        </Frame>
+        <div className={`${full} grid grid-cols-12 items-start gap-6`}>
+          <p data-text="" className="col-span-12 m-0 text-[24px] leading-[1.3] tracking-[-0.015em] text-pretty lg:col-span-6">
+            I made critical states visible directly in the left-hand sidebar, where they could not be missed.
+          </p>
+          <figure className="col-span-12 m-0 flex flex-col gap-3 lg:col-span-5 lg:col-start-8">
+            <div className="flex justify-center rounded-[20px] bg-[#f6f7f8] p-[clamp(20px,3vw,40px)]">
+              <Image
+                src={`${cdn}/image/upload/f_auto,q_auto/v1769610095/sidebar-badges.png`}
+                alt="Sidebar with persistent attention badges for issues and updates"
+                width={640}
+                height={868}
+                className="h-auto max-h-[70vh] w-auto max-w-full object-contain"
+                sizes="(min-width: 1280px) 480px, 100vw"
+              />
+            </div>
+            <FigCaption>Sidebar with persistent attention badges for issues and updates</FigCaption>
+          </figure>
+        </div>
         <div className={`${full} mt-6 mb-2 grid grid-cols-1 items-start gap-6 min-[720px]:grid-cols-2`}>
           {[
             { src: `${cdn}/video/upload/v1769610490/avatar-sidebar.mp4`, caption: "Avatar-level signal" },
@@ -269,13 +285,25 @@ export const liveopsAlertingPage: WorkProjectPage = {
         <p data-text="" className={`${stack} ${body}`}>
           I introduced ownership as a first-class concept across LiveOps resources.
         </p>
-        <div className={`${full} mt-6 mb-2`}>
-          <TabbedMedia
-            items={[
-              { label: "Transfer ownership", caption: "Transferring ownership of a resource", alt: "Transferring ownership of a resource", video: `${cdn}/video/upload/v1769610439/transfer-ownership.mp4` },
-              { label: "Add a watcher", caption: "Adding a watcher to a resource", alt: "Adding a watcher to a resource", video: `${cdn}/video/upload/v1775044437/adding-watcher.mp4` },
-            ]}
-          />
+        {/* The two ownership recordings side by side, cut to the same height. */}
+        <div className={`${full} mt-6 mb-2 grid grid-cols-1 items-start gap-6 min-[720px]:grid-cols-2`}>
+          {[
+            { src: "v1769610439/transfer-ownership.mp4", cap: "Transferring ownership of a resource" },
+            { src: "v1775044437/adding-watcher.mp4", cap: "Adding a watcher to a resource" },
+          ].map((clip) => (
+            <figure key={clip.src} className="m-0 flex flex-col gap-3">
+              <video
+                src={`${cdn}/video/upload/${clip.src}`}
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-label={clip.cap}
+                className="block aspect-[16/10] w-full rounded-[14px] object-cover object-top"
+              />
+              <FigCaption>{clip.cap}</FigCaption>
+            </figure>
+          ))}
         </div>
         <h3 data-text="" className={`${stack} m-0 mt-5 border-t border-hairline pt-4 text-[24px] leading-[1.3] font-medium tracking-[-0.02em]`}>
           Notification settings
@@ -283,9 +311,18 @@ export const liveopsAlertingPage: WorkProjectPage = {
         <p data-text="" className={`${stack} ${body}`}>
           To balance signal and noise, I designed a subscription-based notification model.
         </p>
-        <Frame light caption="Make every alert someone’s responsibility">
-          <Clip src={`${cdn}/video/upload/v1769610452/notifications-settings.mp4`} label="Notification settings: choosing games, resource types and alert types" />
-        </Frame>
+        <figure className={`${full} m-0 mt-6 mb-2 flex flex-col gap-3`}>
+          <video
+            src={`${cdn}/video/upload/v1769610452/notifications-settings.mp4`}
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label="Notification settings: choosing games, resource types and alert types"
+            className="block h-auto w-full rounded-[14px]"
+          />
+          <FigCaption>Make every alert someone’s responsibility</FigCaption>
+        </figure>
       </Section>
 
       <Section id="tradeoffs" title="Key tradeoffs" wide>
@@ -306,8 +343,8 @@ export const liveopsAlertingPage: WorkProjectPage = {
               to: "Everything from the last 10 days",
               note: "Early versions showed only unread updates, causing items to disappear once marked as read.",
               media: [
-                { caption: "Before: only unread updates, so read items disappeared.", alt: "Latest updates showing unread items only", video: `${cdn}/video/upload/v1769610321/only-unread.mp4` },
-                { caption: "After: everything from the last 10 days, with an unread filter.", alt: "Latest updates showing the last 10 days", video: `${cdn}/video/upload/v1769610236/read-and-unread.mp4` },
+                { caption: "Before: only unread updates, so read items disappeared.", alt: "Latest updates showing unread items only", video: `${cdn}/video/upload/v1769610321/only-unread.mp4`, aspect: "1 / 1" },
+                { caption: "After: everything from the last 10 days, with an unread filter.", alt: "Latest updates showing the last 10 days", video: `${cdn}/video/upload/v1769610236/read-and-unread.mp4`, aspect: "1 / 1" },
               ],
             },
             {
@@ -341,7 +378,7 @@ export const liveopsAlertingPage: WorkProjectPage = {
                 i === 0 ? "bg-ink text-white" : "bg-[#f1f2f4] text-ink"
               }`}
             >
-              <span className="text-[clamp(24px,2.4vw,32px)] leading-[1.15] font-medium tracking-[-0.035em] text-balance">
+              <span className="text-[24px] leading-[1.15] font-medium tracking-[-0.035em] text-balance">
                 {item.title}
               </span>
               <span className={`text-[15px] leading-[1.45] ${i === 0 ? "text-[#c9c8d0]" : "text-[#3d3c44]"}`}>
@@ -353,17 +390,16 @@ export const liveopsAlertingPage: WorkProjectPage = {
         <p className={`${full} m-0 text-[13px] leading-[1.45] text-ink-meta`}>Source: incident data tracked in Datadog.</p>
       </Section>
 
-      <Section id="learned" title="What I learned" wide>
-        <div className={`${full} grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-x-6 gap-y-8`}>
+      <Section id="learned" title="What I learned">
+        <div className={`${right} flex flex-col`}>
           {[
-            { title: "Too much noise is harmful.", text: "Showing every update from every game to everyone was a headache. I learned to ask what people actually care about first." },
-            { title: "Pushing back is part of the job.", text: "Disagreeing with the team about keeping critical issues on the homepage felt uncomfortable. It taught me to trust my instincts." },
-            { title: "Alerts have to find you.", text: "People are busy. I stopped designing for someone watching the Dashboard and started designing for someone who isn’t." },
-          ].map((item) => (
-            <div key={item.title} className="flex flex-col gap-2 border-t border-hairline pt-4 text-[18px] leading-[1.45]">
-              <span className="font-medium">{item.title}</span>
-              <span className="text-ink-muted text-pretty">{item.text}</span>
-            </div>
+            "Showing every update from every game to everyone was a headache. People should only see what they care about.",
+            "Disagreeing with the team about keeping critical issues on the homepage felt uncomfortable. It taught me to trust my instincts.",
+            "People are busy. Alerts have to find them, not wait for someone to open the Dashboard.",
+          ].map((line) => (
+            <p key={line} data-text="" className="m-0 border-t border-hairline py-4 text-[18px] leading-[1.5] text-pretty">
+              {line}
+            </p>
           ))}
         </div>
       </Section>

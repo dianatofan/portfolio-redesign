@@ -39,6 +39,8 @@ export type WorkProjectPage = {
   heroImage?: string
   // A recording to play in place of the hero still; heroImage is its poster.
   heroVideo?: string
+  // The hero frame's shape, when the image isn't 16:9 (so it isn't cropped), e.g. "aspect-[2400/847]".
+  heroAspect?: string
   // "Fig. 1" caption under the hero. Falls back to the project's short name.
   heroCaption?: string
   // Replaces "Fig. 1" as the caption's ink lead-in, e.g. "Why diamonds?".

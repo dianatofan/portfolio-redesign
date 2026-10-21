@@ -125,6 +125,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <HeroImage
             src={projectPage.heroImage ?? project.image}
             video={projectPage.heroVideo}
+            aspect={projectPage.heroAspect}
             alt={`${project.title} cover`}
             radius={v3 || v4 ? "rounded-[20px]" : undefined}
             className={v4 ? "max-h-[88vh]" : ""}
@@ -367,7 +368,7 @@ export default async function ProjectPage({ params }: PageProps) {
               }`}
             >
               <span className="text-[13px] text-ink-meta">{item.label}</span>
-              <span className="text-[clamp(24px,2.4vw,32px)] font-medium leading-[1.15] tracking-[-0.03em] text-balance">
+              <span className="text-[24px] font-medium leading-[1.15] tracking-[-0.03em] text-balance">
                 {item.project.title}
               </span>
             </Link>

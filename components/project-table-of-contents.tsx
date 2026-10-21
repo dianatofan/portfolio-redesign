@@ -281,8 +281,9 @@ export function ProjectTableOfContents({
                   e.preventDefault()
                   if (!locked) goTo(id)
                 }}
-                className={`flex items-center justify-end truncate rounded-[3px] py-[7px] text-right leading-[1.2] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand data-[near=true]:text-ink ${
-                  parent ? "text-[12px]" : "text-[13px]"
+                className={`flex items-center truncate rounded-[3px] py-[7px] text-left text-[13px] leading-[1.2] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand data-[near=true]:text-ink ${
+                  // Nested under their section: same size, indented.
+                  parent ? "pl-4" : ""
                 } ${isActive ? "font-medium text-ink" : "text-ink-muted"} ${
                   locked ? "pointer-events-none select-none opacity-50 blur-[2px]" : ""
                 }`}
