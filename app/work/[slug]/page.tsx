@@ -352,8 +352,9 @@ export default async function ProjectPage({ params }: PageProps) {
       </section>
 
       {v4 ? (
-        // v4: the previous and next study side by side, each under an ink rule.
-        <nav aria-label="More case studies" className={`${COL} grid grid-cols-1 gap-6 pt-6 min-[720px]:grid-cols-2`}>
+        // v4: the previous and next study side by side, each under an ink rule. Full
+        // width at the page gutter, lined up with the header's Back / Next and the footer.
+        <nav aria-label="More case studies" className="grid grid-cols-1 gap-6 px-gutter pt-6 min-[720px]:grid-cols-2">
           {[
             { label: "← Previous", project: prevProject, end: false },
             { label: "Next →", project: nextProject, end: true },

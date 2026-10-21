@@ -1,5 +1,5 @@
 import Image from "next/image"
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
 import { ReactCompareSlider, ReactCompareSliderImage } from "react-compare-slider"
 
@@ -534,6 +534,29 @@ export function EditorsNote({
         <div className="text-[18px] leading-[1.6] text-ink-muted text-pretty">{children}</div>
       </div>
       {figure ? <div className="min-w-0">{figure}</div> : null}
+    </div>
+  )
+}
+
+/*
+ * A demo on a dark panel, like the Diamonds tour: #16151a, 24px corners, full
+ * width to the header's gutter edges (it breaks out of the reading column).
+ * The token colours are flipped inside, so figure captions read light.
+ */
+const DARK_TOKENS = {
+  "--ink": "#ffffff",
+  "--ink-meta": "#a3a1ad",
+  "--ink-muted": "rgba(255,255,255,0.64)",
+  "--hairline": "rgba(255,255,255,0.14)",
+} as CSSProperties
+
+export function DarkShowcase({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <div
+      className={`relative left-1/2 w-[calc(100vw-2*var(--gutter))] max-w-none -translate-x-1/2 rounded-[24px] bg-[#16151a] p-5 text-white sm:p-10 xl:p-14 ${className}`}
+      style={DARK_TOKENS}
+    >
+      {children}
     </div>
   )
 }

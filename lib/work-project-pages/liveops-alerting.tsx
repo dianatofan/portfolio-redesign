@@ -2,7 +2,7 @@ import Image from "next/image"
 import type { ReactNode } from "react"
 import { AlertingSketch, ObservabilityGap, RewardFlow, TabbedMedia } from "@/components/work/liveops/illustrations"
 import type { WorkProjectPage } from "./types"
-import { FigCaption } from "./shared"
+import { DarkShowcase, FigCaption } from "./shared"
 
 /*
  * LiveOps Alerting, laid out as the v4 case study (liveops-alerting.html): the
@@ -105,27 +105,33 @@ function Points({ items }: { items: string[] }) {
   )
 }
 
-/** A full-width recording with its caption. */
+/** A recording on a full-width dark panel, at its own aspect, with its caption. */
 function Clip({ src, caption, label }: { src: string; caption: ReactNode; label: string }) {
   return (
-    <figure className={`${full} m-0 mt-6 mb-2 flex flex-col gap-3`}>
-      <div className="relative aspect-video overflow-hidden rounded-[14px] bg-[#f1f2f4]">
-        <video src={src} autoPlay loop muted playsInline aria-label={label} className="h-full w-full object-cover" />
-      </div>
-      <FigCaption>{caption}</FigCaption>
-    </figure>
+    <div className={`${full} mt-6 mb-2`}>
+      <DarkShowcase>
+        <figure className="m-0 flex flex-col gap-4">
+          <video src={src} autoPlay loop muted playsInline aria-label={label} className="block h-auto w-full rounded-[14px]" />
+          <FigCaption>{caption}</FigCaption>
+        </figure>
+      </DarkShowcase>
+    </div>
   )
 }
 
-/** A screenshot on a pale backdrop, at most 64% of the screen tall. */
+/** A screenshot on a full-width dark panel, at most 64% of the screen tall. */
 function Still({ src, alt, width, height, caption }: { src: string; alt: string; width: number; height: number; caption: ReactNode }) {
   return (
-    <figure className={`${full} m-0 mt-6 mb-2 flex flex-col gap-3`}>
-      <div className="flex justify-center rounded-[20px] bg-[#f6f7f8] p-[clamp(20px,3vw,40px)]">
-        <Image src={src} alt={alt} width={width} height={height} className="h-auto max-h-[64vh] w-auto max-w-full object-contain" sizes="(min-width: 1280px) 1100px, 100vw" />
-      </div>
-      <FigCaption>{caption}</FigCaption>
-    </figure>
+    <div className={`${full} mt-6 mb-2`}>
+      <DarkShowcase>
+        <figure className="m-0 flex flex-col gap-4">
+          <div className="flex justify-center">
+            <Image src={src} alt={alt} width={width} height={height} className="h-auto max-h-[64vh] w-auto max-w-full rounded-[10px] object-contain" sizes="(min-width: 1280px) 1100px, 100vw" />
+          </div>
+          <FigCaption>{caption}</FigCaption>
+        </figure>
+      </DarkShowcase>
+    </div>
   )
 }
 
@@ -181,7 +187,9 @@ export const liveopsAlertingPage: WorkProjectPage = {
           impact often appears first in the live game.
         </P>
         <div className={`${full} mt-6 mb-2`}>
-          <RewardFlow />
+          <DarkShowcase>
+            <RewardFlow />
+          </DarkShowcase>
         </div>
       </Section>
 
@@ -214,7 +222,9 @@ export const liveopsAlertingPage: WorkProjectPage = {
           support tickets, or noticing anomalies in player metrics.
         </P>
         <div className={`${full} mt-6 mb-2`}>
-          <ObservabilityGap caption="Every engineering tool flagged the failure. The Dashboard, where creators actually work, showed nothing." />
+          <DarkShowcase>
+            <ObservabilityGap caption="Every engineering tool flagged the failure. The Dashboard, where creators actually work, showed nothing." />
+          </DarkShowcase>
         </div>
       </Section>
     </>
@@ -228,7 +238,9 @@ export const liveopsAlertingPage: WorkProjectPage = {
           failures are visible, actionable, and clearly owned.
         </Lead>
         <div className={`${full} mt-6 mb-2`}>
-          <AlertingSketch caption="A failure reaches its owner in the Dashboard: banner on the homepage, badge in the sidebar." />
+          <DarkShowcase>
+            <AlertingSketch caption="A failure reaches its owner in the Dashboard: banner on the homepage, badge in the sidebar." />
+          </DarkShowcase>
         </div>
         <Clip
           src={`${cdn}/video/upload/v1769610317/homepage-video.mp4`}
@@ -269,18 +281,20 @@ export const liveopsAlertingPage: WorkProjectPage = {
           height={868}
           caption="Persistent attention badges in the sidebar."
         />
-        <div className={`${full} mt-6 mb-2 grid grid-cols-1 items-start gap-6 min-[720px]:grid-cols-2`}>
+        <div className={`${full} mt-6 mb-2`}>
+          <DarkShowcase>
+          <div className="grid grid-cols-1 items-start gap-6 min-[720px]:grid-cols-2">
           {[
             { src: `${cdn}/video/upload/v1769610490/avatar-sidebar.mp4`, caption: "Avatar-level signal" },
             { src: `${cdn}/video/upload/v1769610494/game-sidebar.mp4`, caption: "Game-level signals" },
           ].map((clip) => (
             <figure key={clip.src} className="m-0 flex flex-col gap-3">
-              <div className="relative aspect-video overflow-hidden rounded-[14px] bg-[#f1f2f4]">
-                <video src={clip.src} autoPlay loop muted playsInline aria-label={clip.caption} className="h-full w-full object-cover" />
-              </div>
+              <video src={clip.src} autoPlay loop muted playsInline aria-label={clip.caption} className="block h-auto w-full rounded-[14px]" />
               <FigCaption>{clip.caption}</FigCaption>
             </figure>
           ))}
+          </div>
+          </DarkShowcase>
         </div>
       </Section>
 
@@ -307,13 +321,15 @@ export const liveopsAlertingPage: WorkProjectPage = {
           resources. Owners cannot unsubscribe from these issues.
         </P>
         <div className={`${full} mt-6 mb-2`}>
-          <TabbedMedia
-            caption="Transferring ownership, and adding a watcher to a resource."
-            items={[
-              { label: "Transfer ownership", alt: "Transferring ownership of a resource", video: `${cdn}/video/upload/v1769610439/transfer-ownership.mp4` },
-              { label: "Add a watcher", alt: "Adding a watcher to a resource", video: `${cdn}/video/upload/v1775044437/adding-watcher.mp4` },
-            ]}
-          />
+          <DarkShowcase>
+            <TabbedMedia
+              caption="Transferring ownership, and adding a watcher to a resource."
+              items={[
+                { label: "Transfer ownership", alt: "Transferring ownership of a resource", video: `${cdn}/video/upload/v1769610439/transfer-ownership.mp4` },
+                { label: "Add a watcher", alt: "Adding a watcher to a resource", video: `${cdn}/video/upload/v1775044437/adding-watcher.mp4` },
+              ]}
+            />
+          </DarkShowcase>
         </div>
         <H3>Notification settings</H3>
         <P>
@@ -334,13 +350,15 @@ export const liveopsAlertingPage: WorkProjectPage = {
           the source of truth.
         </Row>
         <div className={`${full} mb-6`}>
-          <TabbedMedia
-            caption="Latest updates, before and after."
-            items={[
-              { label: "Before: only unread", alt: "Updates disappear from the homepage once marked as read", video: `${cdn}/video/upload/v1769610321/only-unread.mp4` },
-              { label: "After: last 10 days", alt: "The homepage keeps all updates from the last 10 days", video: `${cdn}/video/upload/v1769610236/read-and-unread.mp4` },
-            ]}
-          />
+          <DarkShowcase>
+            <TabbedMedia
+              caption="Latest updates, before and after."
+              items={[
+                { label: "Before: only unread", alt: "Updates disappear from the homepage once marked as read", video: `${cdn}/video/upload/v1769610321/only-unread.mp4` },
+                { label: "After: last 10 days", alt: "The homepage keeps all updates from the last 10 days", video: `${cdn}/video/upload/v1769610236/read-and-unread.mp4` },
+              ]}
+            />
+          </DarkShowcase>
         </div>
         <Row title="One badge per game">
           Separate badges for issues and updates created visual noise and were hard to scan at scale. I consolidated to a
