@@ -741,7 +741,7 @@ export function InspireWireframe({ caption }: { caption: ReactNode }) {
         <figure className="m-0 flex flex-col gap-3">
             <Wireframe
                 height={870}
-                frame={654}
+                frame={550}
                 left={
                     <Notes
                         side="left"
@@ -839,7 +839,7 @@ export function AlternativesWireframe({ caption }: { caption: ReactNode }) {
         <figure className="m-0 flex flex-col gap-3">
             <Wireframe
                 height={700}
-                frame={654}
+                frame={550}
                 left={
                     <Notes
                         side="left"
