@@ -23,7 +23,7 @@ export type TradeoffMedia = {
   bg?: string
   /** "cover" fills the frame (zoomed in, edges trimmed) instead of fitting inside it. */
   fit?: "contain" | "cover"
-  /** The media's own shape, e.g. "1 / 1": the frame takes it, so the media fills it with no padding to colour. */
+  /** The media's own shape, e.g. "1 / 1"; images without it take their width and height. */
   aspect?: string
 }
 
@@ -183,16 +183,23 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
               >
                 {row.media.map((m) => {
                   const l = label(m.caption)
+                  // Every frame takes its media's own shape (set, or from an image's size),
+                  // so its height follows the content; it's capped by height, not width.
+                  const shape = m.aspect ?? (m.width && m.height ? `${m.width} / ${m.height}` : undefined)
+                  const [sw, sh] = (shape ?? "").split("/").map((n) => parseFloat(n))
+                  const ratio = sw && sh ? sw / sh : undefined
                   return (
                     <figure key={m.caption} className="m-0 flex flex-col gap-2.5 [animation:loUpIn_.45s_cubic-bezier(.2,0,0,1)_.12s_both]">
                       <span className={`self-start rounded-full px-2.5 py-1 text-[13px] leading-[1.45] font-medium ${l.tone}`}>{l.text}</span>
                       <div
                         className={`relative overflow-hidden rounded-[14px] outline outline-offset-2 ${l.ring} ${
-                          // With its own shape the frame sizes by width (capped like the others), so it
-                          // never squashes on narrow screens and never shows padding.
-                          m.aspect ? "mx-auto w-full max-w-[min(60vh,520px)]" : "h-[min(60vh,520px)] w-full"
+                          ratio ? "mx-auto w-full" : "h-[min(60vh,520px)] w-full"
                         }`}
-                        style={{ background: m.bg ?? "#f1f2f4", aspectRatio: m.aspect }}
+                        style={{
+                          background: m.bg ?? "#f1f2f4",
+                          aspectRatio: shape,
+                          maxWidth: ratio ? `calc(min(60vh, 520px) * ${ratio.toFixed(4)})` : undefined,
+                        }}
                       >
                         {m.video ? (
                           <video
