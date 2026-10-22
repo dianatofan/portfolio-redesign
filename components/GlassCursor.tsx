@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef } from "react"
 import { CursorContext } from "@/context/CursorContext"
 
 export function GlassCursor() {
-    const { variant, hidden } = useContext(CursorContext)
+    const { variant, hidden, dotHidden } = useContext(CursorContext)
     const isOpen = variant === "open"
     const shellRef = useRef<HTMLDivElement>(null)
 
@@ -43,7 +43,7 @@ export function GlassCursor() {
         <div
             ref={shellRef}
             className={`pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block ${
-                hidden ? "opacity-0" : ""
+                hidden || dotHidden ? "opacity-0" : ""
             }`}
             aria-hidden="true"
         >

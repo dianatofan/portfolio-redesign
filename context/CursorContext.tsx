@@ -11,6 +11,9 @@ type CursorContextValue = {
     /** Hide the custom dot cursor and restore the native cursor (e.g. while an embed is interactive). */
     hidden: boolean
     setHidden: (h: boolean) => void
+    /** Hide only the dot, keeping the OS cursor off too (e.g. where a component draws its own cursor). */
+    dotHidden: boolean
+    setDotHidden: (h: boolean) => void
 }
 
 export const CursorContext = createContext<CursorContextValue>({
@@ -18,6 +21,8 @@ export const CursorContext = createContext<CursorContextValue>({
     setVariant: () => {},
     hidden: false,
     setHidden: () => {},
+    dotHidden: false,
+    setDotHidden: () => {},
 })
 
 /*
@@ -31,6 +36,7 @@ export const CursorContext = createContext<CursorContextValue>({
 export function CursorProvider({ children }: { children: React.ReactNode }) {
     const [variant, setVariant] = useState<CursorVariant>("default")
     const [hidden, setHidden] = useState(false)
+    const [dotHidden, setDotHidden] = useState(false)
     const pathname = usePathname()
 
     // While hidden, restore the OS cursor (the site otherwise forces cursor:none).
@@ -43,11 +49,12 @@ export function CursorProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         setVariant("default")
         setHidden(false)
+        setDotHidden(false)
     }, [pathname])
 
     const value = useMemo(
-        () => ({ variant, setVariant, hidden, setHidden }),
-        [variant, hidden]
+        () => ({ variant, setVariant, hidden, setHidden, dotHidden, setDotHidden }),
+        [variant, hidden, dotHidden]
     )
 
     return <CursorContext.Provider value={value}>{children}</CursorContext.Provider>

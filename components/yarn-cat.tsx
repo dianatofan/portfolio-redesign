@@ -13,6 +13,9 @@ import { useEffect, useImperativeHandle, useRef } from "react"
  * off screen, and under reduced motion it draws a single wound-up frame.
  *
  * The thread end is draggable: grab it to scrub between tangled and wound.
+ *
+ * `pettable` (cat-thread.html): click the cat and she slow-blinks, a "prrr"
+ * drifts up from her head, and the first pet leaves a note in the console.
  */
 
 type Vec3 = [number, number, number]
@@ -401,9 +404,11 @@ type YarnCatProps = {
     lumpy?: boolean
     /** The yarn's SVG, for callers that need to map its 800×800 coordinates to the page. */
     svgRef?: React.Ref<SVGSVGElement>
+    /** Click the cat for a slow blink and a "prrr". */
+    pettable?: boolean
 }
 
-export function YarnCat({ className, progress, lumpy = false, svgRef: outerSvgRef }: YarnCatProps) {
+export function YarnCat({ className, progress, lumpy = false, pettable = false, svgRef: outerSvgRef }: YarnCatProps) {
     const rootRef = useRef<HTMLDivElement>(null)
     const svgRef = useRef<SVGSVGElement>(null)
     const backRef = useRef<SVGPathElement>(null)
@@ -438,6 +443,10 @@ export function YarnCat({ className, progress, lumpy = false, svgRef: outerSvgRe
             blink = 1
         let look: [number, number] = [-0.85, 0.55]
         let lookTarget: [number, number] | null = null
+        // Petting: whether the pointer is on the cat, the slow blink's time left, and how many pets.
+        let onCatHover = false,
+            petT = 0,
+            pets = 0
 
         const draw = (p: number, tug: number) => {
             for (let i = 0; i < N; i++) {
@@ -607,6 +616,15 @@ export function YarnCat({ className, progress, lumpy = false, svgRef: outerSvgRe
             blinkT -= dt
             if (blinkT < -0.14) blinkT = 2.5 + Math.random() * 3.5
             blink = blinkT < 0 ? Math.abs(blinkT / 0.07 + 1) : 1
+            // A slow blink after a pet: the eyes close over a third of it, stay shut, then open.
+            if (petT > 0) {
+                petT -= dt
+                const u = 1 - petT / 1.2,
+                    q = u < 0.35 ? u / 0.35 : u < 0.6 ? 1 : 1 - (u - 0.6) / 0.4,
+                    e = q * q * (3 - 2 * q)
+                blink = 1 - 0.94 * e
+                blinkT = Math.max(blinkT, 2)
+            }
             const lt = lookTarget ?? [-0.85, 0.55]
             const k = Math.min(1, dt * 9)
             look = [look[0] + (lt[0] - look[0]) * k, look[1] + (lt[1] - look[1]) * k]
@@ -688,6 +706,7 @@ export function YarnCat({ className, progress, lumpy = false, svgRef: outerSvgRe
                 y = ((e.clientY - r.top) / r.height) * 700
             const P = cat.parts
             const onCat = P.head(x, y) < 8 || P.body(x, y) < 8 || P.tail(x, y) < 8 || P.paw(x, y) < 8
+            onCatHover = pettable && onCat && !dragging
             if (onCat || dragging) {
                 lookTarget = null
                 return
@@ -714,6 +733,47 @@ export function YarnCat({ className, progress, lumpy = false, svgRef: outerSvgRe
             dragP = project(e)
             ;(e.currentTarget as SVGElement).style.cursor = "grabbing"
         }
+        const onPet = () => {
+            if (!onCatHover || dragging) return
+            pets += 1
+            petT = 1.2
+            blinkT = 3
+            if (pets === 1) {
+                try {
+                    console.log("%cYou found the cat. She likes you. — Diana", "color:#4f35b8;font-weight:600")
+                } catch {}
+            }
+            const c = catRef.current,
+                host = c?.parentElement
+            if (!c || !host || reduced.matches) return
+            const ex = (EYES[0][0] + EYES[1][0]) / 2 / 700,
+                ey = Math.min(EYES[0][1], EYES[1][1]) / 700
+            const el = document.createElement("span")
+            el.textContent = "prrr"
+            Object.assign(el.style, {
+                position: "absolute",
+                left: `${c.offsetLeft + c.offsetWidth * ex}px`,
+                top: `${c.offsetTop + c.offsetHeight * ey - 18}px`,
+                transform: "translate(-50%,0)",
+                fontFamily: "Saans,'Helvetica Neue',sans-serif",
+                fontSize: "13px",
+                fontStyle: "italic",
+                color: "#4f35b8",
+                pointerEvents: "none",
+                whiteSpace: "nowrap",
+                zIndex: "3",
+            })
+            host.appendChild(el)
+            const dx = (Math.random() - 0.5) * 30
+            el.animate(
+                [
+                    { opacity: 0, transform: "translate(-50%,6px) rotate(-4deg)" },
+                    { opacity: 1, offset: 0.25 },
+                    { opacity: 0, transform: `translate(calc(-50% + ${dx}px),-34px) rotate(6deg)` },
+                ],
+                { duration: 1300, easing: "cubic-bezier(.2,0,0,1)" },
+            ).onfinish = () => el.remove()
+        }
         const onEnter = () => {
             if (!dragging) target = HOVER_SPEED
         }
@@ -723,6 +783,7 @@ export function YarnCat({ className, progress, lumpy = false, svgRef: outerSvgRe
 
         window.addEventListener("pointermove", onMove)
         window.addEventListener("pointerup", onUp)
+        window.addEventListener("pointerdown", onPet)
         document.addEventListener("pointerout", onLookOut)
         svg.addEventListener("pointerenter", onEnter)
         svg.addEventListener("pointerleave", onLeave)
@@ -736,6 +797,7 @@ export function YarnCat({ className, progress, lumpy = false, svgRef: outerSvgRe
             reduced.removeEventListener("change", onMotionChange)
             window.removeEventListener("pointermove", onMove)
             window.removeEventListener("pointerup", onUp)
+            window.removeEventListener("pointerdown", onPet)
             document.removeEventListener("pointerout", onLookOut)
             svg.removeEventListener("pointerenter", onEnter)
             svg.removeEventListener("pointerleave", onLeave)

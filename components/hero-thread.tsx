@@ -199,11 +199,14 @@ export function HeroThread() {
                         <path ref={frayRef} stroke="#4F35B8" strokeWidth="1.6" opacity={0.85} />
                     </g>
                 </svg>
-                {!mobile && (
-                    <div className="absolute -top-[30px] -right-[30px] h-[210px] w-[210px] overflow-hidden mix-blend-multiply">
-                        <YarnCat svgRef={catSvgRef} progress={0.9 - (pct / 100) * 0.35} lumpy />
-                    </div>
-                )}
+                {/* On phones the cat is smaller and tucked in at the thread's end (cat-thread.html). */}
+                <div
+                    className={`absolute overflow-hidden mix-blend-multiply ${
+                        mobile ? "top-2 -right-[18px] h-[130px] w-[130px]" : "-top-[30px] -right-[30px] h-[210px] w-[210px]"
+                    }`}
+                >
+                    <YarnCat svgRef={catSvgRef} progress={0.9 - (pct / 100) * 0.35} lumpy pettable />
+                </div>
             </div>
             <div className="flex justify-between gap-4 border-t border-hairline pt-2.5 text-[13px] text-ink-meta">
                 <span>

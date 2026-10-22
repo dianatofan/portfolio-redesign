@@ -16,7 +16,7 @@ const MicrocomponentsBody = dynamic(() => import("./body"), { ssr: false })
 export function Microcomponents() {
     return (
         // Reserves the board's height so the footer doesn't jump when it mounts.
-        <DeferUntilNear mountOnHash="microcomponents" className="min-h-[760px] min-[62.5rem]:min-h-[584px]">
+        <DeferUntilNear mountOnHash="microcomponents" className="min-h-[624px] min-[62.5rem]:min-h-[464px]">
             <MicrocomponentsBody />
         </DeferUntilNear>
     )

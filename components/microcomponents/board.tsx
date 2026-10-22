@@ -1,110 +1,153 @@
-"use client"
+"use client";
+import { useContext, useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPE } from "react";
+import { CursorContext } from "@/context/CursorContext";
+import { AiComposer, AiComposerPreview } from "./ai-composer";
+import { EmptyState, EmptyStatePreview } from "./empty-state";
+import { HoldoutDiagram, HoldoutDiagramPreview } from "./holdout-diagram";
+import { SwitchboardFilter, SwitchboardPreview } from "./switchboard-filter";
 
-import { useEffect, useRef, useState } from "react"
-import type { Microcomponent } from "./types"
-
-/*
- * A Figma-board reading of the microcomponents, from `Home v7.dc.html`: a list
- * to pick from, and a dotted canvas showing the picked one, live, as a selected
- * frame: blue handles, its measured size underneath, and a named cursor parked
- * on its corner.
+/**
+ * Microcomponents board — Figma-style canvas with a live, expandable, resizable frame.
+ * - Left: list of components. Right: dotted board with one selected frame.
+ * - Frame: the component's preview; click to expand it into the live component,
+ *   corner handles resize, live size label.
+ * - "Diana" cursor sits on the selected frame; a "You" cursor follows the
+ *   visitor's mouse, in place of the site's own cursor.
+ * Fonts/colours follow the site tokens. From Microcomponents.tsx in the design
+ * handoff; the homepage draws the section and its "Microcomponents" heading.
  */
 
-// Frame width on the canvas, per component; each fills the frame it's given.
-const FRAME_W: Record<string, string> = {
-    "pulsing-conversation": "min(100%, 600px)",
-    "switchboard-filter": "min(100%, 440px)",
-    "illustrated-tutorial": "min(100%, 640px)",
+const INK = "#16151a", MUTED = "#6f6d78", FAINT = "#8b8e95", ACCENT = "#4f35b8", FIG = "#0d99ff", LINE = "#ececef";
+const FONT = "Saans, 'Helvetica Neue', Helvetica, Arial, sans-serif";
+// The board grows when an open component needs more room than this.
+const BOARD_MIN_H = 440;
+
+const ITEMS = [
+  { t: "Animated conversation", d: "A drafted reply that breathes while it thinks.", Live: AiComposer, Preview: AiComposerPreview, openH: 430, openHNarrow: 560 },
+  { t: "Empty state", d: "A cat asleep where the list will go.", Live: EmptyState, Preview: EmptyStatePreview, openH: 500, openHNarrow: 560 },
+  { t: "Switchboard filter", d: "Multi-select you can read at a glance.", Live: SwitchboardFilter, Preview: SwitchboardPreview, openH: 260, openHNarrow: 300 },
+  { t: "Illustrated tutorial", d: "An animated illustration that replaces hefty text.", Live: HoldoutDiagram, Preview: HoldoutDiagramPreview, openH: 250, openHNarrow: 300 },
+];
+const KEYFRAMES = `
+@keyframes mcPulse{0%,100%{box-shadow:0 0 0 0 rgba(13,153,255,.45)}50%{box-shadow:0 0 0 6px rgba(13,153,255,0)}}
+@media (prefers-reduced-motion:reduce){[data-mc] *{animation:none!important;transition:none!important}}`;
+
+function Cursor({ label, color, style }: { label: string; color: string; style: CSSProperties }) {
+  return (
+    <div style={{ position: "absolute", pointerEvents: "none", display: "flex", alignItems: "flex-start", gap: 2, zIndex: 5, ...style }}>
+      <svg width="16" height="18" viewBox="0 0 16 18"><path d="M1 1 L1 15 L5 11 L8 17 L10 16 L7 10 L13 10 Z" fill={color} stroke="#fff" strokeWidth="1.2" /></svg>
+      <span style={{ marginTop: 14, fontSize: 11, background: color, color: "#fff", padding: "2px 7px", borderRadius: 999 }}>{label}</span>
+    </div>
+  );
 }
 
-const HANDLES = ["-left-1 -top-1", "-right-1 -top-1", "-left-1 -bottom-1", "-right-1 -bottom-1"]
+export function Board() {
+  const [sel, setSel] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null); // w in % of board, h in px
+  const [resizing, setResizing] = useState(false);
+  const [you, setYou] = useState<{ x: number; y: number } | null>(null);
+  const [bw, setBw] = useState(960);
+  const board = useRef<HTMLDivElement>(null);
+  const { setDotHidden } = useContext(CursorContext);
+  // Over the board the site's dot gives way to the drawn "You" cursor; the OS
+  // cursor stays off (the site hides it everywhere). Back on leave or unmount.
+  useEffect(() => () => setDotHidden(false), [setDotHidden]);
 
-/** The frame's rendered size, rounded, as Figma shows it under a selection. */
-function useSize() {
-    const ref = useRef<HTMLDivElement>(null)
-    const [size, setSize] = useState("")
-    useEffect(() => {
-        const el = ref.current
-        if (!el) return
-        const observer = new ResizeObserver(([entry]) => {
-            const { width, height } = entry.contentRect
-            setSize(`${Math.round(width)} × ${Math.round(height)}`)
-        })
-        observer.observe(el)
-        return () => observer.disconnect()
-    }, [])
-    return [ref, size] as const
-}
+  useEffect(() => {
+    const el = board.current; if (!el) return;
+    const ro = new ResizeObserver(() => setBw(el.offsetWidth)); ro.observe(el); return () => ro.disconnect();
+  }, []);
 
-export function Board({ items, index, onPick }: { items: Microcomponent[]; index: number; onPick: (i: number) => void }) {
-    const item = items[index]
-    const [frame, size] = useSize()
+  const item = ITEMS[sel];
+  // On a phone-width board the frames go wider, and the composer's text wraps
+  // to more lines, so it needs more height open.
+  const narrow = bw < 600;
+  const base = open
+    ? { w: narrow ? 92 : 76, h: narrow ? item.openHNarrow : item.openH }
+    : { w: narrow ? 84 : 50, h: 120 };
+  const rz = size ?? base;
+  const BOARD_H = Math.max(BOARD_MIN_H, rz.h + 140);
+  const top = open && !size ? 44 : Math.max(24, Math.round((BOARD_H - rz.h) / 2) - 16);
+  const left = 50 - rz.w / 2;
+  const showDim = open || resizing || !!size;
+  const dim = `${Math.round((bw * rz.w) / 100)} × ${Math.round(rz.h)}`;
 
-    return (
-        <div className="mt-6 grid grid-cols-1 gap-5 min-[62.5rem]:grid-cols-[240px_minmax(0,1fr)]">
-            <div className="flex flex-col gap-[18px] overflow-y-auto pr-2 min-[62.5rem]:h-[440px]">
-                <ul className="flex flex-col gap-0.5" aria-label="Microcomponents">
-                    {items.map((entry, i) => {
-                        const active = i === index
-                        return (
-                            <li key={entry.id}>
-                                <button
-                                    type="button"
-                                    onClick={() => onPick(i)}
-                                    aria-pressed={active}
-                                    className={`flex w-full items-center gap-2.5 rounded-[8px] px-2.5 py-[9px] text-left text-[15px] hover:bg-surface ${
-                                        active ? "bg-surface text-ink" : "text-ink-muted"
-                                    }`}
-                                >
-                                    <span className="text-xs text-ink-meta" aria-hidden>
-                                        #
-                                    </span>
-                                    {entry.name}
-                                </button>
-                            </li>
-                        )
-                    })}
-                </ul>
-            </div>
+  const startResize = (sx: number, sy: number) => (e: RPE) => {
+    e.preventDefault(); e.stopPropagation();
+    const x0 = e.clientX, y0 = e.clientY, w0 = rz.w, h0 = rz.h;
+    setResizing(true);
+    const mv = (ev: PointerEvent) => {
+      const w = Math.max(30, Math.min(92, w0 + (sx * 2 * (ev.clientX - x0)) / bw * 100));
+      const h = Math.max(90, Math.min(620, h0 + sy * 2 * (ev.clientY - y0)));
+      setSize({ w, h }); setOpen(h >= 200);
+    };
+    const up = () => { removeEventListener("pointermove", mv); removeEventListener("pointerup", up); setResizing(false); };
+    addEventListener("pointermove", mv); addEventListener("pointerup", up);
+  };
 
-            <div className="relative flex min-h-[560px] items-center justify-center overflow-hidden rounded-2xl bg-[#f5f5f5] bg-[radial-gradient(#d9d9dd_1px,transparent_1px)] bg-[length:20px_20px] px-4 pt-12 pb-20 sm:px-10">
-                <div className="relative" style={{ width: FRAME_W[item.id] ?? "min(100%, 560px)" }}>
-                    <span className="mb-1.5 block text-xs whitespace-nowrap text-[#0d99ff]">{item.name}</span>
-                    <div
-                        ref={frame}
-                        className="relative bg-white shadow-[0_1px_2px_rgba(22,21,26,0.06)] outline outline-[1.5px] outline-[#0d99ff]"
-                    >
-                        {/* Keyed so each component starts its animation fresh when picked. */}
-                        <div key={item.id}>{item.render()}</div>
-                        {HANDLES.map((corner) => (
-                            <span
-                                key={corner}
-                                aria-hidden
-                                className={`pointer-events-none absolute h-[7px] w-[7px] border border-[#0d99ff] bg-white ${corner}`}
-                            />
-                        ))}
-                        {size && (
-                            <span
-                                aria-hidden
-                                className="absolute -bottom-[26px] left-1/2 -translate-x-1/2 rounded-[3px] bg-[#0d99ff] px-1.5 py-0.5 text-[11px] whitespace-nowrap text-white tabular-nums"
-                            >
-                                {size}
-                            </span>
-                        )}
-                        <span aria-hidden className="pointer-events-none absolute top-full left-full mt-1.5 ml-1 hidden items-start gap-0.5 sm:flex">
-                            <svg width="16" height="18" viewBox="0 0 16 18">
-                                <path d="M1 1 L1 15 L5 11 L8 17 L10 16 L7 10 L13 10 Z" fill="#7d69d6" stroke="#fff" strokeWidth="1.2" />
-                            </svg>
-                            <span className="mt-3.5 rounded-full bg-[#7d69d6] px-[7px] py-0.5 text-[11px] text-white">Diana</span>
-                        </span>
-                    </div>
-                </div>
+  const handle = (pos: CSSProperties, cursor: string, sx: number, sy: number) => (
+    <span onPointerDown={startResize(sx, sy)} title="Drag to resize"
+      style={{ position: "absolute", width: 9, height: 9, boxSizing: "border-box", background: "#fff", border: `1px solid ${FIG}`, cursor, zIndex: 2, ...pos }} />
+  );
 
-                <span className="absolute bottom-4 left-5 text-[13px] text-ink-muted">{item.blurb}</span>
-                <span className="absolute right-5 bottom-4 text-[13px] text-ink-meta">
-                    {index + 1} of {items.length}
-                </span>
-            </div>
+  const { Live, Preview } = item;
+
+  return (
+    <div data-mc style={{ fontFamily: FONT, color: INK }}>
+      <style>{KEYFRAMES}</style>
+      <div className="grid grid-cols-1 gap-5 min-[62.5rem]:grid-cols-[minmax(180px,220px)_minmax(0,1fr)]" style={{ marginTop: 24 }}>
+        <div className="flex gap-0.5 overflow-x-auto min-[62.5rem]:flex-col">
+          {ITEMS.map((m, i) => (
+            <button key={m.t} onClick={() => setSel(i)}
+              style={{ display: "flex", alignItems: "center", gap: 10, textAlign: "left", border: "none", cursor: "pointer", padding: "9px 10px", borderRadius: 8, background: i === sel ? "#f4f4f4" : "transparent", fontFamily: FONT, fontSize: 15, color: i === sel ? INK : MUTED }}>
+              <span style={{ fontSize: 12, color: FAINT }}>#</span>{m.t}
+            </button>
+          ))}
         </div>
-    )
+
+        <div ref={board}
+          onPointerMove={e => { if (e.pointerType !== "mouse") return; const r = e.currentTarget.getBoundingClientRect(); setYou({ x: Math.round(e.clientX - r.left), y: Math.round(e.clientY - r.top) }); }}
+          onPointerEnter={e => { if (e.pointerType === "mouse") setDotHidden(true); }}
+          onPointerLeave={() => { setYou(null); setDotHidden(false); }}
+          style={{ position: "relative", height: BOARD_H, transition: "height .45s cubic-bezier(.2,0,0,1)", borderRadius: 16, backgroundColor: "#f5f5f5", backgroundImage: "radial-gradient(#d9d9dd 1px,transparent 1px)", backgroundSize: "20px 20px", overflow: "hidden", cursor: you ? "none" : "default", touchAction: resizing ? "none" : "auto" }}>
+
+          <div style={{ position: "absolute", left: `${left}%`, top, width: `${rz.w}%`, transition: resizing ? "none" : "top .45s cubic-bezier(.2,0,0,1), left .45s cubic-bezier(.2,0,0,1), width .45s cubic-bezier(.2,0,0,1)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6, fontSize: 12 }}>
+              <span style={{ color: FIG, whiteSpace: "nowrap" }}>{item.t}</span>
+              <button onClick={e => { e.stopPropagation(); setOpen(o => !o); setSize(null); }}
+                style={{ border: "none", background: "transparent", padding: 0, cursor: "pointer", fontFamily: FONT, fontSize: 12, color: FIG }}>
+                {open ? "Collapse ↙" : "Expand ↗"}
+              </button>
+            </div>
+            <div onClick={() => { if (!open) { setOpen(true); setSize(null); } }}
+              style={{ position: "relative", height: rz.h, background: "#fff", display: "grid", placeItems: "center", boxShadow: "0 1px 2px rgba(22,21,26,.06)", outline: `1.5px solid ${FIG}`, cursor: open ? "default" : "pointer", transition: resizing ? "none" : "height .45s cubic-bezier(.2,0,0,1)" }}>
+              {/* The real component, clipped to the frame; keyed so it starts fresh when picked or opened. */}
+              <div key={`${sel}-${open}`} style={{ position: "absolute", inset: 0, overflow: "hidden", display: "grid", placeItems: "center", pointerEvents: open ? "auto" : "none" }}>
+                {open ? <Live /> : <Preview />}
+              </div>
+              {!open && (
+                <span style={{ position: "absolute", right: 10, bottom: -30, display: "flex", alignItems: "center", gap: 6, padding: "3px 10px 3px 8px", borderRadius: 999, background: FIG, color: "#fff", fontSize: 12, animation: "mcPulse 2s infinite" }}>
+                  <span>▶</span>Click to try it
+                </span>
+              )}
+              {handle({ left: -5, top: -5 }, "nwse-resize", -1, -1)}
+              {handle({ right: -5, top: -5 }, "nesw-resize", 1, -1)}
+              {handle({ left: -5, bottom: -5 }, "nesw-resize", -1, 1)}
+              {handle({ right: -5, bottom: -5 }, "nwse-resize", 1, 1)}
+              {showDim && (
+                <span style={{ position: "absolute", left: "50%", bottom: -26, transform: "translateX(-50%)", fontSize: 11, background: FIG, color: "#fff", padding: "2px 6px", borderRadius: 3, whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>{dim}</span>
+              )}
+            </div>
+          </div>
+
+          <Cursor label="Diana" color="#7d69d6" style={{ left: `${left + rz.w + 1}%`, top: top + rz.h + 26, transition: resizing ? "none" : "left .5s cubic-bezier(.2,0,0,1), top .5s cubic-bezier(.2,0,0,1)" }} />
+          {you && <Cursor label="You" color={INK} style={{ left: you.x, top: you.y }} />}
+
+          <span style={{ position: "absolute", left: 20, bottom: 16, fontSize: 13, color: MUTED }}>{item.d}</span>
+          <span style={{ position: "absolute", right: 20, bottom: 16, fontSize: 13, color: FAINT }}>{sel + 1} of {ITEMS.length}</span>
+        </div>
+      </div>
+    </div>
+  );
 }
