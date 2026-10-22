@@ -178,7 +178,7 @@ export function InspectionBulletin({ rules }: { rules: string[] }) {
   return (
     <figure className="m-0">
       <div className={`${panel} flex justify-center p-[clamp(24px,4vw,48px)]`}>
-        <div className="relative w-full max-w-[520px] rotate-[-1deg] border border-[#d8d6cf] bg-[#fbfaf6] px-7 py-[26px] font-mono shadow-[0_14px_30px_-20px_rgba(22,21,26,.5)]">
+        <div className="relative w-full max-w-[520px] rotate-[-1deg] border border-[#d8d6cf] bg-[#fbfaf6] px-7 pt-[26px] pb-[72px] sm:pb-[26px] font-mono shadow-[0_14px_30px_-20px_rgba(22,21,26,.5)]">
           <div className="border-b border-dashed border-[#9a9890] pb-3 text-center text-[13px] leading-[1.45] tracking-[.12em]">FOOD INSPECTION BULLETIN</div>
           {rules.map((rule) => (
             <div key={rule} className="grid grid-cols-[22px_1fr] gap-2.5 border-b border-dashed border-[#d8d6cf] py-2.5 text-[14px] leading-[1.45] text-[#2c2b31]">

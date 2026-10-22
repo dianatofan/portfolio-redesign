@@ -48,12 +48,13 @@ export function TripTimeline({ caption, dark }: { caption: ReactNode; dark?: boo
     const fw = mode === 1
     return (
         <figure className="tp-anim m-0 flex flex-col gap-3">
-            <div className="flex flex-col gap-3.5 rounded-[14px] bg-[#f1f2f4] px-[clamp(24px,4vw,48px)] py-[clamp(20px,2.4vw,32px)]">
+            <div className="flex flex-col gap-3.5 rounded-[14px] bg-[#f1f2f4] px-[clamp(14px,4vw,48px)] py-[clamp(16px,2.4vw,32px)]">
+                {/* One line even on a small phone: tighter tabs there rather than wrapping. */}
                 <Tabs
                     labels={["Search today", "With the framework"]}
                     value={mode}
                     onChange={setMode}
-                    className="self-start bg-white"
+                    className="self-start !flex-nowrap bg-white max-[400px]:[&>button]:px-2.5 [&>button]:whitespace-nowrap"
                 />
                 <div className="relative grid grid-cols-9 gap-[clamp(4px,1vw,12px)]">
                     <div
@@ -114,8 +115,10 @@ export function TripTimeline({ caption, dark }: { caption: ReactNode; dark?: boo
                                         )}
                                     </span>
                                 </div>
+                                {/* Nine labels don't fit a phone as "Day N": there it's the number, and "Day" once. */}
                                 <span className="text-[13px] whitespace-nowrap text-ink-meta">
-                                    Day {day}
+                                    {i === 0 ? "Day " : <span className="hidden sm:inline">Day </span>}
+                                    {day}
                                 </span>
                             </div>
                         )

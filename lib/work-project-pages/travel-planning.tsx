@@ -112,7 +112,7 @@ export const travelPlanningPage: WorkProjectPage = {
 
       {/* The problem, on ink. */}
       <section id="problem" className="pt-24">
-        <div className="grid grid-cols-12 items-start gap-x-6 gap-y-5 rounded-3xl bg-ink p-7 text-white min-[720px]:p-14">
+        <div className="grid grid-cols-12 items-start gap-x-6 gap-y-5 rounded-3xl bg-ink p-5 text-white min-[400px]:p-7 min-[720px]:p-14">
           <h2 className="col-span-12 m-0 text-[clamp(32px,3.6vw,48px)] leading-[1.08] font-medium tracking-[-0.035em] text-balance lg:col-span-5">
             Problem
           </h2>

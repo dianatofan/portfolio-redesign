@@ -103,7 +103,7 @@ export function RewardFlow() {
   return (
     <figure className="lo-anim m-0 flex flex-col gap-3">
       <div className="flex w-full flex-col items-center gap-5 rounded-[20px] bg-[#f6f7f8] px-[clamp(20px,4vw,48px)] py-[clamp(20px,2.4vw,32px)]">
-        <Tabs labels={flowModes.map((f) => f.tab)} value={mode} onChange={setMode} className="bg-white" />
+        <Tabs labels={flowModes.map((f) => f.tab)} value={mode} onChange={setMode} className="!flex-nowrap bg-white max-[400px]:[&>button]:px-2 [&>button]:whitespace-nowrap" />
         <div className="grid w-full grid-cols-1 items-center gap-6 min-[720px]:grid-cols-[1.2fr_64px_1fr_64px_150px] min-[720px]:gap-3">
           {/* The Dashboard */}
           <div className="flex flex-col gap-2">
