@@ -43,14 +43,14 @@ export function CoreTeamQueue({ caption }: { caption: ReactNode }) {
         </div>
         <div className="flex flex-col gap-2.5">
           {games.map(([name, color], i) => (
-            <div key={name} className="grid grid-cols-[80px_1fr] items-center gap-3 min-[720px]:grid-cols-[120px_1fr] min-[720px]:gap-4">
-              <span className="flex items-center gap-2 text-[13px] leading-[1.45] whitespace-nowrap">
-                <span className="h-[18px] w-[18px] flex-none rounded-[5px]" style={{ background: color }} />
+            <div key={name} className="grid grid-cols-[66px_1fr] items-center gap-2 min-[480px]:grid-cols-[80px_1fr] min-[480px]:gap-3 min-[720px]:grid-cols-[120px_1fr] min-[720px]:gap-4">
+              <span className="flex items-center gap-1.5 text-[13px] leading-[1.45] whitespace-nowrap min-[480px]:gap-2">
+                <span className="h-3.5 w-3.5 flex-none rounded-[4px] min-[480px]:h-[18px] min-[480px]:w-[18px] min-[480px]:rounded-[5px]" style={{ background: color }} />
                 {name}
               </span>
               <div className="relative h-7 rounded-md bg-[repeating-linear-gradient(90deg,#e9eaed_0,#e9eaed_1px,transparent_1px,transparent_10%)]">
                 <span
-                  className="absolute inset-y-0 flex items-center overflow-hidden rounded-md px-2.5"
+                  className="absolute inset-y-0 flex items-center overflow-hidden rounded-md px-1.5 min-[480px]:px-2.5"
                   style={{
                     left: a ? "0%" : `${i * 19}%`,
                     width: a ? "max(9.5%, 76px)" : "19%",
@@ -58,12 +58,15 @@ export function CoreTeamQueue({ caption }: { caption: ReactNode }) {
                     transition: `left .7s ${ease} ${i * 0.06}s, width .7s ${ease}, background .4s`,
                   }}
                 >
-                  <span className="text-[12px] leading-none whitespace-nowrap text-white">{a ? "Self-serve" : "Core Team"}</span>
+                  {/* On a phone a bar is ~45px, so the label shortens to fit it. */}
+                  <span className="text-[11px] leading-none whitespace-nowrap text-white min-[480px]:text-[12px]">
+                    {a ? "Self-serve" : <><span className="min-[480px]:hidden">Core</span><span className="hidden min-[480px]:inline">Core Team</span></>}
+                  </span>
                 </span>
               </div>
             </div>
           ))}
-          <div className="grid grid-cols-[80px_1fr] gap-3 min-[720px]:grid-cols-[120px_1fr] min-[720px]:gap-4">
+          <div className="grid grid-cols-[66px_1fr] gap-2 min-[480px]:grid-cols-[80px_1fr] min-[480px]:gap-3 min-[720px]:grid-cols-[120px_1fr] min-[720px]:gap-4">
             <span />
             <div className="flex justify-between text-[12px] leading-[1.4] text-ink-meta">
               <span>Start</span>

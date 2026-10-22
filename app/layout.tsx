@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     },
 }
 
-// Read by search engines and AI screeners, which can't see the hero graph or the
-// locked case studies. Keep in step with public/llms.txt.
+// Read by search engines and AI screeners, which can't see the hero graph.
+// Keep in step with public/llms.txt.
 const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",

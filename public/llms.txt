@@ -2,7 +2,7 @@
 
 > Design engineer and product designer based in Copenhagen, Denmark. I design and prototype in code, mostly for complex systems: internal tools, observability, LiveOps and platform workflows. Currently a Product Designer at Tactile Games (2024 to present). Previously a UX Engineer at Google (2022 to 2024) and a UX/UI Designer at Famly.
 
-Some case studies are partly password protected on the site. Each summary below is public and matches the numbers on the page.
+Each summary below matches the numbers on the page.
 
 ## Case studies
 
