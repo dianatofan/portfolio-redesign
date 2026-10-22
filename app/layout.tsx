@@ -8,7 +8,7 @@ import "./globals.css"
 export const metadata: Metadata = {
     title: "Diana Tofan",
     description:
-        "Senior product designer untangling complex systems. Infrastructure, internal tools, observability systems, and platform workflows.",
+        "I'm Diana, a design engineer untangling complex systems.",
     metadataBase: new URL("https://dianatofan.net"),
     icons: {
         icon: "/favicon-logo.svg",
@@ -18,15 +18,15 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Diana Tofan",
         description:
-            "Senior product designer untangling complex systems. Infrastructure, internal tools, observability systems, and platform workflows.",
+            "I'm Diana, a design engineer untangling complex systems.",
         url: "https://dianatofan.net",
         siteName: "Diana Tofan",
         images: [
             {
-                url: "/images/preview-image.png",
+                url: "/images/share-preview.png",
                 width: 1200,
                 height: 630,
-                alt: "Diana Tofan portfolio preview",
+                alt: "Diana Tofan: I'm Diana, a design engineer untangling complex systems.",
             },
         ],
         locale: "en_US",
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: "Diana Tofan",
         description:
-            "Senior product designer untangling complex systems. Infrastructure, internal tools, observability systems, and platform workflows.",
-        images: ["/images/preview-image.png"],
+            "I'm Diana, a design engineer untangling complex systems.",
+        images: ["/images/share-preview.png"],
     },
 }
 
