@@ -16,9 +16,7 @@ import { useEffect, useImperativeHandle, useRef } from "react"
  *
  * `pettable` (cat-thread.html): click the cat and she slow-blinks, a "prrr"
  * drifts up from her head, and the first pet leaves a note in the console. On
- * a phone she's easier to hit (a tap anywhere on or near her counts) and the
- * purr is felt: a buzz pattern where vibration is supported, and on iOS, which
- * has none, a hidden switch toggled three times (each toggle plays the haptic).
+ * a phone she's easier to hit: a tap anywhere on or near her counts.
  */
 
 type Vec3 = [number, number, number]
@@ -449,42 +447,7 @@ export function YarnCat({ className, progress, lumpy = false, pettable = false, 
         // Petting: the slow blink's time left, and how many pets.
         let petT = 0,
             pets = 0
-        let hapticSwitch: HTMLLabelElement | null = null
         const touch = () => window.matchMedia("(pointer: coarse)").matches
-
-        // The purr, felt: skipped under reduced motion and on non-touch screens.
-        const purr = () => {
-            if (reduced.matches || !touch()) return
-            try {
-                if (navigator.vibrate) {
-                    navigator.vibrate([14, 26, 14, 26, 14, 26, 14, 26, 14])
-                    return
-                }
-                if (!hapticSwitch) {
-                    const label = document.createElement("label"),
-                        input = document.createElement("input")
-                    input.type = "checkbox"
-                    input.setAttribute("switch", "")
-                    input.tabIndex = -1
-                    label.setAttribute("aria-hidden", "true")
-                    label.appendChild(input)
-                    Object.assign(label.style, {
-                        position: "fixed",
-                        left: "-9999px",
-                        top: "0",
-                        width: "1px",
-                        height: "1px",
-                        overflow: "hidden",
-                        opacity: "0",
-                        pointerEvents: "none",
-                    })
-                    document.body.appendChild(label)
-                    hapticSwitch = label
-                }
-                const sw = hapticSwitch
-                ;[0, 110, 220].forEach((d) => window.setTimeout(() => sw.click(), d))
-            } catch {}
-        }
 
         const draw = (p: number, tug: number) => {
             for (let i = 0; i < N; i++) {
@@ -789,7 +752,6 @@ export function YarnCat({ className, progress, lumpy = false, pettable = false, 
             // Test the press itself: a tap on a touchscreen comes with no move before it.
             if (!pettable || dragging || !(catAt(e)?.on || (touch() && nearCat(e)))) return
             pets += 1
-            purr()
             petT = 1.2
             blinkT = 3
             if (pets === 1) {
@@ -852,7 +814,6 @@ export function YarnCat({ className, progress, lumpy = false, pettable = false, 
             window.removeEventListener("pointermove", onMove)
             window.removeEventListener("pointerup", onUp)
             window.removeEventListener("pointerdown", onPet)
-            hapticSwitch?.remove()
             document.removeEventListener("pointerout", onLookOut)
             svg.removeEventListener("pointerenter", onEnter)
             svg.removeEventListener("pointerleave", onLeave)
