@@ -160,7 +160,7 @@ export const projects = workProjects
 const labItems: LabItem[] = [
     {
         title: "Golden Goose Digital Museum",
-        description: "3D sneakers and the tool to paint them",
+        description: "A collection of the sneakers I've worn",
         frame: { type: "powerbook", src: "/images/golden-goose-museum-pair.jpg" },
         href: "/work/golden-goose-museum",
     },
