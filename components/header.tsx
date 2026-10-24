@@ -236,7 +236,7 @@ export function Header() {
             <div
                 inert={!menuOpen}
                 aria-hidden={!menuOpen}
-                className={`fixed inset-x-0 top-16 bottom-0 z-30 flex flex-col bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8))] px-gutter pt-6 pb-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[28px] backdrop-saturate-[1.8] transition-[opacity,visibility] duration-300 ease-[cubic-bezier(.2,0,0,1)] sm:hidden ${
+                className={`fixed inset-x-0 top-16 bottom-0 z-30 flex flex-col bg-[linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.6))] px-gutter pt-6 pb-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[14px] backdrop-saturate-[1.8] transition-[opacity,visibility] duration-300 ease-[cubic-bezier(.2,0,0,1)] sm:hidden ${
                     menuOpen ? "visible opacity-100" : "invisible opacity-0"
                 }`}
             >

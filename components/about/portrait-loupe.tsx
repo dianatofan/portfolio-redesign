@@ -8,22 +8,28 @@ import { useEffect, useRef, useState } from "react"
  * and grows to full size, then follows the pointer. Only the first flight
  * animates position; after that it tracks the pointer directly, so it never
  * lags behind it.
+ *
+ * On touch: tap to bring the loupe out, drag to move it (it floats above the
+ * finger so the finger doesn't cover it), tap again or tap elsewhere to put it
+ * back.
  */
 
-const SRC = "/images/about/sibiu.webp"
+const SRC = "/images/about/copenhagen.webp"
 // Intrinsic size of the file above, so the lens maths works before it loads.
 const NATURAL = { w: 1440, h: 1920 }
 // Matches the img's object-position, so the lens shows what sits under it.
-const FOCUS_Y = 0.22
+const FOCUS_Y = 0.5
 const LENS = 160
 const ZOOM = 2.4
 const SPRING = "cubic-bezier(.34,1.56,.64,1)"
 const EASE = "cubic-bezier(.2,0,0,1)"
 const FLIGHT_MS = 550
+// How far above the finger the lens sits on touch.
+const TOUCH_LIFT = LENS * 0.65
 
 type Lens = { x: number; y: number; size: string; position: string }
 
-function lensAt(px: number, py: number, w: number, h: number): Lens {
+function lensAt(px: number, py: number, w: number, h: number, lift = 0): Lens {
     // Replays object-fit: cover, so the zoomed background lines up with the img.
     const scale = Math.max(w / NATURAL.w, h / NATURAL.h)
     const dw = NATURAL.w * scale
@@ -33,7 +39,7 @@ function lensAt(px: number, py: number, w: number, h: number): Lens {
     const r = LENS / 2
     return {
         x: px,
-        y: py,
+        y: py - lift,
         size: `${dw * ZOOM}px ${dh * ZOOM}px`,
         position: `${r - (px - ox) * ZOOM}px ${r - (py - oy) * ZOOM}px`,
     }
@@ -43,10 +49,11 @@ export function PortraitLoupe() {
     const frameRef = useRef<HTMLDivElement>(null)
     const flightTimer = useRef<number | undefined>(undefined)
     const enteredAt = useRef(0)
-    const [frame, setFrame] = useState({ w: 320, h: 400 })
+    const [frame, setFrame] = useState({ w: 300, h: 400 })
     const [active, setActive] = useState<Lens | null>(null)
     const [flying, setFlying] = useState(false)
     const [reducedMotion, setReducedMotion] = useState(false)
+    const touch = useRef<{ x: number; y: number; moved: boolean } | null>(null)
 
     useEffect(() => {
         setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches)
@@ -65,9 +72,26 @@ export function PortraitLoupe() {
         }
     }, [])
 
+    // A tap anywhere else puts the loupe back.
+    useEffect(() => {
+        if (!active) return
+        const onDown = (event: PointerEvent) => {
+            if (event.pointerType !== "mouse" && !frameRef.current?.contains(event.target as Node)) setActive(null)
+        }
+        document.addEventListener("pointerdown", onDown)
+        return () => document.removeEventListener("pointerdown", onDown)
+    }, [active])
+
     const rest = lensAt(frame.w - 32, frame.h - 32, frame.w, frame.h)
     const lens = active ?? rest
     const on = active !== null
+
+    const fly = (to: Lens) => {
+        setActive(to)
+        setFlying(true)
+        window.clearTimeout(flightTimer.current)
+        flightTimer.current = window.setTimeout(() => setFlying(false), FLIGHT_MS)
+    }
 
     const transition = reducedMotion
         ? "none"
@@ -78,29 +102,59 @@ export function PortraitLoupe() {
     return (
         <div
             ref={frameRef}
-            className="relative aspect-[4/5]"
-            style={{ cursor: on ? "none" : "zoom-in" }}
-            onMouseEnter={() => {
+            className="relative aspect-[3/4]"
+            // While the loupe is out, a drag moves it instead of scrolling the page.
+            style={{ cursor: on ? "none" : "zoom-in", touchAction: on ? "none" : "manipulation" }}
+            onPointerEnter={(event) => {
+                if (event.pointerType !== "mouse") return
                 enteredAt.current = Date.now()
-                setActive(rest)
-                setFlying(true)
-                window.clearTimeout(flightTimer.current)
-                flightTimer.current = window.setTimeout(() => setFlying(false), FLIGHT_MS)
+                fly(rest)
             }}
-            onMouseMove={(event) => {
-                // Ignore the move that arrives with the enter, so the lens
-                // starts its flight from the corner instead of jumping.
-                if (Date.now() - enteredAt.current < 30) return
+            onPointerDown={(event) => {
+                if (event.pointerType === "mouse") return
                 const r = event.currentTarget.getBoundingClientRect()
-                setActive(lensAt(event.clientX - r.left, event.clientY - r.top, r.width, r.height))
+                const x = event.clientX - r.left
+                const y = event.clientY - r.top
+                touch.current = { x, y, moved: false }
+                if (on) setActive(lensAt(x, y, r.width, r.height, TOUCH_LIFT))
             }}
-            onMouseLeave={() => setActive(null)}
+            onPointerMove={(event) => {
+                const r = event.currentTarget.getBoundingClientRect()
+                const x = event.clientX - r.left
+                const y = event.clientY - r.top
+                if (event.pointerType === "mouse") {
+                    // Ignore the move that arrives with the enter, so the lens
+                    // starts its flight from the corner instead of jumping.
+                    if (Date.now() - enteredAt.current < 30) return
+                    setActive(lensAt(x, y, r.width, r.height))
+                    return
+                }
+                const t = touch.current
+                if (!t || !on) return
+                if (Math.hypot(x - t.x, y - t.y) > 6) t.moved = true
+                setActive(lensAt(x, y, r.width, r.height, TOUCH_LIFT))
+            }}
+            onPointerUp={(event) => {
+                if (event.pointerType === "mouse") return
+                const t = touch.current
+                touch.current = null
+                if (!t || t.moved) return
+                // A tap: bring the loupe out to the finger, or put it away.
+                if (on) setActive(null)
+                else fly(lensAt(t.x, t.y, frame.w, frame.h, TOUCH_LIFT))
+            }}
+            onPointerCancel={() => {
+                touch.current = null
+            }}
+            onPointerLeave={(event) => {
+                if (event.pointerType === "mouse") setActive(null)
+            }}
         >
             <div className="absolute inset-0 overflow-hidden bg-surface">
                 {/* eslint-disable-next-line @next/next/no-img-element -- the lens reads the same file as a CSS background */}
                 <img
                     src={SRC}
-                    alt="Diana holding a bouquet of dahlias in Sibiu"
+                    alt="Diana leaning on a red bike under autumn ivy in Copenhagen"
                     className="absolute inset-0 block h-full w-full object-cover"
                     style={{ objectPosition: `50% ${FOCUS_Y * 100}%` }}
                 />

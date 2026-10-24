@@ -148,7 +148,7 @@ export function About() {
                         <PortraitLoupe />
                         <figcaption className="flex justify-between gap-3 text-[13px] text-ink-meta">
                             <span>
-                                <span className="text-ink">Fig. 1</span> — Sibiu, Romania, October
+                                <span className="text-ink">Fig. 1</span> — Copenhagen, Denmark, October
                                 2026
                             </span>
                         </figcaption>
