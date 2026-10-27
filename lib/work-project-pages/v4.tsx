@@ -2,8 +2,8 @@ import type { ReactNode } from "react"
 import { FigCaption } from "./shared"
 
 /*
- * The building blocks of a v4 case study body (LiveOps Alerting, Game setup
- * automation): each section is a 12-column grid with the headline on the left,
+ * The building blocks of every case study body (LiveOps Alerting, Game setup
+ * automation, Travel planning, Diana's Diamonds): each section is a 12-column grid with the headline on the left,
  * text on the right and figures across the full width.
  *
  * Widths. The page sets the gutter (20 / 32 / 48px) and a centred 1,200px cap;
@@ -22,7 +22,7 @@ export const right = "col-span-12 lg:col-span-6 lg:col-start-7"
 export const full = "col-span-12"
 // Under a full-width headline, the text stacks on the left.
 export const stack = "col-span-12 lg:col-span-7"
-export const lead = "m-0 text-[24px] leading-[1.25] tracking-[-0.025em] text-pretty"
+export const lead = "m-0 text-[24px] leading-[1.3] tracking-[-0.02em] text-pretty"
 export const body = "m-0 text-[18px] leading-[1.6] text-[#3d3c44] text-pretty"
 
 /*

@@ -1,20 +1,20 @@
-import Image from "next/image"
-import type { ReactNode } from "react"
+import { TradeoffTable } from "@/components/work/liveops/tradeoffs"
+import { AddingPrototypes, EachPrototype, Handover, Merging } from "@/components/work/diamonds-tradeoffs"
 import type { WorkProjectPage } from "./types"
+import { FigCaption } from "./shared"
+import { H3, Lead, P, Section, full, lead, right, stack } from "./v4"
 import { BeforeAfter } from "@/components/work/cs3/before-after"
 import { GrowthChart } from "@/components/work/growth-chart"
 import { LiveGem } from "@/components/work/live-gem"
 import { ProductTour, type TourSlide } from "@/components/work/product-tour"
 
 /*
- * Diana's Diamonds, laid out as Case Study v3 (case_study_v3_handoff): copy,
- * order, spacing and type sizes from that file. The page template's v3 layout
- * draws the hero, title block and stats; this file draws the body.
+ * Diana's Diamonds. The page template's v3 layout draws the hero (with its
+ * caption), the title block and the stats; this file draws the body, with the
+ * same blocks as LiveOps Alerting: headline on the left, text on the right.
  */
 
 const media = "/images/dianas-diamonds"
-// Case Study v3's body text colour.
-const body = "text-[18px] leading-[1.6] text-[#3d3c44] text-pretty"
 
 /** The three diamond finishes, live and turning, each on a square card, as the status a ticket is in. */
 function StatusBand() {
@@ -38,15 +38,6 @@ function StatusBand() {
   )
 }
 
-/** The row that opens each section: its name over an ink rule. */
-function SectionHead({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex items-baseline justify-between border-b border-ink pb-4 text-[15px]">
-      <span className="font-medium">{children}</span>
-    </div>
-  )
-}
-
 const problems = [
   {
     t: "Prototypes got lost",
@@ -65,38 +56,60 @@ const problems = [
   },
 ]
 
-const decisions: Array<{ t: string; why: string; img?: { src: string; alt: string; cap: string } }> = [
+// The Key tradeoffs table: each row opens the story and its before and after.
+const tradeoffs = [
   {
-    t: "Claude in the terminal over an AI agent in the browser.",
-    why: "I built a way to add and update prototypes straight from the hub, with an AI agent in the UI. Then I switched it off with our backend engineer: the tokens were too expensive, and at our team size a terminal workflow everyone already used beat a new UI.",
-    img: {
-      src: `${media}/agent-request.jpg`,
-      alt: "The hub's Request a change form: Claude makes the change on a branch of its own",
-      cap: "The in-browser agent, before it was retired.",
-    },
+    decision: "Change requests",
+    from: "An AI agent inside the hub",
+    to: "Claude in the terminal",
+    note: "I built a way to add and update prototypes straight from the hub, with an AI agent in the UI. Then I switched it off with our backend engineer: the tokens were too expensive, and at our team size a terminal workflow everyone already used beat a new UI.",
+    media: [],
+    figure: <AddingPrototypes />,
   },
   {
-    t: "A details page per prototype, not just a link.",
-    why: "The brief was a list of links that redirect straight to each prototype. I pushed for a details page instead: what changed, its ticket and its status, so PMs and developers get the context before they click through. It turned out to be the part people didn't know they needed, especially the What's changed section and the ticket history.",
-    img: {
-      src: `${media}/ticket-latest.jpg`,
-      alt: "A prototype's details page with What's new, its tickets and status",
-      cap: "A prototype's details page: what changed, ticket history and status.",
-    },
+    decision: "Prototype pages",
+    from: "A link that redirects",
+    to: "A details page: what changed, ticket, status",
+    note: "The brief was a list of links that redirect straight to each prototype. I pushed for a details page instead: what changed, its ticket and its status, so PMs and developers get the context before they click through. It turned out to be the part people didn't know they needed, especially the What's changed section and the ticket history.",
+    media: [],
+    figure: <EachPrototype />,
   },
   {
-    t: "People merge, not AI.",
-    why: "Claude can open a pull request, but it can never merge or push to main. Every change that reaches production is a person's click.",
+    decision: "Merge rights",
+    from: "Claude can push to main",
+    to: "Claude opens PRs, people merge",
+    note: "Claude can open a pull request, but it can never merge or push to main. Every change that reaches production is a person's click.",
+    media: [],
+    figure: <Merging />,
   },
   {
-    t: "Guidelines that survive a handover.",
-    why: "I tested them on the other designer at Tactile. He added prototypes on his own, just from the published guidelines, and PMs and other teams started using it too.",
+    decision: "Handover guidelines",
+    from: "Knowledge lives with me",
+    to: "Published guidelines anyone can follow",
+    note: "I tested them on the other designer at Tactile. He added prototypes on his own, just from the published guidelines, and PMs and other teams started using it too.",
+    media: [],
+    figure: <Handover />,
   },
 ]
 
+// Each lesson as the belief it replaced, then the line behind it.
 const lessons = [
-  "Nobody asked me to build this. People started using it because it made their work easier, not just mine.",
-  "AI prototypes are worthless if they're not collected in one place. Scattered, they lose their meaning.",
+  {
+    from: "Build what you’re asked for",
+    to: "Build what makes people’s work easier",
+    text: "Nobody asked me to build this. People started using it because it made their work easier, not just mine.",
+  },
+  {
+    from: "Prototypes are disposable",
+    to: "Prototypes are worth keeping, in one place",
+    text: "AI prototypes are worthless if they're not collected in one place. Scattered, they lose their meaning.",
+  },
+]
+
+// The Impact cards.
+const outcomes = [
+  { title: "18 of 18 shipped", description: "Every prototype in the library made it into the real product" },
+  { title: "2x faster handoff", description: "Developers start from the design, not from zero" },
 ]
 
 // The numbers in the stat band under the title.
@@ -213,6 +226,7 @@ const tourSlides: TourSlide[] = [
 
 export const dianasDiamondsPage: WorkProjectPage = {
   layout: "v3",
+  readTime: "3 min read",
   highlights: impact,
   heroImage: `${media}/hero-fall-poster.jpg`,
   heroVideo: `${media}/hero-fall.webm`,
@@ -233,34 +247,32 @@ export const dianasDiamondsPage: WorkProjectPage = {
     { id: "overview", title: "Overview" },
     { id: "problem", title: "Problem" },
     { id: "tool", title: "The tool" },
-    { id: "decisions", title: "Decisions" },
+    { id: "decisions", title: "Key tradeoffs" },
     { id: "impact", title: "Impact" },
+    { id: "learned", title: "What I learned" },
+    { id: "next", title: "What's next" },
   ],
-  // Every section keeps its content in one wrapper, so the template's section
-  // split (case-study-sections) leaves the order as it is.
   renderBeforeGate: () => (
     <>
-      <section id="overview">
-        <div className="grid grid-cols-12 gap-6">
-          <p className="col-span-12 m-0 text-[clamp(28px,2.6vw,36px)] font-medium leading-[1.15] tracking-[-0.025em] text-balance xl:col-span-5">
+      {/* The overview opens on its statement, in the headline's place. */}
+      <section id="overview" className="pt-24">
+        <div className="grid grid-cols-12 items-start gap-x-6 gap-y-5">
+          <p data-text="" className={`col-span-12 lg:col-span-5 ${lead} font-medium`}>
             Every company adopting AI runs into the same problem: prototypes get cheap to make, and just as easy to lose.
           </p>
-          <div className="col-span-12 flex flex-col gap-5 xl:col-span-6 xl:col-start-7">
-            <p className={`m-0 ${body}`}>
-              At Tactile I build prototypes on our real source code, so developers can ship them. They were becoming a
-              team asset with nowhere to live, so I proposed one library and built it. Past work stays findable, PMs
-              catch up in a minute, and developers start from the design, not from zero.
-            </p>
-          </div>
+          <P>
+            At Tactile I build prototypes on our real source code, so developers can ship them. They were becoming a
+            team asset with nowhere to live, so I proposed one library and built it. Past work stays findable, PMs
+            catch up in a minute, and developers start from the design, not from zero.
+          </P>
         </div>
       </section>
 
-      <section id="problem">
-        <div>
-          <SectionHead>Problem</SectionHead>
-          <h2 className="my-10 max-w-[900px] text-[clamp(32px,3.4vw,48px)] font-medium leading-[1.08] tracking-[-0.035em] text-balance">
-            The question isn&apos;t how to make prototypes, it&apos;s where they live once the meeting is over.
-          </h2>
+      <Section id="problem" title="The problem" wide>
+        <Lead className={stack}>
+          The question isn&apos;t how to make prototypes, it&apos;s where they live once the meeting is over.
+        </Lead>
+        <div className={`${full} mt-6`}>
           <div className="hidden grid-cols-12 gap-6 pb-3 text-[13px] text-ink-meta min-[720px]:grid">
             <span className="col-span-6">Before</span>
             <span className="col-span-6">With the library</span>
@@ -279,104 +291,88 @@ export const dianasDiamondsPage: WorkProjectPage = {
           ))}
           <BeforeAfter />
         </div>
-      </section>
+      </Section>
     </>
   ),
   renderAfterGate: () => (
     <>
-      <section id="tool">
-        <div>
-          <SectionHead>The tool</SectionHead>
-          {/* The tour breaks out of the column to the header's edges, like Back and Next. */}
-          <div className="relative left-1/2 mt-10 w-[calc(100vw-2*var(--gutter))] -translate-x-1/2">
-            <ProductTour label="Diana's Diamonds, screen by screen" slides={tourSlides} />
-          </div>
-          <div className="grid grid-cols-12 items-start gap-6 pt-16">
-            <div className="col-span-12 flex flex-col gap-4 xl:col-span-5">
-              <h3 className="m-0 text-[24px] font-medium tracking-[-0.015em]">It keeps itself up to date.</h3>
-              <p className={`m-0 ${body}`}>
-                Every time a prototype changes, its ticket updates with the link on its own, and the diamond shows how
-                far along it is.
-              </p>
-              <p className={`m-0 ${body}`}>
-                Six Claude Code skills cover the whole loop, from setting up a laptop to building the design for real.
-              </p>
-            </div>
-            <div className="col-span-12 flex flex-col gap-3 xl:col-span-6 xl:col-start-7">
-              <StatusBand />
-              <span className="text-[13px] text-ink-meta">
-                <span className="text-ink">Fig. 2</span> — I designed the stones with Tactile&apos;s 3D artists, cut like a
-                Swarovski crystal so they catch light the way a real one does.
-              </span>
-            </div>
-          </div>
+      <Section id="tool" title="The tool" wide>
+        {/* The tour breaks out of the column to the header's edges, like Back and Next. */}
+        <div className={`${full} relative left-1/2 mt-6 w-[calc(100vw-2*var(--gutter))] -translate-x-1/2`}>
+          <ProductTour label="Diana's Diamonds, screen by screen" slides={tourSlides} />
         </div>
-      </section>
+        <div className={`${full} grid grid-cols-12 items-start gap-x-6 gap-y-5 pt-5`}>
+          <div className="col-span-12 flex flex-col gap-5 xl:col-span-5">
+            <H3 className="">It keeps itself up to date.</H3>
+            <P className="">
+              Every time a prototype changes, its ticket updates with the link on its own, and the diamond shows how
+              far along it is.
+            </P>
+            <P className="">
+              Six Claude Code skills cover the whole loop, from setting up a laptop to building the design for real.
+            </P>
+          </div>
+          <figure className="col-span-12 m-0 mt-5 flex flex-col gap-3 xl:col-span-6 xl:col-start-7">
+            <StatusBand />
+            <FigCaption>
+              I designed the stones with Tactile&apos;s 3D artists, cut like a Swarovski crystal so they catch light the
+              way a real one does.
+            </FigCaption>
+          </figure>
+        </div>
+      </Section>
 
-      <div className="flex flex-col items-center gap-5 pt-4 text-center">
-        <blockquote className="m-0 max-w-[22ch] text-[clamp(32px,3.6vw,52px)] font-medium leading-[1.1] tracking-[-0.035em] text-balance">
+      <div className="flex flex-col items-center gap-5 pt-24 text-center">
+        <blockquote className="m-0 max-w-[22ch] text-[clamp(32px,3.6vw,48px)] font-medium leading-[1.1] tracking-[-0.035em] text-balance">
           &ldquo;AI prototypes are worthless if they&apos;re not collected in one place.&rdquo;
         </blockquote>
         <span className="text-[13px] text-ink-meta">The idea the whole library is built on</span>
       </div>
 
-      <section id="decisions">
-        <div>
-          <SectionHead>Decisions</SectionHead>
-          {decisions.map((d) => (
-            <div key={d.t} className="grid grid-cols-12 items-baseline gap-x-6 gap-y-3 border-b border-hairline py-7">
-              <span className="col-span-12 text-[24px] font-medium leading-[1.2] tracking-[-0.015em] text-balance min-[720px]:col-span-6">
-                {d.t}
+      <Section id="decisions" title="Key tradeoffs" wide>
+        <TradeoffTable rows={tradeoffs} />
+      </Section>
+
+      <Section id="impact" title="Impact" wide>
+        <div className={`${full} grid grid-cols-1 gap-4 pt-2 min-[560px]:grid-cols-2`}>
+          {outcomes.map((item, i) => (
+            <div
+              key={item.title}
+              className={`flex min-h-[200px] flex-col justify-between gap-7 rounded-[20px] p-7 ${
+                i === 0 ? "bg-ink text-white" : "bg-[#f1f2f4] text-ink"
+              }`}
+            >
+              <span className="text-[24px] leading-[1.15] font-medium tracking-[-0.035em] text-balance">{item.title}</span>
+              <span className={`text-[15px] leading-[1.45] ${i === 0 ? "text-[#c9c8d0]" : "text-[#3d3c44]"}`}>
+                {item.description}
               </span>
-              <span className={`col-span-12 text-[18px] leading-[1.55] text-[#3d3c44] text-pretty min-[720px]:col-span-6`}>
-                {d.why}
-              </span>
-              {d.img && (
-                <figure className="col-span-12 m-0 flex flex-col gap-3 pt-4">
-                  {/* The screenshots' own 16:10, so the whole screen shows and scales with the page. */}
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-[14px] bg-[#f1f2f4] ring-1 ring-black/[0.06]">
-                    <Image src={d.img.src} alt={d.img.alt} fill className="object-contain" sizes="(min-width: 1280px) 1200px, 100vw" />
-                  </div>
-                  <figcaption className="text-[13px] text-ink-meta">{d.img.cap}</figcaption>
-                </figure>
-              )}
             </div>
           ))}
         </div>
-      </section>
+      </Section>
 
-      {/* The chart's caption counts on from here: v3 numbers it Fig. 4. */}
-      <section id="impact" className="[counter-set:fig_3]">
-        <div>
-          <SectionHead>Impact</SectionHead>
-          <div className="grid grid-cols-12 items-start gap-6 pt-10">
-            <div className="col-span-12 flex flex-col gap-4 xl:col-span-7">
-              <p className="m-0 max-w-[560px] text-[24px] font-medium leading-[1.3] tracking-[-0.015em]">
-                All 18 prototypes made it into the real product, and handoff to developers got 2x faster.
-              </p>
-              <div className="pt-4 pb-6">
-                <GrowthChart />
+      <Section id="learned" title="What I learned">
+        <div className={`${right} flex flex-col`}>
+          {lessons.map((l, i) => (
+            <div key={l.to} className={`flex flex-col gap-2 py-5 ${i > 0 ? "border-t border-hairline" : ""}`}>
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[24px] leading-[1.3] tracking-[-0.02em]">
+                <span className="text-ink-meta line-through decoration-[#c9c8d0]">{l.from}</span>
+                <span aria-hidden="true" className="text-brand">
+                  →
+                </span>
+                <span className="font-medium">{l.to}</span>
               </div>
-              <div className="flex max-w-[560px] flex-col gap-2 border-t border-hairline pt-6">
-                <span className="text-[13px] text-ink-meta">What&apos;s next</span>
-                <p className={`m-0 ${body}`}>
-                  Prototypes built with Claude are now Tactile&apos;s source of truth for design. The goal is for more
-                  designers to keep adding to the library after I leave, so it becomes what Figma is for static design,
-                  but for AI prototypes.
-                </p>
-              </div>
+              <P className="">{l.text}</P>
             </div>
-            <div className="col-span-12 flex flex-col xl:col-span-4 xl:col-start-9">
-              <span className="pb-3 text-[13px] text-ink-meta">What I learned</span>
-              {lessons.map((l) => (
-                <div key={l} className="flex gap-3 border-t border-hairline py-4">
-                  <span className="text-[18px] leading-[1.5]">{l}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
+      </Section>
+
+      <Section id="next" title="What's next" wide>
+        <div className={`${full} pt-1`}>
+          <GrowthChart />
+        </div>
+      </Section>
     </>
   ),
 }

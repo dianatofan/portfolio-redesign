@@ -1,4 +1,5 @@
 import "./terminal.css"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * The Human Redundancy Terminal, as an illustration (hrt-terminal.html): a role
@@ -42,7 +43,7 @@ export function TerminalSession() {
           </span>
         </div>
       </div>
-      <figcaption className="text-[13px] leading-[1.45] text-ink-meta">
+      <figcaption className={figCaption}>
         Illustration · the shape of a session, not real output.
       </figcaption>
     </figure>

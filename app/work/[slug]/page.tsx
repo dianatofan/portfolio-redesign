@@ -9,6 +9,8 @@ import { ProjectTableOfContents } from "@/components/project-table-of-contents"
 import { getWorkProjectPage } from "@/lib/work-project-pages"
 import { HeroImage } from "@/components/hero-image"
 import { StatBars } from "@/components/work/stat-bars"
+import { CaseHeader } from "@/components/work/case-header"
+import { figCaption } from "@/components/work/caption"
 import { ScrollFade } from "@/components/scroll-fade"
 import { LabStoryPage } from "@/components/work/lab-story-page"
 import { withSectionLabels } from "@/components/case-study-sections"
@@ -136,7 +138,7 @@ export default async function ProjectPage({ params }: PageProps) {
             className={v4 ? "max-h-[88vh]" : ""}
           />
           {!v4 && (
-          <figcaption className={`${v3 ? "" : "max-w-[640px] "}text-[13px] text-ink-meta`}>
+          <figcaption className={figCaption}>
             {projectPage.heroCaptionLabel ? (
               <>
                 <span className="text-ink">{projectPage.heroCaptionLabel}</span> {projectPage.heroCaption}
@@ -151,64 +153,20 @@ export default async function ProjectPage({ params }: PageProps) {
         </figure>
       </div>
 
-      {v4 ? (
-        // v4 title block: eyebrow back to the work with the read time, the title over 9 columns, a hairline meta row.
+      {v3 || v4 ? (
+        // Case study title block: the header, then a hairline meta row.
         <section className={`${COL} flex flex-col gap-10 pt-10`}>
-          <div className="flex flex-col gap-[18px] xl:max-w-[75%]">
-            <span className="flex flex-wrap items-baseline gap-3 text-[13px] text-ink-meta">
-              <Link href="/#work" className="transition-colors hover:text-brand">
-                ← Case study · {project.tags.find((tag) => !/^\d{4}$/.test(tag))}
-              </Link>
-              {projectPage.readTime && (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <span>{projectPage.readTime}</span>
-                </>
-              )}
-            </span>
-            <h1 className="m-0 text-[clamp(40px,5.2vw,80px)] font-medium leading-none tracking-[-0.045em] text-balance">
-              {projectPage.displayTitle ?? project.title}
-            </h1>
-            {projectPage.subtitle ? (
-              <p className="m-0 max-w-[760px] text-[24px] leading-[1.3] tracking-[-0.015em] text-[#3d3c44] text-pretty">
-                {projectPage.subtitle}
-              </p>
-            ) : null}
-          </div>
+          <CaseHeader
+            company={project.tags.find((tag) => !/^\d{4}$/.test(tag))}
+            readTime={projectPage.readTime}
+            title={projectPage.displayTitle ?? project.title}
+            subtitle={projectPage.subtitle}
+          />
           <dl className="grid grid-cols-2 gap-6 border-t border-hairline pt-4 min-[720px]:grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
             {projectPage.meta.map((item) => (
               <div key={item.label} className="flex flex-col gap-1">
                 <dt className="text-[13px] text-ink-meta">{item.label}</dt>
                 <dd className="text-[15px] leading-[1.45]">{item.values.join(", ")}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      ) : v3 ? (
-        // Case Study v3 title block: linked eyebrow, title and standfirst over 9 columns, then a hairline meta row.
-        <section className={`${COL} grid grid-cols-12 gap-6 pt-14`}>
-          <div className="col-span-12 flex flex-col gap-4 xl:col-span-9">
-            <h1 className="m-0 text-[clamp(52px,7vw,104px)] font-medium leading-[0.96] tracking-[-0.05em] text-balance">
-              {projectPage.displayTitle ?? project.title}
-            </h1>
-            {projectPage.subtitle ? (
-              <p className="m-0 text-[24px] leading-[1.3] tracking-[-0.015em] text-[#3d3c44] text-pretty">
-                {projectPage.subtitle}
-              </p>
-            ) : null}
-          </div>
-          <dl className="col-span-12 mt-4 grid grid-cols-2 gap-6 border-t border-hairline pt-6 min-[720px]:grid-cols-4">
-            {projectPage.meta.map((item) => (
-              <div key={item.label} className="flex flex-col gap-1">
-                <dt className="text-[13px] text-ink-meta">{item.label}</dt>
-                <dd className="text-[15px] leading-[1.45]">
-                  {item.values.map((value, index) => (
-                    <span key={`${item.label}-${value}`}>
-                      {index > 0 && <br />}
-                      {value}
-                    </span>
-                  ))}
-                </dd>
               </div>
             ))}
           </dl>
@@ -310,7 +268,7 @@ export default async function ProjectPage({ params }: PageProps) {
       {/* With no stat band, the band's bottom padding moves here. */}
       <section
         className={`px-[max(var(--gutter),calc((100%-1200px)/2))] pb-24 ${
-          v4 ? "" : v3 ? "pt-14" : stats.length > 0 ? "" : "pt-16 min-[720px]:pt-24"
+          v3 || v4 ? "" : stats.length > 0 ? "" : "pt-16 min-[720px]:pt-24"
         }`}
       >
           {/* Ruler-style contents, fixed to the right edge of the viewport. */}
@@ -324,7 +282,7 @@ export default async function ProjectPage({ params }: PageProps) {
             Each top-level section opens with its headline, stacked above its
             text; see case-study-sections. Sections vary their own shape.
           */}
-          <div className={`cs-article flex min-w-0 flex-col ${v4 ? "" : v3 ? "gap-28" : "gap-24"} [&_section[id]]:scroll-mt-24 [&_[data-cs-head]_h2]:mb-6`}>
+          <div className={`cs-article flex min-w-0 flex-col ${v3 || v4 ? "" : "gap-24"} [&_section[id]]:scroll-mt-24 [&_[data-cs-head]_h2]:mb-6`}>
             {withSectionLabels(projectPage.renderBeforeGate(), projectPage.sections)}
 
             {postGateContent &&

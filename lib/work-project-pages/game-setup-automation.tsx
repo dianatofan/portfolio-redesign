@@ -108,11 +108,11 @@ export const gameSetupAutomationPage: WorkProjectPage = {
         <h2 className="col-span-12 m-0 text-[clamp(32px,3.6vw,48px)] leading-[1.08] font-medium tracking-[-0.035em] text-balance lg:col-span-5 lg:row-span-2">
           The problem
         </h2>
-        <p className={`${right} m-0 text-[18px] leading-[1.6] text-[#c9c8d0] text-pretty`}>
+        <p className={`${right} m-0 text-[18px] leading-[1.6] text-pretty`}>
           Every new game had to be registered across LiveOps, analytics, builds, permissions and infrastructure, and
           only a small Core Team could do it.
         </p>
-        <p className={`${right} m-0 text-[18px] leading-[1.6] text-[#c9c8d0] text-pretty`}>
+        <p className={`${right} m-0 text-[18px] leading-[1.6] text-pretty`}>
           As more teams shipped games in parallel, that became the bottleneck.
         </p>
         <div className={`${full} mt-6 mb-2`}>
@@ -261,7 +261,7 @@ export const gameSetupAutomationPage: WorkProjectPage = {
         </div>
       </Section>
 
-      <Section id="reflections" title="Reflections" sub>
+      <Section id="reflections" title="Reflections">
         <Rules
           cols="repeat(auto-fit,minmax(240px,1fr))"
           items={[

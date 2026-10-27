@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { BmoTooltip } from "./about/bmo-tooltip"
 import { PortraitLoupe } from "./about/portrait-loupe"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * Editorial About page (About v9 in the design handoff): a big greeting, the
@@ -146,7 +147,7 @@ export function About() {
                 <Reveal className="col-start-1 row-start-1 w-full max-w-[480px] min-[720px]:max-w-none">
                     <figure className="m-0 flex flex-col gap-2.5">
                         <PortraitLoupe />
-                        <figcaption className="flex justify-between gap-3 text-[13px] text-ink-meta">
+                        <figcaption className={figCaption}>
                             <span>
                                 <span className="text-ink">Fig. 1</span> — Copenhagen, Denmark, October
                                 2026

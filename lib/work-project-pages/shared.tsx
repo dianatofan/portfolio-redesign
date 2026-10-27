@@ -2,6 +2,7 @@ import Image from "next/image"
 import type { CSSProperties, ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
 import { ReactCompareSlider, ReactCompareSliderImage } from "react-compare-slider"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * Editorial case-study type, shared by every project page so the body reads as
@@ -23,7 +24,7 @@ export const csPullQuote =
  */
 export function FigCaption({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <figcaption className={`max-w-[640px] text-[13px] text-ink-meta ${className}`}>
+    <figcaption className={`${figCaption} ${className}`}>
       <span className="text-ink [counter-increment:fig] before:content-['Fig._'_counter(fig)]" /> — {children}
     </figcaption>
   )

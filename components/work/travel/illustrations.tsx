@@ -3,6 +3,7 @@
 import { useEffect, useReducer, useRef, useState, type CSSProperties, type ReactNode } from "react"
 import { Tabs } from "@/components/work/liveops/illustrations"
 import "./travel.css"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * The Travel planning illustrations: one trip over 34 days, the three stages
@@ -16,7 +17,7 @@ const ease = "cubic-bezier(.2,0,0,1)"
 
 function Caption({ children, dark }: { children: ReactNode; dark?: boolean }) {
     return (
-        <figcaption className="text-[13px] leading-[1.45] text-ink-meta text-pretty">
+        <figcaption className={figCaption}>
             <span className={dark ? "text-white" : "text-ink"}>Illustration</span> — {children}
         </figcaption>
     )

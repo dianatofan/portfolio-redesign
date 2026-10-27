@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Geist_Mono } from "next/font/google"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * The chrome shared by the Lab posts, matched to Lab Project.dc.html in the
@@ -168,7 +169,7 @@ export function FigCaption({
     className?: string
 }) {
     return (
-        <figcaption className={`text-[13px] text-ink-meta ${className}`}>
+        <figcaption className={`${figCaption} ${className}`}>
             <span className="text-ink">Fig. {n}</span> — {children}
         </figcaption>
     )

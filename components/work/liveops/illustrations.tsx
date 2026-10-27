@@ -3,6 +3,7 @@
 import { useState, type CSSProperties, type ReactNode } from "react"
 import Image from "next/image"
 import "./liveops.css"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * The LiveOps Alerting illustrations: the reward flow with its three states,
@@ -169,7 +170,7 @@ export function RewardFlow() {
           </div>
         </div>
       </div>
-      <figcaption className="text-[13px] text-ink-meta">
+      <figcaption className={figCaption}>
         <span className="text-ink">{m.tab}</span> — {m.caption}
       </figcaption>
     </figure>
@@ -313,7 +314,7 @@ export function ObservabilityGap({ caption }: { caption: ReactNode }) {
           </div>
         </div>
       </div>
-      <figcaption className="text-[13px] text-ink-meta">
+      <figcaption className={figCaption}>
         <span className="text-ink">Illustration</span> — {caption}
       </figcaption>
     </figure>
@@ -360,7 +361,7 @@ export function AlertingSketch({ caption }: { caption: ReactNode }) {
           </div>
         </div>
       </div>
-      <figcaption className="text-[13px] text-ink-meta">
+      <figcaption className={figCaption}>
         <span className="text-ink">Illustration</span> — {caption}
       </figcaption>
     </figure>
@@ -391,7 +392,7 @@ export function TabbedMedia({ items, caption }: { items: Media[]; caption?: Reac
         ))}
       </div>
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <figcaption className="text-[13px] text-ink-meta">
+        <figcaption className={figCaption}>
           <span className="text-ink [counter-increment:fig] before:content-['Fig._'_counter(fig)]" /> — {items[sel].caption ?? caption}
         </figcaption>
         <Tabs labels={items.map((i) => i.label)} value={sel} onChange={setSel} className="ml-auto bg-[#f1f2f4]" />

@@ -45,9 +45,8 @@ export type WorkProjectPage = {
   heroCaption?: string
   // Replaces "Fig. 1" as the caption's ink lead-in, e.g. "Why diamonds?".
   heroCaptionLabel?: string
-  // "v3": the Case Study v3 editorial layout (Diana's Diamonds): hero with 20px
-  // corners, linked eyebrow, 104px title, hairline meta row with 15px values,
-  // and stats under an ink rule instead of cards. Others keep the default.
+  // "v3": Diana's Diamonds. The v4 title block and body, but the hero keeps its
+  // caption, and the stats sit under an ink rule instead of the bars.
   // "v4": the LiveOps layout. A 16:9 hero with no caption, eyebrow with read
   // time over an 80px title, a stat with before/after bars, the at-a-glance
   // box, and Previous / Next at the end. The body draws its own section spacing.

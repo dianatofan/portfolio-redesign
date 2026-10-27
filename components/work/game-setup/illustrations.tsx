@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react"
 import { Tabs } from "@/components/work/liveops/illustrations"
 import "./game-setup.css"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * The Game setup automation illustrations: games queueing for the Core Team,
@@ -14,7 +15,7 @@ const ease = "cubic-bezier(.2,0,0,1)"
 
 function Caption({ children, dark }: { children: ReactNode; dark?: boolean }) {
   return (
-    <figcaption className="text-[13px] leading-[1.45] text-ink-meta text-pretty">
+    <figcaption className={figCaption}>
       <span className={dark ? "text-white" : "text-ink"}>Illustration</span> — {children}
     </figcaption>
   )
@@ -400,7 +401,7 @@ export function ModuleStates() {
           <span className="text-[13px] leading-[1.45] text-ink-meta">Readiness and the next action, at a glance.</span>
         </div>
       </div>
-      <figcaption className="text-[13px] leading-[1.45] text-ink-meta">Module states, before and after.</figcaption>
+      <figcaption className={figCaption}>Module states, before and after.</figcaption>
     </figure>
   )
 }

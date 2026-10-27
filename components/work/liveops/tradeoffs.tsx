@@ -1,8 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react"
+import { useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react"
 import Image from "next/image"
+import { CursorContext } from "@/context/CursorContext"
 import "./liveops.css"
+import { figCaption } from "@/components/work/caption"
 
 /*
  * The Key tradeoffs table: decision, from, to. Each row opens a dialog with the
@@ -42,6 +44,20 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
   const [open, setOpen] = useState<number | null>(null)
   const ref = useRef<HTMLDialogElement>(null)
   const row = open === null ? null : rows[open]
+  const { setDotHidden } = useContext(CursorContext)
+  const isOpen = open !== null
+
+  // The modal sits in the top layer, above the site's glass cursor, so while it's
+  // open the system cursor comes back and the glass one steps aside.
+  useEffect(() => {
+    if (!isOpen) return
+    document.body.classList.add("allow-native-cursor")
+    setDotHidden(true)
+    return () => {
+      document.body.classList.remove("allow-native-cursor")
+      setDotHidden(false)
+    }
+  }, [isOpen, setDotHidden])
 
   useEffect(() => {
     const dialog = ref.current
@@ -215,7 +231,7 @@ export function TradeoffTable({ rows }: { rows: Tradeoff[] }) {
                           <Image src={m.image!} alt={m.alt} fill className={m.fit === "cover" ? "object-cover object-top" : "object-contain"} sizes="(min-width: 1140px) 1040px, 100vw" />
                         )}
                       </div>
-                      <figcaption className="text-[13px] leading-[1.45] text-ink-meta">{m.caption.replace(/^(before|after):\s*(.)/i, (_, _k, c: string) => c.toUpperCase())}</figcaption>
+                      <figcaption className={figCaption}>{m.caption.replace(/^(before|after):\s*(.)/i, (_, _k, c: string) => c.toUpperCase())}</figcaption>
                     </figure>
                   )
                 })}

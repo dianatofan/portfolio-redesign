@@ -1,10 +1,11 @@
 "use client"
 
 import { useRef, useState, type PointerEvent } from "react"
+import { figCaption } from "@/components/work/caption"
 
 /*
- * The prototype library growing, as a step chart: ink line, grey grid, the
- * latest count in purple. Hovering (or arrowing through with the keyboard)
+ * The prototype library growing, as a step chart across the column: ink line,
+ * grey grid, then a dashed purple line on to what's next. Hovering (or arrowing through with the keyboard)
  * marks a day on the line and says which prototypes arrived then.
  *
  * Data: each prototype's first commit in the prototype-library repo. The first
@@ -34,17 +35,19 @@ const STEPS = ADDED.reduce<Array<{ date: string; names: string[]; total: number 
     return [...acc, { ...step, total }]
 }, [])
 
-const W = 640
-const H = 260
-const L = 32
-const R = 44
-// Room above the top gridline for the "18" label, which used to be clipped.
-const T = 28
-const B = 32
-const MAX = 18
+const W = 900
+const H = 240
+const L = 40
+const R = 10
+// Room above the plot for the "Next" label.
+const T = 34
+const B = 30
+// The scale runs past 18 so the dashed line to what's next can climb.
+const MAX = 24
 const START = "2026-09-07"
-const END = "2026-10-19"
-const WEEKS = ["2026-09-07", "2026-09-14", "2026-09-21", "2026-09-28", "2026-10-05", "2026-10-12", "2026-10-19"]
+// The data ends mid-October; the rest of the width is what's next.
+const END = "2026-11-02"
+const WEEKS = ["2026-09-07", "2026-09-14", "2026-09-21", "2026-09-28", "2026-10-05", "2026-10-12"]
 
 const day = (d: string) => Date.parse(d + "T00:00:00Z") / 864e5
 const x = (d: string) => L + ((day(d) - day(START)) / (day(END) - day(START))) * (W - L - R)
@@ -55,7 +58,6 @@ let PATH = `M${x(STEPS[0].date)} ${y(0)} V${y(STEPS[0].total)}`
 STEPS.slice(1).forEach((s) => {
     PATH += ` H${x(s.date)} V${y(s.total)}`
 })
-PATH += ` H${x(END)}`
 
 export function GrowthChart() {
     const svgRef = useRef<SVGSVGElement>(null)
@@ -79,17 +81,19 @@ export function GrowthChart() {
     const step = STEPS[shown]
     const sx = x(step.date)
     const sy = y(step.total)
-    // Keep the label inside the chart near either edge.
-    const anchorEnd = sx > W - 120
+    // Keep the label clear of the chart's edges and of the Next label.
+    const anchorEnd = sx > W * 0.55
+    const lx = x(STEPS[last].date)
+    const ly = y(STEPS[last].total)
 
     return (
-        <figure className="mt-8 flex max-w-[760px] flex-col gap-2.5">
+        <figure className="m-0 flex flex-col gap-3 border-t border-hairline pt-6">
             <svg
                 ref={svgRef}
                 viewBox={`0 0 ${W} ${H}`}
                 className="h-auto w-full touch-pan-y overflow-visible outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
                 role="img"
-                aria-label={`Prototypes in the library grew from 6 on 11 September to ${STEPS[last].total} on 16 October. Use the arrow keys to step through the days.`}
+                aria-label={`Prototypes in the library grew from 6 on 11 September to ${STEPS[last].total} on 16 October, with more designers adding to it next. Use the arrow keys to step through the days.`}
                 tabIndex={0}
                 onPointerMove={onMove}
                 onPointerLeave={() => setActive(null)}
@@ -116,6 +120,12 @@ export function GrowthChart() {
                 ))}
 
                 <path d={PATH} fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round" />
+                {/* What's next: dashed, from the latest count up to the right edge. */}
+                <line x1={lx} x2={W - R} y1={ly} y2={T} stroke="var(--brand)" strokeWidth="1.5" strokeDasharray="2 4" strokeLinecap="round" />
+                <circle cx={W - R} cy={T} r="3" fill="var(--brand)" />
+                <text x={W - R} y={T - 14} textAnchor="end" fontSize="12" fill="var(--brand)">
+                    Next: more designers adding to it
+                </text>
 
                 {/* A wide transparent band so the whole plot area answers the pointer. */}
                 <rect x={L} y={T} width={W - L - R} height={H - T - B} fill="transparent" />
@@ -123,14 +133,14 @@ export function GrowthChart() {
                 {active !== null && (
                     <line x1={sx} x2={sx} y1={T} y2={H - B} stroke="var(--ink-meta)" strokeDasharray="2 3" strokeWidth="1" />
                 )}
-                <circle cx={sx} cy={sy} r="4.5" fill="var(--brand)" />
+                <circle cx={sx} cy={sy} r={active === null ? 3 : 4.5} fill={active === null ? "var(--ink)" : "var(--brand)"} />
                 {/*
                   At rest, the latest count sits just above its point. On hover the
                   label moves to the top of the plot, above the dashed marker, so the
                   step line can never run through it.
                 */}
                 {active === null ? (
-                    <text x={sx - 6} y={sy - 12} textAnchor="end" fontSize="11" fontWeight="500" fill="var(--brand)">
+                    <text x={sx} y={sy - 12} textAnchor="middle" fontSize="13" fontWeight="500" fill="var(--ink)">
                         {step.total}
                     </text>
                 ) : (
@@ -144,13 +154,13 @@ export function GrowthChart() {
                 )}
             </svg>
             {/* One line under the chart: the caption, or on hover what arrived that day (announced). */}
-            <figcaption aria-live="polite" className="text-[13px] leading-[1.5] text-ink-meta">
+            <figcaption aria-live="polite" className={figCaption}>
                 {active !== null ? (
                     <span className="text-ink">{step.names.join(", ")}</span>
                 ) : (
                     <>
                         <span className="text-ink [counter-increment:fig] before:content-['Fig._'_counter(fig)]" /> — Prototypes in
-                        the library, from its git history. Hover the line for each day.
+                        the library, from its git history.
                     </>
                 )}
             </figcaption>
