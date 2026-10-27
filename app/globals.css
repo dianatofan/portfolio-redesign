@@ -58,7 +58,7 @@
  * the live site, that stylesheet was the last render-blocking request on the
  * critical path — it finished at 561ms and first paint happened at 584ms, so it
  * was gating first paint, and on a cold connection it also cost DNS + TLS to two
- * Google origins. The file is 11 KB; serving it ourselves takes it off the
+ * Google origins. The file is 13 KB; serving it ourselves takes it off the
  * critical path entirely and removes a third-party dependency for it.
  *
  * The rules below are Google's own output for the subset, verbatim, with the src
@@ -66,10 +66,10 @@
  * typo, and `font-display: block` is deliberate: a swapped icon font briefly
  * paints the ligature text, so you would see the word "ads_click" before the glyph.
  *
- * IMPORTANT: the woff2 contains ONLY these twenty icons —
+ * IMPORTANT: the woff2 contains ONLY these twenty-two icons —
  *   ads_click, arrow_back, attach_file, auto_awesome, autorenew, bedtime, check,
- *   close, cloud_sync, edit, expand_more, lock, menu, pause, play_arrow,
- *   quickreply, replay, stop, subdirectory_arrow_right, sunny
+ *   close, cloud_sync, edit, expand_more, help, info, lock, menu, pause,
+ *   play_arrow, quickreply, replay, stop, subdirectory_arrow_right, sunny
  * Any icon not on that list renders as its own name in plain text. To add one,
  * re-fetch the subset (names must stay alphabetical) and replace the file:
  *

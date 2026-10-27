@@ -5,6 +5,7 @@ import { AiComposer, AiComposerPreview } from "./ai-composer";
 import { EmptyState, EmptyStatePreview } from "./empty-state";
 import { HoldoutDiagram, HoldoutDiagramPreview } from "./holdout-diagram";
 import { SwitchboardFilter, SwitchboardPreview } from "./switchboard-filter";
+import { TargetingOrder, TargetingOrderPreview } from "./targeting-order";
 
 /**
  * Microcomponents board — Figma-style canvas with a live, expandable, resizable frame.
@@ -27,6 +28,7 @@ const ITEMS = [
   { t: "Empty state", d: "A cat asleep where the list will go.", Live: EmptyState, Preview: EmptyStatePreview, openH: 500, openHNarrow: 560 },
   { t: "Switchboard filter", d: "Multi-select you can read at a glance.", Live: SwitchboardFilter, Preview: SwitchboardPreview, openH: 260, openHNarrow: 300 },
   { t: "Illustrated tutorial", d: "An animated illustration that replaces hefty text.", Live: HoldoutDiagram, Preview: HoldoutDiagramPreview, openH: 250, openHNarrow: 300 },
+  { t: "Targeting tabs", d: "Targeting tabs that assign each player to the first offer they match.", Live: TargetingOrder, Preview: TargetingOrderPreview, openH: 360, openHNarrow: 480 },
 ];
 const KEYFRAMES = `
 @keyframes mcPulse{0%,100%{box-shadow:0 0 0 0 rgba(13,153,255,.45)}50%{box-shadow:0 0 0 6px rgba(13,153,255,0)}}
