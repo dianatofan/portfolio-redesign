@@ -83,7 +83,8 @@
     font-style: normal;
     font-weight: 400 500;
     font-display: block;
-    src: url("/fonts/material-symbols-subset.woff2") format("woff2");
+    /* ?v= is the icon count: bump it whenever the subset changes, so browsers drop the cached file. */
+    src: url("/fonts/material-symbols-subset.woff2?v=22") format("woff2");
 }
 
 .material-symbols-outlined {

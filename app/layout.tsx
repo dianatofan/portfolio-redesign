@@ -89,7 +89,7 @@ export default function RootLayout({
                  */}
                 <link
                     rel="preload"
-                    href="/fonts/material-symbols-subset.woff2"
+                    href="/fonts/material-symbols-subset.woff2?v=22"
                     as="font"
                     type="font/woff2"
                     crossOrigin="anonymous"
