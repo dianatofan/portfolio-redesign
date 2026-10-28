@@ -1,0 +1,519 @@
+{
+  "pairs": [
+    {
+      "id": "superstar-2020",
+      "name": "Golden Goose Superstar, white & black star",
+      "type": "sneaker",
+      "season": "2020",
+      "tag": "The Covid pair",
+      "dateAcquired": "2020-06-12",
+      "howItJoined": "My first pair, bought the week the borders stayed shut",
+      "headlineMemory": "The Covid pair, my first designer love",
+      "story": "Nobody was going anywhere that year, so these were my one good thing. I walked them in on long evenings along the Copenhagen harbour, then took them up and down the hills of Porto and home to Cluj. That's when the tradition started without me noticing: one pair a year, worn until the next one shows up.",
+      "photos": [
+        {
+          "src": "photos/2020-amager-strand.jpg",
+          "caption": "Danish summer at Amager Strand",
+          "date": "2020-07-15",
+          "place": "Copenhagen",
+          "focus": "50% 80%"
+        },
+        {
+          "src": "",
+          "caption": "Harbour baths at ten in the evening, still light out",
+          "date": "2020-06-21",
+          "place": "Copenhagen"
+        },
+        {
+          "src": "",
+          "caption": "Up and down every hill in Porto",
+          "date": "2020-08-14",
+          "place": "Porto"
+        },
+        {
+          "src": "",
+          "caption": "Back home in Cluj, showing them off to everyone",
+          "date": "2020-09-20",
+          "place": "Cluj"
+        }
+      ],
+      "places": [
+        {
+          "name": "Copenhagen",
+          "country": "Denmark",
+          "lat": 55.6761,
+          "lng": 12.5683
+        },
+        {
+          "name": "Porto",
+          "country": "Portugal",
+          "lat": 41.1579,
+          "lng": -8.6291
+        },
+        {
+          "name": "Cluj",
+          "country": "Romania",
+          "lat": 46.7712,
+          "lng": 23.6236
+        }
+      ],
+      "colors": {
+        "upper": "#f4f1ea",
+        "sole": "#ebe3d0",
+        "accent": "#1f1d1a",
+        "laces": "#1f1d1a"
+      },
+      "chart": {
+        "x": 30,
+        "y": 72
+      },
+      "cutout": "",
+      "why": "I'd been obsessed with the white sneaker, black laces look for months. It was painful to spend that much on my first pair of designer shoes. Then I tried them on, saw my new gazelle legs in the mirror, and the return label never stood a chance.",
+      "bestMemory": {
+        "text": "Danish summer at Amager Strand.",
+        "photo": 0
+      },
+      "sparkle": "A black sparkly star. It made them feel extra special.",
+      "look": {
+        "tints": {
+          "Star": "#1c1c1c",
+          "HeelTab": "#62dc3e",
+          "Laces": "#1f1d1a"
+        },
+        "glitter": [
+          "Star",
+          "HeelTab"
+        ],
+        "snake": [
+          "HeelTab"
+        ],
+        "sparkle": 4,
+        "flakes": 1400
+      }
+    },
+    {
+      "id": "superstar-lisbon",
+      "name": "Golden Goose Superstar, full glitter",
+      "type": "sneaker",
+      "season": "2021",
+      "tag": "The too-sparkly pair",
+      "dateAcquired": "2021-05-14",
+      "howItJoined": "Bought on a glitter high",
+      "headlineMemory": "The too-sparkly pair, too sparkly even for me",
+      "story": "Indoors, perfectly reasonable shoes. Outdoors, a solar event. Strangers squinted, pigeons fled. I tried to tone them down with fabric dye, and that was the end of them.",
+      "photos": [
+        {
+          "src": "",
+          "caption": "Before: full sparkle, no regrets yet",
+          "date": "2021-05-15",
+          "place": "Lisbon"
+        },
+        {
+          "src": "",
+          "caption": "First sunny day. Sunglasses required",
+          "date": "2021-10-03",
+          "place": "Copenhagen"
+        },
+        {
+          "src": "",
+          "caption": "After. We don’t talk about after",
+          "date": "2021-10-04",
+          "place": "Copenhagen"
+        }
+      ],
+      "places": [
+        {
+          "name": "Lisbon",
+          "country": "Portugal",
+          "lat": 38.7223,
+          "lng": -9.1393
+        },
+        {
+          "name": "Sintra",
+          "country": "Portugal",
+          "lat": 38.8029,
+          "lng": -9.3817
+        },
+        {
+          "name": "Porto",
+          "country": "Portugal",
+          "lat": 41.1579,
+          "lng": -8.6291
+        }
+      ],
+      "colors": {
+        "upper": "#8a7e84",
+        "sole": "#b9ab9e",
+        "accent": "#c9c2c8",
+        "laces": "#9a8f8f"
+      },
+      "chart": {
+        "x": 74,
+        "y": 74
+      },
+      "cutout": "",
+      "why": "I wanted a darker pair of Golden Goose for the colder season, and this silver tone seemed perfect. Then came the first ray of sun. They lit up like two disco balls, shining so bright they blinded me in the middle of the street.",
+      "bestMemory": {
+        "text": "Sparkling in the sun, before I tried to tone them down.",
+        "photo": 0
+      },
+      "sparkle": "Glitter everywhere. Toe, heel, star, probably my soul.",
+      "mishap": "Fine indoors. In the sun, too bright to look at.",
+      "status": "ruined",
+      "statusNote": "Retired early (my fault)",
+      "look": {
+        "tints": {
+          "Upper": "#4a464c",
+          "Star": "#bdb8bf",
+          "Laces": "#2a2a2a"
+        },
+        "glitter": [
+          "Upper",
+          "Star"
+        ],
+        "sparkle": 2.4,
+        "flakes": 2200
+      }
+    },
+    {
+      "id": "ballstar-paris",
+      "name": "Golden Goose Superstar, purple glitter star",
+      "type": "sneaker",
+      "season": "2022",
+      "tag": "The Illum deal",
+      "dateAcquired": "2022-06-03",
+      "howItJoined": "Found at Illum for half the usual price",
+      "headlineMemory": "The Illum deal, my best Golden Goose bargain ever",
+      "story": "After the too-sparkly pair I needed a win, and Illum delivered: half price, purple star, black laces. No drama, no regrets, no experiments. They just quietly served me well, every single day, until the next pair showed up.",
+      "photos": [
+        {
+          "src": "",
+          "caption": "Graduation weekend, dancing in the kitchen",
+          "date": "2022-06-24",
+          "place": "Paris"
+        },
+        {
+          "src": "",
+          "caption": "Picnic on the Canal Saint-Martin, wine in paper cups",
+          "date": "2022-06-25",
+          "place": "Paris"
+        },
+        {
+          "src": "",
+          "caption": "Bikes and puddles",
+          "date": "2022-08-13",
+          "place": "Amsterdam"
+        }
+      ],
+      "places": [
+        {
+          "name": "Paris",
+          "country": "France",
+          "lat": 48.8566,
+          "lng": 2.3522
+        },
+        {
+          "name": "Amsterdam",
+          "country": "Netherlands",
+          "lat": 52.3676,
+          "lng": 4.9041
+        }
+      ],
+      "colors": {
+        "upper": "#f3f0e8",
+        "sole": "#ebe3d0",
+        "accent": "#6b3fa0",
+        "laces": "#1f1d1a"
+      },
+      "chart": {
+        "x": 70,
+        "y": 24
+      },
+      "cutout": "",
+      "why": "Spotted them at Illum, Copenhagen's fancy department store, for half the usual price. Purple sparkly star, black laces I already knew I loved. I didn't even pretend to think about it.",
+      "bestMemory": {
+        "text": "Dancing in a tiny kitchen in the 11th until the neighbours gave up and joined in.",
+        "photo": 0
+      },
+      "sparkle": "A purple sparkly star. Just enough sparkle this time, unlike a certain previous pair.",
+      "look": {
+        "tints": {
+          "Star": "#7b3bb0",
+          "Laces": "#1f1d1a"
+        },
+        "sparkle": 1.5,
+        "flakes": 1800
+      }
+    },
+    {
+      "id": "nimbus-first-marathon",
+      "name": "ASICS Gel-Nimbus 25",
+      "type": "running",
+      "tag": "First marathon",
+      "dateAcquired": "2023-08-05",
+      "howItJoined": "Picked out with my running club for my first marathon block",
+      "headlineMemory": "Every kilometre to my first marathon",
+      "story": "These carried me from barely managing ten kilometres to two full marathons. Most of their miles were early mornings around the lakes, with the same three people and the same bad jokes. The laces are a different colour because the originals snapped in Berlin, two kilometres from the finish. I tied a knot and kept going.",
+      "photos": [
+        {
+          "src": "",
+          "caption": "First long run, 18 km and very proud",
+          "date": "2023-08-19",
+          "place": "Copenhagen"
+        },
+        {
+          "src": "",
+          "caption": "Half marathon finish, legs like jelly",
+          "date": "2023-09-17",
+          "place": "Copenhagen"
+        },
+        {
+          "src": "",
+          "caption": "Brandenburg Gate, knotted laces and all",
+          "date": "2024-09-29",
+          "place": "Berlin"
+        }
+      ],
+      "places": [
+        {
+          "name": "Copenhagen",
+          "country": "Denmark",
+          "lat": 55.6761,
+          "lng": 12.5683
+        },
+        {
+          "name": "Aarhus",
+          "country": "Denmark",
+          "lat": 56.1629,
+          "lng": 10.2039
+        },
+        {
+          "name": "Berlin",
+          "country": "Germany",
+          "lat": 52.52,
+          "lng": 13.405
+        }
+      ],
+      "km": 1240,
+      "races": [
+        {
+          "name": "Copenhagen Half Marathon",
+          "date": "2023-09-17",
+          "place": "Copenhagen",
+          "distance": "half",
+          "time": "1:58:40"
+        },
+        {
+          "name": "Copenhagen Marathon",
+          "date": "2024-05-12",
+          "place": "Copenhagen",
+          "distance": "marathon",
+          "time": "4:21:05"
+        },
+        {
+          "name": "Berlin Marathon",
+          "date": "2024-09-29",
+          "place": "Berlin",
+          "distance": "marathon",
+          "time": "4:09:52"
+        }
+      ],
+      "status": "retired",
+      "retiredOn": "2024-11-03",
+      "colors": {
+        "upper": "#3f5f7f",
+        "sole": "#f0ece4",
+        "accent": "#e8703f",
+        "laces": "#e9edf0"
+      },
+      "chart": {
+        "x": 22,
+        "y": 28
+      },
+      "cutout": ""
+    },
+    {
+      "id": "midstar-2023",
+      "name": "Golden Goose Superstar, black glitter star, silver heel",
+      "type": "sneaker",
+      "season": "2023",
+      "tag": "The splurge pair",
+      "dateAcquired": "2023-06-20",
+      "howItJoined": "Ordered on SSENSE while I was living in Switzerland",
+      "headlineMemory": "The splurge pair, my favourite colour combination ever",
+      "story": "Switzerland was expensive, so naturally I bought my most expensive pair there. They arrived in a big box, I wore them out of it, and I basically never took them off. The soles are almost gone now, worn completely flat. I take that as proof they were worth it.",
+      "photos": [
+        {
+          "src": "",
+          "caption": "Unboxing day, still perfect",
+          "date": "2023-06-22",
+          "place": "Switzerland"
+        },
+        {
+          "src": "",
+          "caption": "Out walking, again",
+          "date": "2023-08-10",
+          "place": "Switzerland"
+        },
+        {
+          "src": "",
+          "caption": "The soles today. We have been through a lot",
+          "date": "2024-05-01",
+          "place": "Switzerland"
+        }
+      ],
+      "places": [
+        {
+          "name": "Switzerland",
+          "country": "Switzerland",
+          "lat": 46.8182,
+          "lng": 8.2275
+        }
+      ],
+      "colors": {
+        "upper": "#f4f1ea",
+        "sole": "#d9d0bd",
+        "accent": "#1f1d1a",
+        "laces": "#f7f4ee"
+      },
+      "chart": {
+        "x": 62,
+        "y": 62
+      },
+      "cutout": "",
+      "why": "Ordered online from SSENSE while I was living in Switzerland. My most expensive pair by far, and honestly I would do it again.",
+      "bestMemory": {
+        "text": "Walking them flat around Switzerland. The soles tell the whole story.",
+        "photo": 1
+      },
+      "sparkle": "A black sparkly star and a silver heel tab. My favourite combination of all time.",
+      "look": {
+        "tints": {
+          "Star": "#2a2a2a",
+          "HeelTab": "#c4c8cd"
+        }
+      }
+    },
+    {
+      "id": "histar-2024",
+      "name": "Golden Goose Superstar, silver glitter star, black heel tab",
+      "type": "sneaker",
+      "season": "2024",
+      "tag": "The smuggled pair",
+      "dateAcquired": "2024-06-07",
+      "howItJoined": "From the British Net-a-Porter, because they were unavailable in Denmark",
+      "headlineMemory": "The smuggled pair, London to Romania to Copenhagen",
+      "story": "Some people buy shoes. I organised an international operation. A friend in London ordered them, took them to Romania, and I carried them the last leg home to Denmark. By the time I finally wore them they had more passport stamps than most people. Worth every message, every favour and every overhead locker.",
+      "photos": [
+        {
+          "src": "",
+          "caption": "The handover in Romania",
+          "date": "2024-06-10",
+          "place": "Romania"
+        },
+        {
+          "src": "",
+          "caption": "Finally home, finally on my feet",
+          "date": "2024-06-20",
+          "place": "Copenhagen"
+        }
+      ],
+      "places": [
+        {
+          "name": "London",
+          "country": "United Kingdom",
+          "lat": 51.5072,
+          "lng": -0.1276
+        },
+        {
+          "name": "Romania",
+          "country": "Romania",
+          "lat": 45.9432,
+          "lng": 24.9668
+        },
+        {
+          "name": "Copenhagen",
+          "country": "Denmark",
+          "lat": 55.6761,
+          "lng": 12.5683
+        }
+      ],
+      "colors": {
+        "upper": "#f4f1ea",
+        "sole": "#ebe3d0",
+        "accent": "#c4c8cd",
+        "laces": "#f7f4ee"
+      },
+      "chart": {
+        "x": 82,
+        "y": 18
+      },
+      "cutout": "",
+      "why": "Unavailable in Denmark, so a whole adventure: a friend ordered them from the UK site of Net-a-Porter, carried them from London to Romania, and I brought them home to Copenhagen.",
+      "bestMemory": {
+        "text": "Opening the box in Copenhagen after its tour of Europe.",
+        "photo": 1
+      },
+      "sparkle": "A silver sparkly star, a black heel tab and white laces. Very neutral, and it went with absolutely everything.",
+      "look": {}
+    },
+    {
+      "id": "superstar-2027",
+      "name": "Golden Goose Superstar, silver glitter star, black heel tab",
+      "type": "sneaker",
+      "season": "2027",
+      "tag": "The pair in waiting",
+      "dateAcquired": "2026-08-29",
+      "howItJoined": "Ordered from Net-a-Porter while I was on a weekend trip to London",
+      "headlineMemory": "The pair in waiting, reserved for summer 2027",
+      "story": "Still in the box. I haven't worn them yet: they are reserved for summer 2027. Until then they sit here looking brand new, which will be the last time they ever do.",
+      "photos": [
+        {
+          "src": "",
+          "caption": "Weekend in London, one very important parcel",
+          "date": "2026-08-29",
+          "place": "London"
+        },
+        {
+          "src": "",
+          "caption": "Still in the box. Patience",
+          "date": "2026-09-02",
+          "place": "Copenhagen"
+        }
+      ],
+      "places": [
+        {
+          "name": "London",
+          "country": "United Kingdom",
+          "lat": 51.5072,
+          "lng": -0.1276
+        },
+        {
+          "name": "Copenhagen",
+          "country": "Denmark",
+          "lat": 55.6761,
+          "lng": 12.5683
+        }
+      ],
+      "colors": {
+        "upper": "#f8f6f1",
+        "sole": "#f3efe6",
+        "accent": "#c4c8cd",
+        "laces": "#fbf9f5"
+      },
+      "chart": {
+        "x": 88,
+        "y": 58
+      },
+      "cutout": "",
+      "why": "Same model again, ordered on a weekend in London. Why does London have so many better Golden Goose options? Silver tones only, always.",
+      "bestMemory": {
+        "text": "Not yet. Ask me after summer 2027.",
+        "photo": 1
+      },
+      "sparkle": "Silver sparkly star, black heel tab, white laces. Same as last time, because it was perfect.",
+      "statusNote": "Unworn, waiting for summer 2027",
+      "look": {}
+    }
+  ]
+}
