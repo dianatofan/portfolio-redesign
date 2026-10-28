@@ -36,7 +36,7 @@ const KEYFRAMES = `
 
 function Cursor({ label, color, style }: { label: string; color: string; style: CSSProperties }) {
   return (
-    <div style={{ position: "absolute", pointerEvents: "none", display: "flex", alignItems: "flex-start", gap: 2, zIndex: 5, ...style }}>
+    <div style={{ position: "absolute", pointerEvents: "none", display: "flex", alignItems: "flex-start", gap: 2, zIndex: 1000, ...style }}>
       <svg width="16" height="18" viewBox="0 0 16 18"><path d="M1 1 L1 15 L5 11 L8 17 L10 16 L7 10 L13 10 Z" fill={color} stroke="#fff" strokeWidth="1.2" /></svg>
       <span style={{ marginTop: 14, fontSize: 11, background: color, color: "#fff", padding: "2px 7px", borderRadius: 999 }}>{label}</span>
     </div>

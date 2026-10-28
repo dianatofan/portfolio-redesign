@@ -297,8 +297,7 @@ export const dianasDiamondsPage: WorkProjectPage = {
   renderAfterGate: () => (
     <>
       <Section id="tool" title="The tool" wide>
-        {/* The tour breaks out of the column to the header's edges, like Back and Next. */}
-        <div className={`${full} relative left-1/2 mt-6 w-[calc(100vw-2*var(--gutter))] -translate-x-1/2`}>
+        <div className={`${full} mt-6`}>
           <ProductTour label="Diana's Diamonds, screen by screen" slides={tourSlides} />
         </div>
         <div className={`${full} grid grid-cols-12 items-start gap-x-6 gap-y-5 pt-5`}>

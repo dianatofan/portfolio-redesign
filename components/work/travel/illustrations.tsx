@@ -118,7 +118,11 @@ export function TripTimeline({ caption, dark }: { caption: ReactNode; dark?: boo
                                 </div>
                                 {/* Nine labels don't fit a phone as "Day N": there it's the number, and "Day" once. */}
                                 <span className="text-[13px] whitespace-nowrap text-ink-meta">
-                                    {i === 0 ? "Day " : <span className="hidden sm:inline">Day </span>}
+                                    {i === 0 ? (
+                                        "Day "
+                                    ) : (
+                                        <span className="hidden sm:inline">Day </span>
+                                    )}
                                     {day}
                                 </span>
                             </div>
@@ -352,7 +356,6 @@ export function StagesFlight({ caption }: { caption: ReactNode }) {
             {/* On a phone the controls sit under the route; from md they float over its corner. */}
             <div className="relative flex flex-col gap-3">
                 <div
-                    ref={box}
                     onPointerDown={(e) => {
                         if (done) return
                         Object.assign(P, { auto: false, paused: false, target: null, drag: true })
@@ -370,130 +373,143 @@ export function StagesFlight({ caption }: { caption: ReactNode }) {
                         P.drag = false
                         render()
                     }}
-                    className="relative aspect-[1000/400] w-full touch-none overflow-hidden rounded-[14px] bg-[#f4f4f4] select-none"
+                    className="relative w-full touch-none overflow-hidden rounded-[14px] bg-[#f4f4f4] py-14 select-none md:py-0"
                     style={{ cursor: P.drag ? "grabbing" : "grab" }}
                 >
-                    <svg
-                        aria-hidden
-                        viewBox="0 0 1000 400"
-                        className="absolute inset-0 block h-full w-full"
-                    >
-                        <defs>
-                            <linearGradient id="tpGrad" x1="0" x2="1" y1="0" y2="0">
-                                <stop offset="0" stopColor="#12a0ad" />
-                                <stop offset=".5" stopColor="#6a5bb5" />
-                                <stop offset="1" stopColor="#4e9a3a" />
-                            </linearGradient>
-                        </defs>
-                        <path
-                            ref={path}
-                            d={route}
-                            fill="none"
-                            stroke="#c9c8d0"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeDasharray="6 7"
-                        />
-                        <path
-                            d={route}
-                            fill="none"
-                            stroke="url(#tpGrad)"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            pathLength={1}
-                            strokeDasharray="1 1"
-                            strokeDashoffset={(1 - P.t).toFixed(4)}
-                        />
-                        <circle
-                            cx="40"
-                            cy="300"
-                            r="4"
-                            fill="#fff"
-                            stroke="#16151a"
-                            strokeWidth="1.5"
-                        />
-                        <circle cx="970" cy="150" r="4" fill="#16151a" />
-                        <g transform={`translate(${P.px.toFixed(1)},${P.py.toFixed(1)})`}>
-                            <circle r="24" fill="transparent" />
-                            <g
-                                transform={`rotate(${ang.toFixed(1)}) scale(${sc.toFixed(3)},${(sc * (1 - Math.abs(P.bank) * 0.35)).toFixed(3)})`}
-                            >
-                                <g transform="rotate(90) scale(1.35) translate(-12,-12)">
-                                    <path
-                                        d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"
-                                        fill="#16151a"
-                                    />
-                                </g>
-                            </g>
-                        </g>
-                    </svg>
+                    {/* The route itself; on a phone the padding above gives the quotes room to open. */}
+                    <div ref={box} className="relative aspect-[1000/400] w-full">
+                        <svg
+                            aria-hidden
+                            viewBox="0 0 1000 400"
+                            className="absolute inset-0 block h-full w-full"
+                        >
+                            <defs>
+                                <linearGradient id="tpGrad" x1="0" x2="1" y1="0" y2="0">
+                                    <stop offset="0" stopColor="#12a0ad" />
+                                    <stop offset=".5" stopColor="#6a5bb5" />
+                                    <stop offset="1" stopColor="#4e9a3a" />
+                                </linearGradient>
+                            </defs>
+                            <path
+                                ref={path}
+                                d={route}
+                                fill="none"
+                                stroke="#c9c8d0"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeDasharray="6 7"
+                            />
+                            <path
+                                d={route}
+                                fill="none"
+                                stroke="url(#tpGrad)"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                pathLength={1}
+                                strokeDasharray="1 1"
+                                strokeDashoffset={(1 - P.t).toFixed(4)}
+                            />
+                            <circle
+                                cx="40"
+                                cy="300"
+                                r="4"
+                                fill="#fff"
+                                stroke="#16151a"
+                                strokeWidth="1.5"
+                            />
+                            <circle cx="970" cy="150" r="4" fill="#16151a" />
+                        </svg>
 
-                    {stops.map((o, i) => {
-                        const on = !done && Math.abs(P.t - stopAt[i]) < 0.05
-                        const gap = "clamp(22px,2.4vw,30px)"
-                        return (
-                            <div
-                                key={o.t}
-                                className="absolute h-0 w-0"
-                                style={{ left: o.x, top: o.y }}
-                            >
-                                <span
-                                    className="absolute -top-2.5 -left-2.5 h-5 w-5 rounded-full"
-                                    style={{
-                                        background: o.fg,
-                                        opacity: on ? 0 : 0.5,
-                                        transform: `scale(${on ? 2.6 : 0.6})`,
-                                        transition: "transform .6s ease-out, opacity .6s ease-out",
-                                    }}
-                                />
-                                <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2">
-                                    <button
-                                        type="button"
-                                        onPointerDown={(e) => {
-                                            e.stopPropagation()
-                                            if (i <= P.reached) {
-                                                P.target = stopAt[i]
-                                                render()
-                                            }
-                                        }}
-                                        className="max-w-[104px] cursor-pointer rounded-full px-2.5 py-1.5 text-center text-[11px] leading-[1.2] font-medium md:max-w-none md:px-[18px] md:py-2.5 md:text-[clamp(13px,1.6vw,20px)] md:whitespace-nowrap"
-                                        style={{
-                                            background: o.bg,
-                                            color: o.fg,
-                                            boxShadow: `0 0 0 ${on ? "1px" : "0px"} ${o.fg}59`,
-                                            transform: `scale(${on ? 1.08 : 1})`,
-                                            transition:
-                                                "box-shadow .35s ease-out, transform .35s cubic-bezier(.34,1.56,.64,1)",
-                                        }}
-                                    >
-                                        {o.t}
-                                    </button>
-                                </div>
+                        {stops.map((o, i) => {
+                            const on = !done && Math.abs(P.t - stopAt[i]) < 0.05
+                            const gap = "clamp(22px,2.4vw,30px)"
+                            return (
                                 <div
-                                    className="pointer-events-none absolute left-0 w-[clamp(150px,24vw,260px)] -translate-x-1/2"
-                                    style={o.up ? { bottom: gap } : { top: gap }}
+                                    key={o.t}
+                                    className="absolute h-0 w-0"
+                                    style={{ left: o.x, top: o.y }}
                                 >
-                                    <div
-                                        className="rounded-xl bg-white px-3.5 py-2.5 text-center text-[clamp(12px,1.3vw,15px)] leading-[1.4] text-balance italic shadow-[0_8px_24px_-10px_rgba(22,21,26,.3),0_0_0_1px_rgba(22,21,26,.05)]"
+                                    <span
+                                        className="absolute -top-2.5 -left-2.5 h-5 w-5 rounded-full"
                                         style={{
-                                            opacity: on ? 1 : 0,
-                                            transform: on
-                                                ? "none"
-                                                : `translateY(${o.up ? 8 : -8}px) scale(.94)`,
+                                            background: o.fg,
+                                            opacity: on ? 0 : 0.5,
+                                            transform: `scale(${on ? 2.6 : 0.6})`,
                                             transition:
-                                                "opacity .3s ease-out, transform .3s ease-out",
+                                                "transform .6s ease-out, opacity .6s ease-out",
                                         }}
+                                    />
+                                    <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2">
+                                        <button
+                                            type="button"
+                                            onPointerDown={(e) => {
+                                                if (e.pointerType !== "mouse") return
+                                                e.stopPropagation()
+                                                if (i <= P.reached) {
+                                                    P.target = stopAt[i]
+                                                    render()
+                                                }
+                                            }}
+                                            className="max-w-[104px] cursor-pointer rounded-full px-2.5 py-1.5 text-center text-[11px] leading-[1.2] font-medium md:max-w-none md:px-[18px] md:py-2.5 md:text-[clamp(13px,1.6vw,20px)] md:whitespace-nowrap"
+                                            style={{
+                                                background: o.bg,
+                                                color: o.fg,
+                                                boxShadow: `0 0 0 ${on ? "1px" : "0px"} ${o.fg}59`,
+                                                transform: `scale(${on ? 1.08 : 1})`,
+                                                transition:
+                                                    "box-shadow .35s ease-out, transform .35s cubic-bezier(.34,1.56,.64,1)",
+                                            }}
+                                        >
+                                            {o.t}
+                                        </button>
+                                    </div>
+                                    <div
+                                        className={`pointer-events-none absolute left-0 w-[136px] md:w-[clamp(150px,24vw,260px)] md:-translate-x-1/2 ${["-translate-x-[35%]", "-translate-x-1/2", "-translate-x-[65%]"][i]}`}
+                                        style={o.up ? { bottom: gap } : { top: gap }}
                                     >
-                                        “{o.q}”
+                                        <div
+                                            className="rounded-xl bg-white px-3.5 py-2.5 text-center text-[clamp(12px,1.3vw,15px)] leading-[1.4] text-balance italic shadow-[0_8px_24px_-10px_rgba(22,21,26,.3),0_0_0_1px_rgba(22,21,26,.05)]"
+                                            style={{
+                                                opacity: on ? 1 : 0,
+                                                transform: on
+                                                    ? "none"
+                                                    : `translateY(${o.up ? 8 : -8}px) scale(.94)`,
+                                                transition:
+                                                    "opacity .3s ease-out, transform .3s ease-out",
+                                            }}
+                                        >
+                                            “{o.q}”
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    })}
+                            )
+                        })}
+
+                        {/* The plane flies above the stop pills, so a finger never loses it. */}
+                        <svg
+                            aria-hidden
+                            viewBox="0 0 1000 400"
+                            className="pointer-events-none absolute inset-0 block h-full w-full"
+                        >
+                            <g transform={`translate(${P.px.toFixed(1)},${P.py.toFixed(1)})`}>
+                                <circle r="24" fill="transparent" />
+                                <g
+                                    transform={`rotate(${ang.toFixed(1)}) scale(${sc.toFixed(3)},${(sc * (1 - Math.abs(P.bank) * 0.35)).toFixed(3)})`}
+                                >
+                                    <g transform="rotate(90) scale(1.35) translate(-12,-12)">
+                                        <path
+                                            d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"
+                                            fill="#16151a"
+                                        />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
 
                     {done && (
                         <div className="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-[3px]">
-                            <div className="flex max-w-[360px] flex-col items-start gap-2.5 rounded-2xl bg-white px-7 py-6 shadow-[0_18px_50px_-14px_rgba(22,21,26,.3)]">
+                            <div className="mx-4 flex max-w-[360px] flex-col items-start gap-2.5 rounded-2xl bg-white px-5 py-5 shadow-[0_18px_50px_-14px_rgba(22,21,26,.3)] md:mx-0 md:px-7 md:py-6">
                                 <span className="text-[clamp(20px,2vw,24px)] leading-[1.2] font-medium tracking-[-0.02em]">
                                     Trip planned.
                                 </span>
