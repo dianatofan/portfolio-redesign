@@ -160,14 +160,7 @@
     "area": false,
     "wall": 0.72,
     "edge": 0.05,
-    "flat": 1,
-    "blackBox": [
-     -0.52,
-     -0.3,
-     -0.3,
-     0.32
-    ],
-    "blackZ": 0.05
+    "flat": 1
    },
    "upperGlitter": {
     "sparkle": 4,
