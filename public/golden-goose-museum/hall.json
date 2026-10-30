@@ -160,14 +160,7 @@
     "area": false,
     "wall": 0.72,
     "edge": 0.05,
-    "flat": 1,
-    "band": [
-     -0.63,
-     -0.09,
-     -0.41,
-     0.02,
-     0.13
-    ]
+    "flat": 1
    },
    "upperGlitter": {
     "sparkle": 4,
