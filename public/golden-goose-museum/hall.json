@@ -554,14 +554,20 @@
     "depth": 0.14
    },
    "innerStar": {
-    "area": false,
-    "dark": 0.3,
+    "area": true,
+    "box": [
+     -0.5,
+     -0.28,
+     0.14,
+     0.16
+    ],
+    "dark": 0.75,
     "wall": 0.72,
     "edge": 0.25,
-    "fill": "#f1f0ed",
+    "fill": "#f6f5f2",
     "grain": 0.12,
-    "matte": true,
-    "flat": 0.5
+    "matte": false,
+    "flat": 1
    }
   },
   {
