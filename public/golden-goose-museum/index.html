@@ -204,6 +204,11 @@ canvas{display:block;outline:none}
 .phead{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:1px solid var(--ink)}
 .phead button{all:unset;cursor:pointer;font-size:13px}
 .phead button:hover{color:var(--olive)}
+.pnav{display:inline-flex;align-items:baseline;gap:4px;margin-left:12px}
+.pnav button,.pnav a{all:unset;cursor:pointer;font-size:15px;line-height:1;padding:6px 7px;margin:-6px 0;color:var(--ink);text-decoration:none}
+.pnav button:hover,.pnav a:hover{color:var(--olive)}
+.pnav [data-close]{font-size:13px;margin-left:10px}
+.ptitle .lab .pnav{margin-left:10px;vertical-align:baseline}
 #panel h2{margin:18px 0 0;font-family:'Funnel Display',sans-serif;font-weight:500;font-size:32px;line-height:1.05;letter-spacing:-.015em;text-wrap:balance}
 #panel .sub{margin:6px 0 0;font-family:'Funnel Sans',sans-serif;font-style:italic;font-weight:300;font-size:18px;line-height:1.35}
 dl.facts{display:grid;grid-template-columns:96px minmax(0,1fr);margin:26px 0 0;border-top:1px solid var(--hair)}
@@ -1574,7 +1579,7 @@ function focus(i, slow, settle) {
   { const P = poseFor(i); flyTo(P.pos, P.target, settle ? 0.9 : slow ? 2.2 : 1.6); }
   const run = p.type === 'running';
   const excerpt = (p.story.match(/[^.!?]+[.!?]+/g) || [p.story]).slice(0, 2).join(' ').trim();
-  panel.innerHTML = `<div class="phead"><span class="lab num">${esc(p.label)}</span><button data-close>Close</button></div>
+  panel.innerHTML = `<div class="phead"><span class="lab num">${esc(p.label)}</span><span class="pnav"><button data-prev aria-label="Previous pair">←</button><button data-next aria-label="Next pair">→</button><button data-close>Close</button></span></div>
     <h2>${esc(p.lead)}</h2>${p.rest ? `<p class="sub">${esc(p.rest)}</p>` : ''}
     <p class="life num">${p.life.from} → ${p.life.to}<span> · ${p.statusNote ? p.statusNote : p.life.months ? p.life.months + (p.life.months === 1 ? ' month' : ' months') + ' on duty' : 'still on duty'}</span></p>
     <dl class="facts tight">
@@ -1587,6 +1592,8 @@ function focus(i, slow, settle) {
     <div class="pfoot"><span class="soft">${esc(p.name)}</span>
     ${p.bestMemory ? '' : `<a class="more" href="#/pair/${p.id}">Their whole story →</a>`}</div>`;
   panel.querySelector('[data-close]').onclick = () => { stopTour(); hall(); };
+  panel.querySelector('[data-prev]').onclick = () => { stopTour(); focus(i <= 0 ? order.length - 1 : i - 1); };
+  panel.querySelector('[data-next]').onclick = () => { stopTour(); focus(i >= order.length - 1 ? 0 : i + 1); };
   const bp = panel.querySelector('[data-photo]'); if (bp) bp.onclick = () => { stopTour(); openPhoto(favOf(p)); };
   panel.classList.add('on');
 }
@@ -1623,7 +1630,8 @@ function pairPage(p) {
     <dt>Lifespan</dt><dd><span class="num">${p.life.from} → ${p.life.to}</span><br><span class="soft">${p.statusNote || p.life.note}</span></dd><dt>Bought</dt><dd>${fmt(p.dateAcquired)}</dd>
     ${run ? `<dt>Distance</dt><dd class="num">${(p.km || 0).toLocaleString('en-GB')} km</dd><dt>Status</dt><dd>${p.status === 'retired' ? 'Retired' + (p.retiredOn ? ', ' + fmt(p.retiredOn, { month: 'long', year: 'numeric' }) : '') : 'In service'}</dd>` : ''}
     <dt>Shoe</dt><dd>${esc(p.name)}</dd></dl>`;
-  return title(esc(p.label), esc(p.headlineMemory)) +
+  const arrows = `<span class="pnav"><a href="#/pair/${prev.id}" aria-label="Previous pair">←</a><a href="#/pair/${next.id}" aria-label="Next pair">→</a></span>`;
+  return title(esc(p.label) + arrows, esc(p.headlineMemory)) +
   `<div class="g" style="margin-top:36px">
     <aside class="a">${facts}<div class="links" style="flex-direction:column;gap:12px"><a data-hall="${i}">See it in the hall</a><a href="#/map">On the map</a></div></aside>
     <div class="b">
