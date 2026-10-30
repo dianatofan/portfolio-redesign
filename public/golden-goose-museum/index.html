@@ -1357,7 +1357,7 @@ const btext = texPanel(1200, 1500, (c) => {
 { const eg = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.9, 2.5, 0.05)), new THREE.LineBasicMaterial({ color: '#b9d2ca', transparent: true, opacity: 0.55 })); eg.position.y = 1.35; board.add(eg); }
 
 const exhibits = [], hits = [];
-window.__hall = { exhibits, hits, get camera() { return camera; }, get current() { return current; }, THREE }; // for headless checks
+window.__hall = { exhibits, hits, controls, get camera() { return camera; }, get current() { return current; }, THREE }; // for headless checks
 [bslab, btext, bfoot].forEach(o => { o.userData.idx = -2; hits.push(o); });
 const wireMat = new THREE.MeshStandardMaterial({ color: '#3a3c3e', roughness: 0.35, metalness: 0.8 });
 const steelMat = new THREE.MeshStandardMaterial({ name: 'steel-cable', color: '#b8bcc0', roughness: 0.25, metalness: 1, envMapIntensity: 1.2 });
