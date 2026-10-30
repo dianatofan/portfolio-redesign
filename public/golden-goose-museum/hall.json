@@ -146,22 +146,9 @@
    "sparkle": "Glitter everywhere. Toe, heel, star, probably my soul.",
    "status": "ruined",
    "statusNote": "Retired early (my fault)",
-   "mask": "sparkle-mask-silver",
-   "star": {
-    "flakes": 2200,
-    "sparkle": 1.6,
-    "flakeColor": [
-     0.95,
-     0.97,
-     1
-    ],
-    "starRoughness": 0.62,
-    "starMetalness": 0.35
-   },
-   "model": "models/golden-goose-superstar/golden-goose-superstar-silver.glb",
-   "prevSingle": "models/generated/lisbon.glb",
-   "prevFoot": "right",
-   "prevInnerStar": {
+   "single": "models/generated/lisbon.glb",
+   "foot": "right",
+   "innerStar": {
     "box": [
      -0.38,
      -0.21,
@@ -175,7 +162,7 @@
     "edge": 0.05,
     "flat": 1
    },
-   "prevUpperGlitter": {
+   "upperGlitter": {
     "sparkle": 4,
     "flakes": 3000,
     "above": -0.14,
@@ -184,7 +171,7 @@
      0.68
     ]
    },
-   "prevBadge": {
+   "badge": {
     "img": "photos/sstar-badge.jpg",
     "at": [
      0.289,
@@ -195,7 +182,7 @@
      0.058
     ]
    },
-   "prevTongue": {
+   "tongue": {
     "at": [
      0.215,
      0.27,
@@ -218,7 +205,7 @@
     "clearLight": true,
     "reach": 0.3
    },
-   "prevHeelText": {
+   "heelText": {
     "img": "photos/heel-golden-goose.png",
     "cx": 0.66,
     "span": [
@@ -239,6 +226,19 @@
     "text": "GOLDEN|GOOSE|/",
     "aspect": 8.2,
     "plain": true
+   },
+   "prevModel": "models/golden-goose-superstar/golden-goose-superstar-silver.glb",
+   "prevMask": "sparkle-mask-silver",
+   "prevStar": {
+    "flakes": 2200,
+    "sparkle": 1.6,
+    "flakeColor": [
+     0.95,
+     0.97,
+     1
+    ],
+    "starRoughness": 0.62,
+    "starMetalness": 0.35
    }
   },
   {
@@ -918,6 +918,7 @@
    "photos": [
     {
      "src": "",
+     "slotHint": "This photo doesn't exist yet. It's taken in summer 2027.",
      "caption": "Still in the box. Patience",
      "date": "2026-10-02",
      "place": "Copenhagen"
