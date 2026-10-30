@@ -278,6 +278,12 @@
      "country": "Italy",
      "lat": 45.4642,
      "lng": 9.19
+    },
+    {
+     "name": "Romania",
+     "country": "Romania",
+     "lat": 46.9,
+     "lng": 25.9
     }
    ],
    "colors": {
@@ -394,6 +400,165 @@
    }
   },
   {
+   "id": "midstar-2023",
+   "name": "Golden Goose Superstar, black glitter star, silver heel",
+   "type": "sneaker",
+   "season": "2023",
+   "tag": "The splurge pair",
+   "dateAcquired": "2023-06-20",
+   "howItJoined": "Ordered on SSENSE while I was living in Switzerland",
+   "headlineMemory": "The splurge pair, my favourite colour combination ever",
+   "story": "This pair is my Zürich years. At the time I was counting down the days until I could escape the city. In hindsight, it was an awesome chapter, and these walked every bit of it, right down to the flat, worn-out soles.",
+   "photos": [
+    {
+     "src": "photos/2023-zurich-china-garden.jpg",
+     "caption": "Showing my Copenhagen guest the China Garden",
+     "date": "2023-08-15",
+     "place": "Zürich",
+     "focus": "50% 45%"
+    }
+   ],
+   "places": [
+    {
+     "name": "Zürich",
+     "country": "Switzerland",
+     "lat": 47.3769,
+     "lng": 8.5417
+    },
+    {
+     "name": "Copenhagen",
+     "country": "Denmark",
+     "lat": 55.6761,
+     "lng": 12.5683
+    },
+    {
+     "name": "Lisbon",
+     "country": "Portugal",
+     "lat": 38.7223,
+     "lng": -9.1393
+    },
+    {
+     "name": "Prague",
+     "country": "Czechia",
+     "lat": 50.0755,
+     "lng": 14.4378
+    },
+    {
+     "name": "Paris",
+     "country": "France",
+     "lat": 48.8566,
+     "lng": 2.3522
+    },
+    {
+     "name": "Romania",
+     "country": "Romania",
+     "lat": 46.9,
+     "lng": 25.9
+    },
+    {
+     "name": "Valencia",
+     "country": "Spain",
+     "lat": 39.4699,
+     "lng": -0.3763
+    }
+   ],
+   "colors": {
+    "upper": "#f4f1ea",
+    "sole": "#d9d0bd",
+    "accent": "#1f1d1a",
+    "laces": "#f7f4ee"
+   },
+   "chart": {
+    "x": 62,
+    "y": 62
+   },
+   "cutout": "",
+   "why": "Ordered from SSENSE while I was living in Switzerland. My most expensive pair by far, but it must be my favourite colour combination ever. Too bad I can't find it anywhere anymore.",
+   "bestMemory": {
+    "text": "Showing my Copenhagen guest the China Garden",
+    "photo": 0
+   },
+   "sparkle": "A black sparkly star and a silver heel tab. My favourite combination of all time.",
+   "single": "models/generated/splurge-v2.glb",
+   "insole": {
+    "scale": [
+     0.88,
+     0.78
+    ],
+    "y": -0.01
+   },
+   "starSparkle": {
+    "sparkle": 7,
+    "flakes": 1600,
+    "box": [
+     -0.45,
+     -0.36,
+     0.08,
+     0.12
+    ],
+    "below": [
+     -0.6,
+     -0.04,
+     0.0,
+     0.12
+    ]
+   },
+   "foot": "right",
+   "patches": [
+    {
+     "box": [
+      0.5,
+      0.1,
+      1.2,
+      0.6
+     ],
+     "color": "#f4f5f8",
+     "dark": 0.6,
+     "metal": true
+    },
+    {
+     "box": [
+      0.82,
+      -0.2,
+      1.2,
+      0.115
+     ],
+     "color": "#ebe9e4",
+     "dark": 0.92,
+     "leather": true
+    }
+   ],
+   "tongue": {
+    "at": [
+     0.085,
+     0.305,
+     0
+    ],
+    "normal": [
+     -0.35,
+     0.9,
+     0
+    ],
+    "size": [
+     0.2,
+     0.17
+    ],
+    "facing": -0.75,
+    "depth": 0.14
+   },
+   "innerStar": {
+    "area": false,
+    "dark": 0.3,
+    "wall": 0.72,
+    "edge": 0.25,
+    "fill": "#f1f0ed",
+    "grain": 0.12,
+    "matte": true,
+    "flat": 0.5
+   },
+   "memoryLong": "A friend flew in from Copenhagen for a weekend, and I took her straight to the China Garden by the lake: pebbled paths, a pond, a wall that looks like it was lifted from somewhere far warmer. We walked until the light went gold and I forgot, for an afternoon, that I was counting down the days."
+  },
+  {
    "id": "nimbus-first-marathon",
    "name": "ASICS Gel-Nimbus 25",
    "type": "running",
@@ -482,138 +647,44 @@
    "model": ""
   },
   {
-   "id": "midstar-2023",
-   "name": "Golden Goose Superstar, black glitter star, silver heel",
+   "id": "forgotten",
+   "name": "Golden Goose Superstar, sparkly heel tab",
    "type": "sneaker",
-   "season": "2023",
-   "tag": "The splurge pair",
-   "dateAcquired": "2023-06-20",
-   "howItJoined": "Ordered on SSENSE while I was living in Switzerland",
-   "headlineMemory": "The splurge pair, my favourite colour combination ever",
-   "story": "Switzerland was expensive, so naturally I bought my most expensive pair there. They arrived in a big box, I wore them out of it, and I basically never took them off. The soles are almost gone now, worn completely flat. I take that as proof they were worth it.",
+   "season": "2024",
+   "tag": "The forgotten pair",
+   "dateAcquired": "2024-05-15",
+   "howItJoined": "Bought right after I moved back to Copenhagen",
+   "headlineMemory": "The forgotten pair, a new old life in Copenhagen",
+   "story": "At first I didn’t like them: the sparkly heel tab kept scratching my heel. Then I accepted them, and they gave me a whole new old life in Copenhagen as a designer, new run club friends, and trips to Barcelona and Nice.",
    "photos": [
     {
-     "src": "",
-     "caption": "Out walking, again",
-     "date": "2023-08-10",
-     "place": "Switzerland"
+     "src": "photos/2024-barcelona-sagrada.jpg",
+     "caption": "Walking around Barcelona",
+     "date": "2024-05-25",
+     "place": "Barcelona",
+     "focus": "50% 40%"
     }
    ],
    "places": [
     {
-     "name": "Switzerland",
-     "country": "Switzerland",
-     "lat": 46.8182,
-     "lng": 8.2275
-    }
-   ],
-   "colors": {
-    "upper": "#f4f1ea",
-    "sole": "#d9d0bd",
-    "accent": "#1f1d1a",
-    "laces": "#f7f4ee"
-   },
-   "chart": {
-    "x": 62,
-    "y": 62
-   },
-   "cutout": "",
-   "why": "Ordered online from SSENSE while I was living in Switzerland. My most expensive pair by far, and honestly I would do it again.",
-   "bestMemory": {
-    "text": "Walking them flat around Switzerland. The soles tell the whole story.",
-    "photo": 0
-   },
-   "sparkle": "A black sparkly star and a silver heel tab. My favourite combination of all time.",
-   "single": "models/generated/splurge-v2.glb",
-   "insole": {
-    "scale": [
-     0.88,
-     0.78
-    ],
-    "y": -0.01
-   },
-   "starSparkle": {
-    "sparkle": 7,
-    "flakes": 1600,
-    "box": [
-     -0.45,
-     -0.36,
-     0.08,
-     0.12
-    ],
-    "below": [
-     -0.6,
-     -0.04,
-     0.0,
-     0.12
-    ]
-   },
-   "foot": "right",
-   "patches": [
-    {
-     "box": [
-      0.5,
-      0.1,
-      1.2,
-      0.6
-     ],
-     "color": "#f4f5f8",
-     "dark": 0.6,
-     "metal": true
+     "name": "Copenhagen",
+     "country": "Denmark",
+     "lat": 55.6761,
+     "lng": 12.5683
     },
     {
-     "box": [
-      0.82,
-      -0.2,
-      1.2,
-      0.115
-     ],
-     "color": "#ebe9e4",
-     "dark": 0.92,
-     "leather": true
+     "name": "Barcelona",
+     "country": "Spain",
+     "lat": 41.3874,
+     "lng": 2.1686
+    },
+    {
+     "name": "Nice",
+     "country": "France",
+     "lat": 43.7102,
+     "lng": 7.262
     }
    ],
-   "tongue": {
-    "at": [
-     0.085,
-     0.305,
-     0
-    ],
-    "normal": [
-     -0.35,
-     0.9,
-     0
-    ],
-    "size": [
-     0.2,
-     0.17
-    ],
-    "facing": -0.75,
-    "depth": 0.14
-   },
-   "innerStar": {
-    "area": false,
-    "dark": 0.3,
-    "wall": 0.72,
-    "edge": 0.25,
-    "fill": "#f1f0ed",
-    "grain": 0.12,
-    "matte": true,
-    "flat": 0.5
-   }
-  },
-  {
-   "id": "forgotten",
-   "name": "Golden Goose Superstar, black leather, matte black star, silver heel",
-   "type": "sneaker",
-   "season": "2023",
-   "tag": "The forgotten pair",
-   "dateAcquired": "2023-12-01",
-   "howItJoined": "No idea where I ordered it from",
-   "headlineMemory": "The forgotten pair",
-   "story": "Black leather, matte black stars and a silver sparkly heel tab. I have no idea where I ordered them from.",
-   "photos": [],
-   "places": [],
    "colors": {
     "upper": "#1c1b1d",
     "sole": "#ebe3d0",
@@ -625,12 +696,12 @@
     "y": 50
    },
    "cutout": "",
-   "why": "No idea where I ordered them from.",
+   "why": "Bought right after I moved back to Copenhagen. Where from? No idea. I completely forgot.",
    "bestMemory": {
-    "text": "",
+    "text": "Walking around Barcelona",
     "photo": 0
    },
-   "sparkle": "Matte black stars and a silver sparkly heel tab.",
+   "sparkle": "A sparkly heel tab. So sparkly it scratched my heel at first. We worked it out.",
    "model": "models/golden-goose-superstar/superstar.glb",
    "look": {
     "tints": {
@@ -651,18 +722,19 @@
    "id": "histar-2024",
    "name": "Golden Goose Superstar, silver glitter star, black heel tab",
    "type": "sneaker",
-   "season": "2024",
+   "season": "2025",
    "tag": "The smuggled pair",
-   "dateAcquired": "2024-06-07",
+   "dateAcquired": "2025-06-07",
    "howItJoined": "From the British Net-a-Porter, because they were unavailable in Denmark",
    "headlineMemory": "The smuggled pair, London to Romania to Copenhagen",
    "story": "Some people buy shoes. I organised an international operation. A friend in London ordered them, took them to Romania, and I carried them the last leg home to Denmark. By the time I finally wore them they had more passport stamps than most people. Worth every message, every favour and every overhead locker.",
    "photos": [
     {
-     "src": "",
-     "caption": "Finally home, finally on my feet",
-     "date": "2024-06-20",
-     "place": "Copenhagen"
+     "src": "photos/2025-capri-golden-goose.jpg",
+     "caption": "Posing in front of a Golden Goose store in Capri. My favourite hobby.",
+     "date": "2025-07-15",
+     "place": "Amalfi Coast",
+     "focus": "60% 50%"
     }
    ],
    "places": [
@@ -675,14 +747,50 @@
     {
      "name": "Romania",
      "country": "Romania",
-     "lat": 45.9432,
-     "lng": 24.9668
+     "lat": 46.9,
+     "lng": 25.9
     },
     {
      "name": "Copenhagen",
      "country": "Denmark",
      "lat": 55.6761,
      "lng": 12.5683
+    },
+    {
+     "name": "Amalfi Coast",
+     "country": "Italy",
+     "lat": 40.634,
+     "lng": 14.602
+    },
+    {
+     "name": "Athens",
+     "country": "Greece",
+     "lat": 37.9838,
+     "lng": 23.7275
+    },
+    {
+     "name": "Berlin",
+     "country": "Germany",
+     "lat": 52.52,
+     "lng": 13.405
+    },
+    {
+     "name": "Chișinău",
+     "country": "Moldova",
+     "lat": 47.0105,
+     "lng": 28.8638
+    },
+    {
+     "name": "Gdańsk",
+     "country": "Poland",
+     "lat": 54.352,
+     "lng": 18.6466
+    },
+    {
+     "name": "Warsaw",
+     "country": "Poland",
+     "lat": 52.2297,
+     "lng": 21.0122
     }
    ],
    "colors": {
@@ -698,7 +806,7 @@
    "cutout": "",
    "why": "Unavailable in Denmark, so a whole adventure: a friend ordered them from the UK site of Net-a-Porter, carried them from London to Romania, and I brought them home to Copenhagen.",
    "bestMemory": {
-    "text": "Opening the box in Copenhagen after its tour of Europe.",
+    "text": "Posing in front of a Golden Goose store in Capri. My favourite hobby.",
     "photo": 0
    },
    "sparkle": "A silver sparkly star, a black heel tab and white laces. Very neutral, and it went with absolutely everything.",
@@ -804,7 +912,7 @@
    "type": "sneaker",
    "season": "2027",
    "tag": "The pair in waiting",
-   "dateAcquired": "2026-08-29",
+   "dateAcquired": "2026-10-01",
    "howItJoined": "Ordered from Net-a-Porter while I was on a weekend trip to London",
    "headlineMemory": "The pair in waiting, reserved for summer 2027",
    "story": "Still in the box. I haven't worn them yet: they are reserved for summer 2027. Until then they sit here looking brand new, which will be the last time they ever do.",
@@ -812,7 +920,7 @@
     {
      "src": "",
      "caption": "Still in the box. Patience",
-     "date": "2026-09-02",
+     "date": "2026-10-02",
      "place": "Copenhagen"
     }
    ],

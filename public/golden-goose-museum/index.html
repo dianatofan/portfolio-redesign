@@ -226,22 +226,29 @@ dl.facts dd{font-family:'Funnel Display',sans-serif;font-size:15px;line-height:1
 #lbox.on{opacity:1;pointer-events:auto}
 #lbox img{max-width:min(92vw,1100px);max-height:80vh;border-radius:16px;box-shadow:0 24px 60px -24px rgba(20,30,40,.45)}
 #lbox p{margin:0;font-size:13px;color:var(--grey)}
-.wall{margin:0 0 28px;display:grid;max-width:600px;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto auto;column-gap:12px}
-.wall figure{grid-row:span 3;display:grid;grid-template-rows:subgrid;margin:0;min-width:0}
-.wall figure[data-j]{cursor:zoom-in}
-.wall .fr{position:relative;margin-bottom:10px;aspect-ratio:1/1;width:100%;box-sizing:border-box;border-radius:16px;padding:5px;transition:transform .2s cubic-bezier(.2,0,0,1),box-shadow .2s cubic-bezier(.2,0,0,1)}
-.wall figure[data-j] .fr{background:#f8f9fa;box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(20,30,40,.05),0 0 28px 4px rgba(255,255,255,.95),0 22px 26px -20px rgba(20,30,40,.38)}
-.wall figure[data-j]:hover .fr{transform:translateY(-3px);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(20,30,40,.05),0 0 40px 8px #fff,0 28px 30px -20px rgba(20,30,40,.4)}
-.wall .in{position:relative;width:100%;height:100%;overflow:hidden;border-radius:11px;background:#e6e8ea}
-.wall .in img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(1.03);transition:filter .5s}
-.wall figure[data-j]:hover img{filter:grayscale(.2) contrast(1.05) brightness(1.03)}
-.wall .in i{position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.3),rgba(255,255,255,0) 38%,rgba(255,255,255,0) 72%,rgba(255,255,255,.1))}
-.wall .n{position:absolute;left:12px;top:12px;pointer-events:none;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#fff;opacity:.85;mix-blend-mode:difference}
-.wall .t{align-self:start;padding:0 4px;font-family:'Funnel Display',sans-serif;font-size:13.5px;line-height:1.3;letter-spacing:-.01em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.wall .m{align-self:start;display:flex;min-width:0;gap:5px;padding:2px 4px 0;white-space:nowrap;font-size:11.5px;line-height:1.35;color:var(--grey)}
-.wall .m b{min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:400}
-.wall .m i{flex:none;font-style:normal}
-@media (max-width:640px){.wall{column-gap:8px}}
+.bm{margin:0 0 28px}
+.bm>.lab{display:block;margin-bottom:12px}
+.bm .row{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;max-width:640px;align-items:start}
+.bm figure{margin:0;width:220px;display:flex;flex-direction:column}
+.bm figure[data-j]{cursor:zoom-in}
+.bm .fr{position:relative;margin-bottom:12px;aspect-ratio:4/5;width:100%;box-sizing:border-box;border-radius:16px;padding:5px;transition:transform .2s cubic-bezier(.2,0,0,1),box-shadow .2s cubic-bezier(.2,0,0,1)}
+.bm figure[data-j] .fr{background:#f8f9fa;box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(20,30,40,.05),0 0 28px 4px rgba(255,255,255,.95),0 22px 26px -20px rgba(20,30,40,.38)}
+.bm figure[data-j]:hover .fr{transform:translateY(-3px);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(20,30,40,.05),0 0 40px 8px #fff,0 28px 30px -20px rgba(20,30,40,.4)}
+.bm .empty .fr{box-shadow:inset 0 0 0 1.5px rgba(20,30,40,.12);border:1.5px dashed rgba(20,30,40,.18)}
+.bm .in{position:relative;width:100%;height:100%;overflow:hidden;border-radius:11px;background:#e6e8ea}
+.bm .in img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(1.03);transition:filter .5s}
+.bm figure[data-j]:hover img{filter:grayscale(.2) contrast(1.05) brightness(1.03)}
+.bm .in i{position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.3),rgba(255,255,255,0) 38%,rgba(255,255,255,0) 72%,rgba(255,255,255,.1))}
+.bm .in .hint{position:absolute;inset:0;display:grid;place-items:center;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--grey)}
+.bm figcaption{display:flex;flex-direction:column;padding:0 2px}
+.bm .t{font-family:'Funnel Display',sans-serif;font-size:14px;line-height:1.3;letter-spacing:-.01em;color:var(--ink);white-space:nowrap}
+.bm .m{display:flex;gap:5px;padding-top:3px;white-space:nowrap;font-size:11.5px;line-height:1.35;color:var(--grey)}
+.bm .m b{min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:400}
+.bm .m i{flex:none;font-style:normal}
+.bm .long{position:relative;z-index:1;margin:0;padding-top:2px;font-family:'Funnel Sans',sans-serif;font-size:14.5px;line-height:1.6;color:#2a2e33;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.bm .long::first-letter{float:left;margin:4px 8px 0 0;font-family:'Funnel Display',sans-serif;font-size:46px;font-weight:500;line-height:.86;color:var(--ink)}
+.bm .long .dl{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.04em;color:var(--ink)}
+@media (max-width:600px){.bm .row{grid-template-columns:minmax(0,1fr)}.bm figure{width:100%;max-width:240px}}
 .pfoot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:16px;padding-top:12px;border-top:1px solid var(--hair)}
 .pfoot .more{margin:0;white-space:nowrap}
 .life{margin:12px 0 0;font-size:13px;font-weight:500;color:var(--ink);letter-spacing:.02em}
@@ -353,7 +360,29 @@ tr.click{cursor:pointer}tr.click:hover td{background:#e4e7ea}
 .ev:hover .t{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
 .ev .t{font-family:'Funnel Display',sans-serif;font-size:21px;line-height:1.25}
 .ev .s{font-size:12px;color:var(--grey)}
-.mem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 20px}
+.mem{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:44px 24px}
+.mem article{display:flex;flex-direction:column;min-width:0}
+.mem .yr{margin-bottom:14px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ink)}
+.mem figure{margin:0}
+.mem figure[data-photo-of]{cursor:zoom-in}
+.mem .fr{position:relative;aspect-ratio:4/5;box-sizing:border-box;border-radius:16px;padding:5px;transition:transform .2s cubic-bezier(.2,0,0,1),box-shadow .2s cubic-bezier(.2,0,0,1)}
+.mem figure[data-photo-of] .fr{background:#f8f9fa;box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(20,30,40,.05),0 0 26px 3px rgba(255,255,255,.95),0 20px 24px -18px rgba(20,30,40,.36)}
+.mem figure[data-photo-of]:hover .fr{transform:translateY(-3px);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(20,30,40,.05),0 0 38px 8px #fff,0 26px 28px -18px rgba(20,30,40,.4)}
+.mem .empty .fr{box-shadow:inset 0 0 0 1.5px rgba(20,30,40,.12)}
+.mem .in{position:relative;width:100%;height:100%;overflow:hidden;border-radius:11px;background:#e6e8ea}
+.mem .empty .in{display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,rgba(20,30,40,.04) 0 8px,transparent 8px 16px)}
+.mem .in img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(1.03);transition:filter .5s}
+.mem figure[data-photo-of]:hover img{filter:grayscale(.2) contrast(1.05) brightness(1.03)}
+.mem .in i{position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.3),rgba(255,255,255,0) 38%,rgba(255,255,255,0) 72%,rgba(255,255,255,.1))}
+.mem .hint{padding:12px;text-align:center;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--grey)}
+.mem .cap{display:flex;flex-direction:column;margin-top:12px;padding:0 2px}
+.mem .t{font-family:'Funnel Display',sans-serif;font-size:15px;line-height:1.3;letter-spacing:-.01em;color:var(--ink);text-wrap:pretty}
+.mem .m{padding-top:3px;font-size:11.5px;color:var(--grey)}
+.mem .go{margin-top:10px;width:fit-content;font-size:12.5px;color:var(--grey);text-decoration:none;cursor:pointer;transition:color .15s}
+.mem .go i{display:inline-block;font-style:normal;transition:transform .15s}
+.mem .go:hover{color:var(--ink)}
+.mem .go:hover i{transform:translateX(3px)}
+@media (max-width:600px){.mem{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 14px}.mem .t{font-size:13.5px}}
 #mapbox{position:relative;border:0;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,#eef1f3,#e7eaed);box-shadow:inset 0 1px 0 #fff,0 18px 40px -22px rgba(20,30,40,.3)}
 #mapbox svg{display:block;width:100%;height:auto}
 #mapcard{position:absolute;background:var(--paper);border:1px solid var(--ink);padding:12px 14px;width:240px;box-sizing:border-box;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -370,9 +399,10 @@ tr.click{cursor:pointer}tr.click:hover td{background:#e4e7ea}
   #nav{gap:2px}#nav button{padding:8px 9px}#nav button i{display:none}
   #facts,#index .row span:last-child{display:none}
   #index{height:72px}
-  #panel{top:auto;left:8px;right:8px;bottom:78px;width:auto;height:auto;max-height:196px;overflow:hidden;padding-top:26px!important;transform:translateY(calc(100% + 140px));transition:transform .5s cubic-bezier(.2,.8,.2,1),max-height .45s cubic-bezier(.2,.8,.2,1),bottom .45s cubic-bezier(.2,.8,.2,1);-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent);touch-action:pan-y}
+  #panel{top:auto;left:8px;right:8px;bottom:78px;width:auto;height:auto;max-height:232px;overflow:hidden;padding-top:26px!important;touch-action:pan-y;overscroll-behavior:contain;transform:translateY(calc(100% + 140px));transition:transform .5s cubic-bezier(.2,.8,.2,1),max-height .45s cubic-bezier(.2,.8,.2,1),bottom .45s cubic-bezier(.2,.8,.2,1);-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent);touch-action:pan-y}
   #panel.on{transform:none}
   #panel::after{content:"";position:absolute;top:9px;left:50%;width:38px;height:4px;margin-left:-19px;border-radius:2px;background:rgba(22,24,26,.28)}
+  #panel::before{content:"";position:sticky;top:-26px;display:block;height:0;margin-top:-26px;padding-top:26px;z-index:2}
   #panel.open{max-height:calc(100% - 88px);bottom:8px;overflow:auto;-webkit-mask-image:none;mask-image:none}
   body:has(#panel.open) #index{opacity:0;pointer-events:none}
   #panel h2{font-size:26px;margin-top:12px}
@@ -383,7 +413,7 @@ tr.click{cursor:pointer}tr.click:hover td{background:#e4e7ea}
   .a,.b,.l,.r{grid-column:1/-1}
   .ptitle .lab{padding:0 0 12px}
   .story{column-count:1}
-  .photos,.mem{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .photos{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ev{grid-template-columns:90px minmax(0,1fr)}.ev .k,.ev .p{display:none}
 }
 @media (max-width:380px){#brand b{font-size:13px!important}#nav button{font-size:11.5px!important;padding:8px 5px!important}}
@@ -1186,7 +1216,7 @@ all.forEach((p, k) => {
   const nx = all[k + 1], a = new Date(p.dateAcquired + 'T12:00'), b = nx ? new Date(nx.dateAcquired + 'T12:00') : null;
   const m = b ? Math.max(1, Math.round((b - a) / 2629746000)) : null;
   p.life = { from: fmt(p.dateAcquired, { month: 'short', year: 'numeric' }), to: b ? fmt(nx.dateAcquired, { month: 'short', year: 'numeric' }) : 'now', months: m,
-    note: m ? (m >= 12 ? m + ' months on duty, a full lap of the sun' : m + ' months on duty, then the next pair showed up') : 'still on duty, still sparkling' };
+    note: m ? (m >= 12 ? m + ' months on duty, a full lap of the sun' : m + (m === 1 ? ' month' : ' months') + ' on duty, then the next pair showed up') : 'still on duty, still sparkling' };
 });
 const favOf = p => p.photos[p.bestMemory?.photo ?? 0] || p.photos[0];
 $('#facts').textContent = `${all.length} pairs · ${placeMap.size} places`;
@@ -1263,7 +1293,7 @@ const ceilP = new THREE.Mesh(new THREE.PlaneGeometry(60, 40), new THREE.MeshStan
 const backW = new THREE.Mesh(new THREE.PlaneGeometry(60, 12), new THREE.MeshStandardMaterial({ color: '#dcdfe1', roughness: 1 })); backW.position.set(0, 6, -9); scene.add(backW);
 scene.add(new THREE.HemisphereLight('#f3f5f7', '#a3a29f', 0.6));
 const key = new THREE.DirectionalLight('#ffffff', 1.25); key.position.set(-4, 9, 6); key.target.position.set(0, 0, BACK); key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -9, right: 9, top: 6, bottom: -4, near: 1, far: 30 }); key.shadow.radius = 6; key.shadow.bias = -0.0005; scene.add(key, key.target);
+key.shadow.mapSize.set(TOUCH ? 1024 : 2048, TOUCH ? 1024 : 2048); Object.assign(key.shadow.camera, { left: -9, right: 9, top: 6, bottom: -4, near: 1, far: 30 }); key.shadow.radius = TOUCH ? 3 : 6; key.shadow.bias = -0.0005; scene.add(key, key.target);
 
 // materials
 const banded = new THREE.MeshStandardMaterial({ name: 'banded-concrete', roughness: 0.85, map: rep(canvasTex(512, 512, (c, W, H) => { noiseFill(c, W, H, '#b6b8bb', 22); for (let y = 0; y < H; y += 64) { c.fillStyle = 'rgba(60,62,66,.55)'; c.fillRect(0, y, W, 4); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(0, y + 3, W, 2); } }), 1 / 0.5) });
@@ -1473,16 +1503,37 @@ function hallPose() {
   return { pos: target.clone().addScaledVector(dir, hi), target };
 }
 const panel = $('#panel');
-{ let y0 = null, t0 = 0;
+// On a phone the panel is a bottom sheet: a peek first, swipe up (or tap) to read it all, swipe down to
+// shrink it and again to close. Touch events, not pointer ones: the browser cancels a pointer sequence
+// as soon as the finger moves to scroll, so pointerup never came. While the sheet is dragged it follows
+// the finger, and a swipe that starts inside an open, scrolled sheet is left to the scroll.
+{ let y0 = null, t0 = 0, dragging = false, startedAtTop = true;
   const narrowNow = () => innerWidth < 900;
-  panel.addEventListener('pointerdown', e => { if (narrowNow()) { y0 = e.clientY; t0 = Date.now(); } });
-  panel.addEventListener('pointerup', e => {
-    if (!narrowNow() || y0 == null) return; const dy = e.clientY - y0; y0 = null;
-    const open = panel.classList.contains('open');
-    if (dy < -30) panel.classList.add('open');
-    else if (dy > 40 && (!open || panel.scrollTop <= 0)) { if (open) panel.classList.remove('open'); else { stopTour(); hall(); } }
-    else if (Math.abs(dy) < 6 && Date.now() - t0 < 400 && !open && !e.target.closest('button,a')) panel.classList.add('open');
-  });
+  const isOpen = () => panel.classList.contains('open');
+  panel.addEventListener('touchstart', e => {
+    if (!narrowNow()) return;
+    y0 = e.touches[0].clientY; t0 = Date.now(); dragging = false; startedAtTop = panel.scrollTop <= 0;
+  }, { passive: true });
+  panel.addEventListener('touchmove', e => {
+    if (!narrowNow() || y0 == null) return;
+    const dy = e.touches[0].clientY - y0;
+    // an open sheet scrolls on its own; only a pull down from its very top is a sheet drag
+    if (isOpen() && !(startedAtTop && dy > 0)) return;
+    if (!dragging && Math.abs(dy) > 6) { dragging = true; panel.style.transition = 'none'; }
+    if (dragging) { e.preventDefault(); panel.style.transform = 'translateY(' + Math.max(isOpen() ? 0 : -140, dy) + 'px)'; }
+  }, { passive: false });
+  const end = e => {
+    if (!narrowNow() || y0 == null) return;
+    const t = (e.changedTouches && e.changedTouches[0]) || { clientY: y0 }, dy = t.clientY - y0, quick = Date.now() - t0 < 400; y0 = null;
+    panel.style.transition = ''; panel.style.transform = '';
+    const open = isOpen();
+    if (dragging) {
+      if (dy < -40) panel.classList.add('open');
+      else if (dy > 60 && (!open || startedAtTop)) { if (open) panel.classList.remove('open'); else { stopTour(); hall(); } }
+    } else if (quick && !open && !e.target.closest('button,a')) panel.classList.add('open');
+    dragging = false;
+  };
+  panel.addEventListener('touchend', end); panel.addEventListener('touchcancel', end);
   panel.addEventListener('transitionend', e => { if (e.propertyName === 'max-height' && !panel.classList.contains('open')) panel.scrollTop = 0; });
 }
 function setCell(i) { cellEls.forEach((c, j) => c.classList.toggle('on', j === i)); if (i >= 0) { head.classList.add('live'); placeHead(pinPct[i]); if (cells.scrollWidth > cells.clientWidth) cells.scrollTo({ left: cellEls[i].offsetLeft - cells.clientWidth / 2, behavior: 'smooth' }); } else { head.classList.remove('live'); cellEls.forEach(c => c.style.setProperty('--s', 1)); } }
@@ -1514,14 +1565,14 @@ function focus(i, slow, settle) {
   const excerpt = (p.story.match(/[^.!?]+[.!?]+/g) || [p.story]).slice(0, 2).join(' ').trim();
   panel.innerHTML = `<div class="phead"><span class="lab num">${esc(p.label)}</span><button data-close>Close</button></div>
     <h2>${esc(p.lead)}</h2>${p.rest ? `<p class="sub">${esc(p.rest)}</p>` : ''}
-    <p class="life num">${p.life.from} → ${p.life.to}<span> · ${p.statusNote ? p.statusNote : p.life.months ? p.life.months + ' months on duty' : 'still on duty'}</span></p>
+    <p class="life num">${p.life.from} → ${p.life.to}<span> · ${p.statusNote ? p.statusNote : p.life.months ? p.life.months + (p.life.months === 1 ? ' month' : ' months') + ' on duty' : 'still on duty'}</span></p>
     <dl class="facts tight">
       <dt>Why I bought them</dt><dd>${esc(p.why || p.howItJoined)}</dd>
       ${p.sparkle ? `<dt>The sparkly bit</dt><dd>${esc(p.sparkle)}</dd>` : ''}
       ${p.mishap ? `<dt>What happened</dt><dd>${esc(p.mishap)}</dd>` : ''}
       <dt>Places they've been</dt><dd>${p.places.map(x => esc(x.name)).join(' · ')}</dd>
     </dl>
-    ${p.bestMemory ? `<div class="best${favOf(p)?.src ? '' : ' solo'}">${favOf(p)?.src ? `<button class="bframe" data-photo aria-label="Open photo"><img src="${esc(RES(favOf(p).src))}" alt="" style="object-position:${favOf(p).focus || '50% 50%'}"></button>` : ''}<div class="btxt"><span class="lab">${p.photos.length > 1 ? 'Best' : 'Only'} memory</span><p>${esc(p.bestMemory.text)}</p><a class="story" href="#/pair/${p.id}">Their whole story →</a></div></div>` : ''}
+    ${p.bestMemory ? `<div class="best${favOf(p)?.src ? '' : ' solo'}">${favOf(p)?.src ? `<button class="bframe" data-photo aria-label="Open photo"><img src="${esc(RES(favOf(p).src))}" alt="" style="object-position:${favOf(p).focus || '50% 50%'}"></button>` : ''}<div class="btxt"><span class="lab">Best memory</span><p>${esc(p.bestMemory.text)}</p><a class="story" href="#/pair/${p.id}">Their whole story →</a></div></div>` : ''}
     <div class="pfoot"><span class="soft">${esc(p.name)}</span>
     ${p.bestMemory ? '' : `<a class="more" href="#/pair/${p.id}">Their whole story →</a>`}</div>`;
   panel.querySelector('[data-close]').onclick = () => { stopTour(); hall(); };
@@ -1571,26 +1622,25 @@ function pairPage(p) {
   <div class="g sec"><div class="a lab">Places they've been</div><div class="b"><table><tr><th>Place</th><th>Country</th></tr>${p.places.map(x => `<tr><td>${esc(x.name)}</td><td class="s">${esc(x.country)}</td></tr>`).join('')}</table></div></div>
   <div class="g pn"><a class="l" href="#/pair/${prev.id}"><span class="lab">← ${esc(prev.label)}</span><span class="serif">${esc(prev.headlineMemory)}</span></a><a class="r" href="#/pair/${next.id}"><span class="lab">${esc(next.label)} →</span><span class="serif">${esc(next.headlineMemory)}</span></a></div>`;
 }
-// The memory wall: a strip of three square photos, p.wall's in order (or the best memory first, then
-// the next ones), black and white until hovered; a pair with fewer shows fewer. A click opens it in
-// colour. Titles are the photos' own captions, one line each; the date on the line below never cuts.
+// The best memory: one framed photo, black and white until hovered, opening in colour, with its line and
+// place under it, and beside it p.memoryLong as a newspaper paragraph (mono dateline, drop cap, justified).
+// An empty frame waits for a photo (x.slotHint for its label).
 function mosaic(p) {
-  const fav = p.bestMemory?.photo ?? 0;
-  const order = p.wall ?? p.photos.map((_, j) => j).sort((a, b) => (b === fav) - (a === fav));
-  const items = order.filter(j => p.photos[j]?.src).slice(0, 3).map(j => ({ j, x: p.photos[j] }));
-  if (!items.length) return '';
-  const item = ({ j, x }, k) => {
-    const n = '<span class="n">' + String(k + 1).padStart(2, '0') + '</span>';
-    const country = p.places.find(pl => pl.name === x.place)?.country;
-    return '<figure data-pair="' + p.id + '" data-j="' + j + '"><div class="fr"><div class="in"><img src="' + esc(RES(x.src)) + '" alt="" loading="lazy" style="object-position:' + (x.focus || '50% 50%') + '"><i></i></div>' + n + '</div>' +
-      '<span class="t">' + esc(x.caption) + '</span><span class="m"><b>' + esc(x.place) + (country && country !== x.place ? ', ' + esc(country) : '') + '</b><i>· ' + fmt(x.date, { month: 'long', year: 'numeric' }) + '</i></span></figure>';
-  };
-  return '<div class="wall">' + items.map(item).join('') + '</div>';
+  const j = p.bestMemory?.photo ?? 0, x = p.photos[j], text = p.bestMemory?.text || x?.caption || '';
+  const country = x && p.places.find(pl => pl.name === x.place)?.country;
+  const mon = (d, long) => fmt(d, { month: long ? 'long' : 'short', year: 'numeric' });
+  const fig = x?.src
+    ? '<figure data-pair="' + p.id + '" data-j="' + j + '"><div class="fr"><div class="in"><img src="' + esc(RES(x.src)) + '" alt="" loading="lazy" style="object-position:' + (x.focus || '50% 50%') + '"><i></i></div></div>'
+    : '<figure class="empty"><div class="fr"><div class="in"><span class="hint">' + esc(x?.slotHint || 'Drop a photo') + '</span><i></i></div></div>';
+  const cap = '<figcaption><span class="t">' + esc(text) + '</span>' + (x ? '<span class="m"><b>' + esc(x.place) + (country && country !== x.place ? ', ' + esc(country) : '') + '</b><i>· ' + mon(x.date) + '</i></span>' : '') + '</figcaption></figure>';
+  const long = p.memoryLong ? '<p class="long">' + (x ? '<span class="dl">' + esc(x.place.toUpperCase()) + ', ' + mon(x.date, true).toUpperCase() + '</span> — ' : '') + esc(p.memoryLong) + '</p>' : '';
+  return '<div class="bm"><span class="lab">Best memory</span><div class="row">' + fig + cap + long + '</div></div>';
 }
 document.addEventListener('click', e => {
-  const f = e.target.closest('.wall figure[data-j]'); if (!f) return;
-  const p = data.pairs.find(q => q.id === f.dataset.pair); if (p) openPhoto(p.photos[+f.dataset.j]);
-});
+  const f = e.target.closest('.bm figure[data-j], .mem figure[data-photo-of]'); if (!f) return;
+  e.preventDefault(); e.stopPropagation();
+  const p = data.pairs.find(q => q.id === (f.dataset.pair || f.dataset.photoOf)); if (p) openPhoto(p.photos[+f.dataset.j]);
+}, true);
 function timelinePage() {
   const ev = [];
   all.forEach(p => {
@@ -1702,10 +1752,21 @@ function anatomyPage() {
   return title('Anatomy', 'Diana\u2019s recipe for loving a pair of Golden Goose') +
     `<div class="anat" id="anat"><svg class="ann"></svg><div class="img"><img src="${RES('photos/anatomy.png')}" alt="A Golden Goose Superstar, side view">${ANATOMY.map((a, i) => `<button class="pin" data-ann="${i}" style="left:${a.x}%;top:${a.y}%">${i + 1}</button>`).join('')}</div><div class="side l">${anatSide(true)}</div><div class="side r">${anatSide(false)}</div></div>`;
 }
+// The memories page: a gallery wall, one framed best-memory photo per pair, oldest first, the year
+// above each. Black and white until hovered, opening in colour; an empty frame waits for a photo.
 function memoriesPage() {
-  const m = order.flatMap(p => p.photos.map(x => ({ ...x, p }))).sort((a, b) => b.date.localeCompare(a.date));
-  return title('Memories', 'Newest first') +
-    `<div class="mem" style="margin-top:40px">${m.map((x, i) => `<figure data-pair="${x.p.id}" style="cursor:pointer">${ph(x.src, 'photo, ' + x.place, '4/5')}<figcaption><span class="num">${fmt(x.date, { day: '2-digit', month: '2-digit' })}</span><span class="c">${esc(x.caption)}</span><span class="num">${x.date.slice(0, 4)}</span><span>${esc(x.place)} · ${esc(x.p.label)}</span></figcaption></figure>`).join('')}</div>`;
+  const mon = d => fmt(d, { month: 'short', year: 'numeric' });
+  const card = p => {
+    const j = p.bestMemory?.photo ?? 0, x = p.photos[j], country = x && p.places.find(pl => pl.name === x.place)?.country;
+    const fig = x?.src
+      ? '<figure data-photo-of="' + p.id + '" data-j="' + j + '"><div class="fr"><div class="in"><img src="' + esc(RES(x.src)) + '" alt="" loading="lazy" style="object-position:' + (x.focus || '50% 50%') + '"><i></i></div></div></figure>'
+      : '<figure class="empty"><div class="fr"><div class="in"><span class="hint">' + esc(x?.slotHint || 'No photo yet') + '</span><i></i></div></div></figure>';
+    return '<article><div class="yr">' + esc(p.season || p.dateAcquired.slice(0, 4)) + '</div>' + fig +
+      '<div class="cap"><span class="t">' + esc(p.bestMemory?.text || x?.caption || 'Still to be hung') + '</span>' +
+      (x ? '<span class="m">' + esc(x.place) + (country && country !== x.place ? ', ' + esc(country) : '') + ' · ' + mon(x.date) + '</span>' : '') +
+      '<a class="go" data-pair="' + p.id + '">' + esc(p.tag) + ' <i>→</i></a></div></article>';
+  };
+  return title('Memories', 'One memory for every pair') + '<div class="mem" style="margin-top:44px">' + sneakers.map(card).join('') + '</div>';
 }
 function mapPage() {
   const groups = [...placeMap.values()].sort((a, b) => a.country.localeCompare(b.country) || a.name.localeCompare(b.name));
@@ -1799,6 +1860,8 @@ renderer.setAnimationLoop(() => {
   const flying = !!(tween || scrub); if (controls.enableDamping === flying) { controls.enableDamping = !flying; }
   controls.update();
   exhibits.forEach((e, i) => { e.turntable.rotation.y += dt * (i === current || i === hover ? 0.3 : dragging ? 0.25 : 0.08); });
+  // on a phone the open sheet covers the scene: skip the frame, the turntables catch up when it closes
+  if (TOUCH && panel.classList.contains('open') && !flying) return;
   renderer.render(scene, camera);
   // The glass pedestals are expensive per pixel: on a Retina screen 2x ran at 12-20fps.
   // Start at 1.5x and step down while frames stay slow, never below 1x.
